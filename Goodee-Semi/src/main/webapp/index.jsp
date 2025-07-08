@@ -9,6 +9,7 @@
 
 <body>
 	<h1>Test</h1>
+	<h2>Fork Test</h2>
 </body>
 
 </html>
