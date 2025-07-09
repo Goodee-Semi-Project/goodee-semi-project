@@ -10,7 +10,7 @@ import com.goodee.semi.dto.AccountDetail;
 public class AccountService {
 	private AccountDao accountDao = new AccountDao();
 	
-	public Account getLoginInfo(String accountId, String accountPw) {
+	public AccountDetail getLoginInfo(String accountId, String accountPw) {
 		Account param = new Account();
 		param.setAccountId(accountId);
 		param.setAccountPw(accountPw);
