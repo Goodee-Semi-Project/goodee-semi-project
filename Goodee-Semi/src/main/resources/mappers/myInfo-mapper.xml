@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.MyInfoMapper">
+<resultMap type="com.goodee.semi.dto.MyInfo" id="myInfoResultMap">
+	<result property="infoNo" column="info_no"/>
+	<result property="userNo" column="user_no"/>
+	<result property="regDate" column="reg_date"/>
+	<result property="userGender" column="user_gender"/>
+	<result property="birDate" column="bir_date"/>
+	<result property="phone" column="phone"/>
+	<result property="email" column="email"/>
+	<result property="postNum" column="post_num"/>
+	<result property="address" column="address"/>
+	<result property="addressDetail" column="address_detail"/>
+	<result property="userName" column="user_name"/>
+</resultMap>
+<select id="selectMyInfo" parameterType="_int" resultMap="myInfoResultMap">
+	SELECT u.user_name ,i.*
+	FROM user_info i
+	JOIN user u ON i.user_no = u.user_no
+	<where>
+		i.user_no = #{userNo}
+	</where>
+</select>
+<update id="updateMyInfo" parameterType="com.goodee.semi.dto.MyInfo">
+	UPDATE user_info
+	SET user_gender = #{ userGender }
+		,email = #{ email }
+		,phone = #{ phone }
+		,address = #{ address }
+		,address_detail = #{ addressDetail }
+	WHERE user_no = #{ userNo }
+</update>
+</mapper>
