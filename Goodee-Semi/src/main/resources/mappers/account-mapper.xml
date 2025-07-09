@@ -30,7 +30,31 @@
 		<result property="address" column="address" />
 		<result property="addressDetail" column="address_detail" />
 	</resultMap>
+	<insert id="insertAccount" parameterType="com.goodee.semi.dto.AccountDetail" useGeneratedKeys="true" keyProperty="accountNo">
+		INSERT INTO account (auth_no, account_id, account_pw, account_name)
+		VALUE (#{author}, #{accountId}, #{accountPw}, #{name})
+	</insert>
 	
+	<insert id="insertAccountInfo" parameterType="com.goodee.semi.dto.AccountDetail">
+		INSERT INTO account_info (account_no, account_gender, bir_date, phone, email, post_num, address, address_detail)
+		VALUE (#{accountNo}, #{gender}, #{birth}, #{phone}, #{email}, #{postNum}, #{address}, #{addressDetail})
+	</insert>
+	
+	<select id="loginInfo" parameterType="com.goodee.semi.dto.Account" resultMap="accountDetailResultMap">
+		SELECT * FROM account A
+		INNER JOIN account_info AI ON A.account_no = AI.account_no
+		<where>
+			A.account_id = #{accountId} AND A.account_pw = #{accountPw}
+		</where>
+	</select>
+	
+	<select id="selectAccountByNameAndEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountResultMap">
+		SELECT * FROM account A
+		INNER JOIN account_info AI ON A.account_no = AI.account_no
+		<where>
+			A.account_name = #{name} AND AI.email = #{email}
+		</where>
+	</select>
 	<select id="selectAccountDetail" parameterType="_int" resultMap="accountDetailResultMap">
 		SELECT u.account_name , i.*
 		FROM account_info i
