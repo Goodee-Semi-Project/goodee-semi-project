@@ -26,5 +26,13 @@ public class AccountDao {
 		session.close();
 		return result;
 	}
+
+	public Account selectAccountByNameAndEmail(AccountDetail account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Account result = session.selectOne("com.goodee.semi.mapper.AccountMapper.selectAccountByNameAndEmail", account);
+		session.close();
+		
+		return result;
+	}
 	
 }
