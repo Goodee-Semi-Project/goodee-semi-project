@@ -48,4 +48,8 @@ public class AccountService {
 	public Account selectAccountByNameAndEmail(AccountDetail account) {
 		return accountDao.selectAccountByNameAndEmail(account);
 	}
+
+	public Account selectAccountByIdNameEmail(AccountDetail account) {
+		return accountDao.selectAccountByIdNameEmail(account);
+	}
 }
