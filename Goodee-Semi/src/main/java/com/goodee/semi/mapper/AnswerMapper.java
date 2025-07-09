@@ -1,5 +1,5 @@
 package com.goodee.semi.mapper;
 
-public class AnswerMapper {
+public interface AnswerMapper {
 
 }
