@@ -3,7 +3,7 @@ package com.goodee.semi.controller;
 import java.io.IOException;
 import java.util.List;
 
-import com.goodee.semi.dto.Account;
+import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.PetService;
 
@@ -36,11 +36,17 @@ public class MyPetListServlet extends HttpServlet {
 		}
 		
 		// 2. session에서 accountNo 가져오기
-		Account account = (Account) session.getAttribute("loginAccount");
+		AccountDetail accountDetail = (AccountDetail) session.getAttribute("loginAccount");
 		Pet param = new Pet();
-		param.setAccountNo(account.getAccountNo());
+		param.setAccountNo(accountDetail.getAccountNo());
 		
-		// 3. 페이징
+		// 3. 표시할 회원 정보 바인딩
+		String authurName = (accountDetail.getAuthor() == 1) ? "훈련사" : "회원";
+		String regDate = accountDetail.getReg_date().split(" ")[0].replace("-", ".");
+		request.setAttribute("authurName", authurName);
+		request.setAttribute("regDate", regDate);
+		
+		// 4. 페이징
 		// 1) 현재 페이지 정보 셋팅
 		String nowPageStr = request.getParameter("nowPage");
 		int nowPage = (nowPageStr == null) ? 1 : Integer.parseInt(nowPageStr);
@@ -53,11 +59,14 @@ public class MyPetListServlet extends HttpServlet {
 		// 3) 페이징 정보 바인딩
 		request.setAttribute("paging", param);
 		
-		// 4. pet 데이터를 가져와 바인딩
+		// 5. pet 데이터를 가져와 바인딩
 		List<Pet> list = service.selectPetList(param);
+		for (Pet pet : list) {
+			pet.setPetGender((pet.getPetGender() == 'M') ? '남' : '여');
+		}
 		request.setAttribute("list", list);
 		
-		// 5. 페이지 이동
+		// 6. 페이지 이동
 		request.getRequestDispatcher("/WEB-INF/views/passing7by/my-pet/myPetList.jsp").forward(request, response);
 	}
 
