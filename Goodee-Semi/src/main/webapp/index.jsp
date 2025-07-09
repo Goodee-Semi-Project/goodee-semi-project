@@ -11,17 +11,15 @@
 </head>
 
 <body>
-<<<<<<< HEAD
 	<h1>Test</h1>
 	<h2>branch test</h2>
 	
 	<!-- 기능 테스트용 경로 -->
 	<a href="<c:url value='/pageRouter'/>">passing7by</a>
-=======
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	
 	
->>>>>>> e330d9603fb765268bd95c6e6fd2df13439c0d3c
+
 </body>
 
 </html>
