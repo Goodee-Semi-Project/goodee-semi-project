@@ -72,7 +72,11 @@ public class AccountService {
 	}
 
 	public int updateAccountPw(Account account, String newPw) {
-		int result = accountDao.updateAccountPw(account, newPw);
+		int result = accountDao.checkIdPw(account);
+		if (result > 0) {
+			account.setAccountPw(newPw);
+			result = accountDao.updateAccountPw(account);
+		}
 		return result;
 	}
 }
