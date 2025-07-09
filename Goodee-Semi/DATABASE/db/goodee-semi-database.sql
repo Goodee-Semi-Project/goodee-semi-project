@@ -9,22 +9,22 @@ CREATE TABLE IF NOT EXISTS `authority` (
 	PRIMARY KEY (`auth_no`)
 );
 
-CREATE TABLE IF NOT EXISTS `user` (
-	`user_no` INT AUTO_INCREMENT NOT NULL,
+CREATE TABLE IF NOT EXISTS `account` (
+	`account_no` INT AUTO_INCREMENT NOT NULL,
 	`auth_no` INT NOT NULL,
-	`user_id` VARCHAR(16) NOT NULL,
-	`user_pw` VARCHAR(20) NOT NULL,
-	`user_name` VARCHAR(20) NOT NULL,
-	`user_avail` CHAR(1) NOT NULL DEFAULT 'Y',
-	PRIMARY KEY (`user_no`),
+	`account_id` VARCHAR(16) NOT NULL,
+	`account_pw` VARCHAR(20) NOT NULL,
+	`account_name` VARCHAR(20) NOT NULL,
+	`account_avail` CHAR(1) NOT NULL DEFAULT 'Y',
+	PRIMARY KEY (`account_no`),
 	FOREIGN KEY (`auth_no`) REFERENCES `authority`(`auth_no`)
 );
 
-CREATE TABLE IF NOT EXISTS `user_info` (
+CREATE TABLE IF NOT EXISTS `account_info` (
 	`info_no` INT AUTO_INCREMENT NOT NULL,
-	`user_no` INT NOT NULL,
+	`account_no` INT NOT NULL,
 	`reg_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`user_gender` CHAR(1) NOT NULL,
+	`account_gender` CHAR(1) NOT NULL,
 	`bir_date` CHAR(6) NOT NULL,
 	`phone` CHAR(13) NOT NULL,
 	`email` VARCHAR(255) NOT NULL,
@@ -32,23 +32,23 @@ CREATE TABLE IF NOT EXISTS `user_info` (
 	`address` VARCHAR(255) NOT NULL,
 	`address_detail` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`info_no`),
-	FOREIGN KEY (`user_no`) REFERENCES `user`(`user_no`)
+	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 
 CREATE TABLE IF NOT EXISTS `pet` (
 	`pet_no` INT AUTO_INCREMENT NOT NULL,
-	`user_no` INT NOT NULL,
+	`account_no` INT NOT NULL,
 	`pet_name` VARCHAR(20) NOT NULL,
 	`pet_gender` CHAR(1) NOT NULL,
 	`pet_age` TINYINT NOT NULL,
 	`pet_breed` VARCHAR(20) NOT NULL,
 	PRIMARY KEY (`pet_no`),
-	FOREIGN KEY (`user_no`) REFERENCES `user`(`user_no`)
+	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 
 CREATE TABLE IF NOT EXISTS `course` (
 	`course_no` INT AUTO_INCREMENT NOT NULL,
-	`user_no` INT NOT NULL,
+	`account_no` INT NOT NULL,
 	`title` VARCHAR(255) NOT NULL,
 	`sub_title` VARCHAR(20) NOT NULL,
 	`object` TEXT NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `course` (
 	`capacity` TINYINT NOT NULL,
 	`thumb` INT,
 	PRIMARY KEY (`course_no`),
-	FOREIGN KEY (`user_no`) REFERENCES `user`(`user_no`)
+	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 
 CREATE TABLE IF NOT EXISTS `class` (
@@ -94,10 +94,10 @@ CREATE TABLE IF NOT EXISTS `review` (
 CREATE TABLE IF NOT EXISTS `picked_course` (
 	`pick_no` INT AUTO_INCREMENT NOT NULL,
 	`course_no` INT NOT NULL,
-	`user_no` INT NOT NULL,
+	`account_no` INT NOT NULL,
 	PRIMARY KEY (`pick_no`),
 	FOREIGN KEY (`course_no`) REFERENCES `course`(`course_no`),
-	FOREIGN KEY (`user_no`) REFERENCES `user`(`user_no`)
+	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 
 CREATE TABLE IF NOT EXISTS `enroll` (
@@ -156,37 +156,37 @@ CREATE TABLE IF NOT EXISTS `tag_course` (
 
 CREATE TABLE IF NOT EXISTS `notice` (
 	`notice_no` INT AUTO_INCREMENT NOT NULL,
-	`user_no` INT NOT NULL,
+	`account_no` INT NOT NULL,
 	`notice_title` VARCHAR(255) NOT NULL,
 	`notice_content` TEXT NOT NULL,
 	`reg_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`mod_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`nail_up` CHAR(1),
 	PRIMARY KEY (`notice_no`),
-	FOREIGN KEY (`user_no`) REFERENCES `user`(`user_no`)
+	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 
 CREATE TABLE IF NOT EXISTS `question` (
 	`quest_no` INT AUTO_INCREMENT NOT NULL,
-	`user_no` INT NOT NULL,
+	`account_no` INT NOT NULL,
 	`quest_title` VARCHAR(255) NOT NULL,
 	`quest_content` TEXT NOT NULL,
 	`quest_reg` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`quest_mod` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`quest_no`),
-	FOREIGN KEY (`user_no`) REFERENCES `user`(`user_no`)
+	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 
 CREATE TABLE IF NOT EXISTS `answer` (
 	`answer_no` INT AUTO_INCREMENT NOT NULL,
 	`quest_no` INT NOT NULL,
-	`user_no` INT NOT NULL,
+	`account_no` INT NOT NULL,
 	`answer_content` TEXT NOT NULL,
 	`answer_reg` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`answer_mod` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`answer_no`),
 	FOREIGN KEY (`quest_no`) REFERENCES `question`(`quest_no`),
-	FOREIGN KEY (`user_no`) REFERENCES `user`(`user_no`)
+	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 
 CREATE TABLE IF NOT EXISTS `assignment` (
