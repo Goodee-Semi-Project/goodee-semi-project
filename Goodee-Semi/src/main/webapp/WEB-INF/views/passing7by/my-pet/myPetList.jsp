@@ -32,26 +32,37 @@
 			<hr>
 
 			<ul id="pet-list">
-				<li>
-					<img src="https://picsum.photos/150" alt="">
-					<div class="pet-detail">
-						<p>반려견 이름</p>
-						<p>나이 / 성별</p>
-						<p>품종</p>
-					</div>
-					<div>
-						<button class="btn-update">수정</button>
-						<button class="btn-delete">삭제</button>
-					</div>
-					<hr>
-				</li>
+				<c:forEach var="pet" items="${list }">
+					<li>
+						<img src="https://picsum.photos/150" alt="">
+						<div class="pet-detail">
+							<p>${pet.petName }</p>
+							<p>${pet.petAge }살 / ${pet.petGender }</p>
+							<p>${pet.petBreed }</p>
+						</div>
+						<div>
+							<button class="btn-update">수정</button>
+							<button class="btn-delete">삭제</button>
+						</div>
+						<hr>
+					</li>
+				</c:forEach>
 			</ul>
 
-			<div id="pagination">
-				<a href="">⬅️</a>
-				<a href="">1</a>
-				<a href="">➡️</a>
-			</div>
+			<c:if test="${not empty list }">
+				<div id="pagination">
+					<c:if test="${paging.prev }">
+						<a href="<c:url value='/myPet/list?nowPage=${paging.pageBarStart-1 }'/>">⬅️</a>
+					</c:if>
+					<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
+						<a href="<c:url value='/myPet/list?nowPage=${i }'/>">${i }</a>
+					</c:forEach>
+					<c:if test="${paging.next }">
+						<a href="<c:url value='/myPet/list?nowPage=${paging.pageBarEnd+1 }'/>">➡️</a>
+					</c:if>
+				</div>
+			</c:if>
+
 		</section>
 	</div>
 	<!-- footer -->
