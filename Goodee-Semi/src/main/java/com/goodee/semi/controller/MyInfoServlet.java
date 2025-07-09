@@ -32,12 +32,14 @@ public class MyInfoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
+		// TODO: 로그인 정보 받아오기
 //		String userId = request.getParameter("user_id");
 		int accountNo = 1;
 		AccountDetail accountDetail = service.selectAccountDetail(accountNo);
 		
+		// CARE: 세션에 회원 정보 입력
 		session.setAttribute("accountDetail", accountDetail);
+		session.setMaxInactiveInterval(60 * 30);
 		
 		request.getRequestDispatcher("/WEB-INF/views/myInfo/myInfoPage.jsp").forward(request, response);
 	}
