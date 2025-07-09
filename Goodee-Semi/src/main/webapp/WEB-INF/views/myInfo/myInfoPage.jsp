@@ -31,23 +31,23 @@
 				<span>${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일</span>
 			</div>
 			<div>
-				<input type="text" placeholder="성별" value="${ accountDetail.gender }" name="gender" id="gender">
+				<input type="text" placeholder="성별" value="${ loginAccount.gender }" name="gender" id="gender">
 			</div>
 			<div>
-				<input type="text" placeholder="이메일" value="${ accountDetail.email }" name="email" id="email">
+				<input type="text" placeholder="이메일" value="${ loginAccount.email }" name="email" id="email">
 			</div>
 			<div>
-				<input type="text" placeholder="전화번호" value="${ accountDetail.phone }" name="phone" id="phone">
+				<input type="text" placeholder="전화번호" value="${ loginAccount.phone }" name="phone" id="phone">
 			</div>
 			<div>
-				<input type="text" placeholder="우편번호" value="${ accountDetail.postNum }" name="postNum" id="postNum" readonly="readonly">
+				<input type="text" placeholder="우편번호" value="${ loginAccount.postNum }" name="postNum" id="postNum" readonly="readonly">
 				<button id="findPost" type="button">우편번호 찾기</button>
 			</div>
 			<div>
-				<input type="text" placeholder="주소" value="${ accountDetail.address }" name="address" id="address" readonly="readonly">
+				<input type="text" placeholder="주소" value="${ loginAccount.address }" name="address" id="address" readonly="readonly">
 			</div>
 			<div>
-				<input type="text" placeholder="상세 주소" value="${ accountDetail.addressDetail }" name="addressDetail" id="addressDetail">
+				<input type="text" placeholder="상세 주소" value="${ loginAccount.addressDetail }" name="addressDetail" id="addressDetail">
 			</div>
 			<button>변경 저장</button>
 		</form>

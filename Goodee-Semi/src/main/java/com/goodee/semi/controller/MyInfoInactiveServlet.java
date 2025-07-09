@@ -2,7 +2,10 @@ package com.goodee.semi.controller;
 
 import java.io.IOException;
 
+import org.json.simple.JSONObject;
+
 import com.goodee.semi.dto.Account;
+import com.goodee.semi.service.AccountService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/myInfo/inactive")
 public class MyInfoInactiveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	AccountService service = new AccountService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -40,13 +44,48 @@ public class MyInfoInactiveServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO: 비밀번호 확인을 세션으로?
 		request.setCharacterEncoding("UTF-8");
+		
+		String checkPw = null;
+		if (request.getParameter("checkPw") instanceof String) {
+			checkPw = request.getParameter("checkPw");
+		}
+		
+		JSONObject obj = new JSONObject();
+		
+		obj.put("res_code", "500");
+		obj.put("res_msg", "비밀번호가 다릅니다.");
+		
+		
+		String accountPw = null;
+		
+		if (checkPw != null) {
+			HttpSession session = request.getSession();
+			Account account = null;
+			
+			if (session != null && session.getAttribute("loginAccount") instanceof Account) {
+				account = (Account) session.getAttribute("loginAccount");
+			}
+			
+			if (account != null) {
+				accountPw = account.getAccountPw();
+			}
+			
+			if (accountPw != null && accountPw.equals(checkPw)) {
+				// TODO: 탈퇴 처리, 세션으로 아이디 가져오기
+				int result = service.updateAccountInactive();
+				
+				
+				
+				
+				
+				
+				obj.put("res_code", "200");
+				obj.put("res_msg", "탈퇴 되었습니다.");
+			}
+		}
 
-		String checkPw = request.getParameter("checkPw");
-		
-		HttpSession session = request.getSession();
-		Account account = (Account) session.getAttribute("loginAccount");
-		String accountId = account.getAccountId();
-		
+		response.setContentType("application/json; charset=utf-8");
+		response.getWriter().print(obj);
 	}
 
 }
