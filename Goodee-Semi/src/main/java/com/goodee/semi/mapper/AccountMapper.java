@@ -7,5 +7,6 @@ public interface AccountMapper {
 	int insertAccount(AccountDetail account);
 	int insertAccountInfo(AccountDetail account);
 	Account loginInfo(Account result);
+	Account selectAccountByNameAndEmail(AccountDetail account);
 
 }

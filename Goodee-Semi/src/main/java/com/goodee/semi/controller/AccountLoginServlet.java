@@ -10,9 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
-
 import com.goodee.semi.dto.Account;
-
 import com.goodee.semi.service.AccountService;
 
 
@@ -21,11 +19,10 @@ public class AccountLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AccountService service = new AccountService();
     
-	
-    public AccountLoginServlet() {
-        super();
-        
-    }
+
+  public AccountLoginServlet() {
+    super();
+  }
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,6 +30,7 @@ public class AccountLoginServlet extends HttpServlet {
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String accountId = request.getParameter("accountId");
