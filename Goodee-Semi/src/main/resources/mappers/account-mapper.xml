@@ -41,4 +41,10 @@
 		VALUE (#{accountNo}, #{gender}, #{birth}, #{phone}, #{email}, #{postNum}, #{address}, #{addressDetail})
 	</insert>
 	
+	<select id="loginInfo" resultMap="accountResultMap">
+	SELECT *
+	FROM account
+	WHERE account_id = #{accountId} AND account_pw = #{accountPw}
+	</select>
+	
 </mapper>
