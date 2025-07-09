@@ -43,7 +43,7 @@
 						dataType : "JSON",
 						success : function(data) {
 							if (data.resultCode == 200) {
-								alert(data.accountId);
+								alert(data.accountId); // TODO 결과를 화면에 출력하기
 							}
 						},
 						error : function() {
