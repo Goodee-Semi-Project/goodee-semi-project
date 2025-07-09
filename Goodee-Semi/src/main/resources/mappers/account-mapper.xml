@@ -41,10 +41,12 @@
 		VALUE (#{accountNo}, #{gender}, #{birth}, #{phone}, #{email}, #{postNum}, #{address}, #{addressDetail})
 	</insert>
 	
-	<select id="loginInfo" resultMap="accountResultMap">
-		SELECT *
-		FROM account
-		WHERE account_id = #{accountId} AND account_pw = #{accountPw}
+	<select id="loginInfo" parameterType="com.goodee.semi.dto.Account" resultMap="accountDetailResultMap">
+		SELECT * FROM account A
+		INNER JOIN account_info AI ON A.account_no = AI.account_no
+		<where>
+			A.account_id = #{accountId} AND A.account_pw = #{accountPw}
+		</where>
 	</select>
 	
 	<select id="selectAccountByNameAndEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountResultMap">

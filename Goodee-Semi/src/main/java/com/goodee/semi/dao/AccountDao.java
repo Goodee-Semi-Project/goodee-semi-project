@@ -20,9 +20,9 @@ public class AccountDao {
 		return result;
 	}
 	
-	public Account loginInfo(Account param) {
+	public AccountDetail loginInfo(Account param) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		Account result = session.selectOne("com.goodee.semi.mapper.AccountMapper.loginInfo", param);
+		AccountDetail result = session.selectOne("com.goodee.semi.mapper.AccountMapper.loginInfo", param);
 		session.close();
 		return result;
 	}
