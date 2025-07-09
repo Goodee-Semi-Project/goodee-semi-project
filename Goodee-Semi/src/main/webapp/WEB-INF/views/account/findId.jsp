@@ -42,7 +42,9 @@
 						},
 						dataType : "JSON",
 						success : function(data) {
-							
+							if (data.resultCode == 200) {
+								alert(data.accountId);
+							}
 						},
 						error : function() {
 							alert("아이디 찾기 중 오류가 발생했습니다.");
