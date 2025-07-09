@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.MemberMapper">
+	<resultMap id="memberResultMap" type="com.goodee.semi.dto.Member">
+		<result property="memberNo" column="user_no" />
+		<result property="author" column="auth_no" />
+		<result property="memberId" column="user_id" />
+		<result property="memberPw" column="user_pw" />
+		<result property="available" column="user_avail" />
+		
+		<result property="reg_date" column="reg_date" />
+		<result property="name" column="user_name" />
+		<result property="gender" column="user_gender" />
+		<result property="birth" column="bir_date" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="postNum" column="post_num" />
+		<result property="address" column="address" />
+		<result property="addressDetail" column="address_detail" />
+	</resultMap>
+	
+	
+</mapper>
