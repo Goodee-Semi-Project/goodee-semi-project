@@ -68,35 +68,54 @@
 			const address = $("#roadAddress").val();
 			const addressDetail = $("#detailAddress").val();
 			
-			// TODO 유효성 검사
+			const idReg = /^[a-z0-9]{4,16}$/
+			const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/
+			const nameReg = /^[가-힣]{2,8}$/
+			const birthReg = /^[0-9]{6}$/
+			const phoneReg = /^010-[0-9]{4}-[0-9]{4}$/
+			const emailReg = /^[a-zA-Z0-9_+&*-]+(?:.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,7}$/
 			
-			$.ajax({
-				url : "/account/register",
-				type : "POST",
-				data : {
-					accountId : accountId,
-					accountPw : accountPw,
-					accountName : accountName,
-					accountGender : accountGender,
-					accountBirth : accountBirth,
-					accountPhone : accountPhone,
-					accountEmail : accountEmail,
-					postcode : postcode,
-					address : address,
-					addressDetail : addressDetail
-				},
-				dataType : "JSON",
-				success : function(data) {
-					alert(data.resultMsg);
-					
-					if (data.resultCode == 200) {
-						location.href = "<%= request.getContextPath() %>/";
+			if (!accountId) alert("아이디를 입력해주세요.");
+			else if (!idReg.test(accountId)) alert("사용 불가능한 아이디입니다.");
+			else if (!accountPw) alert("비밀번호를 입력해주세요.");
+			else if (!pwReg.test(accountPw)) alert("사용 불가능한 비밀번호입니다.");
+			else if (accountPw !== accountPwChk) alert("비밀번호가 일치하지 않습니다.");
+			else if (!nameReg.test(accountName)) alert("이름을 정확히 입력해주세요.");
+			else if (accountGender == 0) alert("성별을 선택해주세요.");
+			else if (!birthReg.test(accountBirth)) alert("생일을 정확히 입력해주세요.");
+			else if (!phoneReg.test(accountPhone)) alert("전화번호를 정확히 입력해주세요.");
+			else if (!emailReg.test(accountEmail)) alert("이메일을 정확히 입력해주세요.");
+			else if (postcode == "") alert("주소를 입력해주세요.");
+			else if (addressDetail == "") alert("상세주소를 입력해주세요.");
+			else {
+				$.ajax({
+					url : "/account/register",
+					type : "POST",
+					data : {
+						accountId : accountId,
+						accountPw : accountPw,
+						accountName : accountName,
+						accountGender : accountGender,
+						accountBirth : accountBirth,
+						accountPhone : accountPhone,
+						accountEmail : accountEmail,
+						postcode : postcode,
+						address : address,
+						addressDetail : addressDetail
+					},
+					dataType : "JSON",
+					success : function(data) {
+						alert(data.resultMsg);
+						
+						if (data.resultCode == 200) {
+							location.href = "<%= request.getContextPath() %>/";
+						}
+					},
+					error : function() {
+						alert("회원 가입 중 오류가 발생했습니다.");
 					}
-				},
-				error : function() {
-					alert("회원 가입 중 오류가 발생했습니다.");
-				}
-			});
+				});
+			}
 		});
 	});
 	</script>
