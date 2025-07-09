@@ -3,33 +3,33 @@ INSERT INTO authority (auth_no, auth_name) VALUES
 (2, '회원');
 
 
-INSERT INTO user (user_no, auth_no, user_id, user_pw, user_name, user_avail) VALUES
-(1, 1, 'user1', 'password123', '류민석', 'Y'),
-(2, 1, 'user2', 'password123', '구예원', 'Y'),
-(3, 2, 'user3', 'password123', '윤경수', 'Y'),
-(4, 2, 'user4', 'password123', '이주은', 'Y'),
-(5, 1, 'user5', 'password123', '박진수', 'Y'),
-(6, 2, 'user6', 'password123', '장현우', 'Y'),
-(7, 1, 'user7', 'password123', '최연우', 'Y'),
-(8, 1, 'user8', 'password123', '서유리', 'Y'),
-(9, 2, 'user9', 'password123', '김선호', 'Y'),
-(10, 1, 'user10', 'password123', '이지은', 'Y');
+INSERT INTO account (account_no, auth_no, account_id, account_pw, account_name, account_avail) VALUES
+(1, 1, 'account1', 'password123', '류민석', 'Y'),
+(2, 1, 'account2', 'password123', '구예원', 'Y'),
+(3, 2, 'account3', 'password123', '윤경수', 'Y'),
+(4, 2, 'account4', 'password123', '이주은', 'Y'),
+(5, 1, 'account5', 'password123', '박진수', 'Y'),
+(6, 2, 'account6', 'password123', '장현우', 'Y'),
+(7, 1, 'account7', 'password123', '최연우', 'Y'),
+(8, 1, 'account8', 'password123', '서유리', 'Y'),
+(9, 2, 'account9', 'password123', '김선호', 'Y'),
+(10, 1, 'account10', 'password123', '이지은', 'Y');
 
 
-INSERT INTO user_info (info_no, user_no, reg_date, user_gender, bir_date, phone, email, post_num, address, address_detail) VALUES
-(1, 1, '2022-12-08 00:36:49', 'M', '2001-10-24', '010-3812-8612', 'gimjihyeon@daum.net', '06884', '대구광역시', '(준호윤박리)'),
-(2, 2, '2023-01-10 15:21:30', 'F', '1999-02-13', '010-2245-9834', 'lim@naver.com', '04521', '부산광역시', '(소영도남구)'),
-(3, 3, '2023-05-12 08:47:52', 'M', '1988-05-03', '010-1134-1123', 'jjang@gmail.com', '03111', '서울특별시', '(강남구역삼)'),
-(4, 4, '2022-06-01 12:45:22', 'F', '1995-12-10', '010-8382-2232', 'sky123@naver.com', '12234', '광주광역시', '(남구양림동)'),
-(5, 5, '2024-02-18 19:32:12', 'M', '1992-03-09', '010-8883-9182', 'cloud@hanmail.net', '06244', '울산광역시', '(북구화봉로)'),
-(6, 6, '2021-11-29 10:12:45', 'F', '1998-07-25', '010-1234-5678', 'song@kakao.com', '08874', '서울특별시', '(서초구방배)'),
-(7, 7, '2023-07-01 18:13:57', 'M', '2000-01-01', '010-5678-1234', 'light@google.com', '07852', '인천광역시', '(연수구송도)'),
-(8, 8, '2023-09-15 22:47:10', 'F', '1996-06-11', '010-2121-3434', 'moon@outlook.com', '04587', '서울특별시', '(중구을지로)'),
-(9, 9, '2023-03-10 11:56:30', 'M', '1993-09-14', '010-9898-8787', 'topstar@naver.com', '05443', '대전광역시', '(중구대흥동)'),
-(10, 10, '2022-08-20 14:20:00', 'F', '1990-10-30', '010-1111-2222', 'hello@korea.com', '03344', '강원도춘천시', '(소양로2가)');
+INSERT INTO account_info (info_no, account_no, reg_date, account_gender, bir_date, phone, email, post_num, address, address_detail) VALUES
+(1, 1, '2022-12-08 00:36:49', 'M', '011024', '010-3812-8612', 'gimjihyeon@daum.net', '06884', '대구광역시', '(준호윤박리)'),
+(2, 2, '2023-01-10 15:21:30', 'F', '990213', '010-2245-9834', 'lim@naver.com', '04521', '부산광역시', '(소영도남구)'),
+(3, 3, '2023-05-12 08:47:52', 'M', '880503', '010-1134-1123', 'jjang@gmail.com', '03111', '서울특별시', '(강남구역삼)'),
+(4, 4, '2022-06-01 12:45:22', 'F', '961210', '010-8382-2232', 'sky123@naver.com', '12234', '광주광역시', '(남구양림동)'),
+(5, 5, '2024-02-18 19:32:12', 'M', '920309', '010-8883-9182', 'cloud@hanmail.net', '06244', '울산광역시', '(북구화봉로)'),
+(6, 6, '2021-11-29 10:12:45', 'F', '980725', '010-1234-5678', 'song@kakao.com', '08874', '서울특별시', '(서초구방배)'),
+(7, 7, '2023-07-01 18:13:57', 'M', '000101', '010-5678-1234', 'light@google.com', '07852', '인천광역시', '(연수구송도)'),
+(8, 8, '2023-09-15 22:47:10', 'F', '960611', '010-2121-3434', 'moon@outlook.com', '04587', '서울특별시', '(중구을지로)'),
+(9, 9, '2023-03-10 11:56:30', 'M', '930914', '010-9898-8787', 'topstar@naver.com', '05443', '대전광역시', '(중구대흥동)'),
+(10, 10, '2022-08-20 14:20:00', 'F', '901030', '010-1111-2222', 'hello@korea.com', '03344', '강원도춘천시', '(소양로2가)');
 
 
-INSERT INTO pet (pet_no, user_no, pet_name, pet_gender, pet_age, pet_breed) VALUES
+INSERT INTO pet (pet_no, account_no, pet_name, pet_gender, pet_age, pet_breed) VALUES
 (1, 1, '멍멍이1', 'M', 3, '치와와'),
 (2, 2, '멍멍이2', 'F', 5, '말티즈'),
 (3, 3, '멍멍이3', 'M', 6, '푸들'),
@@ -42,7 +42,7 @@ INSERT INTO pet (pet_no, user_no, pet_name, pet_gender, pet_age, pet_breed) VALU
 (10, 10, '멍멍이10', 'F', 2, '시바견');
 
 
-INSERT INTO course (course_no, user_no, title, sub_title, object, total_step, capacity, thumb) VALUES
+INSERT INTO course (course_no, account_no, title, sub_title, object, total_step, capacity, thumb) VALUES
 (1, 2, '기본훈련1', '초급과정1', '반려견의 사회성 향상과 기본 훈련을 목표로 합니다.', 3, 13, NULL),
 (2, 4, '기본훈련2', '초급과정2', '반려견의 사회성 향상과 기본 훈련을 목표로 합니다.', 4, 9, NULL),
 (3, 2, '기본훈련3', '초급과정3', '반려견의 사회성 향상과 기본 훈련을 목표로 합니다.', 7, 7, NULL),
