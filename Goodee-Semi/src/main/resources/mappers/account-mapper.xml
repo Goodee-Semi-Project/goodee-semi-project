@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.AccountMapper">
+
+	<resultMap id="accountResultMap" type="com.goodee.semi.dto.Account">
+		<result property="accountNo" column="account_no" />
+		<result property="author" column="auth_no" />
+		<result property="accountId" column="account_id" />
+		<result property="accountPw" column="account_pw" />
+		<result property="name" column="account_name" />
+		<result property="available" column="account_avail" />
+	</resultMap>
+	
+	<resultMap id="accountDetailResultMap" type="com.goodee.semi.dto.AccountDetail">
+		<result property="accountNo" column="account_no" />
+		<result property="author" column="auth_no" />
+		<result property="accountId" column="account_id" />
+		<result property="accountPw" column="account_pw" />
+		<result property="name" column="account_name" />
+		<result property="available" column="account_avail" />
+		
+		<result property="reg_date" column="reg_date" />
+		<result property="gender" column="account_gender" />
+		<result property="birth" column="bir_date" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="postNum" column="post_num" />
+		<result property="address" column="address" />
+		<result property="addressDetail" column="address_detail" />
+	</resultMap>
+	
+	<insert id="insertAccount" parameterType="com.goodee.semi.dto.AccountDetail" useGeneratedKeys="true" keyProperty="accountNo">
+		INSERT INTO account (auth_no, account_id, account_pw, account_name)
+		VALUE (#{author}, #{accountId}, #{accountPw}, #{name})
+	</insert>
+	
+	<insert id="insertAccountInfo" parameterType="com.goodee.semi.dto.AccountDetail">
+		INSERT INTO account_info (account_no, account_gender, bir_date, phone, email, post_num, address, address_detail)
+		VALUE (#{accountNo}, #{gender}, #{birth}, #{phone}, #{email}, #{postNum}, #{address}, #{addressDetail})
+	</insert>
+	
+	<select id="loginInfo" resultMap="accountResultMap">
+	SELECT *
+	FROM account
+	WHERE account_id = #{accountId} AND account_pw = #{accountPw}
+	</select>
+	
+</mapper>
