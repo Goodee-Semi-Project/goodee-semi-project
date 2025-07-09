@@ -25,6 +25,7 @@ public class QnaBoardListServlet extends HttpServlet {
 		
 		String keyword = request.getParameter("keyword");
 		
+		System.out.println("GET서블릿");
 		List<Question> questionList = service.selectAllQuestionList();
 		request.setAttribute("questionList", questionList);
 		

@@ -9,7 +9,12 @@ public class QuestionService {
 	QuestionDao dao = new QuestionDao();
 
 	public List<Question> selectAllQuestionList () {
+		System.out.println("서비스");
 		return dao.selectAllQuestionList();
+	}
+	
+	public Question selectOne() {
+		return dao.selectOne();
 	}
 	
 }
