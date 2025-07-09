@@ -2,6 +2,7 @@ package com.goodee.semi.controller;
 
 import java.io.IOException;
 
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.service.AccountService;
 
@@ -33,13 +34,17 @@ public class MyInfoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		// TODO: 로그인 정보 받아오기
-//		String userId = request.getParameter("user_id");
-		int accountNo = 1;
-		AccountDetail accountDetail = service.selectAccountDetail(accountNo);
+		Account accountDetail = null;
+		if (session != null && session.getAttribute("loginAccount") instanceof AccountDetail) {
+			accountDetail = (AccountDetail) session.getAttribute("loginAccount");
+		}
+		
+//		int accountNo = 1;
+//		AccountDetail accountDetail = service.selectAccountDetail(accountNo);
 		
 		// CARE: 세션에 회원 정보 입력
-		session.setAttribute("accountDetail", accountDetail);
-		session.setMaxInactiveInterval(60 * 30);
+//		session.setAttribute("accountDetail", accountDetail);
+//		session.setMaxInactiveInterval(60 * 30);
 		
 		request.getRequestDispatcher("/WEB-INF/views/myInfo/myInfoPage.jsp").forward(request, response);
 	}

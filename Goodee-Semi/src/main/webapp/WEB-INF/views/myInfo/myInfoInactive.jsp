@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>회원 탈퇴</title>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -15,7 +17,7 @@
 		<span>
 			탈퇴 전 확인해주세요 <br>
 			
-			이름: ${ accountDetail.name } <br>
+			이름: ${ loginAccount.name } <br>
 			<c:if test="">
 				<!-- 내 반려견 목록 -->
 			</c:if>
@@ -29,7 +31,7 @@
 	</main>
 	<section>
 		<form id="dropOut" method="post">
-			<input type="text" id="checkPw" placeholder="비밀번호 입력">
+			<input type="password" id="checkPw" placeholder="비밀번호 입력">
 			<button>회원 탈퇴</button>
 		</form>
 	</section>
@@ -41,7 +43,9 @@
 		
 		const checkPw = $('#checkPw').val();
 		
-		if(!accountPw) {
+		console.log(checkPw);
+		
+		if(!checkPw) {
 			alert('비밀 번호를 입력하세요.');
 		} else {
 			if (confirm('탈퇴하시겠습니까?')) {
