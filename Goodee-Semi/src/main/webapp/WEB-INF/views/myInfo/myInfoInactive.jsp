@@ -41,7 +41,7 @@
 		
 		const checkPw = $('#checkPw').val();
 		
-		if(!checkPw) {
+		if(!accountPw) {
 			alert('비밀 번호를 입력하세요.');
 		} else {
 			if (confirm('탈퇴하시겠습니까?')) {

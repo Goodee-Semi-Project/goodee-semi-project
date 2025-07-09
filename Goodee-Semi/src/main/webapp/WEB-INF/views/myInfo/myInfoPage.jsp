@@ -22,9 +22,6 @@
 	
 	<section class="">
 		<form id="editDetail" method="post">
-			<div hidden>
-				<span>${ accountDetail.accountNo }</span>
-			</div>
 			<div>
 				<span>${ accountDetail.name }</span>
 			</div>
@@ -60,13 +57,13 @@
 	<section class="">
 		<form id="editPw">
 			<div>
-				<input type="text" placeholder="현재 비밀번호">
+				<input type="password" placeholder="현재 비밀번호" id="currentPw">
 			</div>
 			<div>
-				<input type="text" placeholder="새 비밀번호">
+				<input type="password" placeholder="새 비밀번호" id="newPw">
 			</div>
 			<div>
-				<input type="text" placeholder="새 비밀번호 확인">
+				<input type="password" placeholder="새 비밀번호 확인" id="newPwCheck">
 			</div>
 			<button>변경 저장</button>
 		</form>
@@ -77,6 +74,40 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+
+	$('#editPw').submit(function(e) {
+		e.preventDefault();
+		
+		const currentPw = $('#currentPw').val();
+		const newPw = $('#newPw').val();
+		const newPwCheck = $('#newPwCheck').val();
+		
+		if (!currentPw || !newPw || !newPwCheck) {
+			alert('비밀번호를 입력하세요.');
+		} else {
+			$.ajax({
+				url : '/myInfo/editPw',
+				type : 'post',
+				data : {
+					currentPw : currentPw,
+					newPw : newPw,
+					newPwCheck : newPwCheck
+				},
+				dataType : 'json',
+				success : function(data) {
+					alert(data.res_msg);
+					if (data.res_code == 200) {
+						location.href = "<%= request.getContextPath() %>/myInfo";
+					}
+				},
+				error : function(data) {
+					alert('로그인 요청 실패');
+				}
+			});
+		}
+	});
+
+
 	$('#findPost').click(function() {
 		new daum.Postcode({
 			oncomplete: function(data) {
