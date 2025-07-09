@@ -34,17 +34,18 @@ public class MyInfoServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		// TODO: 로그인 정보 받아오기
-		Account accountDetail = null;
-		if (session != null && session.getAttribute("loginAccount") instanceof AccountDetail) {
-			accountDetail = (AccountDetail) session.getAttribute("loginAccount");
+		Account account = null;
+		if (session != null && session.getAttribute("loginAccount") instanceof Account) {
+			account = (Account) session.getAttribute("loginAccount");
 		}
 		
-//		int accountNo = 1;
-//		AccountDetail accountDetail = service.selectAccountDetail(accountNo);
+		String accountId = null;
+		if (account != null && account.getAccountId() != null) {
+			accountId = account.getAccountId();
+		}
 		
-		// CARE: 세션에 회원 정보 입력
-//		session.setAttribute("accountDetail", accountDetail);
-//		session.setMaxInactiveInterval(60 * 30);
+		AccountDetail accountDetail = service.selectAccountDetail(accountId);
+		request.setAttribute("accountDetail", accountDetail);
 		
 		request.getRequestDispatcher("/WEB-INF/views/myInfo/myInfoPage.jsp").forward(request, response);
 	}

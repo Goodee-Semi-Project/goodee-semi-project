@@ -8,7 +8,8 @@ public interface AccountMapper {
 	int insertAccountInfo(AccountDetail account);
 	AccountDetail loginInfo(Account result);
 	Account selectAccountByNameAndEmail(AccountDetail account);
-	AccountDetail selectAccountDetail(int accountNo);
+	AccountDetail selectAccountDetail(String accountId);
 	int updateAccountDetail(AccountDetail param);
-
+	int checkIdPw(Account account);
+	int deactivateAccount(Account account);
 }
