@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.AccountMapper">
+
+	<resultMap id="accountResultMap" type="com.goodee.semi.dto.Account">
+		<result property="accountNo" column="account_no" />
+		<result property="author" column="auth_no" />
+		<result property="accountId" column="account_id" />
+		<result property="accountPw" column="account_pw" />
+		<result property="name" column="account_name" />
+		<result property="available" column="account_avail" />
+	</resultMap>
+	
+	<resultMap type="accountDetailResultMap" id="com.goodee.semi.dto.AccountDetail">
+		<result property="accountNo" column="account_no" />
+		<result property="author" column="auth_no" />
+		<result property="accountId" column="account_id" />
+		<result property="accountPw" column="account_pw" />
+		<result property="name" column="account_name" />
+		<result property="available" column="account_avail" />
+		
+		<result property="reg_date" column="reg_date" />
+		<result property="gender" column="account_gender" />
+		<result property="birth" column="bir_date" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="postNum" column="post_num" />
+		<result property="address" column="address" />
+		<result property="addressDetail" column="address_detail" />
+	</resultMap>
+	
+	
+</mapper>
