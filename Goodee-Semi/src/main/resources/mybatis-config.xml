@@ -16,6 +16,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		</environment>
 	</environments>
 	<mappers>
-		
+		<mapper resource="/mappers/question-mapper.xml"/>
 	</mappers>
 </configuration>
