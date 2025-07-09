@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.PetMapper">
+
+	<resultMap id="petResultMap" type="com.goodee.semi.dto.Pet">
+		<result property="petNo" column="pet_no" />
+		<result property="accountNo" column="account_no" />
+		<result property="petName" column="pet_name" />
+		<result property="petGender" column="pet_gender" />
+		<result property="petAge" column="pet_age" />
+		<result property="petBreed" column="pet_breed" />
+	</resultMap>
+	
+	<select id="selectPetList" parameterType="com.goodee.semi.dto.Pet" resultMap="petResultMap">
+		SELECT *
+		FROM pet
+		<where>
+			account_no = #{accountNo}
+		</where>
+		LIMIT #{limitPageNo}, #{numPerPage}
+	</select>
+	
+	<select id="selectPetCount" resultType="_int" parameterType="com.goodee.semi.dto.Pet">
+		SELECT COUNT(*)
+		FROM pet
+		<where>
+			account_no = #{accountNo}
+		</where>
+	</select>
+</mapper>
