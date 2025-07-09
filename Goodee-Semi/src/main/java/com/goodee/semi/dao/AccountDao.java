@@ -7,9 +7,9 @@ import com.goodee.semi.dto.AccountDetail;
 
 public class AccountDao {
 
-	public AccountDetail selectAcountDetail(int userNo) {
+	public AccountDetail selectAccountDetail(int accountNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		AccountDetail accountDetail = session.selectOne("com.goodee.semi.mapper.AccountMapper.selectAcountDetail", userNo);
+		AccountDetail accountDetail = session.selectOne("com.goodee.semi.mapper.AccountMapper.selectAccountDetail", accountNo);
 		session.close();
 		return accountDetail;
 	}

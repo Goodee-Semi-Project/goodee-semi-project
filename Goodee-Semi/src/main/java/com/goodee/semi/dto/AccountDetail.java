@@ -17,7 +17,7 @@ public class AccountDetail extends Account {
 	private String birth;
 	private String phone;
 	private String email;
-	private int postNum;
+	private String postNum;
 	private String address;
 	private String addressDetail;
 }

@@ -6,11 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>내 정보</title>
-
-<script
-  src="https://code.jquery.com/jquery-3.7.1.js"
-  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-  crossorigin="anonymous"></script>
+	
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -23,27 +21,35 @@
 	</section>
 	
 	<section class="">
-		<form id="editDetail">
-			<div>
-				<span>${ myInfo.userName }</span>
+		<form id="editDetail" method="post">
+			<div hidden>
+				<span>${ accountDetail.accountNo }</span>
 			</div>
 			<div>
-				<span>${ myInfo.birDate }</span>
+				<span>${ accountDetail.name }</span>
 			</div>
 			<div>
-				<input type="text" placeholder="성별" value="${ myInfo.userGender }" name="userGender">
+				<c:if test="${ accountDetail.birth.substring(0, 2) } le "></c:if>
+				<span>${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일</span>
 			</div>
 			<div>
-				<input type="text" placeholder="이메일" value="${ myInfo.email }" name="email">
+				<input type="text" placeholder="성별" value="${ accountDetail.gender }" name="gender" id="gender">
 			</div>
 			<div>
-				<input type="text" placeholder="전화번호" value="${ myInfo.phone }" name="phone">
+				<input type="text" placeholder="이메일" value="${ accountDetail.email }" name="email" id="email">
 			</div>
 			<div>
-				<input type="text" placeholder="주소" value="${ myInfo.address }" name="address">
+				<input type="text" placeholder="전화번호" value="${ accountDetail.phone }" name="phone" id="phone">
 			</div>
 			<div>
-				<input type="text" placeholder="상세 주소" value="${ myInfo.addressDetail }" name="addressDetail">
+				<input type="text" placeholder="우편번호" value="${ accountDetail.postNum }" name="postNum" id="postNum" readonly="readonly">
+				<button id="findPost" type="button">우편번호 찾기</button>
+			</div>
+			<div>
+				<input type="text" placeholder="주소" value="${ accountDetail.address }" name="address" id="address" readonly="readonly">
+			</div>
+			<div>
+				<input type="text" placeholder="상세 주소" value="${ accountDetail.addressDetail }" name="addressDetail" id="addressDetail">
 			</div>
 			<button>변경 저장</button>
 		</form>
@@ -70,30 +76,63 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+	$('#findPost').click(function() {
+		new daum.Postcode({
+			oncomplete: function(data) {
+				$('#postNum').val(data.zonecode);
+				$('#address').val(data.address);
+			}
+		}).open();
+	});
+	
+	
+	
 	$('#editDetail').submit(function(e) {
 		e.preventDefault();
 		
-		const form = document.querySelector('#editDetail');
-		const formData = new FormData(form);
+		const gender = $('#gender').val().toUpperCase();
+		const email = $('#email').val();
+		const phone = $('#phone').val();
+		const postNum = $('#postNum').val();
+		const address = $('#address').val();
+		const addressDetail = $('#addressDetail').val();
 		
-		if(confirm('변경하시겠습니까?') {
-			$.ajax({
-				url : '/myInfo/editDetail',
-				type : 'post',
-				data : formData,
-				enctype : 'multipart/form-data',
-				contentType : false,
-				processData : false,
-				cach : false,
-				dataType : 'json',
-				success : function(data) {
-						alert(data.res_msg);
-					if (data.res_code == 200) {
-						location.href = "<%= request.getContentLength() %>/myInfo";
-					}
-					
-				},
-			});
+		const emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+		const phoneReg = /^\d{3}-\d{3,4}-\d{4}$/;
+		
+		if (!(gender === 'M' || gender === 'F')) {
+			alert('성별은 M 또는 F로 입력해주세요');
+		} else if (!emailReg.test(email)) {
+			alert('잘못된 이메일 형식입니다.');
+		} else if (!phoneReg.test(phone)) {
+			alert('잘못된 전화번호 형식입니다.');
+		} else if (!address) {
+			alert('주소를 입력해주세요.');
+		} else if (!addressDetail) {
+			alert('상세 주소를 입력해주세요.');
+		} else {
+		
+			if(confirm('변경하시겠습니까?')) {
+				$.ajax({
+					url : '/myInfo/editDetail',
+					type : 'post',
+					data : {
+						gender : gender,
+						email : email,
+						phone : phone,
+						postNum : postNum,
+						address : address,
+						addressDetail : addressDetail
+					},
+					dataType : 'json',
+					success : function(data) {
+							alert(data.res_msg);
+						if (data.res_code == 200) {
+							location.href = "<%= request.getContextPath() %>/myInfo";
+						}
+					},
+				});
+			}
 		}
 	});
 

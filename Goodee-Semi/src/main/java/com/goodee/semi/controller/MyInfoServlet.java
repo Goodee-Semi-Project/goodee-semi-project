@@ -34,8 +34,8 @@ public class MyInfoServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 //		String userId = request.getParameter("user_id");
-		int userNo = 1;
-		AccountDetail accountDetail = service.selectAccountDetail(userNo);
+		int accountNo = 1;
+		AccountDetail accountDetail = service.selectAccountDetail(accountNo);
 		
 		session.setAttribute("accountDetail", accountDetail);
 		
