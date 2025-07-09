@@ -12,14 +12,8 @@
 		<result property="userId" column="user_id" />	
 	</resultMap>
 	
-	<select id="selectAllList" resultMap="questionResultMap">
-		SELECT u.user_id
-			,q.quest_no
-			,q.quest_title
-		    ,q.quest_reg
-		    ,DATE_FORMAT(q.quest_reg, '%Y-%m-%d') AS quest_reg
-		    ,DATE_FORMAT(q.quest_mod, '%Y-%m-%d') AS quest_mod
-		FROM question q
-		JOIN user u ON q.user_no = u.user_no;
+	<select id="selectAllList" resultType="com.goodee.semi.dto.Question">
+		SELECT quest_title
+		FROM question
 	</select>
 </mapper>
