@@ -63,10 +63,11 @@ public class AccountDao {
 		return result;
 	}
 
-	public int updateAccountPw(Account account, String newPw) {
+	public int updateAccountPw(Account account) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		// TODO: Account dto에 매개변수를 담을 필드가 필요함
-//		int result = session.update("", session)
-		return 0;
+		// TODO: Account dto에 매개변수를 담을 필드가 필요함 - 다른 방식으로 하면 테이블을 두 번 조회하게 됨
+		int result = session.update("com.goodee.semi.mapper.AccountMapper.updateAccountPw", account);
+		session.close();
+		return result;
 	}
 }

@@ -12,4 +12,5 @@ public interface AccountMapper {
 	int updateAccountDetail(AccountDetail param);
 	int checkIdPw(Account account);
 	int deactivateAccount(Account account);
+	int updateAccountPw(Account account);
 }

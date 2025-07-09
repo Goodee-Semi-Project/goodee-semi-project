@@ -55,6 +55,7 @@
 			A.account_name = #{name} AND AI.email = #{email}
 		</where>
 	</select>
+	
 	<select id="selectAccountDetail" parameterType="string" resultMap="accountDetailResultMap">
 		SELECT u.account_name ,i.*
 		FROM account AS u
@@ -81,4 +82,11 @@
 	SET account_avail = 'N'
 	WHERE account_id = #{ accountId } AND account_pw = #{ accountPw }
 	</update>
+	<update id="updateAccountPw" parameterType="com.goodee.semi.dto.Account">
+		UPDATE account
+		SET account_pw = #{ accountPw }
+		WHERE account_id = #{ accountId }
+	</update>
+	
+	
 </mapper>
