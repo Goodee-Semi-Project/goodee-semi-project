@@ -2,8 +2,8 @@ package com.goodee.semi.controller;
 
 import java.io.IOException;
 
-import com.goodee.semi.dto.MyInfo;
-import com.goodee.semi.service.MyInfoService;
+import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.service.AccountService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/myInfo")
 public class MyInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	MyInfoService service = new MyInfoService();
+	AccountService service = new AccountService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,9 +35,9 @@ public class MyInfoServlet extends HttpServlet {
 		
 //		String userId = request.getParameter("user_id");
 		int userNo = 1;
-		MyInfo myInfo = service.selectMyInfo(userNo);
+		AccountDetail accountDetail = service.selectAccountDetail(userNo);
 		
-		session.setAttribute("myInfo", myInfo);
+		session.setAttribute("accountDetail", accountDetail);
 		
 		request.getRequestDispatcher("/WEB-INF/views/myInfo/myInfoPage.jsp").forward(request, response);
 	}

@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
-import com.goodee.semi.dto.MyInfo;
-import com.goodee.semi.service.MyInfoService;
+import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.service.AccountService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/myInfo/editDetail")
 public class MyInfoEditDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	MyInfoService service = new MyInfoService();
+	AccountService service = new AccountService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -53,16 +53,16 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 		String address = request.getParameter("address");
 		String addressDetail = request.getParameter("addressDetail");
 		
-		MyInfo myInfo = new MyInfo();
-		myInfo.setUserNo(userNo);
-//		myInfo.setBirDate(birDate);
-		myInfo.setUserGender(userGender);
-		myInfo.setEmail(email);
-		myInfo.setPhone(phone);
-		myInfo.setAddress(address);
-		myInfo.setAddressDetail(addressDetail);
+		AccountDetail accountDetail = new AccountDetail();
+		accountDetail.setAccountNo(userNo);
+//		accountDetail.setBirDate(birDate);
+		accountDetail.setGender(userGender);
+		accountDetail.setEmail(email);
+		accountDetail.setPhone(phone);
+		accountDetail.setAddress(address);
+		accountDetail.setAddressDetail(addressDetail);
 		
-		int result = service.updateMyInfo(myInfo);
+		int result = service.updateAccountDetail(accountDetail);
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {
