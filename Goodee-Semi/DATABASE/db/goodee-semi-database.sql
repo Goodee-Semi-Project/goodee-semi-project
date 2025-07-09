@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `user_info` (
 	`user_no` INT NOT NULL,
 	`reg_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`user_gender` CHAR(1) NOT NULL,
-	`bir_date` DATE NOT NULL,
+	`bir_date` CHAR(6) NOT NULL,
 	`phone` CHAR(13) NOT NULL,
 	`email` VARCHAR(255) NOT NULL,
 	`post_num` CHAR(5) NOT NULL,
