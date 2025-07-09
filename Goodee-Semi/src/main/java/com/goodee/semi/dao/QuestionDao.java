@@ -9,19 +9,17 @@ import com.goodee.semi.dto.Question;
 
 public class QuestionDao {
 
-	public List<Question> selectAllQuestionList() {
+	public List<Question> selectAllQuestionList(Question param) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		System.out.println("다오");
-		List<Question> result = session.selectList("com.goodee.semi.mapper.QuestionMapper.selectAllList"); 
+		List<Question> result = session.selectList("com.goodee.semi.mapper.QuestionMapper.selectAllList", param); 
 		System.out.println(result);
 		session.close();
 		return result;
 	}
 	
-	public Question selectOne() {
+	public Question selectOneQuest(int questNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		System.out.println("하나 호출");
-		Question result = session.selectOne("com.goodee.semi.mapper.QuestionMapper.selectOne");
+		Question result = session.selectOne("com.goodee.semi.mapper.QuestionMapper.selectOneQuest", questNo);
 		session.close();
 		return result;
 	}

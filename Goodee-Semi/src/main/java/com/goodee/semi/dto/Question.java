@@ -13,10 +13,14 @@ import lombok.ToString;
 @ToString
 public class Question {
 	private int questNo;
-	private int userNo;
+	private int accountNo;
 	private String questTitle;
 	private String questContetn;
 	private String questReg;
 	private String questMod;
-	private String userId;
+	private String accountId;
+	
+	private String keyword;
+	private String searchBy;
+	private String orderBy;
 }
