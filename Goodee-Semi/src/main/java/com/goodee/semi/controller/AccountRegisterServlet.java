@@ -38,7 +38,7 @@ public class AccountRegisterServlet extends HttpServlet {
 		String accountPhone = request.getParameter("accountPhone");
 		String accountEmail = request.getParameter("accountEmail");
 		
-		int postCode = Integer.parseInt(request.getParameter("postcode"));
+		String postCode = request.getParameter("postcode");
 		String address = request.getParameter("address");
 		String addressDetail = request.getParameter("addressDetail");
 		

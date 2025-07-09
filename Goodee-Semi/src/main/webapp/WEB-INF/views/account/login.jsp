@@ -21,10 +21,10 @@ pageEncoding="UTF-8"%>
       <h2>LOG IN</h2>
       <form id="accountLoginFrm">
         <div class="form-group">
-          <input type="text" id="accountId" placeholder="아이디">
+          <input type="text" id="accountId" name="accountId" placeholder="아이디">
         </div>
         <div class="form-group">
-          <input type="password" id="accountPw" placeholder="비밀번호">
+          <input type="password" id="accountPw" name="accountPw" placeholder="비밀번호">
         </div>
         <div class="form-options">
           <label><input type="checkbox" name="remember"> 아이디 기억하기</label>

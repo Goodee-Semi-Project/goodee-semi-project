@@ -34,15 +34,18 @@ public class AccountLoginServlet extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println(">> 로그인 요청 들어옴");
 		request.setCharacterEncoding("UTF-8");
 		String accountId = request.getParameter("accountId");
 		String accountPw = request.getParameter("accountPw");
+		System.out.println(accountPw);
 		
 		Account account = service.getLoginInfo(accountId, accountPw);
 		
 		JSONObject obj = new JSONObject();
 		obj.put("res_code", "401");
 		obj.put("res_msg", "로그인 실패");
+		System.out.println(account);
 		
 		if(account != null) {
 			HttpSession session = request.getSession(true);
@@ -51,6 +54,7 @@ public class AccountLoginServlet extends HttpServlet {
 			
 			obj.put("res_code", "200");
 			obj.put("res_msg", "로그인 성공");
+			
 		}
 		response.setContentType("application/json; charset=UTF-8");
 		response.getWriter().print(obj.toString());
