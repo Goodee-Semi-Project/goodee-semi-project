@@ -70,4 +70,9 @@ public class AccountService {
 		int result = accountDao.deactivateAccount(account);
 		return result;
 	}
+
+	public int updateAccountPw(Account account, String newPw) {
+		int result = accountDao.updateAccountPw(account, newPw);
+		return result;
+	}
 }

@@ -86,7 +86,9 @@
 		if (!currentPw || !newPw || !newPwCheck) {
 			alert('비밀번호를 입력하세요.');
 		} else if (!pwReg.test(currentPw) || !pwReg.test(newPw) || !pwReg.test(newPwCheck)) {
-			alert('잘못 입력하였습니다.')
+			alert('비밀번호는 영문, 숫자 특수문자를 포함한 8~20자 형식입니다.')
+		} else if (newPw !== newPwCheck) {
+			alert('비밀번호 확인이 맞지 않습니다.')
 		} else {
 			if (confirm('비밀번호를 변경 하시겠습니까?')) {
 				$.ajax({
