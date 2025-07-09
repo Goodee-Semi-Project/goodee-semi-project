@@ -6,8 +6,8 @@ import com.goodee.semi.dto.AccountDetail;
 public class AccountService {
 	AccountDao dao = new AccountDao();
 	
-	public AccountDetail selectAccountDetail(int userNo) {
-		AccountDetail accountDetail = dao.selectAcountDetail(userNo);
+	public AccountDetail selectAccountDetail(int accountNo) {
+		AccountDetail accountDetail = dao.selectAccountDetail(accountNo);
 		
 		return accountDetail;
 	}

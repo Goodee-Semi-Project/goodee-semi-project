@@ -39,30 +39,39 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session =request.getSession();
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
 		
-		Object userNoObj;
-		int userNo = 0;
-		if ((userNoObj = session.getAttribute("userNo")) != null && userNoObj instanceof String) {
-			userNo = Integer.parseInt((String) userNoObj);
+		Object accountObj;
+		int accountNo = -1;
+		if ((accountObj = session.getAttribute("accountDetail")) != null && accountObj instanceof AccountDetail) {
+			AccountDetail tmp = null;
+			tmp = (AccountDetail) accountObj;
+			accountNo = tmp.getAccountNo();
 		}
-//		String birDate = request.getParameter("birDate");
-		char userGender = request.getParameter("userGender").charAt(0);
-		String email = request.getParameter("email");
-		String phone = request.getParameter("phone");
-		String address = request.getParameter("address");
-		String addressDetail = request.getParameter("addressDetail");
 		
-		AccountDetail accountDetail = new AccountDetail();
-		accountDetail.setAccountNo(userNo);
-//		accountDetail.setBirDate(birDate);
-		accountDetail.setGender(userGender);
-		accountDetail.setEmail(email);
-		accountDetail.setPhone(phone);
-		accountDetail.setAddress(address);
-		accountDetail.setAddressDetail(addressDetail);
-		
-		int result = service.updateAccountDetail(accountDetail);
+		int result = -1;
+		if (accountNo != -1) {
+	//		String birDate = request.getParameter("birDate");
+			char gender = request.getParameter("gender").charAt(0);
+			String email = request.getParameter("email");
+			String phone = request.getParameter("phone");
+			String postNum = request.getParameter("postNum");
+			String address = request.getParameter("address");
+			String addressDetail = request.getParameter("addressDetail");
+			
+			AccountDetail accountDetail = new AccountDetail();
+			accountDetail.setAccountNo(accountNo);
+	//		accountDetail.setBirDate(birDate);
+			accountDetail.setGender(gender);
+			accountDetail.setEmail(email);
+			accountDetail.setPhone(phone);
+			accountDetail.setPostNum(postNum);
+			accountDetail.setAddress(address);
+			accountDetail.setAddressDetail(addressDetail);
+			
+			result = service.updateAccountDetail(accountDetail);
+		}
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {

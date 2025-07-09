@@ -13,7 +13,7 @@
 		<result property="available" column="account_avail" />
 	</resultMap>
 	
-	<resultMap type="accountDetailResultMap" id="com.goodee.semi.dto.AccountDetail">
+	<resultMap id="accountDetailResultMap" type="com.goodee.semi.dto.AccountDetail">
 		<result property="accountNo" column="account_no" />
 		<result property="author" column="auth_no" />
 		<result property="accountId" column="account_id" />
@@ -42,6 +42,7 @@
 		SET account_gender = #{ gender }
 			,email = #{ email }
 			,phone = #{ phone }
+			,post_num = #{ postNum }
 			,address = #{ address }
 			,address_detail = #{ addressDetail }
 		WHERE account_no = #{ accountNo }

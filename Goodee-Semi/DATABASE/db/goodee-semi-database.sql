@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `account` (
 	`account_no` INT AUTO_INCREMENT NOT NULL,
 	`auth_no` INT NOT NULL,
 	`account_id` VARCHAR(16) NOT NULL,
-	`account_pw` VARCHAR(20) NOT NULL,
+	`account_pw` VARCHAR(255) NOT NULL,
 	`account_name` VARCHAR(20) NOT NULL,
 	`account_avail` CHAR(1) NOT NULL DEFAULT 'Y',
 	PRIMARY KEY (`account_no`),
