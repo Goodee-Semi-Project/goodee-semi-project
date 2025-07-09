@@ -13,7 +13,7 @@
 		<result property="available" column="account_avail" />
 	</resultMap>
 	
-	<resultMap type="accountDetailResultMap" id="com.goodee.semi.dto.AccountDetail">
+	<resultMap id="accountDetailResultMap" type="com.goodee.semi.dto.AccountDetail">
 		<result property="accountNo" column="account_no" />
 		<result property="author" column="auth_no" />
 		<result property="accountId" column="account_id" />
@@ -31,5 +31,10 @@
 		<result property="addressDetail" column="address_detail" />
 	</resultMap>
 	
+	<select id="loginInfo" resultMap="accountResultMap">
+	SELECT *
+	FROM account
+	WHERE account_id = #{accountId} AND account_pw = #{accountPw}
+	</select>
 	
 </mapper>
