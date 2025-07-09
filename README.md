@@ -16,6 +16,10 @@ git remote add upstream https://github.com/Goodee-Semi-Project/goodee-semi-proje
 
 깃 업스트림 추가
 
-이클립스 Git Repository에서 Remote Tracking - upstream/main, upstream/test 추가 된 것 확인
+이클립스 Git Repository에서 Remotes - upstream - upstream/main, upstream/test 추가 된 것 확인
+
+upstream 우클릭 fetch
+
+Remote Tracking - upstream/main, upstream/test 추가 된 것 확인
 
 필요에 따라 upstream 브랜치 우클릭 Merge 또는 Rebase 활용
