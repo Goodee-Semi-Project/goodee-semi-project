@@ -46,7 +46,7 @@ public class MyInfoInactiveServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String checkPw = null;
-		if (request.getParameter("checkPw") instanceof String) {
+		if (request.getParameter("checkPw") != null) {
 			checkPw = request.getParameter("checkPw");
 		}
 		
@@ -54,9 +54,6 @@ public class MyInfoInactiveServlet extends HttpServlet {
 		
 		obj.put("res_code", "500");
 		obj.put("res_msg", "비밀번호가 다릅니다.");
-		
-		
-		String accountPw = null;
 		
 		if (checkPw != null) {
 			HttpSession session = request.getSession();
@@ -66,18 +63,14 @@ public class MyInfoInactiveServlet extends HttpServlet {
 				account = (Account) session.getAttribute("loginAccount");
 			}
 			
-			if (account != null) {
-				accountPw = account.getAccountPw();
+			int result = -1;
+			if (account != null && account.getAccountId() != null) {
+				account.setAccountPw(checkPw);
+				result = service.deactivateAccount(account);
 			}
 			
-			if (accountPw != null && accountPw.equals(checkPw)) {
-				// TODO: 탈퇴 처리, 세션으로 아이디 가져오기
-				int result = service.updateAccountInactive();
-				
-				
-				
-				
-				
+			if (result > 0) {
+				// TODO: 탈퇴 처리
 				
 				obj.put("res_code", "200");
 				obj.put("res_msg", "탈퇴 되었습니다.");

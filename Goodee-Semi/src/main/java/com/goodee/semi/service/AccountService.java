@@ -49,8 +49,8 @@ public class AccountService {
 		return accountDao.selectAccountByNameAndEmail(account);
 	}
 	
-	public AccountDetail selectAccountDetail(int accountNo) {
-		AccountDetail accountDetail = accountDao.selectAccountDetail(accountNo);
+	public AccountDetail selectAccountDetail(String accountId) {
+		AccountDetail accountDetail = accountDao.selectAccountDetail(accountId);
 		
 		return accountDetail;
 	}
@@ -58,6 +58,16 @@ public class AccountService {
 	public int updateAccountDetail(AccountDetail param) {
 		int result = accountDao.updateAccountDetail(param);
 		
+		return result;
+	}
+	
+	public int checkIdPw(Account account) {
+		int result = accountDao.checkIdPw(account);
+		return result;
+	}
+
+	public int deactivateAccount(Account account) {
+		int result = accountDao.deactivateAccount(account);
 		return result;
 	}
 }
