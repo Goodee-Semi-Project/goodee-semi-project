@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
-import com.goodee.semi.dto.Account;
+import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.service.AccountService;
 
 
@@ -36,7 +36,7 @@ public class AccountLoginServlet extends HttpServlet {
 		String accountId = request.getParameter("accountId");
 		String accountPw = request.getParameter("accountPw");
 		
-		Account account = service.getLoginInfo(accountId, accountPw);
+		AccountDetail account = service.getLoginInfo(accountId, accountPw);
 		
 		JSONObject obj = new JSONObject();
 		obj.put("res_code", "401");
@@ -50,8 +50,10 @@ public class AccountLoginServlet extends HttpServlet {
 			obj.put("res_code", "200");
 			obj.put("res_msg", "로그인 성공");
 		}
+		
+		System.out.println(account.getEmail());
 		response.setContentType("application/json; charset=UTF-8");
-		response.getWriter().print(obj.toString());
+		response.getWriter().print(obj);
 	}
 
 }
