@@ -1,5 +1,7 @@
 package com.goodee.semi.mapper;
 
-public interface AccountMapper {
+import com.goodee.semi.dto.Account;
 
+public interface AccountMapper {
+	public Account loginInfo(Account result);
 }
