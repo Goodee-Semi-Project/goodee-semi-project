@@ -29,6 +29,7 @@
 				<span>${ accountDetail.name }</span>
 			</div>
 			<div>
+				<!-- TODO: 출생년 앞자리 -->
 				<c:if test="${ accountDetail.birth.substring(0, 2) } le "></c:if>
 				<span>${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일</span>
 			</div>
@@ -70,7 +71,7 @@
 			<button>변경 저장</button>
 		</form>
 	</section>
-	<a href="">회원 탈퇴</a>
+	<a href="/myInfo/inactive">회원 탈퇴</a>
 </main>
 
 
@@ -131,6 +132,9 @@
 							location.href = "<%= request.getContextPath() %>/myInfo";
 						}
 					},
+					error : function(data) {
+						alert('요청 실패');
+					}
 				});
 			}
 		}
