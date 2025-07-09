@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.MemberMapper">
+	<resultMap id="questionResultMap"  type="com.goodee.semi.dto.Question">
+		<result property="questNo" column="quest_no" />	
+		<result property="userNo" column="user_no" />	
+		<result property="questTitle" column="quest_title" />	
+		<result property="questReg" column="quest_reg" />	
+		<result property="questMod" column="quest_mod" />
+		<result property="userId" column="user_id" />	
+	</resultMap>
+	
+	<select id="selectAllList" resultMap="questionResultMap">
+		SELECT u.user_id
+			,q.quest_no
+			,q.quest_title
+		    ,q.quest_reg
+		    ,DATE_FORMAT(q.quest_reg, '%Y-%m-%d') AS quest_reg
+		    ,DATE_FORMAT(q.quest_mod, '%Y-%m-%d') AS quest_mod
+		FROM question q
+		JOIN user u ON q.user_no = u.user_no;
+	</select>
+</mapper>
