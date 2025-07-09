@@ -21,3 +21,8 @@
 
 <%-- Dropdown 4 --%>
 <a href="<c:url value='/contact' />">고객센터</a>
+
+<%-- Log in / Log out / Sign in --%>
+<%-- <a href="<c:url value='/member/login' />">로그인</a> --%>
+<a href="<c:url value='/member/register' />">회원가입</a>
+<a href="<c:url value='/member/logout' />">로그아웃</a>
