@@ -15,10 +15,10 @@
 		<aside>
 			<div id="profile">
 				<img src="https://picsum.photos/150" alt="프로필 이미지">
-				<h4>OOO 님</h4>
+				<h4>${loginAccount.name } 님</h4>
 				<div>
-					<p>회원</p>
-					<p>0000.00.00 가입</p>
+					<p>${(loginAccount.author eq "2") ? "회원" : "훈련사" }</p>
+					<p>${loginAccount.reg_date } 가입</p>
 				</div>
 			</div>
 			<%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
