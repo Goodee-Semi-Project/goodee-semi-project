@@ -62,4 +62,11 @@ public class AccountDao {
 		session.close();
 		return result;
 	}
+
+	public int updateAccountPw(Account account, String newPw) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		// TODO: Account dto에 매개변수를 담을 필드가 필요함
+//		int result = session.update("", session)
+		return 0;
+	}
 }
