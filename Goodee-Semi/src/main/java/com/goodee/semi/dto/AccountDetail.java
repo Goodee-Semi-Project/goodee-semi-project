@@ -1,7 +1,5 @@
 package com.goodee.semi.dto;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,17 +11,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class MyInfo {
-	private int infoNo;
-	private int userNo;
-	private LocalDateTime regDate;
-	private char userGender;
-	private String birDate;
+public class AccountDetail extends Account {
+	private String reg_date;
+	private char gender;
+	private String birth;
 	private String phone;
 	private String email;
-	private String postNum;
+	private int postNum;
 	private String address;
 	private String addressDetail;
-	
-	private String userName;
 }
