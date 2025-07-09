@@ -22,14 +22,22 @@ public class QnaBoardListServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		
 		String keyword = request.getParameter("keyword");
+		String searchBy = request.getParameter("searchBy");
+		String orderBy= request.getParameter("orderBy");
 		
-		System.out.println("GET서블릿");
-		List<Question> questionList = service.selectAllQuestionList();
+		Question param = new Question();
+		
+		if(keyword != null)	param.setKeyword(keyword);
+		if(searchBy != null) param.setSearchBy(searchBy);
+		if(orderBy != null) param.setOrderBy(orderBy);
+		
+		List<Question> questionList = service.selectAllQuestionList(param);
 		request.setAttribute("questionList", questionList);
 		
-		request.getRequestDispatcher("/WEB-INF/views/question/questionList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/question/questionBoard.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

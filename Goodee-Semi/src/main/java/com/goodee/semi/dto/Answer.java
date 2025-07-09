@@ -14,7 +14,7 @@ import lombok.ToString;
 public class Answer {
 	private int answerNo;
 	private int questNo;
-	private int userNo;
+	private int accountNo;
 	private String answerContent;
 	private String answerReg;
 	private String answerMod;

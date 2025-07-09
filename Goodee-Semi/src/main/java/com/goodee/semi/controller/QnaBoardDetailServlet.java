@@ -1,21 +1,33 @@
 package com.goodee.semi.controller;
 
+import java.io.IOException;
+
+import com.goodee.semi.dto.Question;
+import com.goodee.semi.service.QuestionService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-@WebServlet("/qnaBoard/searchList")
-public class QnaBoardSearchList extends HttpServlet {
+@WebServlet("/question/list/detail")
+public class QnaBoardDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public QnaBoardSearchList() {
+    QuestionService service = new QuestionService();
+	
+    public QnaBoardDetailServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		int questNo = Integer.parseInt( request.getParameter("no"));
+		
+		Question question = service.selectOneQuest(questNo);
+		
+		request.setAttribute("question", question);
+		request.getRequestDispatcher("/WEB-INF/views/question/questionDetail");
 		
 	}
 
