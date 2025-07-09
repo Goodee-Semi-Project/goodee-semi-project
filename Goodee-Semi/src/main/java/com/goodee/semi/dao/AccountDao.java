@@ -35,9 +35,9 @@ public class AccountDao {
 		return result;
 	}
 	
-	public AccountDetail selectAccountDetail(int accountNo) {
+	public AccountDetail selectAccountDetail(String accountId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		AccountDetail accountDetail = session.selectOne("com.goodee.semi.mapper.AccountMapper.selectAccountDetail", accountNo);
+		AccountDetail accountDetail = session.selectOne("com.goodee.semi.mapper.AccountMapper.selectAccountDetail", accountId);
 		session.close();
 		return accountDetail;
 	}
@@ -45,6 +45,20 @@ public class AccountDao {
 	public int updateAccountDetail(AccountDetail param) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.update("com.goodee.semi.mapper.AccountMapper.updateAccountDetail", param);
+		session.close();
+		return result;
+	}
+
+	public int checkIdPw(Account account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.selectOne("com.goodee.semi.mapper.AccountMapper.checkIdPw", account);
+		session.close();
+		return result;
+	}
+
+	public int deactivateAccount(Account account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.AccountMapper.deactivateAccount", account);
 		session.close();
 		return result;
 	}

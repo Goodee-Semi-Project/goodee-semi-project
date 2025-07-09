@@ -31,23 +31,23 @@
 				<span>${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일</span>
 			</div>
 			<div>
-				<input type="text" placeholder="성별" value="${ loginAccount.gender }" name="gender" id="gender">
+				<input type="text" placeholder="성별" value="${ accountDetail.gender }" name="gender" id="gender">
 			</div>
 			<div>
-				<input type="text" placeholder="이메일" value="${ loginAccount.email }" name="email" id="email">
+				<input type="text" placeholder="이메일" value="${ accountDetail.email }" name="email" id="email">
 			</div>
 			<div>
-				<input type="text" placeholder="전화번호" value="${ loginAccount.phone }" name="phone" id="phone">
+				<input type="text" placeholder="전화번호" value="${ accountDetail.phone }" name="phone" id="phone">
 			</div>
 			<div>
-				<input type="text" placeholder="우편번호" value="${ loginAccount.postNum }" name="postNum" id="postNum" readonly="readonly">
+				<input type="text" placeholder="우편번호" value="${ accountDetail.postNum }" name="postNum" id="postNum" readonly="readonly">
 				<button id="findPost" type="button">우편번호 찾기</button>
 			</div>
 			<div>
-				<input type="text" placeholder="주소" value="${ loginAccount.address }" name="address" id="address" readonly="readonly">
+				<input type="text" placeholder="주소" value="${ accountDetail.address }" name="address" id="address" readonly="readonly">
 			</div>
 			<div>
-				<input type="text" placeholder="상세 주소" value="${ loginAccount.addressDetail }" name="addressDetail" id="addressDetail">
+				<input type="text" placeholder="상세 주소" value="${ accountDetail.addressDetail }" name="addressDetail" id="addressDetail">
 			</div>
 			<button>변경 저장</button>
 		</form>
@@ -81,29 +81,34 @@
 		const currentPw = $('#currentPw').val();
 		const newPw = $('#newPw').val();
 		const newPwCheck = $('#newPwCheck').val();
+		const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/;
 		
 		if (!currentPw || !newPw || !newPwCheck) {
 			alert('비밀번호를 입력하세요.');
+		} else if (!pwReg.test(currentPw) || !pwReg.test(newPw) || !pwReg.test(newPwCheck)) {
+			alert('잘못 입력하였습니다.')
 		} else {
-			$.ajax({
-				url : '/myInfo/editPw',
-				type : 'post',
-				data : {
-					currentPw : currentPw,
-					newPw : newPw,
-					newPwCheck : newPwCheck
-				},
-				dataType : 'json',
-				success : function(data) {
-					alert(data.res_msg);
-					if (data.res_code == 200) {
-						location.href = "<%= request.getContextPath() %>/myInfo";
+			if (confirm('비밀번호를 변경 하시겠습니까?')) {
+				$.ajax({
+					url : '/myInfo/editPw',
+					type : 'post',
+					data : {
+						currentPw : currentPw,
+						newPw : newPw,
+						newPwCheck : newPwCheck
+					},
+					dataType : 'json',
+					success : function(data) {
+						alert(data.res_msg);
+						if (data.res_code == 200) {
+							location.href = "<%= request.getContextPath() %>/myInfo";
+						}
+					},
+					error : function(data) {
+						alert('비밀번호 변경 요청 실패');
 					}
-				},
-				error : function(data) {
-					alert('로그인 요청 실패');
-				}
-			});
+				});
+			}
 		}
 	});
 
@@ -143,8 +148,7 @@
 		} else if (!addressDetail) {
 			alert('상세 주소를 입력해주세요.');
 		} else {
-		
-			if(confirm('변경하시겠습니까?')) {
+			if(confirm('회원 정보를 변경하시겠습니까?')) {
 				$.ajax({
 					url : '/myInfo/editDetail',
 					type : 'post',
