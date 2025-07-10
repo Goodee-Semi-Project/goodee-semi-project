@@ -39,10 +39,6 @@ public class QnaBoardAddListServlet extends HttpServlet {
 		question.setQuestTitle(qnaTitle);
 		question.setQuestContent(qnaContent);
 		
-		System.out.println(qnaAccountNo);
-		System.out.println(qnaTitle);
-		System.out.println(qnaContent);
-		
 		int result = service.insertQuestion(question);
 		
 		JSONObject obj = new JSONObject();

@@ -12,7 +12,6 @@ public class QuestionDao {
 	public List<Question> selectAllQuestionList(Question param) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		List<Question> result = session.selectList("com.goodee.semi.mapper.QuestionMapper.selectAllList", param); 
-		System.out.println(result);
 		session.close();
 		return result;
 	}
@@ -31,9 +30,9 @@ public class QuestionDao {
 		return result;
 	}
 	
-	public int deleteQuestion(Question question) {
+	public int deleteQuestion(int questNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int result = session.delete("com.goodee.semi.mapper.QuestionMapper.deleteQuestion", question);
+		int result = session.delete("com.goodee.semi.mapper.QuestionMapper.deleteQuestion", questNo);
 		session.close();
 		return result;
 	}
