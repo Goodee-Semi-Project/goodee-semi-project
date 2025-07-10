@@ -26,8 +26,10 @@ public class QnaBoardDetailServlet extends HttpServlet {
 		
 		Question question = service.selectOneQuest(questNo);
 		
+		System.out.println(question);
+		
 		request.setAttribute("question", question);
-		request.getRequestDispatcher("/WEB-INF/views/question/qnaBoardDetail.jsp");
+		request.getRequestDispatcher("/WEB-INF/views/question/qnaBoardDetail.jsp").forward(request, response);
 		
 	}
 

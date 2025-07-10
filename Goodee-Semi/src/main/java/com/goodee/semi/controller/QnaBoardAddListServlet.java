@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/question/list/add")
+@WebServlet("/qnaBoard/list/add")
 public class QnaBoardAddListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	QuestionService service = new QuestionService();

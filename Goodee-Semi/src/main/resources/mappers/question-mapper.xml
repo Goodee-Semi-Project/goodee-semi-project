@@ -19,6 +19,7 @@
 			,q.quest_title
 			,q.quest_reg
 			,q.quest_content
+			,q.account_no
 			,DATE_FORMAT(q.quest_reg, '%Y-%m-%d') AS quest_reg
 			,DATE_FORMAT(q.quest_mod, '%Y-%m-%d') AS quest_mod
 		FROM question q
