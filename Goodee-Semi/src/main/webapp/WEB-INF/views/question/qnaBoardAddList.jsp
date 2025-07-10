@@ -28,6 +28,8 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 			if(confirm('등록하시겠습니까?')) {
 				e.preventDefault();
 				
+				console.log("submit이벤트 발생");
+				
 				const qnaAccountNo = $('#qna_account_no').val();
 				const qnaTitle = $('#qna_title').val();
 				const qnaContent = $('#qna_content').val();
@@ -38,7 +40,7 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 				}
 				
 				$.ajax({
-					url : "/question/list/add",
+					url : "/qnaBoard/list/add",
 					type : "post",
 					data : {
 						qnaAccountNo : qnaAccountNo,
@@ -49,6 +51,7 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 					success : function(data) {
 						alert(data.res_msg);
 						if(data.res_code == 200) {
+							console.log("sucess 가져옴")
 							location.href = "<%=request.getContextPath() %>/qnaBoard/list"
 						}
 					}
