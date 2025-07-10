@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.ReviewMapper">
+	<resultMap type="com.goodee.semi.dto.Review" id="reviewResultMap">
+		<result property="reviewNo" column="review_no" />
+		<result property="classNo" column="class_no" />
+		<result property="reviewTitle" column="review_title" />
+		<result property="accountId" column="account_id" />
+		<result property="reviewContent" column="review_content" />
+		<result property="regDate" column="reg_date" />
+		<result property="modDate" column="mod_date" />
+	</resultMap>
+	<select id="selectReviewCount" parameterType="com.goodee.semi.dto.Review" resultType="_int">
+		SELECT COUNT(*)
+		FROM review
+		<if test="keyword != null and keyword != ''">
+			<where>
+				review_title LIKE CONCAT('%' ,#{ keyword } ,'%')
+			</where>
+		</if>
+	</select>
+	<select id="selectReviewList" parameterType="com.goodee.semi.dto.Review" resultMap="reviewResultMap">
+		SELECT review_no ,class_no ,review_title ,account_id ,review_content
+			,DATE_FORMAT(reg_date, '%Y-%m-%d') AS reg_date
+			,DATE_FORMAT(mod_date, '%Y-%m-%d') AS mod_date
+		FROM review
+		<if test="keyword != null and keyword != ''">
+			<where>
+				review_title LIKE CONCAT('%' ,#{ keyword } ,'%')
+			</where>
+		</if>
+		LIMIT #{ limitPageNo } ,#{ numPerPage }
+	</select>
+</mapper>
