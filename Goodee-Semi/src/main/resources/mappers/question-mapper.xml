@@ -48,4 +48,9 @@
 		INSERT INTO question (account_no, quest_title, quest_content)
 		VALUES (#{accountNo} ,#{questTitle} ,#{questContent})
 	</insert>
+	
+	<delete id="deleteQuestion" parameterType="com.goodee.semi.dto.Question">
+		DELETE FROM question
+		WHERE quest_no = #{questNo}
+	</delete>
 </mapper>

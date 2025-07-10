@@ -19,4 +19,9 @@ public class QuestionService {
 	public int insertQuestion(Question question) {
 		return dao.insertQuestion(question);
 	}
+	
+	public int deleteQuestion(Question question) {
+		return dao.deleteQuestion(question);
+	}
+	
 }
