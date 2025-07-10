@@ -12,6 +12,6 @@ public interface QuestionMapper {
 	
 	int insertQuestion(Question question);
 	
-	int deleteQuestion(Question question);
+	int deleteQuestion(int questNo);
 	
 }

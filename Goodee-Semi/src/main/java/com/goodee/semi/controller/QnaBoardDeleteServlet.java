@@ -25,12 +25,8 @@ public class QnaBoardDeleteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int questNo = Integer.parseInt(request.getParameter("no"));
-		
-		Question question = new Question();
-		question.setQuestNo(questNo);
-		System.out.println(questNo);
-		
-		int result = service.deleteQuestion(question);
+
+		int result = service.deleteQuestion(questNo);
 		
 		response.setContentType("text/plain; charset=utf-8");
 		response.getWriter().println(result);

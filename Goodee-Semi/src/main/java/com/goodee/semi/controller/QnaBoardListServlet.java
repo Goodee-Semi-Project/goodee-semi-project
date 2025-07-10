@@ -23,7 +23,6 @@ public class QnaBoardListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		
 		String keyword = request.getParameter("keyword");
 		String searchBy = request.getParameter("searchBy");
 		String orderBy= request.getParameter("orderBy");
@@ -36,7 +35,6 @@ public class QnaBoardListServlet extends HttpServlet {
 		
 		List<Question> questionList = service.selectAllQuestionList(param);
 		request.setAttribute("questionList", questionList);
-		
 		request.getRequestDispatcher("/WEB-INF/views/question/qnaBoard.jsp").forward(request, response);
 	}
 
