@@ -7,7 +7,7 @@
 		<result property="questNo" column="quest_no" />	
 		<result property="accountNo" column="account_no" />	
 		<result property="questTitle" column="quest_title" />	
-		<result property="questContetn" column="quest_content" />
+		<result property="questContent" column="quest_content" />
 		<result property="questReg" column="quest_reg" />	
 		<result property="questMod" column="quest_mod" />
 		<result property="accountId" column="account_id" />	
@@ -18,6 +18,7 @@
 			,q.quest_no
 			,q.quest_title
 			,q.quest_reg
+			,q.quest_content
 			,DATE_FORMAT(q.quest_reg, '%Y-%m-%d') AS quest_reg
 			,DATE_FORMAT(q.quest_mod, '%Y-%m-%d') AS quest_mod
 		FROM question q
@@ -36,10 +37,14 @@
 		</where>
 	</select>
 
-
 	<select id="selectOneQuest" resultMap="questionResultMap" parameterType="_int">
 		SELECT *
 		FROM question
 		WHERE quest_no = #{questNo}
 	</select>
+	
+	<insert id="insertQuestion" parameterType="com.goodee.semi.dto.Question">
+		INSERT INTO question (account_no, quest_title, quest_content)
+		VALUES (#{accountNo} ,#{questTitle} ,#{questContent})
+	</insert>
 </mapper>

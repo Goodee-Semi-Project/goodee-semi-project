@@ -24,4 +24,11 @@ public class QuestionDao {
 		return result;
 	}
 	
+	public int insertQuestion(Question question) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.goodee.semi.mapper.QuestionMapper.insertQuestion", question);
+		session.close();
+		return result;
+	}
+	
 }

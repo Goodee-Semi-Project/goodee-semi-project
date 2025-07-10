@@ -10,4 +10,6 @@ public interface QuestionMapper {
 	
 	Question selectOneQuest(int questNo);
 	
+	int insertQuestion(Question question);
+	
 }
