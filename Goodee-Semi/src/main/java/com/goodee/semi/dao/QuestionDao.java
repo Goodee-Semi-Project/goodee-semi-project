@@ -31,4 +31,11 @@ public class QuestionDao {
 		return result;
 	}
 	
+	public int deleteQuestion(Question question) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.QuestionMapper.deleteQuestion", question);
+		session.close();
+		return result;
+	}
+	
 }

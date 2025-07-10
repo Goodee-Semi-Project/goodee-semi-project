@@ -39,7 +39,7 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 	<c:forEach var="q" items="${questionList}" >
 		<div>
 		<span>${q.questNo }</span>
-		<a href="<c:url value='/question/list/detail?no=${q.questNo}'/>">${q.questTitle}</a>
+		<a href="<c:url value='/qnaBoard/list/detail?no=${q.questNo}'/>">${q.questTitle}</a>
 		<span>${q.accountId }</span>
 		<span>${q.questReg }</span>
 		</div>
