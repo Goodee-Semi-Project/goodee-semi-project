@@ -17,7 +17,7 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 	
 	<h1>질문 게시판</h1>
 	<hr>
-	<a href="<c:url value='/question/list/addList'/>">질문 등록</a>
+	<a href="<c:url value='/question/list/add'/>">질문 등록</a>
 	<div>
 		<form action="<c:url value='/qnaBoard/list'/>" method="get">
 			<select name="searchBy">

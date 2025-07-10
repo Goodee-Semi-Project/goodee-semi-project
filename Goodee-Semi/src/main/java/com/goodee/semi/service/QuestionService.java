@@ -15,4 +15,8 @@ public class QuestionService {
 	public Question selectOneQuest(int questNo) {
 		return dao.selectOneQuest(questNo);
 	}
+	
+	public int insertQuestion(Question question) {
+		return dao.insertQuestion(question);
+	}
 }
