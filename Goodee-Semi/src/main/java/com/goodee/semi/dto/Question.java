@@ -15,7 +15,7 @@ public class Question {
 	private int questNo;
 	private int accountNo;
 	private String questTitle;
-	private String questContetn;
+	private String questContent;
 	private String questReg;
 	private String questMod;
 	private String accountId;

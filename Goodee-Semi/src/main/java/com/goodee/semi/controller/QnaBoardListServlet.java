@@ -37,7 +37,7 @@ public class QnaBoardListServlet extends HttpServlet {
 		List<Question> questionList = service.selectAllQuestionList(param);
 		request.setAttribute("questionList", questionList);
 		
-		request.getRequestDispatcher("/WEB-INF/views/question/questionBoard.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/question/qnaBoard.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
