@@ -20,8 +20,8 @@ public class QuestionService {
 		return dao.insertQuestion(question);
 	}
 	
-	public int deleteQuestion(Question question) {
-		return dao.deleteQuestion(question);
+	public int deleteQuestion(int questNo) {
+		return dao.deleteQuestion(questNo);
 	}
 	
 }
