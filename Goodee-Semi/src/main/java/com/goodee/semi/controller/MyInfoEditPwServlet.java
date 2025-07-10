@@ -18,14 +18,14 @@ import jakarta.servlet.http.HttpSession;
  * Servlet implementation class MyInfoEditPw
  */
 @WebServlet("/myInfo/editPw")
-public class MyInfoEditPw extends HttpServlet {
+public class MyInfoEditPwServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	AccountService service = new AccountService();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MyInfoEditPw() {
+    public MyInfoEditPwServlet() {
         super();
     }
 
