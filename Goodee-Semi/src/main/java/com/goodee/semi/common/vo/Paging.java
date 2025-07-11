@@ -1,8 +1,5 @@
 package com.goodee.semi.common.vo;
 
-import lombok.Data;
-
-@Data
 public class Paging {
 	
 	// 전체 게시글 개수
@@ -17,7 +14,7 @@ public class Paging {
 	//현재 페이지
 	private int nowPage;
 	// 한 페이지당 게시글의 개수
-	private int numPerPage = 15;
+	private int numPerPage = 5;
 	// LIMIT 시작 번호
 	private int limitPageNo;
 	
