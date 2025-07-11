@@ -58,7 +58,7 @@ public class ReviewWriteServlet extends HttpServlet {
 		review.setReviewTitle(title);
 		review.setReviewContent(content);
 		// FIXME: 임시 클래스
-		review.setClassNo(1);
+		review.setClassNo(11);
 		
 		// TODO: 첨부파일 클래스 논의 후 작성
 		

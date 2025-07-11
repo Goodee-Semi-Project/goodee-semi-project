@@ -71,8 +71,6 @@ public class ReviewDetailServlet extends HttpServlet {
 			accountId = account.getAccountId();
 		}
 		
-		System.out.println(accountId);
-		
 		Review review = null;
 		JSONObject obj = new JSONObject();
 
@@ -81,10 +79,13 @@ public class ReviewDetailServlet extends HttpServlet {
 		
 		if (accountId != null && reviewNo != -1) {
 			review = reviewService.selectReivewOne(reviewNo);
-			System.out.println(review.getAccountId());
 			if (review.getAccountId().equals(accountId)) {
-				obj.put("res_code", "200");
-				obj.put("res_msg", "리뷰 삭제");
+				int result = reviewService.deleteReview(reviewNo);
+				
+				if (result > 0) {
+					obj.put("res_code", "200");
+					obj.put("res_msg", "리뷰 삭제");
+				}
 			}
 		}
 		

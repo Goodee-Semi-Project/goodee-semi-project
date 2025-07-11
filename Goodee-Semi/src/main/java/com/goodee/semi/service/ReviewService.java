@@ -48,4 +48,9 @@ public class ReviewService {
 		return review;
 	}
 
+	public int deleteReview(int reviewNo) {
+		int result = reviewDao.deleteReview(reviewNo);
+		return result;
+	}
+
 }
