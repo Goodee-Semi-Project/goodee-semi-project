@@ -31,6 +31,8 @@ public class NoticeListServlet extends HttpServlet {
 		String keyword = request.getParameter("keyword");
 		
 		Notice param = new Notice();
+		param.setNowPage(1);
+		// paging이 음수처리 될까봐 시작을 1로 설정
 		if(nowPage != null) {
 			param.setNowPage(Integer.parseInt(nowPage));
 		}
@@ -42,7 +44,7 @@ public class NoticeListServlet extends HttpServlet {
 		request.setAttribute("noticeList", list);
 		request.setAttribute("paging", param);
 		request.getRequestDispatcher("/WEB-INF/views/notice/list.jsp").forward(request, response);
-		System.out.println("keyword: " + keyword);
+		
 	}
 	
 

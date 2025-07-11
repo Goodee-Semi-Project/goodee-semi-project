@@ -22,6 +22,12 @@
         ,n.nail_up
   		FROM notice n
  		JOIN account a ON n.account_no = a.account_no
+ 		<where>
+		<if test="keyword != null and keyword != ''">
+			(n.notice_title LIKE CONCAT('%', #{keyword}, '%')
+			OR a.account_name LIKE CONCAT('%', #{keyword}, '%'))
+		</if>
+	</where>
   		ORDER BY 
     	n.nail_up DESC,     
     	<!-- 고정글 먼저 ('Y' > 'N') -->
@@ -29,15 +35,16 @@
     	<!-- 최신글 순서대로 -->
     	LIMIT #{limitPageNo},#{numPerPage}
 	</select>
-	 	 
- 	 <select id="selectListCount" resultType="_int">
+		 	 
+ 	 <select id="selectListCount" resultType="_int" parameterType="com.goodee.semi.dto.Notice">
  	 	SELECT COUNT(*)
  	 	FROM notice n
  	 	JOIN account a ON n.account_no = a.account_no
  	 	<where>
 			<if test="keyword != null and keyword != ''">
-				(n.notice_title LIKE CONCAT('%', #{keyword},'%') 
-				OR a.account_name LIKE CONCAT('%', #{keyword},'%')) 
+			<!-- 제목, 작성자 기준으로 검색 기능 -->
+				n.notice_title LIKE CONCAT('%', #{keyword},'%') 
+				OR a.account_name LIKE CONCAT('%', #{keyword},'%') 
 			</if> 	 	
 		</where>
  	 </select>
