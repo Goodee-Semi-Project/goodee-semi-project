@@ -51,7 +51,6 @@ public class AccountLoginServlet extends HttpServlet {
 			obj.put("res_msg", "로그인 성공");
 		}
 		
-		System.out.println(account.getEmail());
 		response.setContentType("application/json; charset=UTF-8");
 		response.getWriter().print(obj);
 	}
