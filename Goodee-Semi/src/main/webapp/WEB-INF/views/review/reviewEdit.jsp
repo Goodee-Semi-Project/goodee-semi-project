@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,19 +14,23 @@
 <%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
 
 <main>
-	<h1>후기 작성</h1>
-	<form id="write" method="post">
+	<h1>후기 수정</h1>
+	<form id="edit" method="post">
+		<!-- 후기 번호 히든으로 -->
 		<div>
 			<label for="class">수료 목록</label>
 			<select id="class">
 				<option></option>
 			</select>
 			<label for="title">제목</label>
-			<input type="text" id="title" name="title">
+			<input type="text" id="title" name="title" value="${ review.reviewTitle }">
 		</div>
-		<div></div>
 		<div>
-			<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;"></textarea>
+			<span>${ review.accountId }</span>
+			<span>${ review.reviewDate }</span>
+		</div>
+		<div>
+			<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;">${ review.reviewContent }</textarea>
 		</div>
 		<div>
 			<!-- 우선은 첨부파일은 1개 -->
@@ -34,17 +39,17 @@
 		</div>
 		<div>
 			<a href="">목록</a>
-			<button>등록하기</button>
+			<button>수정하기</button>
 		</div>
 	</form>
 </main>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
-	$('#write').submit(function(e) {
+	$('#edit').submit(function(e) {
 		e.preventDefault();
 
-		const form = document.querySelector('#write');
+		const form = document.querySelector('#edit');
 		const formData = new FormData(form);
 		
 		const title = formData.get('title');
@@ -56,7 +61,7 @@
 			alert('내용을 입력해주세요!');
 		} else {
 			$.ajax({
-				url : '/review/write',
+				url : '/review/edit',
 				type : 'post',
 				data : formData,
 				enctype : 'multipart/form-data',
