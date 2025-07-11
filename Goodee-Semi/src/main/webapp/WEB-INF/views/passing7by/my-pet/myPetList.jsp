@@ -7,7 +7,7 @@
 	<title>내 반려견</title>
 	
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
-	<script defer src="<c:url value='/js/my-pet/myPetList.js'/>"></script>
+	<script defer src="<c:url value='/static/js/myPetList.js'/>"></script>
 </head>
 <body>
 	<!-- header -->
