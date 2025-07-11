@@ -13,4 +13,6 @@ public interface AccountMapper {
 	int checkIdPw(Account account);
 	int deactivateAccount(Account account);
 	int updateAccountPw(Account account);
+  Account selectAccountByIdNameEmail(AccountDetail account);
+	int updateNewPassword(AccountDetail account);
 }
