@@ -34,6 +34,22 @@ public class AccountDao {
 		
 		return result;
 	}
+
+	public Account selectAccountByIdNameEmail(AccountDetail account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Account result = session.selectOne("com.goodee.semi.mapper.AccountMapper.selectAccountByIdNameEmail", account);
+		session.close();
+		
+		return result;
+	}
+
+	public int updateNewPassword(AccountDetail account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.goodee.semi.mapper.AccountMapper.updateNewPassword", account);
+		session.close();
+		
+		return result;
+	}
 	
 	public AccountDetail selectAccountDetail(String accountId) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);

@@ -48,7 +48,7 @@ public class AccountService {
 	public Account selectAccountByNameAndEmail(AccountDetail account) {
 		return accountDao.selectAccountByNameAndEmail(account);
 	}
-	
+  
 	public AccountDetail selectAccountDetail(String accountId) {
 		AccountDetail accountDetail = accountDao.selectAccountDetail(accountId);
 		
@@ -79,4 +79,12 @@ public class AccountService {
 		}
 		return result;
 	}
+  
+  public Account selectAccountByIdNameEmail(AccountDetail account) {
+		return accountDao.selectAccountByIdNameEmail(account);
+	}
+
+	public int updateNewPassword(AccountDetail account) {
+		return accountDao.updateNewPassword(account);
+  }
 }
