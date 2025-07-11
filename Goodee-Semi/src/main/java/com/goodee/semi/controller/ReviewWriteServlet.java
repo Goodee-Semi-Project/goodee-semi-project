@@ -69,10 +69,10 @@ public class ReviewWriteServlet extends HttpServlet {
 		
 		if (result > 0) {
 			obj.put("res_code", "200");
-			obj.put("res_msg", "리뷰 등록이 완료되었습니다.");
+			obj.put("res_msg", "후기 등록이 완료되었습니다.");
 		} else {
 			obj.put("res_code", "500");
-			obj.put("res_msg", "리뷰 등록에 실패했습니다.");
+			obj.put("res_msg", "후기 등록에 실패했습니다.");
 		}
 		
 		response.setContentType("application/json; charset=utf-8");
