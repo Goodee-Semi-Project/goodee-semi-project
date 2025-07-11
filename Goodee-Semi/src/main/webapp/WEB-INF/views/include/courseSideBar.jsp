@@ -5,4 +5,4 @@
 <a href="<c:url value='/preCourse/list' />">사전학습</a>
 <a href="<c:url value='/schedule' />">일정표</a>
 <a href="<c:url value='/assign/list' />">과제</a>
-<a href="<c:url value='/qnaBoard' />">질문 게시판</a>
+<a href="<c:url value='/qnaBoard/list' />">질문 게시판</a>

@@ -10,7 +10,13 @@ public class AnswerDao {
 	public Answer selectOneAnswer(int questNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		Answer result = session.selectOne("com.goodee.semi.mapper.AnswerMapper.selectOneAnswer", questNo);
-		System.out.println("AnswerDao불러옴:" + result);
+		session.close();
+		return result;
+	}
+	
+	public int insertAnswer(Answer answer) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.goodee.semi.mapper.AnswerMapper.insertAnswer", answer);
 		session.close();
 		return result;
 	}

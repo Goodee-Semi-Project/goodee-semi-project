@@ -14,14 +14,11 @@
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	
 	<form id="addListform">
-<%-- 	<input type="hidden" id="qna_account_no" value="${loginAccount.accountNo}"> --%>
-		<label for="qna_account_no">임시 accountNo</label>
-		<input type="number" id="qna_account_no" value="${loginAccount.accountNo}">
-		
+		<input type="hidden" id="qna_account_no" value="${loginAccount.accountNo}">
 		<label for="qna_title">제목</label>
 		<input type="text" name="qna_title" id="qna_title" placeholder="제목 입력">
 		<textarea rows="40" cols="70" id="qna_content" style="resize: none; display: block"></textarea>
-		<button type="button" onclick="location.href='<c:url value="/qnaBoard"/>'">목록</button>
+		<button type="button" onclick="location.href='<c:url value="/qnaBoard/list"/>'">목록</button>
 		<button type="submit" id="btn_reg">등록</button>
 	</form>
 		
@@ -53,7 +50,7 @@
 					success : function(data) {
 						alert(data.res_msg);
 						if(data.res_code == 200) {
-							location.href = "<%=request.getContextPath() %>/qnaBoard"
+							location.href = "<%=request.getContextPath() %>/qnaBoard/list"
 						}
 					}
 				});

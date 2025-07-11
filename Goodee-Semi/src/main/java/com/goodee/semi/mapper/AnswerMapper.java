@@ -6,4 +6,6 @@ public interface AnswerMapper {
 
 	Answer selectOneAnswer(int questNo);
 	
+	int insertAnswer(Answer answer);
+	
 }
