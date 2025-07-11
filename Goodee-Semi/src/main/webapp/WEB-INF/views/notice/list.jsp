@@ -6,10 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-<%@ include file="/WEB-INF/views/include/header.jsp" %>
+
+<%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
 <h2>공지사항</h2>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 	<form action="/notice/list" method="get">
 	  <input type="text" name="keyword" placeholder="제목 또는 작성자 검색" value="${param.keyword}">
