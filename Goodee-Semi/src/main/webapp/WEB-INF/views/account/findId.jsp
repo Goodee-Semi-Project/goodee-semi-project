@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<title>아이디 찾기</title>
 	
-	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 
 <body>
@@ -22,6 +22,7 @@
 	<a href="<c:url value='/account/findPw' />">또는 비밀번호 찾기</a>
 	<a href="<c:url value='/account/login' />">로그인하기</a>
 	
+	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
 		$(() => {
 			$("#findIdSubmit").submit((event) => {
