@@ -52,4 +52,8 @@ public class AccountService {
 	public Account selectAccountByIdNameEmail(AccountDetail account) {
 		return accountDao.selectAccountByIdNameEmail(account);
 	}
+
+	public int updateNewPassword(AccountDetail account) {
+		return accountDao.updateNewPassword(account);
+	}
 }
