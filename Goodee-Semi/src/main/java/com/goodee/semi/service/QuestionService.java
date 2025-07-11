@@ -8,8 +8,8 @@ import com.goodee.semi.dto.Question;
 public class QuestionService {
 	QuestionDao dao = new QuestionDao();
 
-	public List<Question> selectAllQuestionList(Question param) {
-		return dao.selectAllQuestionList(param);
+	public List<Question> selectAllQuestionList(Question question) {
+		return dao.selectAllQuestionList(question);
 	}
 
 	public Question selectOneQuest(int questNo) {
@@ -26,6 +26,10 @@ public class QuestionService {
 	
 	public int updateQuestion(Question question) {
 		return dao.updateQuestion(question);
+	}
+	
+	public int selectQuestionCount(Question question) {
+		return dao.selectQuestionCount(question);
 	}
 	
 }
