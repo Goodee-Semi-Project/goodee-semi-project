@@ -18,5 +18,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<mappers>
 		<mapper resource="/mappers/account-mapper.xml"/>
 		<mapper resource="/mappers/notice-mapper.xml"/>
+    <mapper resource="/mappers/question-mapper.xml"/>
+		<mapper resource="/mappers/pet-mapper.xml"/>
+    <mapper resource="/mappers/review-mapper.xml"/>
 	</mappers>
 </configuration>

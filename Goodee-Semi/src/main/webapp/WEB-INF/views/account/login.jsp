@@ -7,15 +7,12 @@ pageEncoding="UTF-8"%>
   <meta charset="UTF-8">
   <title>로그인</title>
 
-  <!-- ✅ jQuery는 head 또는 body 끝에 로드 -->
-  <script src="https://code.jquery.com/jquery-3.7.1.js"
-          integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-          crossorigin="anonymous"></script>
-
-  <%@ include file="/WEB-INF/views/include/header.jsp" %>
+  <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 
 <body class="login-page">
+  <%@ include file="/WEB-INF/views/include/header.jsp" %>
+  
   <div class="login-wrap container">
     <div class="login-box">
       <h2>LOG IN</h2>
@@ -32,7 +29,7 @@ pageEncoding="UTF-8"%>
         </div>
         <button type="submit" class="btn btn-block">로그인</button>
         <button type="button" class="btn btn-block btn-outline"
-                onclick="location.href='<c:url value='/member/register'/>'">
+                onclick="location.href='<c:url value='/account/register'/>'">
           회원가입
         </button>
       </form>
@@ -43,7 +40,6 @@ pageEncoding="UTF-8"%>
   </div>
 
   <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-
   <!-- ✅ jQuery 코드 실행은 페이지 맨 아래 -->
   <script>
     $("#accountLoginFrm").submit(function(e){
@@ -65,9 +61,10 @@ pageEncoding="UTF-8"%>
             accountPw : accountPw
           },
           dataType : 'json',
-          success : function(result){
-            alert(result.res_msg);
-            if(result.res_code == 200){
+          success : function(data){
+            alert(data.res_msg);
+            
+            if(data.res_code == 200){
               location.href = "<%= request.getContextPath() %>/";
             }
           }
