@@ -35,6 +35,11 @@
 </head>
 
 <body>
+	<h1>Test</h1>
+	<h2>branch test</h2>
+	
+	<!-- 기능 테스트용 경로 -->
+	<a href="<c:url value='/pageRouter'/>">passing7by</a>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	
 	<section class="hero-area bg-1 text-left overly">
