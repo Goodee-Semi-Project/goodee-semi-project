@@ -4,6 +4,9 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<!-- JQuery CDN -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<script src="<c:url value='/js/my-pet/myPetList.js'/>"></script>
 	<title>내 반려견</title>
 </head>
 <body>
@@ -32,17 +35,19 @@
 			<hr>
 
 			<ul id="pet-list">
-				<c:forEach var="pet" items="${list }">
+				<c:forEach var="pet" items="${list }" varStatus="status">
 					<li>
 						<img src="https://picsum.photos/150" alt="">
-						<div class="pet-detail">
-							<p>${pet.petName }</p>
-							<p>${pet.petAge }살 / ${pet.petGender }</p>
-							<p>${pet.petBreed }</p>
+						<div class="pet-detail" id="pet-detail-${status.index }">
+							<span class="pet-name">${pet.petName }</span>
+							<span class="pet-age">${pet.petAge }</span>
+							<span>살 / </span>
+							<span class="pet-gender">${pet.petGender }</span>
+							<span>${pet.petBreed }</span>
 						</div>
-						<div>
-							<button class="btn-update">수정</button>
-							<button class="btn-delete">삭제</button>
+						<div class="pet-btn" id="pet-btn-${status.index }">
+							<button class="pet-btn-up" id="pet-btn-up-${status.index }">수정</button>
+							<button class="pet-btn-del" id="pet-btn-del-${status.index }">삭제</button>
 						</div>
 						<hr>
 					</li>
