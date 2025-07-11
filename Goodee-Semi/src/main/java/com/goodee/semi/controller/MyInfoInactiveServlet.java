@@ -71,6 +71,7 @@ public class MyInfoInactiveServlet extends HttpServlet {
 			
 			if (result > 0) {
 				// TODO: 탈퇴 처리
+				session.removeAttribute("loginAccount");
 				
 				obj.put("res_code", "200");
 				obj.put("res_msg", "탈퇴 되었습니다.");
