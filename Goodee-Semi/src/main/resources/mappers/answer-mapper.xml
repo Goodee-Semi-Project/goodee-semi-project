@@ -12,10 +12,15 @@
 		<result property="answerReg" column="answer_reg" />	
 		<result property="answerMod" column="answer_mod" />
 	</resultMap>
-<select id="selectOneAnswer" resultMap="answerResultMap" parameterType="_int">
-	SELECT *
-	FROM answer aw
-	JOIN account a ON aw.account_no = a.account_no
-	WHERE quest_no = #{questNo}
-</select>
+	<select id="selectOneAnswer" resultMap="answerResultMap" parameterType="_int">
+		SELECT *
+		FROM answer aw
+		JOIN account a ON aw.account_no = a.account_no
+		WHERE quest_no = #{questNo}
+	</select>
+	
+	<insert id="insertAnswer" parameterType="com.goodee.semi.dto.Answer">
+		INSERT INTO answer (quest_no, account_no, answer_content)
+		VALUES (#{questNo}, #{accountNo}, #{answerContent})
+	</insert>
 </mapper>
