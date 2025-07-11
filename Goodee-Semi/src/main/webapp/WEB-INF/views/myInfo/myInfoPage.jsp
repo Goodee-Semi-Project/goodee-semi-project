@@ -31,7 +31,20 @@
 				<span>${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일</span>
 			</div>
 			<div>
-				<input type="text" placeholder="성별" value="${ accountDetail.gender }" name="gender" id="gender">
+				<!-- 셀렉트로 입력 받기 -->
+				<select id="gender">
+					<c:choose>
+						<c:when test="${ accountDetail.gender eq 'M'.charAt(0) }">
+							<option value="M" selected>남자</option>
+							<option value="F">여자</option>
+						</c:when>
+						<c:otherwise>
+							<option value="M">남자</option>
+							<option value="F" selected>여자</option>
+						</c:otherwise>
+					</c:choose>
+				</select>
+				<%-- <input type="text" placeholder="성별" value="${ accountDetail.gender }" name="gender" id="gender"> --%>
 			</div>
 			<div>
 				<input type="text" placeholder="이메일" value="${ accountDetail.email }" name="email" id="email">
@@ -129,7 +142,7 @@
 	$('#editDetail').submit(function(e) {
 		e.preventDefault();
 		
-		const gender = $('#gender').val().toUpperCase();
+		const gender = $('#gender').val();
 		const email = $('#email').val();
 		const phone = $('#phone').val();
 		const postNum = $('#postNum').val();
@@ -139,9 +152,19 @@
 		const emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 		const phoneReg = /^\d{3}-\d{3,4}-\d{4}$/;
 		
-		if (!(gender === 'M' || gender === 'F')) {
+		/* if (!(gender === 'M' || gender === 'F')) {
 			alert('성별은 M 또는 F로 입력해주세요');
-		} else if (!emailReg.test(email)) {
+		} */
+		
+		console.log(gender);
+		if (!gender) {
+			alert('성별을 선택해주세요.');
+		} else if (!email) {
+			alert('이메일을 입력해주세요.');
+		} else if (!phone) {
+			alert('전화번호를 입력해주세요');
+		}
+		else if (!emailReg.test(email)) {
 			alert('잘못된 이메일 형식입니다.');
 		} else if (!phoneReg.test(phone)) {
 			alert('잘못된 전화번호 형식입니다.');
