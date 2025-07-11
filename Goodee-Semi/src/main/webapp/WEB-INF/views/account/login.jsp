@@ -32,7 +32,7 @@ pageEncoding="UTF-8"%>
         </div>
         <button type="submit" class="btn btn-block">로그인</button>
         <button type="button" class="btn btn-block btn-outline"
-                onclick="location.href='<c:url value='/member/register'/>'">
+                onclick="location.href='<c:url value='/account/register'/>'">
           회원가입
         </button>
       </form>
@@ -65,9 +65,10 @@ pageEncoding="UTF-8"%>
             accountPw : accountPw
           },
           dataType : 'json',
-          success : function(result){
-            alert(result.res_msg);
-            if(result.res_code == 200){
+          success : function(data){
+            alert(data.res_msg);
+            
+            if(data.res_code == 200){
               location.href = "<%= request.getContextPath() %>/";
             }
           }
