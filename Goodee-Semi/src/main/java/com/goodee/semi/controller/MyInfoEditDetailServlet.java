@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.service.AccountService;
 
@@ -44,16 +45,19 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 		
 		Object accountObj;
 		int accountNo = -1;
-		if ((accountObj = session.getAttribute("accountDetail")) != null && accountObj instanceof AccountDetail) {
-			AccountDetail tmp = null;
-			tmp = (AccountDetail) accountObj;
+		if ((accountObj = session.getAttribute("loginAccount")) != null && accountObj instanceof Account) {
+			Account tmp = null;
+			tmp = (Account) accountObj;
 			accountNo = tmp.getAccountNo();
 		}
+		
+		System.out.println(accountNo);
 		
 		int result = -1;
 		if (accountNo != -1) {
 	//		String birDate = request.getParameter("birDate");
 			char gender = request.getParameter("gender").charAt(0);
+			System.out.println(gender);
 			String email = request.getParameter("email");
 			String phone = request.getParameter("phone");
 			String postNum = request.getParameter("postNum");
