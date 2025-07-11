@@ -14,7 +14,7 @@ public class Paging {
 	//현재 페이지
 	private int nowPage;
 	// 한 페이지당 게시글의 개수
-	private int numPerPage = 15;
+	private int numPerPage = 5;
 	// LIMIT 시작 번호
 	private int limitPageNo;
 	
@@ -99,4 +99,8 @@ public class Paging {
 		if(pageBarStart == 1) prev = false;
 		if(pageBarEnd >= totalPage) next = false;
 	} 
+<<<<<<< HEAD
 }
+=======
+} 
+>>>>>>> e80711d5592cd2a5c32a0122a23f4fd1c6a53491

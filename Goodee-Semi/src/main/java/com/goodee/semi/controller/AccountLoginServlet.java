@@ -10,9 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
-
-import com.goodee.semi.dto.Account;
-
+import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.service.AccountService;
 
 
@@ -21,11 +19,10 @@ public class AccountLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AccountService service = new AccountService();
     
-	
-    public AccountLoginServlet() {
-        super();
-        
-    }
+
+  public AccountLoginServlet() {
+    super();
+  }
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,6 +30,7 @@ public class AccountLoginServlet extends HttpServlet {
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println(">> 로그인 요청 들어옴");
 		request.setCharacterEncoding("UTF-8");
@@ -40,7 +38,7 @@ public class AccountLoginServlet extends HttpServlet {
 		String accountPw = request.getParameter("accountPw");
 		System.out.println(accountPw);
 		
-		Account account = service.getLoginInfo(accountId, accountPw);
+		AccountDetail account = service.getLoginInfo(accountId, accountPw);
 		
 		JSONObject obj = new JSONObject();
 		obj.put("res_code", "401");
@@ -56,8 +54,9 @@ public class AccountLoginServlet extends HttpServlet {
 			obj.put("res_msg", "로그인 성공");
 			
 		}
+		
 		response.setContentType("application/json; charset=UTF-8");
-		response.getWriter().print(obj.toString());
+		response.getWriter().print(obj);
 	}
 
 }
