@@ -11,30 +11,25 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/qnaBoard/list/detail")
-public class QnaBoardDetailServlet extends HttpServlet {
+@WebServlet("/qnaBoard/detail")
+public class QuestionDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     QuestionService service = new QuestionService();
 	
-    public QnaBoardDetailServlet() {
+    public QuestionDetailServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int questNo = Integer.parseInt( request.getParameter("no"));
-		
 		Question question = service.selectOneQuest(questNo);
 		
-		System.out.println(question);
-		
 		request.setAttribute("question", question);
-		request.getRequestDispatcher("/WEB-INF/views/question/qnaBoardDetail.jsp").forward(request, response);
-		
+		request.getRequestDispatcher("/WEB-INF/views/question/questionDetail.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
 	}
 	
 }

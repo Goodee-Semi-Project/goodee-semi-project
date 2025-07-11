@@ -13,12 +13,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/qnaBoard/list/delete")
-public class QnaBoardDeleteServlet extends HttpServlet {
+@WebServlet("/qnaBoard/questionDelete")
+public class QuestionDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     QuestionService service = new QuestionService();   
 	
-    public QnaBoardDeleteServlet() {
+    public QuestionDeleteServlet() {
         super();
     }
 

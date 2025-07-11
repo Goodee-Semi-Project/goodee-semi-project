@@ -17,9 +17,9 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 	
 	<h1>질문 게시판</h1>
 	<hr>
-	<a href="<c:url value='/qnaBoard/list/add'/>">질문 등록</a>
+	<a href="<c:url value='/qnaBoard/questionAdd'/>">질문 등록</a>
 	<div>
-		<form action="<c:url value='/qnaBoard/list'/>" method="get">
+		<form action="<c:url value='/qnaBoard'/>" method="get">
 			<select name="searchBy">
 				<option value="1">제목</option>
 				<option value="2">제목+내용</option>
@@ -39,7 +39,7 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 	<c:forEach var="q" items="${questionList}" >
 		<div>
 		<span>${q.questNo }</span>
-		<a href="<c:url value='/qnaBoard/list/detail?no=${q.questNo}'/>">${q.questTitle}</a>
+		<a href="<c:url value='/qnaBoard/detail?no=${q.questNo}'/>">${q.questTitle}</a>
 		<span>${q.accountId }</span>
 		<span>${q.questReg }</span>
 		</div>

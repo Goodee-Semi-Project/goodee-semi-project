@@ -53,4 +53,11 @@
 		DELETE FROM question
 		WHERE quest_no = #{questNo}
 	</delete>
+	
+	<update id="updateQuestion" parameterType="com.goodee.semi.dto.Question">
+		UPDATE question
+		SET quest_title = #{questTitle}
+		,quest_Content = #{questContent}
+		WHERE quest_no = #{questNo}
+	</update>
 </mapper>
