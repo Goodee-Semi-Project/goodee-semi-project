@@ -26,10 +26,19 @@
 <c:choose>
 	<c:when test="${not empty sessionScope.loginAccount }">
 		<span>${sessionScope.loginAccount.name }님! 환영합니다.</span>
-		<a href="<c:url value='/account/logout' />">로그아웃</a>
+		<a href="<c:url value='#' />" onclick = "logout(event) ">로그아웃</a>
 	</c:when>
 	<c:otherwise>
-		<a href="<c:url value='/account/login' />">로그인</a>
+		<a href="<c:url value='/account/login' />" >로그인</a>
 		<a href="<c:url value='/account/register' />">회원가입</a>	
 	</c:otherwise>
 </c:choose>
+
+<script>
+	function logout(e){
+		e.preventDefault();
+		if(confirm("로그아웃 하시겠습니까?")){
+			location.href = "<c:url value='/account/logout' />";
+		}
+	}
+</script>
