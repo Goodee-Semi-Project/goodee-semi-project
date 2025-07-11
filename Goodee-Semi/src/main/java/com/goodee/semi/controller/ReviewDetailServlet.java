@@ -2,6 +2,9 @@ package com.goodee.semi.controller;
 
 import java.io.IOException;
 
+import org.json.simple.JSONObject;
+
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Review;
 import com.goodee.semi.service.ReviewService;
 
@@ -10,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class ReviewDetailServlet
@@ -36,7 +40,7 @@ public class ReviewDetailServlet extends HttpServlet {
 			reviewNo = Integer.parseInt(reviewNoStr);
 		}
 		
-		// TODO: 첨부파일 통일화 후 수정
+		// TODO: 첨부파일 통일화 후 추가 작성
 		Review review = reviewService.selectReivewOne(reviewNo);
 		
 		request.setAttribute("review", review);
@@ -47,6 +51,45 @@ public class ReviewDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		// 리뷰 삭제
+		String reviewNoStr = null;
+		int reviewNo = -1;
+		if ((reviewNoStr= request.getParameter("reviewNo")) != null) {
+			reviewNo = Integer.parseInt(reviewNoStr);
+		}
+		
+		HttpSession session = request.getSession();
+		Account account = null;
+		if (session != null && session.getAttribute("loginAccount") instanceof Account) {
+			account = (Account) session.getAttribute("loginAccount");
+		}
+		
+		String accountId = null;
+		if (account != null && account.getAccountId() != null) {
+			accountId = account.getAccountId();
+		}
+		
+		System.out.println(accountId);
+		
+		Review review = null;
+		JSONObject obj = new JSONObject();
+
+		obj.put("res_code", "500");
+		obj.put("res_msg", "다른 사용자 입니다.");
+		
+		if (accountId != null && reviewNo != -1) {
+			review = reviewService.selectReivewOne(reviewNo);
+			System.out.println(review.getAccountId());
+			if (review.getAccountId().equals(accountId)) {
+				obj.put("res_code", "200");
+				obj.put("res_msg", "리뷰 삭제");
+			}
+		}
+		
+		response.setContentType("application/json; charset=utf-8");
+		response.getWriter().print(obj);
 	}
 
 }
