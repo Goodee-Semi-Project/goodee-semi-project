@@ -8,19 +8,85 @@
 
 // 페이지 로드 > 요소 가져오기 > 클릭 이벤트 감지 > 
 
-$().ready(function () {
-    // alert('ready');
 
-    // 모든 버튼 요소 가져옴
-    const btnUpArr =  document.querySelectorAll('.pet-btn-up');
-    const btnDelArr = document.querySelectorAll('.pet-btn-del');
+// 모든 버튼 요소 가져옴
+const btnUpArr =  document.querySelectorAll('.pet-btn-up');
+const btnDelArr = document.querySelectorAll('.pet-btn-del');
 
-    // 클릭 시 이벤트
-    // JQuery는 요소 배열에 이벤트리스너 한 번에 연결 가능 (요소마다 연결하지 않아도 됨)
-    btnUpArr.forEach(function (btn, idx) {
-        btn.addEventListener('click', function() {
-            console.log(btn.parentElement.previousSibling)
+// 수정 버튼 클릭 시 이벤트
+btnUpArr.forEach(function (btn, idx) {
+    btn.addEventListener('click', function handleEditClick() {
+        // 1. 반려견 정보가 있는 input 요소들을 가져옴
+        const petBtnDiv = this.parentElement;
+        const petDetailEl = petBtnDiv.parentElement.querySelector('.pet-detail');
+        const petDetailsEl = petDetailEl.querySelectorAll('input');
+        
+        // 2. input 요소들의 disabled 속성 제거
+        petDetailsEl.forEach(function (el) {
+            el.removeAttribute("disabled");
         });
-    });
+        
+        // 3. 버튼 바꾸기
+        const oriPetBtnsHtml = petBtnDiv.innerHTML;
+        const btnSave = '<button class="pet-btn-save">수정 완료</button>';
+        petBtnDiv.innerHTML = btnSave;
 
+        // 4. save 버튼 누를 시 ajax로 수정 요청 보내고 응답받아 input 안의 value 수정 &
+        // 버튼 되돌리고 input disabled로 전환
+        const newPetBtn = petBtnDiv.querySelector('.pet-btn-save');
+        newPetBtn.addEventListener('click', function (btn) {
+            // 1) ajax로 요청 보내고 응답 받아 value 수정
+            // (1) input 안의 value값 가져오기
+            const petName = petDetailEl.querySelector('.pet-name').value;
+            const petAge = petDetailEl.querySelector('.pet-age').value;
+            const petGender = petDetailEl.querySelector('.pet-gender').value;
+            const petBreed = petDetailEl.querySelector('.pet-breed').value;
+            const petNo = petDetailEl.querySelector('.pet-no').value;
+            const accountNo = petDetailEl.querySelector('.account-no').value;
+
+            // TODO 유효성 검사 추가하기
+            // TODO 이미지 수정 기능 추가하기
+
+            // (2) ajax
+            $.ajax({
+                url: '/myPet/update',
+                type: 'post',
+                data: {
+                    petName: petName,
+                    petAge: petAge,
+                    petGender: petGender,
+                    petBreed: petBreed,
+                    petNo: petNo,
+                    accountNo: accountNo,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.resCode);
+                    console.log(data.resMsg);
+                    console.log(data.petName);
+                    console.log(data.petAge);
+                    console.log(data.petGender);
+                    console.log(data.petBreed);
+                    console.log(data.petNo);
+                    console.log(data.accountNo);
+                },
+				error: function (msg) {
+					console.log(msg);
+				}
+            });
+            
+            // 1) 버튼 복원
+            petBtnDiv.innerHTML = '';
+            petBtnDiv.innerHTML = oriPetBtnsHtml;
+            
+            // 2) input disabled로 전환
+            petDetailsEl.forEach(function (el) {
+                el.setAttribute("disabled", true);
+            });
+
+            // 3) 수정 버튼 클릭 시 이벤트 다시 달기 (재귀적으로 호출)
+            const newEditBtn = petBtnDiv.querySelector('.pet-btn-up');
+            newEditBtn.addEventListener('click', handleEditClick);
+        });            
+    });
 });

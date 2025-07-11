@@ -15,5 +15,9 @@ private PetDao dao = new PetDao();
 	public int selectPetCount(Pet param) {
 		return dao.selectPetCount(param);
 	}
+
+	public int updatePet(Pet param) {
+		return dao.updatePet(param);
+	}
 	
 }

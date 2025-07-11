@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<!-- JQuery CDN -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-	<script src="<c:url value='/js/my-pet/myPetList.js'/>"></script>
+	<script defer src="<c:url value='/js/my-pet/myPetList.js'/>"></script>
 	<title>내 반려견</title>
 </head>
 <body>
@@ -39,11 +39,15 @@
 					<li>
 						<img src="https://picsum.photos/150" alt="">
 						<div class="pet-detail" id="pet-detail-${status.index }">
-							<span class="pet-name">${pet.petName }</span>
-							<span class="pet-age">${pet.petAge }</span>
-							<span>살 / </span>
-							<span class="pet-gender">${pet.petGender }</span>
-							<span>${pet.petBreed }</span>
+							<input type="text" class="pet-name" value="${pet.petName }" disabled>
+							<div>
+								<input type="text" class="pet-age" value="${pet.petAge }" disabled>
+								<p>살 / <p>
+								<input type="text" class="pet-gender" value="${pet.petGender }" disabled>
+							</div>
+							<input type="text" class="pet-breed" value="${pet.petBreed }" disabled>
+							<input type="hidden" class="pet-no" value="${pet.petNo }">
+							<input type="hidden" class="account-no" value="${pet.accountNo }">
 						</div>
 						<div class="pet-btn" id="pet-btn-${status.index }">
 							<button class="pet-btn-up" id="pet-btn-up-${status.index }">수정</button>
