@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `account` (
 	`account_name` VARCHAR(20) NOT NULL,
 	`account_avail` CHAR(1) NOT NULL DEFAULT 'Y',
 	PRIMARY KEY (`account_no`),
+	UNIQUE KEY (`account_id`),
 	FOREIGN KEY (`auth_no`) REFERENCES `authority`(`auth_no`)
 );
 
@@ -32,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `account_info` (
 	`address` VARCHAR(255) NOT NULL,
 	`address_detail` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`info_no`),
+	UNIQUE KEY (`phone`, `email`),
 	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 

@@ -99,4 +99,4 @@ public class Paging {
 		if(pageBarStart == 1) prev = false;
 		if(pageBarEnd >= totalPage) next = false;
 	} 
-}
+} 
