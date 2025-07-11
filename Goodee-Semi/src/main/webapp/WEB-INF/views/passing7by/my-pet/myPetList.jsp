@@ -4,10 +4,10 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<!-- JQuery CDN -->
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-	<script defer src="<c:url value='/js/my-pet/myPetList.js'/>"></script>
 	<title>내 반려견</title>
+	
+	<%@ include file="/WEB-INF/views/include/head.jsp" %>
+	<script defer src="<c:url value='/js/my-pet/myPetList.js'/>"></script>
 </head>
 <body>
 	<!-- header -->

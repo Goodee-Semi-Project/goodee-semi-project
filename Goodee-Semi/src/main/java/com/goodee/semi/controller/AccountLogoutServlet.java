@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import com.goodee.semi.service.AccountService;
+
 @WebServlet("/account/logout")
 public class AccountLogoutServlet extends HttpServlet {
 
