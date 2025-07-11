@@ -12,6 +12,9 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
  </script>
 </head>
 <body>
+	<%@ include file="/WEB-INF/views/include/header.jsp"%>
+	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
+	
 	<form id="addListform">
 <%-- 	<input type="hidden" id="qna_account_no" value="${loginAccount.accountNo}"> --%>
 		<label for="qna_account_no">임시 accountNo</label>
@@ -20,10 +23,12 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 		<label for="qna_title">제목</label>
 		<input type="text" name="qna_title" id="qna_title" placeholder="제목 입력">
 		<textarea rows="40" cols="70" id="qna_content" style="resize: none; display: block"></textarea>
-		<button type="button" onclick="location.href='<c:url value="/qnaBoard/list"/>'">목록</button>
+		<button type="button" onclick="location.href='<c:url value="/qnaBoard/"/>'">목록</button>
 		<button type="submit" id="btn_reg">등록</button>
 	</form>
 		
+	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+			
 	<script>
 		$("#addListform").submit(function(e){
 			e.preventDefault();
@@ -39,7 +44,7 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 				}
 				
 				$.ajax({
-					url : "/qnaBoard/list/add",
+					url : "/qnaBoard/questionAdd",
 					type : "post",
 					data : {
 						qnaAccountNo : qnaAccountNo,
@@ -50,8 +55,7 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 					success : function(data) {
 						alert(data.res_msg);
 						if(data.res_code == 200) {
-							console.log("sucess 가져옴")
-							location.href = "<%=request.getContextPath() %>/qnaBoard/list"
+							location.href = "<%=request.getContextPath() %>/qnaBoard"
 						}
 					}
 				});
