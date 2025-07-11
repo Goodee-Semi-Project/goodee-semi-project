@@ -30,6 +30,16 @@
 		<result property="address" column="address" />
 		<result property="addressDetail" column="address_detail" />
 	</resultMap>
+	<resultMap type="com.goodee.semi.dto.Notice" id="noticeResultMap">
+		<result property="noticeNo" column="notice_no"/>
+		<result property="accountNo" column="account_no"/>
+		<result property="noticeTitle" column="notice_title"/>
+		<result property="noticeContent" column="notice_content"/>
+		<result property="regDate" column="reg_date"/>
+		<result property="modDate" column="mod_date"/>
+		<result property="writer" column="writer" />
+		<result property="nailUp" column="nail_up"/>
+	</resultMap>
 	
 	<insert id="insertAccount" parameterType="com.goodee.semi.dto.AccountDetail" useGeneratedKeys="true" keyProperty="accountNo">
 		INSERT INTO account (auth_no, account_id, account_pw, account_name)

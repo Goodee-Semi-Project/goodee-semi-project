@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.NoticeMapper">
+	<resultMap type="com.goodee.semi.dto.Notice" id="noticeResultMap">
+		<result property="noticeNo" column="notice_no"/>
+		<result property="accountNo" column="account_no"/>
+		<result property="noticeTitle" column="notice_title"/>
+		<result property="noticeContent" column="notice_content"/>
+		<result property="regDate" column="reg_date"/>
+		<result property="modDate" column="mod_date"/>
+		<result property="writer" column="writer" />
+		<result property="nailUp" column="nail_up"/>
+	</resultMap>
+	
+	<select id="selectList" resultMap="noticeResultMap">
+		SELECT n.notice_no
+		,n.notice_title
+		,DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date
+        ,a.account_name AS writer
+        ,n.nail_up
+  		FROM notice n
+ 		JOIN account a ON n.account_no = a.account_no
+  		ORDER BY 
+    	n.nail_up DESC,     
+    	<!-- 고정글 먼저 ('Y' > 'N') -->
+    	n.notice_no DESC    
+    	<!-- 최신글 순서대로 -->
+    	LIMIT #{limitPageNo},#{numPerPage}
+	</select>
+	 	 
+ 	 <select id="selectListCount" resultType="_int">
+ 	 	SELECT COUNT(*)
+ 	 	FROM notice n
+ 	 	JOIN account a ON n.account_no = a.account_no
+ 	 	<where>
+			<if test="keyword != null and keyword != ''">
+				(n.notice_title LIKE CONCAT('%', #{keyword},'%') 
+				OR a.account_name LIKE CONCAT('%', #{keyword},'%')) 
+			</if> 	 	
+		</where>
+ 	 </select>
+</mapper>
