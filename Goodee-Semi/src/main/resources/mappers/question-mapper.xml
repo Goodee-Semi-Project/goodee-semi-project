@@ -10,7 +10,7 @@
 		<result property="questContent" column="quest_content" />
 		<result property="questReg" column="quest_reg" />	
 		<result property="questMod" column="quest_mod" />
-		<result property="accountId" column="account_id" />	
+		<result property="accountId" column="account_id" />		
 	</resultMap>
 	
 	<select id="selectAllList" resultMap="questionResultMap" parameterType="com.goodee.semi.dto.Question">
@@ -23,19 +23,34 @@
 			,DATE_FORMAT(q.quest_reg, '%Y-%m-%d') AS quest_reg
 			,DATE_FORMAT(q.quest_mod, '%Y-%m-%d') AS quest_mod
 		FROM question q
-		JOIN account a ON q.account_no = a.account_no;
-		<where>
-			<if test="searchBy == 1">
-				quest_title LIKE CONCAT ("%","#{keyword}","%")			
-			</if>
-			<if test="searchBy == 2">
-				q.quest_title LIKE CONCAT("%", "#{keyword}", "%")
-   				AND q.quest_content LIKE CONCAT("%", "#{keyword}", "%")
-			</if>
-			<if test="searchBy == 3">
-				a.account_id LIKE CONCAT ("%","#{keyword}","%")
-			</if>
-		</where>
+		JOIN account a ON q.account_no = a.account_no
+		<choose>
+			<when test="searchBy == 1">
+				WHERE quest_title LIKE CONCAT ('%',#{keyword},'%')
+			</when>
+			<when test="searchBy == 2">
+				WHERE quest_title LIKE CONCAT ('%',#{keyword},'%')
+				OR quest_content LIKE CONCAT ('%',#{keyword},'%')
+			</when>
+			<when test="searchBy == 3">
+				WHERE a.account_id LIKE CONCAT ('%',#{keyword},'%')
+			</when>
+		</choose>
+		<choose>
+			<when test="orderBy == 1">
+				ORDER BY q.quest_no ASC
+			</when>
+			<when test="orderBy == 2">
+				ORDER BY q.quest_reg DESC
+			</when>
+			<when test="orderBy == 3">
+				ORDER BY q.quest_no ASC
+			</when>
+			<otherwise>
+				ORDER BY q.quest_no ASC
+			</otherwise>
+		</choose>
+		LIMIT #{limitPageNo},#{numPerPage}
 	</select>
 
 	<select id="selectOneQuest" resultMap="questionResultMap" parameterType="_int">
@@ -60,4 +75,22 @@
 		,quest_Content = #{questContent}
 		WHERE quest_no = #{questNo}
 	</update>
+	
+	<select id="selectQuestionCount" resultType="_int" parameterType="com.goodee.semi.dto.Question">
+		SELECT COUNT(*)
+		FROM question q
+		JOIN account a ON q.account_no = a.account_no
+		<choose>
+			<when test="searchBy == 1">
+				WHERE quest_title LIKE CONCAT ('%',#{keyword},'%')
+			</when>
+			<when test="searchBy == 2">
+				WHERE quest_title LIKE CONCAT ('%',#{keyword},'%')
+				OR quest_content LIKE CONCAT ('%',#{keyword},'%')
+			</when>
+			<when test="searchBy == 3">
+				WHERE a.account_id LIKE CONCAT ('%',#{keyword},'%')
+			</when>
+		</choose>
+	</select>
 </mapper>

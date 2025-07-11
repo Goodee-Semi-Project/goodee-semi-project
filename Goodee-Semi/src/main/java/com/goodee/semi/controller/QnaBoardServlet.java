@@ -13,11 +13,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/qnaBoard")
-public class QnaBoardListServlet extends HttpServlet {
+public class QnaBoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	QuestionService service = new QuestionService();
        
-    public QnaBoardListServlet() {
+    public QnaBoardServlet() {
         super();
     }
 
@@ -27,13 +27,26 @@ public class QnaBoardListServlet extends HttpServlet {
 		String searchBy = request.getParameter("searchBy");
 		String orderBy= request.getParameter("orderBy");
 		
-		Question param = new Question();
+		Question question = new Question();
 		
-		if(keyword != null)	param.setKeyword(keyword);
-		if(searchBy != null) param.setSearchBy(searchBy);
-		if(orderBy != null) param.setOrderBy(orderBy);
+		int nowPage = 1; 
 		
-		List<Question> questionList = service.selectAllQuestionList(param);
+		question.setKeyword(keyword);
+		question.setSearchBy(searchBy);
+		question.setOrderBy(orderBy);
+		
+		String nowPageStr = request.getParameter("nowPage");
+		if(nowPageStr != null) {
+			nowPage = Integer.parseInt(nowPageStr);
+		}
+		question.setNowPage(nowPage);
+		
+		int totalData = service.selectQuestionCount(question);
+		question.setTotalData(totalData);
+		
+		List<Question> questionList = service.selectAllQuestionList(question);
+		
+		request.setAttribute("question", question);
 		request.setAttribute("questionList", questionList);
 		request.getRequestDispatcher("/WEB-INF/views/question/qnaBoard.jsp").forward(request, response);
 	}

@@ -9,9 +9,9 @@ import com.goodee.semi.dto.Question;
 
 public class QuestionDao {
 
-	public List<Question> selectAllQuestionList(Question param) {
+	public List<Question> selectAllQuestionList(Question question) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		List<Question> result = session.selectList("com.goodee.semi.mapper.QuestionMapper.selectAllList", param); 
+		List<Question> result = session.selectList("com.goodee.semi.mapper.QuestionMapper.selectAllList", question);
 		session.close();
 		return result;
 	}
@@ -44,4 +44,11 @@ public class QuestionDao {
 		return result;
 	}
 	
+	public int selectQuestionCount(Question question) {	
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.selectOne("com.goodee.semi.mapper.QuestionMapper.selectQuestionCount", question);
+		session.close();
+		return result;
+				
+	}
 }
