@@ -15,7 +15,7 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	
-	<h1>질문 게시판</h1>
+	<h1>QnA 게시판</h1>
 	<hr>
 	<a href="<c:url value='/qnaBoard/questionAdd'/>">질문 등록</a>
 	<div>
@@ -25,8 +25,8 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 				<option value="2">제목+내용</option>
 				<option value="3">작성자</option>
 			</select>
-			<label for="keywordInput"></label>
-			<input type="text" name="keyword" id="keyword" placeholder="검색어를 입력해 주세요.">
+			<label for="keyword"></label>
+			<input type="text" name="keyword" id="keyword" value="${question.keyword}">
 			<input type="submit" value="검색">
 			<select name="orderBy">
 				<option value="0">정렬</option>
@@ -44,6 +44,26 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 		<span>${q.questReg }</span>
 		</div>
 	</c:forEach>
+	
+	<c:if test="${not empty questionList}">
+		<div>
+			<c:if test="${paging.prev}">
+				<a href="<c:url value='/qnaBoard?nowPage=${question.pageBarStart - 1}&keyword=${question.keyword}'/>">
+				&laquo;
+				</a>A
+			</c:if>
+			<c:forEach var="i" begin="${question.pageBarStart}" end="${question.pageBarEnd}">
+				<a href="<c:url value='/qnaBoard?nowPage=${i}'/>">
+					${i}
+				</a>			
+			</c:forEach>
+			<c:if test="${paging.next}">
+				<a href="<c:url value='/qnaBoard?nowPage=${question.pageBarEnd + 1 }&keyword=${question.keyword}'/>">
+					&raquo;
+				</a>
+			</c:if>
+		</div>
+	</c:if>
 	
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 </body>

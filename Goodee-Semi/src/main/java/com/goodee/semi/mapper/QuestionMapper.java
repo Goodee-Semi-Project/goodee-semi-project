@@ -6,7 +6,7 @@ import com.goodee.semi.dto.Question;
 
 public interface QuestionMapper {
 
-	List<Question> selectAllList(Question param);
+	List<Question> selectAllList(Question question);
 	
 	Question selectOneQuest(int questNo);
 	
@@ -16,4 +16,5 @@ public interface QuestionMapper {
 	
 	int updateQuestion(Question question);
 	
+	int selectQuestionCount(Question question);
 }
