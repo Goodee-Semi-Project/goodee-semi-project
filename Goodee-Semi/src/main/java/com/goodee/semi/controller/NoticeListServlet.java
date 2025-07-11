@@ -32,7 +32,7 @@ public class NoticeListServlet extends HttpServlet {
 		
 		Notice param = new Notice();
 		param.setNowPage(1);
-		// paging이 음수처리 될까봐 시작을 1로 설정
+		// paging이 음수처리 -> 시작을 1로 설정
 		if(nowPage != null) {
 			param.setNowPage(Integer.parseInt(nowPage));
 		}
