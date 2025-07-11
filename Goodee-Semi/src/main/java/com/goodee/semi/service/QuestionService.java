@@ -31,7 +31,11 @@ public class QuestionService {
 		return questionDao.selectOneQuest(questNo);
 	}
 	
-	public int insertQuestion(Question question) {
+	public int insertQuestion(int accountNo, String questTitle, String questContent) {
+		Question question = new Question();
+		question.setAccountNo(accountNo);
+		question.setQuestTitle(questTitle);
+		question.setQuestContent(questContent);
 		return questionDao.insertQuestion(question);
 	}
 	

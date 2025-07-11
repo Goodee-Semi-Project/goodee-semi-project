@@ -29,9 +29,6 @@ public class QuestionDetailServlet extends HttpServlet {
 		Question question = (Question)result.get("question");
 		Answer answer= (Answer)result.get("answer");
 		
-		System.out.println("detailServlet : "+question);
-		System.out.println("detailServlet : "+answer);
-		
 		request.setAttribute("question", question);
 		request.setAttribute("answer", answer);
 		request.getRequestDispatcher("/WEB-INF/views/question/questionDetail.jsp").forward(request, response);
