@@ -21,19 +21,18 @@
 	<div>${question.questContent}</div>
 	<input type="button" onclick='location.href="<c:url value='/qnaBoard'/>"' value="목록">
 	
-	<!-- 로그인 기능 병합 후 두 줄 삭제 -->
-	<input type="button" onclick='location.href="${request.contextPath()}/qnaBoard/questionUpdate?no=${question.questNo}"'
-       value="수정">
-		
-	<input type="button" id="btn_delete" value="삭제">	
 	<!-- 로그인 기능 병합 후 주석 해제 --> 
-<%-- 	<c:if test="${not empty loginAccount}"> --%>
-<%-- 		<c:if test="${loginAccount.accountNo eq question.accountNo}"> --%>
-<%-- 			<input type="button" id="btn_update" onclick='location.href="<c:url value='/qnaBoard/questionUpdate?no=${question.questNo}'/>"' value="수정"> --%>
-<%-- 			<input type="button" id="btn_delete" value="삭제">				 --%>
-<%-- 		</c:if> --%>
-<%-- 	</c:if> --%>
+	<c:if test="${not empty loginAccount}">
+		<c:if test="${loginAccount.accountNo eq question.accountNo}">
+			<input type="button" onclick='location.href="${request.contextPath()}/qnaBoard/questionUpdate?no=${question.questNo}"'
+       			value="수정">
+			<input type="button" id="btn_delete" value="삭제">				
+		</c:if>
+	</c:if>
 
+	<c:if test="${not empty answer}">
+		
+	</c:if>
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	
