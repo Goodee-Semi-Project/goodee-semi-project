@@ -30,6 +30,7 @@
 		<result property="address" column="address" />
 		<result property="addressDetail" column="address_detail" />
 	</resultMap>
+
 	<resultMap type="com.goodee.semi.dto.Notice" id="noticeResultMap">
 		<result property="noticeNo" column="notice_no"/>
 		<result property="accountNo" column="account_no"/>
@@ -67,7 +68,43 @@
 		</where>
 	</select>
 	
-	<select id="selectAccountByIdNameEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountResultMap">
+	<select id="selectAccountDetail" parameterType="string" resultMap="accountDetailResultMap">
+		SELECT u.account_name ,i.*
+		FROM account AS u
+		JOIN account_info AS i ON u.account_no = i.account_no
+		WHERE u.account_id = #{ accountId }
+	</select>
+
+	<update id="updateAccountDetail" parameterType="com.goodee.semi.dto.AccountDetail">
+		UPDATE account_info
+		SET account_gender = #{ gender }
+			,email = #{ email }
+			,phone = #{ phone }
+			,post_num = #{ postNum }
+			,address = #{ address }
+			,address_detail = #{ addressDetail }
+		WHERE account_no = #{ accountNo }
+	</update>
+
+	<select id="checkIdPw" parameterType="com.goodee.semi.dto.Account" resultType="_int">
+		SELECT COUNT(*)
+		FROM account
+		WHERE account_id = #{ accountId } AND account_pw = #{ accountPw }
+	</select>
+
+	<update id="deactivateAccount" parameterType="com.goodee.semi.dto.Account">
+	UPDATE account
+	SET account_avail = 'N'
+	WHERE account_id = #{ accountId } AND account_pw = #{ accountPw }
+	</update>
+
+	<update id="updateAccountPw" parameterType="com.goodee.semi.dto.Account">
+		UPDATE account
+		SET account_pw = #{ accountPw }
+		WHERE account_id = #{ accountId }
+	</update>
+
+  <select id="selectAccountByIdNameEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountResultMap">
 		SELECT * FROM account A
 		INNER JOIN account_info AI ON A.account_no = AI.account_no
 		<where>
