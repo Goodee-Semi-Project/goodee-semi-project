@@ -87,13 +87,10 @@ CREATE TABLE IF NOT EXISTS `review` (
 	`review_no` INT AUTO_INCREMENT NOT NULL,
 	`class_no` INT NOT NULL,
 	`review_title` VARCHAR(255) NOT NULL,
-	`account_id` VARCHAR(16) NOT NULL,
 	`review_content` TEXT NOT NULL,
-	`reg_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`mod_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	`review_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`review_no`),
-	FOREIGN KEY (`class_no`) REFERENCES `class`(`class_no`),
-	FOREIGN KEY (`account_id`) REFERENCES `account`(`account_id`)
+	FOREIGN KEY (`class_no`) REFERENCES `class`(`class_no`)
 );
 
 CREATE TABLE IF NOT EXISTS `picked_course` (
