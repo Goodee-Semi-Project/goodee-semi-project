@@ -11,7 +11,9 @@ import java.io.IOException;
 
 @WebServlet("/account/logout")
 public class AccountLogoutServlet extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
+	private AccountService accountService = new AccountService();
        
    
     public AccountLogoutServlet() {
@@ -28,7 +30,6 @@ public class AccountLogoutServlet extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + "/");
 	}
 
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		doGet(request, response);
