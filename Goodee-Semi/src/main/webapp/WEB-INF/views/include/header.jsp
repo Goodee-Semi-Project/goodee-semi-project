@@ -14,9 +14,7 @@
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-
 						<ul class="navbar-nav ml-auto main-nav ">
-							
 							<li class="nav-item dropdown dropdown-slide @@dashboard">
 								<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#!">○○훈련소<span><i class="fa fa-angle-down"></i></span></a>
 								
@@ -35,7 +33,7 @@
 									<li><a class="dropdown-item" href="<c:url value='/preCourse/list' />">사전학습</a></li>
 									<li><a class="dropdown-item" href="<c:url value='/schedule' />">일정표</a></li>
 									<li><a class="dropdown-item" href="<c:url value='/assign/list' />">과제</a></li>
-									<li><a class="dropdown-item" href="<c:url value='/qnaBoard/list' />">질문 게시판</a></li>
+									<li><a class="dropdown-item" href="<c:url value='/qnaBoard' />">질문 게시판</a></li>
 								</ul>
 							</li>
 							
