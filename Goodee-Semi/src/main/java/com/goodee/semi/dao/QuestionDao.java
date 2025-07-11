@@ -37,4 +37,11 @@ public class QuestionDao {
 		return result;
 	}
 	
+	public int updateQuestion(Question question) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.QuestionMapper.updateQuestion", question);
+		session.close();
+		return result;
+	}
+	
 }
