@@ -29,4 +29,13 @@
 			account_no = #{accountNo}
 		</where>
 	</select>
+	
+	<update id="updatePet" parameterType="com.goodee.semi.dto.Pet">
+		UPDATE pet
+		SET pet_name = #{petName}
+		<where>
+			account_no = #{accountNo}
+			AND pet_no = #{petNo}
+		</where>
+	</update>
 </mapper>

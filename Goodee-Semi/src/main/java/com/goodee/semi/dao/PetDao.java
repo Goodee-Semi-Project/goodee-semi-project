@@ -25,4 +25,12 @@ public class PetDao implements PetMapper {
 		return count;
 	}
 	
+	@Override
+	public int updatePet(Pet param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.PetMapper.updatePet", param);
+		session.close();
+		return result;
+	}
+	
 }
