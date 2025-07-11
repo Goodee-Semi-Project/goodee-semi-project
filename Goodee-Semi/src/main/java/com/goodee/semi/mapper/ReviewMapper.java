@@ -10,4 +10,5 @@ public interface ReviewMapper {
 	int selectReviewCount(Review param);
 	List<Review> selectReviewList(Review param);
 	int insertReview(SqlSession session, Review review);
+	Review selectReivewOne(int reviewNo);
 }

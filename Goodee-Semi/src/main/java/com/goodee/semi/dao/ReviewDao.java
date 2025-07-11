@@ -28,4 +28,11 @@ public class ReviewDao {
 		return result;
 	}
 
+	public Review selectReivewOne(int reviewNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Review review = session.selectOne("com.goodee.semi.mapper.ReviewMapper.selectReivewOne", reviewNo);
+		session.close();
+		return review;
+	}
+
 }
