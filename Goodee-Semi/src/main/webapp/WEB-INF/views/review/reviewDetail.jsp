@@ -28,7 +28,7 @@
 	</div>
 	<div>
 		<a href="<c:url value='/review/list' />">목록</a>
-		<a href="">수정</a>
+		<a href="<c:url value='/review/edit?no=${ review.reviewNo }' />">수정</a>
 		<input type="button" value="삭제" onclick="deleteReview()">
 	</div>
 </main>

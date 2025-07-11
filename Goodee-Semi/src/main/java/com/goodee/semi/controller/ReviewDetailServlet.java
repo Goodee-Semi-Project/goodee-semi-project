@@ -75,7 +75,7 @@ public class ReviewDetailServlet extends HttpServlet {
 		JSONObject obj = new JSONObject();
 
 		obj.put("res_code", "500");
-		obj.put("res_msg", "다른 사용자 입니다.");
+		obj.put("res_msg", "잘못된 사용자 입니다.");
 		
 		if (accountId != null && reviewNo != -1) {
 			review = reviewService.selectReivewOne(reviewNo);
@@ -84,7 +84,7 @@ public class ReviewDetailServlet extends HttpServlet {
 				
 				if (result > 0) {
 					obj.put("res_code", "200");
-					obj.put("res_msg", "리뷰 삭제");
+					obj.put("res_msg", "후기를 삭제합니다.");
 				}
 			}
 		}
