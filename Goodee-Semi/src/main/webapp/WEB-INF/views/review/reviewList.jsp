@@ -28,6 +28,7 @@
 
 	<section>
 		<div>
+			<!-- 정렬 방법 -->
 			<select>
 				<option></option>
 				<option></option>
