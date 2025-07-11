@@ -65,4 +65,8 @@
 		) AS a ON p.account_no = a.account_no
 		WHERE r.review_no = #{ reviewNo }
 	</select>
+	<delete id="deleteReview" parameterType="_int">
+		DELETE FROM review
+		WHERE review_no = #{ reviewNo }
+	</delete>
 </mapper>

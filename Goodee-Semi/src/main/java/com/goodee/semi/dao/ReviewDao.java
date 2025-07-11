@@ -35,4 +35,11 @@ public class ReviewDao {
 		return review;
 	}
 
+	public int deleteReview(int reviewNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.ReviewMapper.deleteReview", reviewNo);
+		session.close();
+		return result;
+	}
+
 }
