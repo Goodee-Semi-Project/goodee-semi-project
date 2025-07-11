@@ -23,4 +23,9 @@ public class ReviewDao {
 		return list;
 	}
 
+	public int insertReview(SqlSession session, Review review) {
+		int result = session.insert("com.goodee.semi.mapper.ReviewMapper.insertReview", review);
+		return result;
+	}
+
 }

@@ -27,7 +27,13 @@
 	</form>
 
 	<section>
-		<div></div>
+		<div>
+			<select>
+				<option></option>
+				<option></option>
+			</select>
+			<a href="/review/write">후기 작성</a>
+		</div>
 		<div>
 			<table>
 				<thead>
@@ -44,7 +50,7 @@
 							<td>${ r.reviewNo }</td>
 							<td>${ r.reviewTitle }</td>
 							<td>${ r.accountId }</td>
-							<td>${ r.regDate }</td>
+							<td>${ r.reviewDate }</td>
 						</tr>
 					</c:forEach>
 				</tbody>

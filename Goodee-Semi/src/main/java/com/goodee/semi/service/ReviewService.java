@@ -2,19 +2,45 @@ package com.goodee.semi.service;
 
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+
+import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.ReviewDao;
 import com.goodee.semi.dto.Review;
 
 public class ReviewService {
-	ReviewDao dao = new ReviewDao();
+	ReviewDao reviewDao = new ReviewDao();
 
 	public int selectReviewCount(Review param) {
-		return dao.selectReviewCount(param);
+		return reviewDao.selectReviewCount(param);
 	}
 
 	public List<Review> selectReviewList(Review param) {
-		List<Review> list = dao.selectReviewList(param);
+		List<Review> list = reviewDao.selectReviewList(param);
 		return list;
+	}
+
+	public int createReview(Review review) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = -1;
+		
+		// 첨부파일 클래스, DAO가 정해지면 트랜잭션으로 처리
+		try {
+			result = reviewDao.insertReview(session, review);
+			
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
 	}
 
 }

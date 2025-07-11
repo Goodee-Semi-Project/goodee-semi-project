@@ -9,8 +9,7 @@
 		<result property="reviewTitle" column="review_title" />
 		<result property="accountId" column="account_id" />
 		<result property="reviewContent" column="review_content" />
-		<result property="regDate" column="reg_date" />
-		<result property="modDate" column="mod_date" />
+		<result property="reviewDate" column="review_date" />
 	</resultMap>
 	<select id="selectReviewCount" parameterType="com.goodee.semi.dto.Review" resultType="_int">
 		SELECT COUNT(*)
@@ -22,15 +21,31 @@
 		</if>
 	</select>
 	<select id="selectReviewList" parameterType="com.goodee.semi.dto.Review" resultMap="reviewResultMap">
-		SELECT review_no ,class_no ,review_title ,account_id ,review_content
-			,DATE_FORMAT(reg_date, '%Y-%m-%d') AS reg_date
-			,DATE_FORMAT(mod_date, '%Y-%m-%d') AS mod_date
-		FROM review
+		SELECT r.*, a.account_id
+		FROM review AS r
+		JOIN (
+			SELECT c.class_no ,c.pet_no
+			FROM class AS c
+		) AS c ON r.class_no = c.class_no
+		JOIN (
+			SELECT p.pet_no ,p.account_no
+			FROM pet AS p
+		)AS p ON c.pet_no = p.pet_no
+		JOIN (
+			SELECT a.account_no ,a.account_id
+			FROM account AS a
+		) AS a ON p.account_no = a.account_no
 		<if test="keyword != null and keyword != ''">
 			<where>
 				review_title LIKE CONCAT('%' ,#{ keyword } ,'%')
 			</where>
 		</if>
+		ORDER BY r.review_no
 		LIMIT #{ limitPageNo } ,#{ numPerPage }
 	</select>
+	<insert id="insertReview" parameterType="com.goodee.semi.dto.Review" 
+		useGeneratedKeys="true" keyProperty="reviewNo">
+		INSERT INTO review (class_no ,review_title ,review_content)
+		VALUES (#{classNo} ,#{reviewTitle} ,#{reviewContent})
+	</insert>
 </mapper>
