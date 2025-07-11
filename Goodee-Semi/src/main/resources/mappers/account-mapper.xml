@@ -13,7 +13,7 @@
 		<result property="available" column="account_avail" />
 	</resultMap>
 	
-	<resultMap type="accountDetailResultMap" id="com.goodee.semi.dto.AccountDetail">
+	<resultMap id="accountDetailResultMap" type="com.goodee.semi.dto.AccountDetail">
 		<result property="accountNo" column="account_no" />
 		<result property="author" column="auth_no" />
 		<result property="accountId" column="account_id" />
@@ -31,5 +31,45 @@
 		<result property="addressDetail" column="address_detail" />
 	</resultMap>
 	
+	<insert id="insertAccount" parameterType="com.goodee.semi.dto.AccountDetail" useGeneratedKeys="true" keyProperty="accountNo">
+		INSERT INTO account (auth_no, account_id, account_pw, account_name)
+		VALUE (#{author}, #{accountId}, #{accountPw}, #{name})
+	</insert>
 	
+	<insert id="insertAccountInfo" parameterType="com.goodee.semi.dto.AccountDetail">
+		INSERT INTO account_info (account_no, account_gender, bir_date, phone, email, post_num, address, address_detail)
+		VALUE (#{accountNo}, #{gender}, #{birth}, #{phone}, #{email}, #{postNum}, #{address}, #{addressDetail})
+	</insert>
+	
+	<select id="loginInfo" parameterType="com.goodee.semi.dto.Account" resultMap="accountDetailResultMap">
+		SELECT * FROM account A
+		INNER JOIN account_info AI ON A.account_no = AI.account_no
+		<where>
+			A.account_id = #{accountId} AND A.account_pw = #{accountPw}
+		</where>
+	</select>
+	
+	<select id="selectAccountByNameAndEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountResultMap">
+		SELECT * FROM account A
+		INNER JOIN account_info AI ON A.account_no = AI.account_no
+		<where>
+			A.account_name = #{name} AND AI.email = #{email}
+		</where>
+	</select>
+	
+	<select id="selectAccountByIdNameEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountResultMap">
+		SELECT * FROM account A
+		INNER JOIN account_info AI ON A.account_no = AI.account_no
+		<where>
+			A.account_id = #{accountId} AND A.account_name = #{name} AND AI.email = #{email}
+		</where>
+	</select>
+	
+	<update id="updateNewPassword" parameterType="com.goodee.semi.dto.AccountDetail">
+		UPDATE account
+		SET account_pw = #{accountPw}
+		<where>
+			account_id = #{accountId}
+		</where>
+	</update>
 </mapper>
