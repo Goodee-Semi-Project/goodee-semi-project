@@ -43,4 +43,9 @@ public class ReviewService {
 		return result;
 	}
 
+	public Review selectReivewOne(int reviewNo) {
+		Review review = reviewDao.selectReivewOne(reviewNo);
+		return review;
+	}
+
 }

@@ -48,4 +48,21 @@
 		INSERT INTO review (class_no ,review_title ,review_content)
 		VALUES (#{classNo} ,#{reviewTitle} ,#{reviewContent})
 	</insert>
+	<select id="selectReivewOne" parameterType="_int" resultMap="reviewResultMap">
+		SELECT r.*, a.account_id
+		FROM review AS r
+		JOIN (
+			SELECT c.class_no ,c.pet_no
+			FROM class AS c
+		) AS c ON r.class_no = c.class_no
+		JOIN (
+			SELECT p.pet_no ,p.account_no
+			FROM pet AS p
+		)AS p ON c.pet_no = p.pet_no
+		JOIN (
+			SELECT a.account_no ,a.account_id
+			FROM account AS a
+		) AS a ON p.account_no = a.account_no
+		WHERE r.review_no = #{ reviewNo }
+	</select>
 </mapper>

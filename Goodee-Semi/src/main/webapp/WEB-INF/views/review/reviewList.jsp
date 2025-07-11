@@ -48,7 +48,7 @@
 					<c:forEach var="r" items="${ reviewList }">
 						<tr>
 							<td>${ r.reviewNo }</td>
-							<td>${ r.reviewTitle }</td>
+							<td onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
 							<td>${ r.accountId }</td>
 							<td>${ r.reviewDate }</td>
 						</tr>
