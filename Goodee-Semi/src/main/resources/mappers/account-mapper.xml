@@ -64,4 +64,12 @@
 			A.account_id = #{accountId} AND A.account_name = #{name} AND AI.email = #{email}
 		</where>
 	</select>
+	
+	<update id="updateNewPassword" parameterType="com.goodee.semi.dto.AccountDetail">
+		UPDATE account
+		SET account_pw = #{accountPw}
+		<where>
+			account_id = #{accountId}
+		</where>
+	</update>
 </mapper>

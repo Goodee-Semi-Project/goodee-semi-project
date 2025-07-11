@@ -39,10 +39,41 @@
 				},
 				dataType : "JSON",
 				success : function(data) {
-					
+					alert(data.resultMsg);
 				},
 				error : function() {
 					alert("인증번호 생성 도중 오류가 발생했습니다.");
+				}
+			});
+		});
+		
+		$("#findPwSubmit").submit((event) => {
+			event.preventDefault();
+			
+			const accountId = $("#accountId").val();
+			const name = $("#name").val();
+			const email = $("#email").val();
+			const authCode = $("#auth").val();
+			
+			$.ajax({
+				url : "/account/findPw",
+				type : "POST",
+				data : {
+					accountId : accountId,
+					name : name,
+					email : email,
+					authCode : authCode
+				},
+				dataType : "JSON",
+				success : function(data) {
+					alert(data.resultMsg);
+					
+					if (data.resultCode == 200) {
+						location.href = "<%= request.getContextPath() %>/account/changePw";
+					}
+				},
+				error : function() {
+					alert("인증번호 확인 도중 오류가 발생했습니다.");
 				}
 			});
 		});
