@@ -37,21 +37,22 @@
 			<ul id="pet-list">
 				<c:forEach var="pet" items="${list }" varStatus="status">
 					<li>
-						<img src="https://picsum.photos/150" alt="">
-						<div class="pet-detail" id="pet-detail-${status.index }">
-							<input type="text" class="pet-name" value="${pet.petName }" disabled>
+						<input type="file" class="pet-img-input" name="petImg" style="display: none;">
+						<img src="<c:url value='/upload${pet.imgFilePath }${pet.imgFileSaveName }'/>" class="pet-img" alt="반려견 이미지">
+						<div class="pet-detail">
+							<input type="text" class="pet-name" name="petName" value="${pet.petName }" disabled>
 							<div>
-								<input type="text" class="pet-age" value="${pet.petAge }" disabled>
+								<input type="text" class="pet-age" name="petAge" value="${pet.petAge }" disabled>
 								<p>살 / <p>
-								<input type="text" class="pet-gender" value="${pet.petGender }" disabled>
+								<input type="text" class="pet-gender" name="petGender" value="${pet.petGender }" disabled>
 							</div>
-							<input type="text" class="pet-breed" value="${pet.petBreed }" disabled>
-							<input type="hidden" class="pet-no" value="${pet.petNo }">
-							<input type="hidden" class="account-no" value="${pet.accountNo }">
+							<input type="text" class="pet-breed" name="petBreed" value="${pet.petBreed }" disabled>
+							<input type="hidden" class="pet-no" name="petNo" value="${pet.petNo }">
+							<input type="hidden" class="account-no" name="accountNo" value="${pet.accountNo }">
 						</div>
-						<div class="pet-btn" id="pet-btn-${status.index }">
-							<button class="pet-btn-up" id="pet-btn-up-${status.index }">수정</button>
-							<button class="pet-btn-del" id="pet-btn-del-${status.index }">삭제</button>
+						<div class="pet-btn">
+							<button class="pet-btn-up">수정</button>
+							<button class="pet-btn-del">삭제</button>
 						</div>
 						<hr>
 					</li>
