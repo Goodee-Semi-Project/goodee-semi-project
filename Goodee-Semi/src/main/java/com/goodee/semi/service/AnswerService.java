@@ -41,4 +41,8 @@ public class AnswerService {
 		return answerDao.updateAnswer(answer);
 	}
 	
+	public int deleteAnswer(int questNo) {
+		return answerDao.deleteAnswer(questNo);
+	}
+	
 }
