@@ -55,7 +55,7 @@
 	<script>
 	$(document).ready(function(){
 		$("#btn_delete_question").click(function(){
-			if(confirm("정말 삭제하시겠습니까??")) {			
+			if(confirm("정말 삭제하시겠습니까??")) {
 				$.ajax({
 					url : "/qnaBoard/questionDelete?no="+${question.questNo},
 					type : "get",
@@ -88,14 +88,6 @@
 			}
 		})
 	});
-	
-	
-	
-	
-	
-	
-	
-	
 	</script>
 </body>
 </html>

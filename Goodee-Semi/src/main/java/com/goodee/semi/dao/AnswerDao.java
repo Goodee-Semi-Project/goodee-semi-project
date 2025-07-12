@@ -28,4 +28,11 @@ public class AnswerDao {
 		return result;
 	}
 	
+	public int deleteAnswer(int questNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.AnswerMapper.deleteAnswer", questNo);
+		session.close();
+		return result;
+	}
+	
 }

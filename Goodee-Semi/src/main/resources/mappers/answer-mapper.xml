@@ -29,4 +29,9 @@
 		SET answer_content = #{answerContent} ,account_no = #{accountNo}
 		WHERE quest_no = #{questNo}
 	</update>
+	
+	<delete id="deleteAnswer" parameterType="_int">
+		DELETE FROM answer
+		WHERE quest_no = #{questNo}
+	</delete>
 </mapper>
