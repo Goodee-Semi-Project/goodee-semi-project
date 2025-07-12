@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Question;
 import com.goodee.semi.service.AnswerService;
 
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/qnaBoard/answerAdd")
 public class AnswerAddServlet extends HttpServlet {
@@ -23,11 +25,25 @@ public class AnswerAddServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 int questNo = Integer.parseInt(request.getParameter("no"));
-		 Question question = service.selectOneQuest(questNo);
-		 
-		 request.setAttribute("question", question);
-		 request.getRequestDispatcher("/WEB-INF/views/question/answerAdd.jsp").forward(request, response);
+		HttpSession session = request.getSession();
+		
+		// 권한 유효성 검사
+		Account account = null;
+		if(session.getAttribute("loginAccount") != null) {
+			account = (Account)session.getAttribute("loginAccount");
+			if(account.getAuthor() != 1) {
+				response.sendRedirect(request.getContextPath()+"/WEB-INF/views/question/qnaBoardList.jsp");
+				return;
+			}
+		}
+		
+		// 답변을 작성할 해당 질문글을 번호로 조회
+		int questNo = Integer.parseInt(request.getParameter("no"));
+		Question question = service.selectOneQuest(questNo);
+		
+		request.setAttribute("question", question);
+		request.setAttribute("answer", null);
+		request.getRequestDispatcher("/WEB-INF/views/answer/answerAdd.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,6 +52,10 @@ public class AnswerAddServlet extends HttpServlet {
 		int accountNo = Integer.parseInt(request.getParameter("answerAccountNo"));
 		int questNo = Integer.parseInt(request.getParameter("questNo"));
 		String answerContent = request.getParameter("answerContent");
+		
+		System.out.println(accountNo);
+		System.out.println(questNo);
+		System.out.println(answerContent);
 		
 		int result = service.insertAnswer(accountNo, questNo, answerContent);
 		
