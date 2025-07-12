@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.AttachmentMapper">
+
+	<resultMap id="AttachmentResultMap" type="com.goodee.semi.dto.Attachment">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="oriName" column="ori_name" />
+		<result property="saveName" column="save_name" />
+	</resultMap>
+	
+	<update id="updateAttachment" parameterType="com.goodee.semi.dto.Pet">
+		UPDATE attachment
+		SET ori_name = #{oriName},
+		save_name = #{saveName}
+		<where>
+			type_no = #{typeNo}
+			AND pk_no = #{pkNo}
+		</where>
+	</update>
+</mapper>

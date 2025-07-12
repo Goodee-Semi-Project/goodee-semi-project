@@ -9,6 +9,11 @@
 // 페이지 로드 > 요소 가져오기 > 클릭 이벤트 감지 > 
 
 
+// 요소를 클릭하는 함수
+function clickElement (e) {
+	e.click();
+};
+
 // 모든 버튼 요소 가져옴
 const btnUpArr =  document.querySelectorAll('.pet-btn-up');
 const btnDelArr = document.querySelectorAll('.pet-btn-del');
@@ -31,47 +36,64 @@ btnUpArr.forEach(function (btn, idx) {
         const btnSave = '<button class="pet-btn-save">수정 완료</button>';
         petBtnDiv.innerHTML = btnSave;
 
+        // TODO 반려견 이미지 삭제 기능 추가
+        // 1) 반려견 이미지 img 클릭 시 input:file의 클릭 이벤트(파일 선택창 열기)를 발생시킴
+        const petImg = petBtnDiv.parentElement.querySelector('.pet-img');
+        const petImgInput = petBtnDiv.parentElement.querySelector('.pet-img-input');
+
+		petImg.addEventListener('click', function() {
+			clickElement(petImgInput); // 파일 input 클릭 유도
+		});
+
+        // 2) 파일을 선택하면 이미지 프리뷰를 반려견 이미지 img에 띄움
+        petImgInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    petImg.src = e.target.result; // 미리보기
+                };
+                reader.readAsDataURL(file); // reader.onload 실행
+            }
+        });
+
         // 4. save 버튼 누를 시 ajax로 수정 요청 보내고 응답받아 input 안의 value 수정 &
         // 버튼 되돌리고 input disabled로 전환
         const newPetBtn = petBtnDiv.querySelector('.pet-btn-save');
         newPetBtn.addEventListener('click', function (btn) {
             // 1) ajax로 요청 보내고 응답 받아 value 수정
-            // (1) input 안의 value값 가져오기
-            const petName = petDetailEl.querySelector('.pet-name').value;
-            const petAge = petDetailEl.querySelector('.pet-age').value;
-            const petGender = petDetailEl.querySelector('.pet-gender').value;
-            const petBreed = petDetailEl.querySelector('.pet-breed').value;
-            const petNo = petDetailEl.querySelector('.pet-no').value;
-            const accountNo = petDetailEl.querySelector('.account-no').value;
+            // (1) 이미지 파일도 가져와야 하므로 input 안의 value값을 가져와서 FormData에 바인딩
+            const petName = petBtnDiv.parentElement.querySelector('.pet-name').value;
+            const petAge = petBtnDiv.parentElement.querySelector('.pet-age').value;
+            const petGender = petBtnDiv.parentElement.querySelector('.pet-gender').value;
+            const petBreed = petBtnDiv.parentElement.querySelector('.pet-breed').value;
+            const petNo = petBtnDiv.parentElement.querySelector('.pet-no').value;
+            const accountNo = petBtnDiv.parentElement.querySelector('.account-no').value;
+            
+            const formData = new FormData();
+            formData.append("petName", petName);
+            formData.append("petAge", petAge);
+            formData.append("petGender", petGender);
+            formData.append("petBreed", petBreed);
+            formData.append("petNo", petNo);
+            formData.append("accountNo", accountNo);
+            formData.append("petImg", petImgInput.files[0]);
 
-            // TODO 유효성 검사 추가하기
-            // TODO 이미지 수정 기능 추가하기
+            // TODO 정보, 사진 유효성 검사 추가하기
 
             // (2) ajax
             $.ajax({
                 url: '/myPet/update',
                 type: 'post',
-                data: {
-                    petName: petName,
-                    petAge: petAge,
-                    petGender: petGender,
-                    petBreed: petBreed,
-                    petNo: petNo,
-                    accountNo: accountNo,
-                },
+                data: formData,
+                processData: false, //  jQuery가 데이터를 문자열로 변환하지 않게 함
+                contentType: false, // multipart/form-data 헤더를 브라우저가 자동으로 넣게 함
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data.resCode);
-                    console.log(data.resMsg);
-                    console.log(data.petName);
-                    console.log(data.petAge);
-                    console.log(data.petGender);
-                    console.log(data.petBreed);
-                    console.log(data.petNo);
-                    console.log(data.accountNo);
+                    console.log('응답:', data);
                 },
-				error: function (msg) {
-					console.log(msg);
+				error: function (err) {
+					console.log('에러:', err);
 				}
             });
             
@@ -87,6 +109,11 @@ btnUpArr.forEach(function (btn, idx) {
             // 3) 수정 버튼 클릭 시 이벤트 다시 달기 (재귀적으로 호출)
             const newEditBtn = petBtnDiv.querySelector('.pet-btn-up');
             newEditBtn.addEventListener('click', handleEditClick);
+			
+			// 4) 이미지 클릭 시의 이벤트리스너 제거
+			petImg.removeEventListener('click', clickElement);
         });            
     });
 });
+
+// TODO 삭제 버튼 클릭 시 이벤트

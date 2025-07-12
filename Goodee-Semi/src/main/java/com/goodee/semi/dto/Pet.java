@@ -20,4 +20,6 @@ public class Pet extends Paging {
 	private char petGender;
 	private int petAge;
 	private String petBreed;
+	private String imgFilePath;
+	private String imgFileSaveName;
 }
