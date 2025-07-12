@@ -11,11 +11,15 @@
 		<result property="petGender" column="pet_gender" />
 		<result property="petAge" column="pet_age" />
 		<result property="petBreed" column="pet_breed" />
+		<result property="imgFilePath" column="type_path" />
+		<result property="imgFileSaveName" column="save_name" />
 	</resultMap>
 	
 	<select id="selectPetList" parameterType="com.goodee.semi.dto.Pet" resultMap="petResultMap">
-		SELECT *
-		FROM pet
+		SELECT pet_no, account_no, pet_name, pet_gender, pet_age, pet_breed, type_path, save_name
+		FROM pet p
+		JOIN attachment a ON (p.pet_no = a.pk_no)
+		JOIN attach_type at ON (a.type_no = at.type_no)
 		<where>
 			account_no = #{accountNo}
 		</where>
