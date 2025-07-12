@@ -21,4 +21,11 @@ public class AnswerDao {
 		return result;
 	}
 	
+	public int updateAnswer(Answer answer) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.AnswerMapper.updateAnswer", answer);
+		session.close();
+		return result;
+	}
+	
 }

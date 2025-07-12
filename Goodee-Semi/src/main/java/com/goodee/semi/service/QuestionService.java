@@ -23,7 +23,6 @@ public class QuestionService {
 		Answer answer = answerDao.selectOneAnswer(questNo);
 		map.put("question", question);
 		map.put("answer", answer);
-		
 		return map;
 	}
 

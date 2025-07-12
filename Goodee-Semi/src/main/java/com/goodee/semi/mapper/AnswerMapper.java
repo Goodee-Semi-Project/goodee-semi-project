@@ -8,4 +8,5 @@ public interface AnswerMapper {
 	
 	int insertAnswer(Answer answer);
 	
+	int updateAnswer(Answer answer);
 }
