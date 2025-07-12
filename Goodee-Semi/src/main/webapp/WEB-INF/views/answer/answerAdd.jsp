@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Qna 답변작성</title>
+<title>QnA 답변작성</title>
 
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
@@ -22,7 +22,6 @@
 	<form id="add_list_form">
 		<input type="hidden" id="answer_account_no" value="${loginAccount.accountNo}">
 		<input type="hidden" id="quest_no" value="${question.questNo}">
-		<label for="answer_title">제목</label>
 		<textarea rows="40" cols="70" id="answer_content" style="resize: none; display: block"></textarea>
 		<button type="button" onclick="location.href='<c:url value="/qnaBoard/list"/>'">목록</button>
 		<button type="submit" id="btn_reg">답변등록</button>
@@ -35,16 +34,14 @@
 		e.preventDefault();
 		
 		if(confirm("답변을 등록하시겠습니까?")) {
-		
 			const answerAccountNo = $("#answer_account_no").val();
 			const questNo = $("#quest_no").val();
 			const answerContent = $("#answer_content").val();
 			
 			if(!answerContent) {
-				alert("제목과 내용을 모두 작성해주세요");
+				alert("내용을 작성해주세요");
 				return;
 			}
-			
 			$.ajax({
 				url : "/qnaBoard/answerAdd",
 				type : "post",
@@ -61,10 +58,8 @@
 					} else {
 						alert(data.res_msg);
 					}
-					
 				}
 			})
-			
 		};
 	});
 		

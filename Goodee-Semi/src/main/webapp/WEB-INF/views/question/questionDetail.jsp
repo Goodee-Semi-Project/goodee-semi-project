@@ -37,15 +37,17 @@
        			value="수정">
 			<input type="button" id="btn_delete_question" value="삭제">				
 		</c:if>
-		<c:choose>
-			<c:when test="${empty answer}">
-				<button type="button" onclick="location.href='${request.contextPath()}/qnaBoard/answerAdd?no=${question.questNo}'">답변등록</button>
-			</c:when>
-			<c:otherwise>
-				<button type="button" id="btn_update_answer">수정</button>
-				<button type="button" id="btn_delete_answer">삭제</button>
-			</c:otherwise>
-		</c:choose>
+		<c:if test="${loginAccount.author eq 1}">
+			<c:choose>
+				<c:when test="${empty answer}">
+					<button type="button" onclick="location.href='${request.contextPath()}/qnaBoard/answerAdd?no=${question.questNo}'">답변등록</button>
+				</c:when>
+				<c:otherwise>
+					<button type="button" onclick="location.href='${request.contextPath()}/qnaBoard/answerUpdate?no=${question.questNo}'">답변수정</button>
+					<button type="button" id="btn_delete_answer">답변삭제</button>
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 	</c:if>
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
@@ -67,6 +69,32 @@
 			}		
 		});
 	});
+
+	$(document).ready(function(){
+		$("#btn_delete_answer").click(function(){
+			if(confirm("정말 삭제하시겠습니까?")) {
+				$.ajax({
+					url : "/qnaBoard/answerDelete?no="+${question.questNo},
+					type : "get",
+					success : function(data) {
+						if(data.res_code == 200) {
+							alert(data.res_msg);
+							location.href = "<%=request.getContextPath()%>/qnaBoard/detail?no=" + ${question.questNo};
+						} else if(data.res_code == 500) {
+							alert(data.res_msg);
+						}
+					}
+				})				
+			}
+		})
+	});
+	
+	
+	
+	
+	
+	
+	
 	
 	</script>
 </body>
