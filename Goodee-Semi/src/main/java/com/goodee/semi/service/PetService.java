@@ -79,5 +79,9 @@ private AttachmentDao attachmentDao = new AttachmentDao();
 		
 		return result;
 	}
+
+	public int insertPet(int accountNo) {
+		return petDao.insertPet(accountNo);
+	}
 	
 }

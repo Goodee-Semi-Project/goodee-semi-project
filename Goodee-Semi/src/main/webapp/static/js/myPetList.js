@@ -194,3 +194,87 @@ document.querySelectorAll('.pet-btn-del').forEach(btn => {
 document.querySelector('#delete-confirm-btn').addEventListener('click', deletePetEvent);
 document.querySelector('#delete-close-btn').addEventListener('click', closeDeleteModal);
 
+/////////////////////////////// 등록 /////////////////////////////// 
+// 추가 등록 버튼 클릭 시 input form 생성
+document.querySelector('#add-pet-btn').addEventListener('click', () => {
+    const petList = document.querySelector('#pet-list');
+    const newLi = document.createElement('li');
+
+    newLi.innerHTML = `
+        <input type="file" class="pet-img-input" name="petImg" style="display: none;">
+        <img src="/static/images/default-pet.png" class="pet-img" alt="반려견 이미지">
+        <div class="pet-detail">
+            <input type="text" class="pet-name" placeholder="이름">
+            <div>
+                <input type="text" class="pet-age" placeholder="나이">
+                <p>살 / <p>
+                <input type="text" class="pet-gender" placeholder="성별">
+            </div>
+            <input type="text" class="pet-breed" placeholder="견종">
+            <input type="hidden" class="account-no" value="${document.querySelector('.account-no')?.value || ''}">
+        </div>
+        <div class="pet-btn">
+            <button class="pet-btn-up">등록</button>
+            <button class="pet-btn-del">삭제</button>
+        </div>
+        <hr>
+    `;
+
+    petList.appendChild(newLi);
+    newLi.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // 등록 버튼에 insert 기능 연결
+    newLi.querySelector('.pet-btn-up').addEventListener('click', () => {
+        const petName = newLi.querySelector('.pet-name').value;
+        const petAge = newLi.querySelector('.pet-age').value;
+        const petGender = newLi.querySelector('.pet-gender').value;
+        const petBreed = newLi.querySelector('.pet-breed').value;
+        const accountNo = newLi.querySelector('.account-no').value;
+        const petImgInput = newLi.querySelector('.pet-img-input');
+
+        const formData = new FormData();
+        formData.append('petName', petName);
+        formData.append('petAge', petAge);
+        formData.append('petGender', petGender);
+        formData.append('petBreed', petBreed);
+        formData.append('accountNo', accountNo);
+        formData.append('petImg', petImgInput.files[0]);
+
+        $.ajax({
+            url: '/myPet/insert',
+            type: 'post',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function () {
+                alert('등록되었습니다.');
+                location.href = '/myPet/list';
+            },
+            error: function (err) {
+                console.log('에러:', err);
+                alert('등록 실패');
+            }
+        });
+    });
+
+    // 삭제 버튼 기능
+    newLi.querySelector('.pet-btn-del').addEventListener('click', () => {
+        newLi.remove();
+    });
+
+    // 이미지 업로드 미리보기 연결
+    const petImg = newLi.querySelector('.pet-img');
+    const petImgInput = newLi.querySelector('.pet-img-input');
+    petImg.addEventListener('click', () => petImgInput.click());
+
+    petImgInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => petImg.src = e.target.result;
+            reader.readAsDataURL(file);
+        }
+    });
+});
+
