@@ -10,4 +10,5 @@ public interface PetMapper {
 	 List<Pet> selectPetList(Pet param);
 	 int selectPetCount(Pet param);
 	 int updatePet(SqlSession session, Pet param);
+	 int deletePet(SqlSession session, int petNo);
 }

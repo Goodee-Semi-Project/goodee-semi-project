@@ -75,7 +75,18 @@
 
 		</section>
 	</div>
+	
 	<!-- footer -->
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	
+	<!-- delete modal -->
+	<div id="delete-modal-box" style="display:none; position: fixed; top: 0; width: 100%; height: 100%; background: rgba(50, 50, 50, 0.5); justify-content: center; align-items: center;">
+		<div id="delete-modal" style="background: white;">
+			<p>정말 삭제하시겠습니까?</p>
+			<input type="text" id="delete-input" placeholder="정보를 삭제하려면 '삭제' 입력">
+			<button id="delete-confirm-btn">확인</button>
+			<button id="delete-close-btn">취소</button>
+		</div>
+	</div>
 </body>
 </html>
