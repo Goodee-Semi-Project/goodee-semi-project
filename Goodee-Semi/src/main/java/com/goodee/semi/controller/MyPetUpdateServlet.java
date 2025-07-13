@@ -42,16 +42,6 @@ public class MyPetUpdateServlet extends HttpServlet {
 		int petNo = Integer.parseInt(request.getParameter("petNo"));
 		int accountNo = Integer.parseInt(request.getParameter("accountNo"));
 		
-		// 이미지 파일 받기
-		Part petImgPart = request.getPart("petImg");
-		
-		// 파일 이름 변경
-		String uploadPath = "C:/goodee/upload/pet";
-		String oriFileName = petImgPart.getSubmittedFileName();
-		String fileExtension = oriFileName.substring(oriFileName.lastIndexOf("."));
-		String uuid = UUID.randomUUID().toString().replace("-", "");
-		String saveFileName = uuid + fileExtension;
-				
 		// Pet 객체에 바인딩
 		Pet pet = new Pet();
 		pet.setPetName(petName);
@@ -61,25 +51,45 @@ public class MyPetUpdateServlet extends HttpServlet {
 		pet.setPetNo(petNo);
 		pet.setAccountNo(accountNo);
 		
-		// Attachment 객체에 바인딩
-		Attachment attachment = new Attachment();
-		attachment.setOriName(oriFileName);
-		attachment.setSaveName(saveFileName);
-		attachment.setPkNo(petNo);
-		attachment.setTypeNo(2);
+		// 이미지 파일 받기
+		Part petImgPart = request.getPart("petImg");
+		System.out.println("petImgPart: " + petImgPart);
 		
+		String uploadPath = "C:/goodee/upload/pet";
+		String oriFileName = petImgPart.getSubmittedFileName();
+		String fileExtension;
+		String uuid;
+		String saveFileName;
+		
+		Attachment attachment = new Attachment();;
+
+		// 이미지 파일이 업로드된 경우에만 이미지 정보 수정
+		if(oriFileName != null) {
+			// 업로드된 경우
+			// 1. 파일 경로, 이름 지정
+			fileExtension = oriFileName.substring(oriFileName.lastIndexOf("."));
+			uuid = UUID.randomUUID().toString().replace("-", "");
+			saveFileName = uuid + fileExtension;
+			
+			// 2. 로컬에 파일 저장
+			// 1) 폴더 없으면 생성
+			File uploadDir = new File(uploadPath);
+			if (!uploadDir.exists()) {
+			    uploadDir.mkdirs(); // 폴더 없으면 생성
+			}
+			
+			// 2) 파일 저장
+			petImgPart.write(uploadPath + "/" + saveFileName);
+			
+			// Attachment 객체에 바인딩
+			attachment.setOriName(oriFileName);
+			attachment.setSaveName(saveFileName);
+			attachment.setPkNo(petNo);
+			attachment.setTypeNo(2);
+		}
+				
 		// 4. service의 수정 로직 호출 -> 실패: 상태 코드 전달 | 성공: 상태 코드와 수정한 값 전달
 		int result = service.updatePet(pet, attachment);
-		
-		// 5. 로컬에 파일 저장
-		// 1) 폴더 없으면 생성
-		File uploadDir = new File(uploadPath);
-		if (!uploadDir.exists()) {
-		    uploadDir.mkdirs(); // 폴더 없으면 생성
-		}
-		
-		// 2) 파일 저장
-		petImgPart.write(uploadPath + "/" + saveFileName);	
 		
 		// 6. json에 정보 바인딩
 		String resCode = "";

@@ -14,11 +14,25 @@
 	
 	<update id="updateAttachment" parameterType="com.goodee.semi.dto.Pet">
 		UPDATE attachment
-		SET ori_name = #{oriName},
-		save_name = #{saveName}
+		<set>
+		  <if test="oriName != null"> ori_name = #{oriName}, </if>
+		  <if test="saveName != null"> save_name = #{saveName}, </if>
+		  type_no = type_no
+		</set>
 		<where>
-			type_no = #{typeNo}
-			AND pk_no = #{pkNo}
+		  type_no = #{typeNo}
+		  AND pk_no = #{pkNo}
 		</where>
 	</update>
+	
+	<delete id="deleteAttachment" parameterType="_int">
+		DELETE a
+		FROM attachment a
+		JOIN (
+			SELECT attach_no
+			FROM attachment
+			WHERE pk_no = #{pet_no}
+			) b
+			ON a.attach_no = b.attach_no;
+	</delete>
 </mapper>
