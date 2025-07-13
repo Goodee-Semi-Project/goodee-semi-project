@@ -30,7 +30,7 @@
 		<section>
 			<div id="title">
 				<h3>등록된 반려견</h3>
-				<button><span>+</span> 추가 등록</button>
+				<button id="pet-add-btn" data-account-no="${loginAccount.accountNo }"><span>+</span> 추가 등록</button>
 			</div>
 			<hr>
 
