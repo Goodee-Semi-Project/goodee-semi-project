@@ -10,5 +10,9 @@ public class AttachmentDao implements AttachmentMapper {
 	public int updateAttachment(SqlSession session, Attachment param) {
 		return session.update("com.goodee.semi.mapper.AttachmentMapper.updateAttachment", param);
 	}
+
+	public int deleteAttachment(SqlSession session, int petNo) {
+		return session.update("com.goodee.semi.mapper.AttachmentMapper.deleteAttachment", petNo);
+	}
 	
 }

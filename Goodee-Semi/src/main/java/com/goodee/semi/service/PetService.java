@@ -51,5 +51,33 @@ private AttachmentDao attachmentDao = new AttachmentDao();
 		
 		return result;
 	}
+
+	public int deletePet(int petNo) {
+		System.out.println("DeletePetWithAttach() petNo:" + petNo);
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			// 1. 반려견 삭제
+			result = petDao.deletePet(session, petNo);
+			
+			// 2. 파일 정보 삭제
+			result = attachmentDao.deleteAttachment(session, petNo);
+			
+			// 3. commit 또는 rollback 처리
+			if(result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
+	}
 	
 }

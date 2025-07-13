@@ -42,4 +42,12 @@
 			AND pet_no = #{petNo}
 		</where>
 	</update>
+	
+	<delete id="deletePet" parameterType="_int">
+		DELETE
+		FROM pet
+		<where>
+			pet_no = #{petNo}
+		</where>
+	</delete>
 </mapper>
