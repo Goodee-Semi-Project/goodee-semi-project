@@ -50,4 +50,9 @@
 			pet_no = #{petNo}
 		</where>
 	</delete>
+	
+	<insert id="insertPet" parameterType="_int">
+		INSERT INTO pet (account_no)
+		VALUES (#{accountNo})
+	</insert>
 </mapper>
