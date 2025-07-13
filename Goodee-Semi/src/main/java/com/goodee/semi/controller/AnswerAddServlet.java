@@ -53,14 +53,9 @@ public class AnswerAddServlet extends HttpServlet {
 		int questNo = Integer.parseInt(request.getParameter("questNo"));
 		String answerContent = request.getParameter("answerContent");
 		
-		System.out.println(accountNo);
-		System.out.println(questNo);
-		System.out.println(answerContent);
-		
 		int result = service.insertAnswer(accountNo, questNo, answerContent);
 		
 		JSONObject obj = new JSONObject();
-		
 		if(result > 0) {
 			obj.put("res_code", "200");
 			obj.put("res_msg", "답변이 등록되었습니다");
@@ -71,7 +66,6 @@ public class AnswerAddServlet extends HttpServlet {
 		
 		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().print(obj);
-		
 	}
 
 }
