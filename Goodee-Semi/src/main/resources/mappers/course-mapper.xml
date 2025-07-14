@@ -43,7 +43,7 @@
 		</where>
 	</update>
 	
-	<select id="selectAllCourse" parameterType="_int" resultMap="courseResultMap">
+	<select id="selectAllCourseByAccountNo" parameterType="_int" resultMap="courseResultMap">
 		SELECT 
 			account_no,
 			c.course_no,
@@ -57,7 +57,7 @@
 		GROUP BY account_no, c.course_no, c.title, c.capacity, c.thumb
 	</select>
 	
-	<select id="selectAllAttach" parameterType="_int" resultMap="attachResultMap">
+	<select id="selectAllAttachByAccountNo" parameterType="_int" resultMap="attachResultMap">
 		SELECT *
 		FROM course c
 		LEFT JOIN attachment a ON c.thumb = a.attach_no
