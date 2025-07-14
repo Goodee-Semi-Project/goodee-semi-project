@@ -13,13 +13,18 @@
 
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
+	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
+	<h3 class="widget-header">
+  	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
+  </h3>
+	
 	
 	<c:if test="${ sessionScope.loginAccount.author eq 1 }">
 		<a href="<c:url value='/myCourse/create' />">새 교육과정 생성</a>
 	</c:if>
 	
 	
-	
+	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </body>
 
