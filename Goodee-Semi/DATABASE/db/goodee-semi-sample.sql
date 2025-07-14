@@ -21,15 +21,16 @@ INSERT INTO account VALUES
 (6, 2, 'cloud2931', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '박태우', 'Y'),
 (7, 2, 'stone7645', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '최영민', 'Y'),
 (8, 2, 'rain6273', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '정지훈', 'Y');
-
-
+	
 INSERT INTO account_info VALUES
 (1, 1, '2025-07-11 16:44:09', 'M', '000101', '010-4444-3321', 'comasocean@gmail.com', '08591', '서울 금천구 가산디지털1로 16', 'KM타워'),
-(2, 4, '2025-07-11 16:45:07', 'M', '950218', '010-2384-6721', 'sunbeam42@example.com', '08500', '서울 금천구 가마산로 70', '민수분식'),
-(3, 5, '2025-07-11 16:46:16', 'F', '020715', '010-9832-1475', 'windfox88@example.com', '12661', '경기 여주시 가남읍 가남로 9', '서진물류'),
-(4, 6, '2025-07-11 16:47:17', 'M', '870403', '010-4729-0012', 'greentree5@example.com', '48755', '부산 동구 성남로 24', '태우건설'),
-(5, 7, '2025-07-11 16:48:01', 'M', '991130', '010-5810-3902', 'moonlit22@example.com', '37947', '경북 포항시 남구 장기면 계원길 1', '하늘정원'),
-(6, 8, '2025-07-11 16:49:32', 'M', '760512', '010-3321-4871', 'pebblestream@example.com', '25436', '강원특별자치도 강릉시 사천면 가마골길 10', '강릉맥주');
+(2, 2, '2025-07-11 16:45:01', 'M', '900115', '010-5532-4455', 'dogking88@example.com', '17064', '경기 용인시 기흥구 신구로 6-1', '모모훈련소'),
+(3, 3, '2025-07-11 16:45:04', 'M', '871018', '010-7777-8912', 'catqueen95@example.com', '17064', '경기 용인시 기흥구 신구로 6-1', '모모훈련소'),
+(4, 4, '2025-07-11 16:45:07', 'M', '950218', '010-2384-6721', 'sunbeam42@example.com', '08500', '서울 금천구 가마산로 70', '민수분식'),
+(5, 5, '2025-07-11 16:46:16', 'F', '020715', '010-9832-1475', 'windfox88@example.com', '12661', '경기 여주시 가남읍 가남로 9', '서진물류'),
+(6, 6, '2025-07-11 16:47:17', 'M', '870403', '010-4729-0012', 'greentree5@example.com', '48755', '부산 동구 성남로 24', '태우건설'),
+(7, 7, '2025-07-11 16:48:01', 'M', '991130', '010-5810-3902', 'moonlit22@example.com', '37947', '경북 포항시 남구 장기면 계원길 1', '하늘정원'),
+(8, 8, '2025-07-11 16:49:32', 'M', '760512', '010-3321-4871', 'pebblestream@example.com', '25436', '강원특별자치도 강릉시 사천면 가마골길 10', '강릉맥주');
 
 
 INSERT INTO pet (pet_no, account_no, pet_name, pet_gender, pet_age, pet_breed) VALUES
