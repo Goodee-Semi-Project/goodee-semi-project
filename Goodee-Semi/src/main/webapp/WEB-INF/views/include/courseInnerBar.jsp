@@ -4,7 +4,7 @@
 <c:choose>
 	<c:when test="${ loginAccount.author eq 1 }">
 		<a href="<c:url value='/myCourse/list' />">내 교육과정</a>
-		<a href="<c:url value='/' />">사전학습 등록</a>
+		<a href="<c:url value='/preCourse/manage' />">사전학습 등록</a>
 		<a href="<c:url value='/myCourse/memberManagement' />">회원 관리</a>
 		<a href="<c:url value='/myCourse/like' />">수강신청 관리</a>
 	</c:when>

@@ -40,4 +40,10 @@
 			course_no = #{courseNo}
 		</where>
 	</update>
+	
+	<select id="selectList" parameterType="_int" resultMap="courseResultMap">
+		SELECT *
+		FROM course
+		WHERE account_no = #{ accountNo }
+	</select>
 </mapper>

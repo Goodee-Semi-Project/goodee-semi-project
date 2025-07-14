@@ -1,7 +1,10 @@
 package com.goodee.semi.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
+import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
 
@@ -25,6 +28,13 @@ public class CourseDao {
 		int result = session.update("com.goodee.semi.mapper.CourseMapper.updateCourseThumb", course);
 		
 		return result;
+	}
+
+	public List<Course> selectList(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Course> list = session.selectList("com.goodee.semi.mapper.CourseMapper.selectList", accountNo);
+		session.close();
+		return list;
 	}
 
 }
