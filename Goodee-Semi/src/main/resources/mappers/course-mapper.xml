@@ -24,6 +24,24 @@
 		<result property="savedName" column="save_name" />
 	</resultMap>
 	
+	<select id="selectCourseOne" parameterType="string" resultMap="courseResultMap">
+		SELECT
+				C.course_no
+			, C.account_no
+			, C.title
+			, C.sub_title
+			, C.object
+			, C.total_step
+			, C.capacity
+			, C.thumb
+			, A.account_name
+		FROM course C
+		INNER JOIN account A ON C.account_no = A.account_no
+		<where>
+			C.course_no = #{courseNo}
+		</where>
+	</select>
+	
 	<select id="selectCourse" parameterType="com.goodee.semi.dto.Course" resultMap="courseResultMap">
 		SELECT
 				C.course_no
