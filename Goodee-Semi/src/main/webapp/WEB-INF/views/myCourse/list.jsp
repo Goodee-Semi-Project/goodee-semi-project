@@ -13,8 +13,9 @@
 
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
+	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
 	
-	<c:if test="${ sessionScope.loginAccount.author eq 2 }">
+	<c:if test="${ sessionScope.loginAccount.author eq 1 }">
 		<a href="<c:url value='/myCourse/create' />">새 교육과정 생성</a>	
 	</c:if>
 	

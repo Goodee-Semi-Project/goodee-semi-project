@@ -25,4 +25,5 @@ public class Course {
 	
 	private Attach thumbAttach;
 	private Attach inputAttach;
+	private int currentEnrollment;
 }
