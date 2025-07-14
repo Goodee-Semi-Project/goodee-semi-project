@@ -36,11 +36,8 @@ public class PetDao implements PetMapper {
 	}
 	
 	@Override
-	public int insertPet(int accountNo) {
-		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int result = session.insert("com.goodee.semi.mapper.PetMapper.insertPet", accountNo);
-		session.close();
-		return result;
+	public int insertPet(SqlSession session, Pet param) {
+		return session.insert("com.goodee.semi.mapper.PetMapper.insertPet", param);
 	}
 	
 }

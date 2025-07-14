@@ -41,7 +41,6 @@ public class MyPetInsertServlet extends HttpServlet {
 		int petAge = Integer.parseInt(request.getParameter("petAge"));
 		char petGender = (request.getParameter("petGender").equals("남")) ? 'M' : 'F';
 		String petBreed = request.getParameter("petBreed");
-		int petNo = Integer.parseInt(request.getParameter("petNo"));
 		int accountNo = Integer.parseInt(request.getParameter("accountNo"));
 		
 		// Pet 객체에 바인딩
@@ -50,7 +49,6 @@ public class MyPetInsertServlet extends HttpServlet {
 		pet.setPetAge(petAge);
 		pet.setPetGender(petGender);
 		pet.setPetBreed(petBreed);
-		pet.setPetNo(petNo);
 		pet.setAccountNo(accountNo);
 		
 		// 이미지 파일 받기
@@ -86,12 +84,11 @@ public class MyPetInsertServlet extends HttpServlet {
 			// Attachment 객체에 바인딩
 			attachment.setOriName(oriFileName);
 			attachment.setSaveName(saveFileName);
-			attachment.setPkNo(petNo);
 			attachment.setTypeNo(2);
 		}
 				
-		// 4. service의 수정 로직 호출 -> 실패: 상태 코드 전달 | 성공: 상태 코드와 수정한 값 전달
-		int result = service.updatePet(pet, attachment);
+		// 4. service의 등록 로직 호출 -> 실패: 상태 코드 전달 | 성공: 상태 코드와 수정한 값 전달
+		int result = service.insertPet(pet, attachment);
 		
 		// 6. json에 정보 바인딩
 		String resCode = "";
@@ -115,7 +112,7 @@ public class MyPetInsertServlet extends HttpServlet {
 		// char 타입 값을 그대로 바인딩하면 값이 ''나 ""로 묶여서 바인딩되지 않아 AJAX에서 parserror를 발생시킴
 		// => String 타입으로 값 전달
 		json.put("petBreed", petBreed);
-		json.put("petNo", petNo);
+		json.put("petNo", pet.getPetNo());
 		json.put("accountNo", accountNo);
 		
 		// 7. 응답 인코딩하고 보내기

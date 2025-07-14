@@ -6,4 +6,6 @@ import com.goodee.semi.dto.Attachment;
 
 public interface AttachmentMapper {
 	int updateAttachment(SqlSession session, Attachment attach);
+	int deleteAttachment(SqlSession session, int petNo);
+	int insertAttachment(SqlSession session, Attachment param);
 }
