@@ -219,7 +219,6 @@ CREATE TABLE IF NOT EXISTS `submit` (
 CREATE TABLE IF NOT EXISTS `attach_type` (
 	`type_no` INT NOT NULL,
 	`type_name` VARCHAR(20) NOT NULL,
-	`type_path` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`type_no`)
 );
 

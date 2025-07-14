@@ -21,5 +21,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <mapper resource="/mappers/question-mapper.xml"/>
 		<mapper resource="/mappers/pet-mapper.xml"/>
     <mapper resource="/mappers/review-mapper.xml"/>
+    <mapper resource="/mappers/course-mapper.xml"/>
 	</mappers>
 </configuration>
