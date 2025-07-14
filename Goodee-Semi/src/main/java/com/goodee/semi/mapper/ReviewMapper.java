@@ -12,4 +12,5 @@ public interface ReviewMapper {
 	int insertReview(SqlSession session, Review review);
 	Review selectReivewOne(int reviewNo);
 	int deleteReview(int reviewNo);
+	int updateReview(SqlSession session, Review review);
 }

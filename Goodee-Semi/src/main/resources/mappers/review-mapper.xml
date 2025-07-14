@@ -9,7 +9,8 @@
 		<result property="reviewTitle" column="review_title" />
 		<result property="accountId" column="account_id" />
 		<result property="reviewContent" column="review_content" />
-		<result property="reviewDate" column="review_date" />
+		<result property="regDate" column="reg_date" />
+		<result property="modDate" column="mod_date" />
 	</resultMap>
 	<select id="selectReviewCount" parameterType="com.goodee.semi.dto.Review" resultType="_int">
 		SELECT COUNT(*)
@@ -69,4 +70,9 @@
 		DELETE FROM review
 		WHERE review_no = #{ reviewNo }
 	</delete>
+	<update id="updateReview" parameterType="com.goodee.semi.dto.Review" >
+		UPDATE review
+		SET review_title = #{ reviewTitle } ,review_content = #{ reviewContent }
+		WHERE review_no = #{ reviewNo }
+	</update>
 </mapper>

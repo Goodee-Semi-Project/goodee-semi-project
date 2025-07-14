@@ -20,7 +20,7 @@ public class ReviewService {
 		return list;
 	}
 
-	public int createReview(Review review) {
+	public int insertReview(Review review) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
 		int result = -1;
 		
@@ -50,6 +50,29 @@ public class ReviewService {
 
 	public int deleteReview(int reviewNo) {
 		int result = reviewDao.deleteReview(reviewNo);
+		return result;
+	}
+
+	public int updateReview(Review review) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = -1;
+		
+		// 첨부파일 클래스, DAO가 정해지면 트랜잭션으로 처리
+		try {
+			result = reviewDao.updateReview(session, review);
+			
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
 		return result;
 	}
 

@@ -63,7 +63,7 @@ public class ReviewWriteServlet extends HttpServlet {
 		// TODO: 첨부파일 클래스 논의 후 작성
 		
 		// 데이터베이스에 추가
-		int result = service.createReview(review);
+		int result = service.insertReview(review);
 		
 		JSONObject obj = new JSONObject();
 		
