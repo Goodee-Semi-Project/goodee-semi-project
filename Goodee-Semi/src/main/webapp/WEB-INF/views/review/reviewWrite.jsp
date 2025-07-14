@@ -49,6 +49,7 @@
 		
 		const title = formData.get('title');
 		const content = formData.get('content');
+		/* TODO: 이미지 파일만 등록할 수 있음 */
 		
 		if (!title) {
 			alert('제목을 입력해주세요!');

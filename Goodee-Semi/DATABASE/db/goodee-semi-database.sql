@@ -88,7 +88,8 @@ CREATE TABLE IF NOT EXISTS `review` (
 	`class_no` INT NOT NULL,
 	`review_title` VARCHAR(255) NOT NULL,
 	`review_content` TEXT NOT NULL,
-	`review_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`reg_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`mod_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`review_no`),
 	FOREIGN KEY (`class_no`) REFERENCES `class`(`class_no`)
 );
@@ -218,7 +219,6 @@ CREATE TABLE IF NOT EXISTS `submit` (
 CREATE TABLE IF NOT EXISTS `attach_type` (
 	`type_no` INT NOT NULL,
 	`type_name` VARCHAR(20) NOT NULL,
-	`type_path` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`type_no`)
 );
 
