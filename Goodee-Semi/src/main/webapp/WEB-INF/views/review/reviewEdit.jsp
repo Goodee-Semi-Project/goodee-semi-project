@@ -17,6 +17,7 @@
 	<h1>후기 수정</h1>
 	<form id="edit" method="post">
 		<!-- 후기 번호 히든으로 -->
+		<input type="text" id="reviewNo" name="reviewNo" value="${ review.reviewNo }" hidden>
 		<div>
 			<label for="class">수료 목록</label>
 			<select id="class">
@@ -27,7 +28,14 @@
 		</div>
 		<div>
 			<span>${ review.accountId }</span>
-			<span>${ review.reviewDate }</span>
+			<c:choose>
+				<c:when test="${ review.regDate eq review.modDate }">
+					<span id="date">작성일: ${ review.regDate }</span>
+				</c:when>
+				<c:otherwise>
+					<span>수정일: ${ review.modDate }</span>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<div>
 			<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;">${ review.reviewContent }</textarea>
@@ -52,8 +60,10 @@
 		const form = document.querySelector('#edit');
 		const formData = new FormData(form);
 		
-		const title = formData.get('title');
+		/* const title = formData.get('title');
 		const content = formData.get('content');
+		const reviewNo = formData.get('reviewNo');
+		console.log(reviewNo); */
 		
 		if (!title) {
 			alert('제목을 입력해주세요!');
