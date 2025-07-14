@@ -42,4 +42,9 @@ public class ReviewDao {
 		return result;
 	}
 
+	public int updateReview(SqlSession session, Review review) {
+		int result = session.update("com.goodee.semi.mapper.ReviewMapper.updateReview", review);
+		return result;
+	}
+
 }

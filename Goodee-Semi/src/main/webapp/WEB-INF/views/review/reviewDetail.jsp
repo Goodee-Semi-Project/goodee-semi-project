@@ -18,7 +18,14 @@
 		<input type="text" hidden id="reviewNo" value="${ review.reviewNo }">
 		<label for="title">[후기]</label>
 		<span id="title" name="title">${ review.reviewTitle }</span>
-		<span id="date">${ review.reviewDate }</span>
+		<c:choose>
+			<c:when test="${ review.regDate eq review.modDate }">
+				<span id="date">작성일: ${ review.regDate }</span>
+			</c:when>
+			<c:otherwise>
+				<span>수정일: ${ review.modDate }</span>
+			</c:otherwise>
+		</c:choose>
 	</div>
 	<div id="accountId">${ review.accountId }</div>
 	<div>
@@ -28,8 +35,10 @@
 	</div>
 	<div>
 		<a href="<c:url value='/review/list' />">목록</a>
-		<a href="<c:url value='/review/edit?no=${ review.reviewNo }' />">수정</a>
-		<input type="button" value="삭제" onclick="deleteReview()">
+		<c:if test="${ review.accountId eq loginAccount.accountId }">
+			<a href="<c:url value='/review/edit?reviewNo=${ review.reviewNo }' />">수정</a>
+			<input type="button" value="삭제" onclick="deleteReview()">
+		</c:if>
 	</div>
 </main>
 
