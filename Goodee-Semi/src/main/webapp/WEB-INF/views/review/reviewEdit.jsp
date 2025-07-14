@@ -45,7 +45,8 @@
 		</div>
 		<div>
 			<!-- 우선은 첨부파일은 1개 -->
-			<input type="file" id="attach" name="attach" value="첨부 파일 변경">
+			<label for="attach">첨부 이미지 변경: </label>
+			<input type="file" id="attach" name="attach">
 			
 		</div>
 		<div>
