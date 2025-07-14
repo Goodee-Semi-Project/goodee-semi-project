@@ -94,6 +94,7 @@ public class ReviewEditServlet extends HttpServlet {
 		}
 		
 		// TODO: 첨부 파일을 새로 등록하면 기존것 지우고 바꾸기
+		// FIXME: 첨부 파일이 없는 게시물에 수정으로 첨부파일을 등록하면 에러 발생
 		Attach attach = null;
 		Part file = null;
 		if ((file = request.getPart("attach")) != null) {

@@ -1,5 +1,7 @@
 package com.goodee.semi.service;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
@@ -42,6 +44,11 @@ public class CourseService {
 		}
 		
 		return result;
+	}
+
+	public List<Course> selectList(int accountNo) {
+		List<Course> list = courseDao.selectList(accountNo);
+		return list;
 	}
 
 }
