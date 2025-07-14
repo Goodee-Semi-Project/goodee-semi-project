@@ -1,5 +1,7 @@
 package com.goodee.semi.service;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
@@ -43,5 +45,17 @@ public class CourseService {
 		
 		return result;
 	}
-
+	
+	public List<Course> selectAllCourse(int accountNo) {
+		List<Course> courseList = courseDao.selectAllCourse(accountNo);
+		List<Attach> attachList = courseDao.selectAllAttach(accountNo);
+		
+		if(courseList != null && attachList != null) {
+			for(int i = 0; i < courseList.size(); i++) {
+				courseList.get(i).setThumbAttach(attachList.get(i));
+			}
+		}
+		return courseList;
+	}
+	
 }
