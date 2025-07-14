@@ -29,6 +29,7 @@
 		</div>
 		<div>
 			<!-- 우선은 첨부파일은 1개 -->
+			<!-- TODO: 이미지 첨부파일만 등록할 수 있게 -->
 			<input type="file" id="attach" name="attach">
 			
 		</div>
