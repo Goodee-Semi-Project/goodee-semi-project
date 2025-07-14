@@ -12,6 +12,15 @@
 		<result property="regDate" column="reg_date" />
 		<result property="modDate" column="mod_date" />
 	</resultMap>
+	
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+	
 	<select id="selectReviewCount" parameterType="com.goodee.semi.dto.Review" resultType="_int">
 		SELECT COUNT(*)
 		FROM review
@@ -79,4 +88,9 @@
 		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
 		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
 	</insert>
+	<select id="selectAttachByReviewNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM attachment
+		WHERE type_no = 7 AND pk_no = #{ reviewNo }
+	</select>
 </mapper>

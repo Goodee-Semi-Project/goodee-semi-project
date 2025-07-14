@@ -32,6 +32,10 @@
 		<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;" readonly>
 			${ review.reviewContent }
 		</textarea>
+		<c:if test="${ not empty attach }">
+			<!-- filePathServlet 작성 후 실행 -->
+			<img src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+		</c:if>
 	</div>
 	<div>
 		<a href="<c:url value='/review/list' />">목록</a>
