@@ -93,4 +93,8 @@
 		FROM attachment
 		WHERE type_no = 7 AND pk_no = #{ reviewNo }
 	</select>
+	<delete id="deleteAttach" parameterType="com.goodee.semi.dto.Attach">
+		DELETE FROM attachment
+		WHERE type_no = 7 AND  pk_no = #{ pkNo }
+	</delete>
 </mapper>
