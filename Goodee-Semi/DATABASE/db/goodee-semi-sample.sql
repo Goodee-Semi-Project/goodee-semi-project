@@ -2,31 +2,35 @@ INSERT INTO authority (auth_no, auth_name) VALUES
 (1, '훈련사'),
 (2, '회원');
 
+INSERT INTO attach_type VALUES
+(1, '사용자'),
+(2, '반려견'),
+(3, '교육과정'),
+(4, '사전학습'),
+(5, '과제'),
+(6, '제출물'),
+(7, '후기'),
+(8, '공지사항');
 
-INSERT INTO account (account_no, auth_no, account_id, account_pw, account_name, account_avail) VALUES
-(1, 1, 'account1', 'password123', '류민석', 'Y'),
-(2, 1, 'account2', 'password123', '구예원', 'Y'),
-(3, 2, 'account3', 'password123', '윤경수', 'Y'),
-(4, 2, 'account4', 'password123', '이주은', 'Y'),
-(5, 1, 'account5', 'password123', '박진수', 'Y'),
-(6, 2, 'account6', 'password123', '장현우', 'Y'),
-(7, 1, 'account7', 'password123', '최연우', 'Y'),
-(8, 1, 'account8', 'password123', '서유리', 'Y'),
-(9, 2, 'account9', 'password123', '김선호', 'Y'),
-(10, 1, 'account10', 'password123', '이지은', 'Y');
-
-
-INSERT INTO account_info (info_no, account_no, reg_date, account_gender, bir_date, phone, email, post_num, address, address_detail) VALUES
-(1, 1, '2022-12-08 00:36:49', 'M', '011024', '010-3812-8612', 'gimjihyeon@daum.net', '06884', '대구광역시', '(준호윤박리)'),
-(2, 2, '2023-01-10 15:21:30', 'F', '990213', '010-2245-9834', 'lim@naver.com', '04521', '부산광역시', '(소영도남구)'),
-(3, 3, '2023-05-12 08:47:52', 'M', '880503', '010-1134-1123', 'jjang@gmail.com', '03111', '서울특별시', '(강남구역삼)'),
-(4, 4, '2022-06-01 12:45:22', 'F', '961210', '010-8382-2232', 'sky123@naver.com', '12234', '광주광역시', '(남구양림동)'),
-(5, 5, '2024-02-18 19:32:12', 'M', '920309', '010-8883-9182', 'cloud@hanmail.net', '06244', '울산광역시', '(북구화봉로)'),
-(6, 6, '2021-11-29 10:12:45', 'F', '980725', '010-1234-5678', 'song@kakao.com', '08874', '서울특별시', '(서초구방배)'),
-(7, 7, '2023-07-01 18:13:57', 'M', '000101', '010-5678-1234', 'light@google.com', '07852', '인천광역시', '(연수구송도)'),
-(8, 8, '2023-09-15 22:47:10', 'F', '960611', '010-2121-3434', 'moon@outlook.com', '04587', '서울특별시', '(중구을지로)'),
-(9, 9, '2023-03-10 11:56:30', 'M', '930914', '010-9898-8787', 'topstar@naver.com', '05443', '대전광역시', '(중구대흥동)'),
-(10, 10, '2022-08-20 14:20:00', 'F', '901030', '010-1111-2222', 'hello@korea.com', '03344', '강원도춘천시', '(소양로2가)');
+INSERT INTO account VALUES
+(1, 2, 'admin1234', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '정유니', 'Y'),
+(2, 1, 'tame9010', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '이몽룡', 'Y'),
+(3, 1, 'pets3343', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '임꺽정', 'Y'),
+(4, 2, 'blue1934', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '김민수', 'Y'),
+(5, 2, 'tree8472', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '이서진', 'Y'),
+(6, 2, 'cloud2931', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '박태우', 'Y'),
+(7, 2, 'stone7645', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '최영민', 'Y'),
+(8, 2, 'rain6273', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '정지훈', 'Y');
+	
+INSERT INTO account_info VALUES
+(1, 1, '2025-07-11 16:44:09', 'M', '000101', '010-4444-3321', 'comasocean@gmail.com', '08591', '서울 금천구 가산디지털1로 16', 'KM타워'),
+(2, 2, '2025-07-11 16:45:01', 'M', '900115', '010-5532-4455', 'dogking88@example.com', '17064', '경기 용인시 기흥구 신구로 6-1', '모모훈련소'),
+(3, 3, '2025-07-11 16:45:04', 'M', '871018', '010-7777-8912', 'catqueen95@example.com', '17064', '경기 용인시 기흥구 신구로 6-1', '모모훈련소'),
+(4, 4, '2025-07-11 16:45:07', 'M', '950218', '010-2384-6721', 'sunbeam42@example.com', '08500', '서울 금천구 가마산로 70', '민수분식'),
+(5, 5, '2025-07-11 16:46:16', 'F', '020715', '010-9832-1475', 'windfox88@example.com', '12661', '경기 여주시 가남읍 가남로 9', '서진물류'),
+(6, 6, '2025-07-11 16:47:17', 'M', '870403', '010-4729-0012', 'greentree5@example.com', '48755', '부산 동구 성남로 24', '태우건설'),
+(7, 7, '2025-07-11 16:48:01', 'M', '991130', '010-5810-3902', 'moonlit22@example.com', '37947', '경북 포항시 남구 장기면 계원길 1', '하늘정원'),
+(8, 8, '2025-07-11 16:49:32', 'M', '760512', '010-3321-4871', 'pebblestream@example.com', '25436', '강원특별자치도 강릉시 사천면 가마골길 10', '강릉맥주');
 
 
 INSERT INTO pet (pet_no, account_no, pet_name, pet_gender, pet_age, pet_breed) VALUES
