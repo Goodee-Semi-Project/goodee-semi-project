@@ -1,17 +1,28 @@
 package com.goodee.semi.controller;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+
+import java.io.File;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.service.AccountService;
+import com.goodee.semi.service.AttachService;
 
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024,
+    maxFileSize = 1024 * 1024 * 5,
+    maxRequestSize = 1024 * 1024 * 20
+)
 @WebServlet("/account/register")
 public class AccountRegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -56,7 +67,15 @@ public class AccountRegisterServlet extends HttpServlet {
 		account.setAddress(address);
 		account.setAddressDetail(addressDetail);
 		
-		int result = accountService.insertAccount(account);
+		Part profileImage = null;
+		try {
+			profileImage = request.getPart("profileImage");
+		} catch (IOException | ServletException e) { e.printStackTrace(); }
+		
+		File uploadDir = AttachService.getUploadDirectory(Attach.ACCOUNT);
+		Attach profileAttach = AttachService.handleUploadFile(profileImage, uploadDir);
+		
+		int result = accountService.insertAccount(account, profileAttach);
 		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("resultCode", "500");
