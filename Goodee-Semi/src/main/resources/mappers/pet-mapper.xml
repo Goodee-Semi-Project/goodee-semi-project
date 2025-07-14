@@ -51,8 +51,8 @@
 		</where>
 	</delete>
 	
-	<insert id="insertPet" parameterType="_int">
-		INSERT INTO pet (account_no)
-		VALUES (#{accountNo})
+	<insert id="insertPet" parameterType="com.goodee.semi.dto.Pet" useGeneratedKeys="true" keyProperty="petNo">
+		INSERT INTO pet (account_no, pet_name, pet_gender, pet_age, pet_breed)
+		VALUES (#{accountNo}, #{petName}, #{petGender}, #{petAge}, #{petBreed});
 	</insert>
 </mapper>
