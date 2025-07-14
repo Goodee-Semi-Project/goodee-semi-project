@@ -53,4 +53,11 @@ public class ReviewDao {
 		return result;
 	}
 
+	public Attach selectAttachByReviewNo(int reviewNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Attach attach = session.selectOne("com.goodee.semi.mapper.ReviewMapper.selectAttachByReviewNo", reviewNo);
+		
+		return attach;
+	}
+
 }
