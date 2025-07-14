@@ -62,7 +62,7 @@ public class MyCourseCreateServlet extends HttpServlet {
 		
 		try {
 			thumbPart = request.getPart("thumbImage");
-			inputPart = request.getPart("inputImage");			
+			inputPart = request.getPart("inputImage");
 		} catch (IOException | ServletException e) { e.printStackTrace(); }
 		
 		File uploadDir = AttachService.getUploadDirectory(Attach.COURSE);

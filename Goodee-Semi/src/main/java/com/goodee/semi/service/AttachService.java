@@ -18,6 +18,11 @@ public class AttachService {
 			case Attach.ACCOUNT -> "/account";
 			case Attach.PET -> "/pet";
 			case Attach.COURSE -> "/course";
+			case Attach.PRE_COURSE -> "/preCourse";
+			case Attach.ASSIGN -> "/assign";
+			case Attach.SUBMIT -> "/submit";
+			case Attach.REVIEW -> "/review";
+			case Attach.NOTICE -> "/notice";
 			default -> "";
 		};
 		
