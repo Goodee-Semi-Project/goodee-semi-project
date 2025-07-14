@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSession;
 import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Attach;
 
 public class AccountDao {
 	
@@ -84,6 +85,24 @@ public class AccountDao {
 		// TODO: Account dto에 매개변수를 담을 필드가 필요함 - 다른 방식으로 하면 테이블을 두 번 조회하게 됨
 		int result = session.update("com.goodee.semi.mapper.AccountMapper.updateAccountPw", account);
 		session.close();
+		return result;
+	}
+
+	public Attach selectAttachByAccountNo(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Attach attach = session.selectOne("com.goodee.semi.mapper.AccountMapper.selectAttachByAccountNo", accountNo);
+		session.close();
+		
+		return attach;
+	}
+
+	public int deleteAttach(SqlSession session, Attach attach) {
+		int result = session.delete("com.goodee.semi.mapper.AccountMapper.deleteAttach", attach);
+		return result;
+	}
+
+	public int insertAttach(SqlSession session, Attach attach) {
+		int result = session.insert("com.goodee.semi.mapper.AccountMapper.insertAttach", attach);
 		return result;
 	}
 }

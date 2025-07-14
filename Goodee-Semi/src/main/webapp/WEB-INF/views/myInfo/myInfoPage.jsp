@@ -31,8 +31,15 @@
 				<span>${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일</span>
 			</div>
 			<div>
+				<c:if test="${ not empty attach }">
+					<img alt="profile-img" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+				</c:if>
+				<label for="attach">프로필 이미지 변경: </label>
+				<input type="file" name="attach">
+			</div>
+			<div>
 				<!-- 셀렉트로 입력 받기 -->
-				<select id="gender">
+				<select id="gender" name="gender">
 					<c:choose>
 						<c:when test="${ accountDetail.gender eq 'M'.charAt(0) }">
 							<option value="M" selected>남자</option>
@@ -142,12 +149,15 @@
 	$('#editDetail').submit(function(e) {
 		e.preventDefault();
 		
-		const gender = $('#gender').val();
-		const email = $('#email').val();
-		const phone = $('#phone').val();
-		const postNum = $('#postNum').val();
-		const address = $('#address').val();
-		const addressDetail = $('#addressDetail').val();
+		const form = document.querySelector('#editDetail');
+		const formData = new FormData(form);
+		
+		const gender = formData.get('gender');
+		const email = formData.get('email');
+		const phone = formData.get('phone');
+		const postNum = formData.get('postNum');
+		const address = formData.get('address');
+		const addressDetail = formData.get('addressDetail');
 		
 		const emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 		const phoneReg = /^\d{3}-\d{3,4}-\d{4}$/;
@@ -177,14 +187,11 @@
 				$.ajax({
 					url : '/myInfo/editDetail',
 					type : 'post',
-					data : {
-						gender : gender,
-						email : email,
-						phone : phone,
-						postNum : postNum,
-						address : address,
-						addressDetail : addressDetail
-					},
+					data : formData,
+					enctype : 'multipart/form-data',
+					contentType : false,
+					processData : false,
+					cache : false,
 					dataType : 'json',
 					success : function(data) {
 							alert(data.res_msg);
