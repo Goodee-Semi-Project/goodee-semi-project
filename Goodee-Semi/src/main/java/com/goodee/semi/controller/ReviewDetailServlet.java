@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.Account;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Review;
 import com.goodee.semi.service.ReviewService;
 
@@ -42,8 +43,10 @@ public class ReviewDetailServlet extends HttpServlet {
 		
 		// TODO: 첨부파일 통일화 후 추가 작성
 		Review review = reviewService.selectReivewOne(reviewNo);
+		Attach attach = reviewService.selectAttachByReviewNo(reviewNo);
 		
 		request.setAttribute("review", review);
+		request.setAttribute("attach", attach);
 		request.getRequestDispatcher("/WEB-INF/views/review/reviewDetail.jsp").forward(request, response);
 	}
 

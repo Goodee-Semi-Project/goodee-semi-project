@@ -15,4 +15,5 @@ public interface ReviewMapper {
 	int deleteReview(int reviewNo);
 	int updateReview(SqlSession session, Review review);
 	int insertAttach(SqlSession session, Attach attach);
+	Attach selectAttachByReviewNo(int reviewNo);
 }

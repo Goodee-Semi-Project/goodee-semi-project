@@ -106,4 +106,8 @@ public class ReviewService {
 		return result;
 	}
 
+	public Attach selectAttachByReviewNo(int reviewNo) {
+		return reviewDao.selectAttachByReviewNo(reviewNo);
+	}
+
 }
