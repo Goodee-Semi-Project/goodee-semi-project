@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Review;
 
 public class ReviewDao {
@@ -44,6 +45,11 @@ public class ReviewDao {
 
 	public int updateReview(SqlSession session, Review review) {
 		int result = session.update("com.goodee.semi.mapper.ReviewMapper.updateReview", review);
+		return result;
+	}
+
+	public int insertAttach(SqlSession session, Attach attach) {
+		int result = session.insert("com.goodee.semi.mapper.ReviewMapper.insertAttach", attach);
 		return result;
 	}
 
