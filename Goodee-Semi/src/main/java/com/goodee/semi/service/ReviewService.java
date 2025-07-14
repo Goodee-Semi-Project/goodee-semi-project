@@ -110,4 +110,35 @@ public class ReviewService {
 		return reviewDao.selectAttachByReviewNo(reviewNo);
 	}
 
+	public int updateReviewWithAttach(Review review, Attach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = -1;
+		
+		// 첨부파일 클래스, DAO가 정해지면 트랜잭션으로 처리
+		try {
+			result = reviewDao.updateReview(session, review);
+			
+			if (attach != null && result > 0) {
+				result = -1;
+				attach.setTypeNo(Attach.REVIEW);
+				attach.setPkNo(review.getReviewNo());
+				result = reviewDao.deleteAttach(session, attach);
+				if (result > 0) result = reviewDao.insertAttach(session, attach);
+			}
+			
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
+	}
+
 }
