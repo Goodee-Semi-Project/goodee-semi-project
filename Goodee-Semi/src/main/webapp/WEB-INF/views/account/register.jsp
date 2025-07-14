@@ -17,24 +17,26 @@
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 
 	<form id="registerSubmit">
-		<input type="text" id="accountId" placeholder="아이디"><br>
-		<input type="password" id="accountPw" placeholder="비밀번호"><br>
+		<input type="text" id="accountId" name="accountId" placeholder="아이디"><br>
+		<input type="password" id="accountPw" name="accountPw" placeholder="비밀번호"><br>
 		<input type="password" id="accountPwChk" placeholder="비밀번호 확인"><br><br>
 		
-		<input type="text" id="accountName" placeholder="이름">
-		<select id="accountGender">
+		<label>프로필 사진: </label>
+		<input type="file" name="profileImage"><br>
+		<input type="text" id="accountName" name="accountName" placeholder="이름">
+		<select id="accountGender" name="accountGender">
 			<option value="0">선택</option>
 			<option value="1">남</option>
 			<option value="2">여</option>
 		</select><br>
-		<input type="text" id="accountBirth" placeholder="생년월일"><br>
-		<input type="text" id="accountPhone" placeholder="전화번호"><br>
-		<input type="text" id="accountEmail" placeholder="이메일"><br><br>
+		<input type="text" id="accountBirth" name="accountBirth" placeholder="생년월일"><br>
+		<input type="text" id="accountPhone" name="accountPhone" placeholder="전화번호"><br>
+		<input type="text" id="accountEmail" name="accountEmail" placeholder="이메일"><br><br>
 		
-		<input type="text" id="postcode" placeholder="우편번호">
+		<input type="text" id="postcode" name="postcode" placeholder="우편번호">
 		<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-		<input type="text" id="roadAddress" placeholder="도로명주소">
-		<input type="text" id="detailAddress" placeholder="상세주소"><br><br>
+		<input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소">
+		<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"><br><br>
 		
 		<input type="submit" value="회원가입">
 	</form>
@@ -88,21 +90,16 @@
 			else if (postcode == "") alert("주소를 입력해주세요.");
 			else if (addressDetail == "") alert("상세주소를 입력해주세요.");
 			else {
+				const formData = new FormData(document.getElementById("registerSubmit"));
+				
 				$.ajax({
 					url : "/account/register",
 					type : "POST",
-					data : {
-						accountId : accountId,
-						accountPw : accountPw,
-						accountName : accountName,
-						accountGender : accountGender,
-						accountBirth : accountBirth,
-						accountPhone : accountPhone,
-						accountEmail : accountEmail,
-						postcode : postcode,
-						address : address,
-						addressDetail : addressDetail
-					},
+					data : formData,
+					enctype : "multipart/form-data",
+					contentType : false,
+					processData : false,
+					cache : false,
 					dataType : "JSON",
 					success : function(data) {
 						alert(data.resultMsg);
@@ -112,7 +109,7 @@
 						}
 					},
 					error : function() {
-						alert("회원 가입 중 오류가 발생했습니다.");
+						alert("오류 발생!!");
 					}
 				});
 			}
