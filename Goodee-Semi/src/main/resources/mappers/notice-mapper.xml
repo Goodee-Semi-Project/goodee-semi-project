@@ -13,13 +13,24 @@
 		<result property="writer" column="writer" />
 		<result property="nailUp" column="nail_up"/>
 	</resultMap>
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no"/>
+		<result property="typeNo" column="type_no"/>
+		<result property="pkNo" column="pk_no"/>
+		<result property="originName" column="ori_name"/>
+		<result property="savedName" column="save_name"/>
+	</resultMap>
+
 	
 	<select id="selectList" resultMap="noticeResultMap">
-		SELECT n.notice_no
-		,n.notice_title
-		,DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date
-        ,a.account_name AS writer
-        ,n.nail_up
+		SELECT n.notice_no,
+       n.account_no,                        <!-- ✅ 이거 꼭 추가 -->
+       n.notice_title,
+       n.notice_content,                    <!-- 혹시 resultMap에 있으면 이것도 -->
+       DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date,
+       DATE_FORMAT(n.mod_date, '%Y-%m-%d') AS mod_date,
+       a.account_name AS writer,
+       n.nail_up
   		FROM notice n
  		JOIN account a ON n.account_no = a.account_no
  		<where>
@@ -29,10 +40,8 @@
 		</if>
 	</where>
   		ORDER BY 
-    	n.nail_up DESC,     
-    	<!-- 고정글 먼저 ('Y' > 'N') -->
-    	n.notice_no DESC    
-    	<!-- 최신글 순서대로 -->
+    	CASE WHEN n.nail_up = 'Y' THEN 1 ELSE 0 END DESC,
+ 		n.notice_no DESC
     	LIMIT #{limitPageNo},#{numPerPage}
 	</select>
 		 	 
@@ -48,4 +57,38 @@
 			</if> 	 	
 		</where>
  	 </select>
+ 	 
+ 	 <insert id="insertNotice" parameterType="com.goodee.semi.dto.Notice" useGeneratedKeys="true" keyProperty="noticeNo">
+		INSERT INTO notice (notice_title, notice_content, account_no)
+      	VALUES (#{noticeTitle}, #{noticeContent}, #{accountNo})
+	</insert>
+	
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
+		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
+	</insert>
+	
+	<select id="selectNoticeDetail" resultMap="noticeResultMap" parameterType="int">
+		SELECT 
+		  n.notice_no,
+		  n.account_no,                
+		  n.notice_title,
+		  n.notice_content,
+		  DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date,
+		  a.account_name AS writer    
+		FROM notice n
+		JOIN account a ON n.account_no = a.account_no
+		WHERE n.notice_no = #{noticeNo}
+	</select>
+	
+	<select id="selectAttachOne" parameterType="com.goodee.semi.dto.Attach" resultMap="attachResultMap">
+	  SELECT 
+	    attach_no,
+	    type_no,
+	    pk_no,
+	    ori_name,
+	    save_name
+	  FROM attachment
+	  WHERE pk_no = #{pkNo} AND type_no = #{typeNo}
+	</select>
 </mapper>

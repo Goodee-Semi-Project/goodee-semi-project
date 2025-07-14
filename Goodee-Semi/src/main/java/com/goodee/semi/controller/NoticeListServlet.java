@@ -30,6 +30,7 @@ public class NoticeListServlet extends HttpServlet {
 		String nowPage = request.getParameter("nowPage");
 		String keyword = request.getParameter("keyword");
 		
+		
 		Notice param = new Notice();
 		param.setNowPage(1);
 		// paging이 음수처리 -> 시작을 1로 설정
