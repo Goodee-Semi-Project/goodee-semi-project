@@ -80,8 +80,35 @@ private AttachmentDao attachmentDao = new AttachmentDao();
 		return result;
 	}
 
-	public int insertPet(int accountNo) {
-		return petDao.insertPet(accountNo);
+	public int insertPet(Pet pet, Attachment attachment) {
+		System.out.println("insertPetWithAttach() Pet:" + pet);
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			// 1. 반려견 등록
+			result = petDao.insertPet(session, pet);
+			
+			// 2. 파일 정보 등록
+			if(attachment != null && result > 0) {
+				attachment.setPkNo(pet.getPetNo());
+				result = attachmentDao.insertAttachment(session, attachment);
+			}
+			
+			// 3. commit 또는 rollback 처리
+			if(result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
 	}
 	
 }

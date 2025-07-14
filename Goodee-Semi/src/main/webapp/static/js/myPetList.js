@@ -199,6 +199,8 @@ document.querySelector('#delete-close-btn').addEventListener('click', closeDelet
 document.querySelector('#add-pet-btn').addEventListener('click', () => {
     const petList = document.querySelector('#pet-list');
     const newLi = document.createElement('li');
+	const accountNo = document.querySelector('#add-pet-btn').getAttribute('data-account-no');
+	console.log(accountNo);
 
     newLi.innerHTML = `
         <input type="file" class="pet-img-input" name="petImg" style="display: none;">
@@ -211,7 +213,7 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
                 <input type="text" class="pet-gender" placeholder="성별">
             </div>
             <input type="text" class="pet-breed" placeholder="견종">
-            <input type="hidden" class="account-no" value="${document.querySelector('.account-no')?.value || ''}">
+            <input type="hidden" class="account-no" value="${accountNo}">
         </div>
         <div class="pet-btn">
             <button class="pet-btn-up">등록</button>
@@ -231,6 +233,7 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
         const petBreed = newLi.querySelector('.pet-breed').value;
         const accountNo = newLi.querySelector('.account-no').value;
         const petImgInput = newLi.querySelector('.pet-img-input');
+		console.log(petName, petAge, petGender, petBreed, accountNo, petImgInput);
 
         const formData = new FormData();
         formData.append('petName', petName);
