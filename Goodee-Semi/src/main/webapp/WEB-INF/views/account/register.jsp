@@ -16,7 +16,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 
-	<form id="registerSubmit">
+	<form id="registerForm">
 		<input type="text" id="accountId" name="accountId" placeholder="아이디"><br>
 		<input type="password" id="accountPw" name="accountPw" placeholder="비밀번호"><br>
 		<input type="password" id="accountPwChk" placeholder="비밀번호 확인"><br><br>
@@ -55,7 +55,7 @@
 	
 	<script>
 	$(() => {
-		$("#registerSubmit").submit((event) => {
+		$("#registerForm").submit((event) => {
 			event.preventDefault();
 			
 			const accountId = $("#accountId").val();
@@ -90,7 +90,7 @@
 			else if (postcode == "") alert("주소를 입력해주세요.");
 			else if (addressDetail == "") alert("상세주소를 입력해주세요.");
 			else {
-				const formData = new FormData(document.getElementById("registerSubmit"));
+				const formData = new FormData(document.getElementById("registerForm"));
 				
 				$.ajax({
 					url : "/account/register",
