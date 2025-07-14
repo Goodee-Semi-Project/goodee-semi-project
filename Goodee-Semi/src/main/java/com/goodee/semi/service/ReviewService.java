@@ -119,11 +119,10 @@ public class ReviewService {
 			result = reviewDao.updateReview(session, review);
 			
 			if (attach != null && result > 0) {
-				result = -1;
 				attach.setTypeNo(Attach.REVIEW);
 				attach.setPkNo(review.getReviewNo());
-				result = reviewDao.deleteAttach(session, attach);
-				if (result > 0) result = reviewDao.insertAttach(session, attach);
+				reviewDao.deleteAttach(session, attach);
+				result = reviewDao.insertAttach(session, attach);
 			}
 			
 			if (result > 0) {

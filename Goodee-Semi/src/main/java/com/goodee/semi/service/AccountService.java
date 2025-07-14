@@ -6,6 +6,7 @@ import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.AccountDao;
 import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Attach;
 
 public class AccountService {
 	private AccountDao accountDao = new AccountDao();
@@ -87,4 +88,34 @@ public class AccountService {
 	public int updateNewPassword(AccountDetail account) {
 		return accountDao.updateNewPassword(account);
   }
+
+	public Attach selectAttachByAccountNo(int accountNo) {
+		return accountDao.selectAttachByAccountNo(accountNo);
+	}
+
+	public int updateAccountDetailWithAttach(AccountDetail accountDetail, Attach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = -1;
+		try {
+			result = accountDao.updateAccountDetail(accountDetail);
+			if (attach != null && result > 0) {
+				attach .setTypeNo(Attach.ACCOUNT);
+				attach.setPkNo(accountDetail.getAccountNo());
+				accountDao.deleteAttach(session, attach);
+				result = accountDao.insertAttach(session, attach);
+			}
+			
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		return result;
+	}
 }
