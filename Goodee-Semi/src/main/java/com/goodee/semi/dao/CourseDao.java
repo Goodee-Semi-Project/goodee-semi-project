@@ -30,16 +30,18 @@ public class CourseDao {
 		return result;
 	}
 
-	public List<Course> selectAllCourse(int accountNo) {
+	public List<Course> selectAllCourseByAccountNo(int accountNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		List<Course> result = session.selectList("com.goodee.semi.mapper.CourseMapper.selectAllCourse", accountNo);
+		List<Course> result = session.selectList("com.goodee.semi.mapper.CourseMapper.selectAllCourseByAccountNo", accountNo);
+		System.out.println(result);
 		session.close();
 		return result;
 	}
 	
-	public List<Attach> selectAllAttach(int accountNo) {
+	public List<Attach> selectAllAttachByAccountNo(int accountNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		List<Attach> result = session.selectList("com.goodee.semi.mapper.CourseMapper.selectAllAttach", accountNo);
+		List<Attach> result = session.selectList("com.goodee.semi.mapper.CourseMapper.selectAllAttachByAccountNo", accountNo);
+		System.out.println(result);
 		session.close();
 		return result;
 	}

@@ -32,11 +32,14 @@ public class MyCouseMemberManagement extends HttpServlet {
 		}
 		
 		int accountNo = account.getAccountNo();
-		List<Course> courseList = service.selectAllCourse(accountNo);
+		
+		List<Course> courseList = service.selectAllCourseByAccountNo(accountNo);
+		for (Course list : courseList) {
+			System.out.println(list.getThumbAttach().getAttachNo());
+		}
 		
 		request.setAttribute("courseList", courseList);
 		request.getRequestDispatcher("/WEB-INF/views/myCourse/memberManagement.jsp").forward(request, response);
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
