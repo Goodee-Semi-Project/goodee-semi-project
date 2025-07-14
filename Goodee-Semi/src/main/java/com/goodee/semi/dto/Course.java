@@ -22,4 +22,7 @@ public class Course {
 	private int thumb;
 	
 	private String tag;
+	
+	private Attach thumbAttach;
+	private Attach inputAttach;
 }
