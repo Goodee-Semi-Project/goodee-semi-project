@@ -37,12 +37,15 @@
 				</c:otherwise>
 			</c:choose>
 		</div>
+		<c:if test="${ not empty attach }">
+			<img src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+		</c:if>
 		<div>
 			<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;">${ review.reviewContent }</textarea>
 		</div>
 		<div>
 			<!-- 우선은 첨부파일은 1개 -->
-			<input type="file" id="attach" name="attach">
+			<input type="file" id="attach" name="attach" value="첨부 파일 변경">
 			
 		</div>
 		<div>

@@ -60,4 +60,9 @@ public class ReviewDao {
 		return attach;
 	}
 
+	public int deleteAttach(SqlSession session, Attach attach) {
+		int result = session.delete("com.goodee.semi.mapper.ReviewMapper.deleteAttach", attach);
+		return result;
+	}
+
 }
