@@ -1,0 +1,40 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시글 상세 내용</title>
+<%@ include file="/WEB-INF/views/include/head.jsp" %>
+</head>
+<body>
+<%@ include file="/WEB-INF/views/include/header.jsp" %>
+<%@ include file="/WEB-INF/views/notice/noticeHeader.jsp" %>
+	<div class="notice-wrapper">
+  	<div class="notice-box">
+   	<div class="notice-header">
+   		<div>${notice.noticeTitle}</div>
+   		<div>${notice.regDate}</div>
+    </div>
+    <div class="notice-meta">
+      <div>번호 ${notice.noticeNo}</div>
+      <div>작성자 ${notice.writer}</div>
+    </div>
+    <div class="notice-content">
+      ${notice.noticeContent}
+    </div>
+    <div class="btn-group">
+      <button>수정</button>
+      <button>삭제</button>
+      <button onclick="location.href='<%=request.getContextPath()%>/notice/list'">목록</button>
+    </div>
+  </div>
+</div>
+
+	<c:if test="${not empty attach }">
+	    <h4>첨부파일</h4>
+	    <img src="<c:url value='/filePath?pkNo=${notice.noticeNo}&typeNo=8'/>">
+	</c:if>
+  <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+</body>
+</html>

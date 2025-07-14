@@ -6,8 +6,14 @@ import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.AccountDetail;
 
+
 public class AccountDao {
 	
+	public AccountDetail selectAccountById(String param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		AccountDetail result = session.selectOne("com.goodee.semi.mapper.AccountMapper.selectAccountById", param);
+		return result;
+	}
 	public int insertAccount(SqlSession session, AccountDetail account) {
 		int result = session.insert("com.goodee.semi.mapper.AccountMapper.insertAccount", account);
 		

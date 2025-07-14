@@ -41,9 +41,7 @@
 		       </c:otherwise>
 		     </c:choose>
 		   </td>
-		   <td>
-		     <a href="/notice/detail?no=${n.noticeNo}">${n.noticeTitle}</a>
-		   </td>
+		   <td onclick="location.href='<c:url value='/noticeDetail?no=${n.noticeNo}'/>'">${n.noticeTitle}</td>
 		   <td>${n.writer}</td>
 		   <td>${n.regDate}</td>
 		 </tr>

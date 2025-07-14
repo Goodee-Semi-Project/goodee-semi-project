@@ -29,6 +29,7 @@
 		<result property="postNum" column="post_num" />
 		<result property="address" column="address" />
 		<result property="addressDetail" column="address_detail" />
+			
 	</resultMap>
 
 	<resultMap type="com.goodee.semi.dto.Notice" id="noticeResultMap">
@@ -43,9 +44,9 @@
 	</resultMap>
 	
 	<insert id="insertAccount" parameterType="com.goodee.semi.dto.AccountDetail" useGeneratedKeys="true" keyProperty="accountNo">
-		INSERT INTO account (auth_no, account_id, account_pw, account_name)
-		VALUE (#{author}, #{accountId}, #{accountPw}, #{name})
-	</insert>
+    INSERT INTO account (auth_no, account_id, account_pw, account_name, account_avail)
+    VALUE (#{author}, #{accountId}, #{accountPw}, #{name})
+</insert>
 	
 	<insert id="insertAccountInfo" parameterType="com.goodee.semi.dto.AccountDetail">
 		INSERT INTO account_info (account_no, account_gender, bir_date, phone, email, post_num, address, address_detail)
@@ -54,10 +55,19 @@
 	
 	<select id="loginInfo" parameterType="com.goodee.semi.dto.Account" resultMap="accountDetailResultMap">
 		SELECT * FROM account A
-		INNER JOIN account_info AI ON A.account_no = AI.account_no
+		INNER JOIN account_info AI ON A.account_no = AI.account_no 
 		<where>
-			A.account_id = #{accountId} AND A.account_pw = #{accountPw}
+			A.account_id = #{accountId} 
+			AND A.account_pw = #{accountPw}
+			AND A.account_avail = 'Y'
 		</where>
+	</select>
+	
+	<select id="selectAccountById" parameterType="string" resultMap="accountDetailResultMap">
+		SELECT * 
+		FROM account A
+		JOIN account_info AI ON A.account_no = AI.account_no
+		WHERE A.account_id = #{accountId}
 	</select>
 	
 	<select id="selectAccountByNameAndEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountResultMap">
