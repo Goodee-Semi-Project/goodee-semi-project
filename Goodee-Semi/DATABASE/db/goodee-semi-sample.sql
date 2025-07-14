@@ -32,6 +32,24 @@ INSERT INTO account_info VALUES
 (7, 7, '2025-07-11 16:48:01', 'M', '991130', '010-5810-3902', 'moonlit22@example.com', '37947', '경북 포항시 남구 장기면 계원길 1', '하늘정원'),
 (8, 8, '2025-07-11 16:49:32', 'M', '760512', '010-3321-4871', 'pebblestream@example.com', '25436', '강원특별자치도 강릉시 사천면 가마골길 10', '강릉맥주');
 
+INSERT INTO course VALUES
+(1, 2, '반려견 기초 훈련', '반려견 기초 훈련입니다.', '반려견 기초 훈련 테스트입니다.\n반려견 기초 훈련 테스트입니다.\n반려견 기초 훈련 테스트입니다.', 10, 10, 1),
+(2, 2, '반려견 행동교정', '반려견 행동교정입니다.', '반려견 행동교정 테스트입니다.\n반려견 행동교정 테스트입니다.\n반려견 행동교정 테스트입니다.', 15, 7, 3),
+(3, 3, '반려견 관리법', '반려견 관리법입니다.', '반려견 관리법 테스트입니다.\n반려견 관리법 테스트입니다.\n반려견 관리법 테스트입니다.', 7, 20, 5),
+(4, 3, '반려견을 사랑하기', '반려견을 사랑합시다.', '반려견을 사랑하기 테스트입니다.\n반려견을 사랑하기 테스트입니다.\n반려견을 사랑하기 테스트입니다.', 5, 9, 7);
+
+
+INSERT INTO attachment (attach_no, type_no, pk_no, ori_name, save_name) VALUES
+(1, 3, 1, 'pet_train1.jpg', '3efa98eda83644b681e55fb61eca473a.jpg'),
+(2, 3, 1, 'pet_train2.jpg', 'be9f6e2d172d48748578cbf97a868a5b.jpg'),
+(3, 3, 2, 'pet_teach1.jpg', 'a7e9e18900d24c17b3ee8fd128a34275.jpg'),
+(4, 3, 2, 'pet_teach2.jpg', '2e37c4b8c4a24e10afead83341274640.jpg'),
+(5, 3, 3, 'pet_condition1.jpg', '09eab68f9307486f83a0b7b5854ac962.jpg'),
+(6, 3, 3, 'pet_condition2.jpg', 'f684843d23de4f0692690c40529429c0.jpg'),
+(7, 3, 4, 'pet_love1.jpg', '32ae56880aa64adc9178f03531d74f83.jpg'),
+(8, 3, 4, 'pet_love2.jpg', 'd3dca6385ed84ddf9d35e59ecf317e50.jpg');
+
+
 
 INSERT INTO pet (pet_no, account_no, pet_name, pet_gender, pet_age, pet_breed) VALUES
 (1, 1, '멍멍이1', 'M', 3, '치와와'),
