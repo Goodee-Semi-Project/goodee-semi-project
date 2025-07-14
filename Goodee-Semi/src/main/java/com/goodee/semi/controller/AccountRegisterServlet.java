@@ -50,8 +50,8 @@ public class AccountRegisterServlet extends HttpServlet {
 		String accountEmail = request.getParameter("accountEmail");
 		
 		String postCode = request.getParameter("postcode");
-		String address = request.getParameter("address");
-		String addressDetail = request.getParameter("addressDetail");
+		String address = request.getParameter("roadAddress");
+		String addressDetail = request.getParameter("detailAddress");
 		
 		AccountDetail account = new AccountDetail();
 		account.setAuthor(2);
