@@ -48,7 +48,7 @@ $(function(){
         const formData = new FormData(form);
         
         $.ajax({
-            url : "/notice/write",
+            url : "<%=request.getContextPath()%>/notice/write",
             type : "post",
             data : formData,
             enctype : "multipart/form-data",
@@ -56,10 +56,17 @@ $(function(){
             processData : false,
             cache : false,
             dataType : "json",
-            success : function(res){
-                alert(res.res_msg);
-                if(res.res_code == 200){
-                    location.href = "<%=request.getContextPath()%>/list";
+            success: function(res){
+                try {
+                                       
+                    alert(res.resultMsg || "등록 결과 수신");
+
+                    if (res.resultCode == "200") {
+                        
+                        location.href = "<%=request.getContextPath()%>/notice/list";
+                    }
+                } catch (e) {
+                    console.error("🔥 JS 예외 발생:", e);
                 }
             }
         });

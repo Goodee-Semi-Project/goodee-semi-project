@@ -10,6 +10,11 @@ import com.goodee.semi.dto.AccountDetail;
 public class AccountService {
 	private AccountDao accountDao = new AccountDao();
 	
+	public AccountDetail selectAccountById(String accountId) {
+		
+		return accountDao.selectAccountById(accountId);
+	}
+	
 	public AccountDetail getLoginInfo(String accountId, String accountPw) {
 		Account param = new Account();
 		param.setAccountId(accountId);
@@ -17,6 +22,7 @@ public class AccountService {
 		
 		return accountDao.loginInfo(param);
 	}
+	
 
 	public int insertAccount(AccountDetail account) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);

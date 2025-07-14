@@ -15,4 +15,5 @@ public interface AccountMapper {
 	int updateAccountPw(Account account);
   Account selectAccountByIdNameEmail(AccountDetail account);
 	int updateNewPassword(AccountDetail account);
+	AccountDetail selectAccountById(String param);
 }
