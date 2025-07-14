@@ -51,7 +51,7 @@
 							<td>${ r.reviewNo }</td>
 							<td onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
 							<td>${ r.accountId }</td>
-							<td>${ r.reviewDate }</td>
+							<td>${ r.regDate }</td>
 						</tr>
 					</c:forEach>
 				</tbody>

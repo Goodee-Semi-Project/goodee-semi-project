@@ -64,8 +64,9 @@ public class MyInfoEditPwServlet extends HttpServlet {
 		obj.put("res_msg", "비밀번호가 다릅니다.");
 		
 		if (result > 0) {
+			session.removeAttribute("loginAccount");
 			obj.put("res_code", "200");
-			obj.put("res_msg", "비밀번호가 변경 되었습니다.");
+			obj.put("res_msg", "비밀번호가 변경 되었습니다.\n다시 로그인 해주세요");
 		}
 
 		response.setContentType("application/json; charset=utf-8");

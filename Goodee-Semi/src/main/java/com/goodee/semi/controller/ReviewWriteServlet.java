@@ -1,10 +1,13 @@
 package com.goodee.semi.controller;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Review;
+import com.goodee.semi.service.AttachService;
 import com.goodee.semi.service.ReviewService;
 
 import jakarta.servlet.ServletException;
@@ -13,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
 /**
  * Servlet implementation class ReviewWriteServlet
@@ -26,7 +30,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/review/write")
 public class ReviewWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	ReviewService service = new ReviewService();
+	ReviewService reviewService = new ReviewService();
+	AttachService attachService = new AttachService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -58,21 +63,38 @@ public class ReviewWriteServlet extends HttpServlet {
 		review.setReviewTitle(title);
 		review.setReviewContent(content);
 		// FIXME: 임시 클래스
-		review.setClassNo(1);
+		review.setClassNo(11);
 		
-		// TODO: 첨부파일 클래스 논의 후 작성
+		// TODO: 첨부파일
+		Part file = null;
+		if (request.getPart("attach") != null) {
+			file = request.getPart("attach");
+		}
+		
+		Attach attach = null;
+		if (file != null) {
+			File uploadDir = attachService.getUploadDirectory(Attach.REVIEW);
+			attach = attachService.handleUploadFile(file, uploadDir);
+		}
+		
+		
 		
 		// 데이터베이스에 추가
-		int result = service.createReview(review);
+		int result = -1;
+		if (attach != null) {
+			result = reviewService.insertReviewWithAttach(review, attach);
+		} else {
+			result = reviewService.insertReview(review);
+		}
 		
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {
 			obj.put("res_code", "200");
-			obj.put("res_msg", "리뷰 등록이 완료되었습니다.");
+			obj.put("res_msg", "후기 등록이 완료되었습니다.");
 		} else {
 			obj.put("res_code", "500");
-			obj.put("res_msg", "리뷰 등록에 실패했습니다.");
+			obj.put("res_msg", "후기 등록에 실패했습니다.");
 		}
 		
 		response.setContentType("application/json; charset=utf-8");

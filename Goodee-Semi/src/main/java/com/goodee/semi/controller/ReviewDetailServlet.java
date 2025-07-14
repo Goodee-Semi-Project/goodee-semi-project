@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.Account;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Review;
 import com.goodee.semi.service.ReviewService;
 
@@ -42,8 +43,10 @@ public class ReviewDetailServlet extends HttpServlet {
 		
 		// TODO: 첨부파일 통일화 후 추가 작성
 		Review review = reviewService.selectReivewOne(reviewNo);
+		Attach attach = reviewService.selectAttachByReviewNo(reviewNo);
 		
 		request.setAttribute("review", review);
+		request.setAttribute("attach", attach);
 		request.getRequestDispatcher("/WEB-INF/views/review/reviewDetail.jsp").forward(request, response);
 	}
 
@@ -71,20 +74,21 @@ public class ReviewDetailServlet extends HttpServlet {
 			accountId = account.getAccountId();
 		}
 		
-		System.out.println(accountId);
-		
 		Review review = null;
 		JSONObject obj = new JSONObject();
 
 		obj.put("res_code", "500");
-		obj.put("res_msg", "다른 사용자 입니다.");
+		obj.put("res_msg", "잘못된 사용자 입니다.");
 		
 		if (accountId != null && reviewNo != -1) {
 			review = reviewService.selectReivewOne(reviewNo);
-			System.out.println(review.getAccountId());
 			if (review.getAccountId().equals(accountId)) {
-				obj.put("res_code", "200");
-				obj.put("res_msg", "리뷰 삭제");
+				int result = reviewService.deleteReview(reviewNo);
+				
+				if (result > 0) {
+					obj.put("res_code", "200");
+					obj.put("res_msg", "후기를 삭제합니다.");
+				}
 			}
 		}
 		
