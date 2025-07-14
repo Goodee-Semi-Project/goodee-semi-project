@@ -12,6 +12,8 @@
 <body>
 <h2>공지사항</h2>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
+<%@ include file="/WEB-INF/views/notice/noticeHeader.jsp" %>
+
 
 	<form action="/notice/list" method="get">
 	  <input type="text" name="keyword" placeholder="제목 또는 작성자 검색" value="${param.keyword}">
@@ -68,7 +70,7 @@
 			</c:if>			
 		</div>
 	</c:if>
-	<c:if test="${sessionScope.loginAccount.authNo == 1}">
+	<c:if test="${sessionScope.loginAccount.author == 1}">
 	  <form action="/notice/write" method="get" style="display:inline;">
 	    <button type="submit">등록</button>
 	  </form>
