@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.CourseMapper">
+
+	<resultMap id="courseResultMap" type="com.goodee.semi.dto.Course">
+		<result property="courseNo" column="course_no" />
+		<result property="accountNo" column="account_no" />
+		<result property="title" column="title" />
+		<result property="subTitle" column="sub_title" />
+		<result property="object" column="object" />
+		<result property="totalStep" column="total_step" />
+		<result property="capacity" column="capacity" />
+		<result property="thumb" column="thumb" />
+	</resultMap>
+	
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+
+	<insert id="insertCourse" parameterType="com.goodee.semi.dto.Course" useGeneratedKeys="true" keyProperty="courseNo">
+		INSERT INTO course (account_no, title, sub_title, object, total_step, capacity)
+		VALUE (#{accountNo}, #{title}, #{subTitle}, #{object}, #{totalStep}, #{capacity})
+	</insert>
+	
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
+		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
+	</insert>
+	
+	<update id="updateCourseThumb" parameterType="com.goodee.semi.dto.Course">
+		UPDATE course
+		SET thumb = #{thumb}
+		<where>
+			course_no = #{courseNo}
+		</where>
+	</update>
+</mapper>
