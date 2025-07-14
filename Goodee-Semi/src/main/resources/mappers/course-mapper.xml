@@ -69,14 +69,14 @@
 	<select id="selectThumbAttach" parameterType="com.goodee.semi.dto.Course" resultMap="attachResultMap">
 		SELECT * FROM attachment
 		<where>
-			pk_no = #{courseNo} AND attach_no = #{thumb}
+			type_no = 3 AND pk_no = #{courseNo} AND attach_no = #{thumb}
 		</where>
 	</select>
 	
 	<select id="selectInputAttach" parameterType="com.goodee.semi.dto.Course" resultMap="attachResultMap">
 		SELECT * FROM attachment
 		<where>
-			pk_no = #{courseNo} AND NOT attach_no = #{thumb}
+			type_no = 3 AND pk_no = #{courseNo} AND NOT attach_no = #{thumb}
 		</where>
 	</select>
 
