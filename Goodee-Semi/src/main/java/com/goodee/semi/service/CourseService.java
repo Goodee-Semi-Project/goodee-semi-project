@@ -12,16 +12,27 @@ import com.goodee.semi.dto.Course;
 public class CourseService {
 	private CourseDao courseDao = new CourseDao();
 	
+	public Course selectCourseOne(String courseNo) {
+		Course course = courseDao.selectCourseOne(courseNo);
+		
+		Attach thumbAttach = courseDao.selectThumbAttach(course);
+		Attach inputAttach = courseDao.selectInputAttach(course);
+		
+		course.setThumbAttach(thumbAttach);
+		course.setInputAttach(inputAttach);
+		
+		return course;
+	}
+	
 	public List<Course> selectCourse(Course course) {
-		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		List<Course> courseList = courseDao.selectCourse(session, course);
+		List<Course> courseList = courseDao.selectCourse(course);
 		
 		for (Course cs : courseList) {
-			Attach thumbAttach = courseDao.selectThumbAttach(session, cs);
-			Attach inputAttach = courseDao.selectInputAttach(session, cs);
+			Attach thumbAttach = courseDao.selectThumbAttach(cs);
+			Attach inputAttach = courseDao.selectInputAttach(cs);
 			
-			course.setThumbAttach(thumbAttach);
-			course.setInputAttach(inputAttach);
+			cs.setThumbAttach(thumbAttach);
+			cs.setInputAttach(inputAttach);
 		}
 		
 		return courseList;
@@ -60,5 +71,5 @@ public class CourseService {
 		
 		return result;
 	}
-
+	
 }

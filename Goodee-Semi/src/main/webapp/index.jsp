@@ -60,9 +60,9 @@
 		</div>
 	</div>
 	<!-- Container End -->
-</section>
+	</section>
 
-<section class="popular-deals section bg-gray">
+	<section class="popular-deals section bg-gray">
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
@@ -82,7 +82,7 @@
 								<div class="card">
 									<div class="thumb-content">
 										<a href="/course/detail?no=${ course.courseNo }">
-											<img class="card-img-top img-fluid" src="static/images/products/products-1.jpg" alt="Card image cap">
+											<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
 										</a>
 									</div>
 									<div class="card-body">
@@ -112,7 +112,7 @@
 			</div>
 		</div>
 	</div>
-</section>
+	</section>
 	
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<c:if test="${ empty requestScope.courseList }">
