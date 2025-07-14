@@ -39,7 +39,7 @@ INSERT INTO course VALUES
 (4, 3, '반려견을 사랑하기', '반려견을 사랑합시다.', '반려견을 사랑하기 테스트입니다.\n반려견을 사랑하기 테스트입니다.\n반려견을 사랑하기 테스트입니다.', 5, 9, 7);
 
 
-INSERT INTO attachment (attach_no, type_no, pk_no, ori_name, save_name) VALUES
+INSERT INTO attachment VALUES
 (1, 3, 1, 'pet_train1.jpg', '3efa98eda83644b681e55fb61eca473a.jpg'),
 (2, 3, 1, 'pet_train2.jpg', 'be9f6e2d172d48748578cbf97a868a5b.jpg'),
 (3, 3, 2, 'pet_teach1.jpg', 'a7e9e18900d24c17b3ee8fd128a34275.jpg'),
@@ -47,7 +47,16 @@ INSERT INTO attachment (attach_no, type_no, pk_no, ori_name, save_name) VALUES
 (5, 3, 3, 'pet_condition1.jpg', '09eab68f9307486f83a0b7b5854ac962.jpg'),
 (6, 3, 3, 'pet_condition2.jpg', 'f684843d23de4f0692690c40529429c0.jpg'),
 (7, 3, 4, 'pet_love1.jpg', '32ae56880aa64adc9178f03531d74f83.jpg'),
-(8, 3, 4, 'pet_love2.jpg', 'd3dca6385ed84ddf9d35e59ecf317e50.jpg');
+(8, 3, 4, 'pet_love2.jpg', 'd3dca6385ed84ddf9d35e59ecf317e50.jpg'),
+(9, 1, 1, 'profile1.jpg', '8ac72eef054f444f841c4e4f31632710.jpg'),
+(10, 1, 2, 'profile2.jpg', '476268465eba45f18c52f77db388e801.jpg'),
+(11, 1, 3, 'profile3.jpg', '87d193b83a744ff8a0b1fd4a2ca61ff7.jpg'),
+(12, 1, 4, 'profile4.jpg', 'a9c6d5dc62ec4d5096c7be36a557e4ba.jpg'),
+(13, 1, 5, 'profile5.jpg', '9f274c2859d64fd5b15a4e3015188c5e.jpg'),
+(14, 1, 6, 'profile6.jpg', 'f0dda58476b742e7a810a5d83c81f4b3.jpg'),
+(15, 1, 7, 'profile7.jpg', '4e6fd08234c241f6bcd36843b78c8441.jpg'),
+(16, 1, 8, 'profile8.jpg', '0b52e7146faf400cba384fa0686310be.jpg');
+
 
 
 
