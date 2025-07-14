@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>내 정보</title>
 	
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<%@ include file="/WEB-INF/views/include/head.jsp" %>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
@@ -116,7 +116,7 @@
 					success : function(data) {
 						alert(data.res_msg);
 						if (data.res_code == 200) {
-							location.href = "<%= request.getContextPath() %>/myInfo";
+							location.href = "<%= request.getContextPath() %>/";
 						}
 					},
 					error : function(data) {

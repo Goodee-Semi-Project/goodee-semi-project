@@ -1,31 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>후기 수정</title>
 
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
 
 <main>
-	<h1>후기 작성</h1>
-	<form id="write" method="post">
+	<h1>후기 수정</h1>
+	<form id="edit" method="post">
+		<!-- 후기 번호 히든으로 -->
+		<input type="text" id="reviewNo" name="reviewNo" value="${ review.reviewNo }" hidden>
 		<div>
 			<label for="class">수료 목록</label>
 			<select id="class">
 				<option></option>
 			</select>
 			<label for="title">제목</label>
-			<input type="text" id="title" name="title">
+			<input type="text" id="title" name="title" value="${ review.reviewTitle }">
 		</div>
-		<div></div>
 		<div>
-			<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;"></textarea>
+			<span>${ review.accountId }</span>
+			<c:choose>
+				<c:when test="${ review.regDate eq review.modDate }">
+					<span id="date">작성일: ${ review.regDate }</span>
+				</c:when>
+				<c:otherwise>
+					<span>수정일: ${ review.modDate }</span>
+				</c:otherwise>
+			</c:choose>
+		</div>
+		<div>
+			<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;">${ review.reviewContent }</textarea>
 		</div>
 		<div>
 			<!-- 우선은 첨부파일은 1개 -->
@@ -34,21 +47,23 @@
 		</div>
 		<div>
 			<a href="">목록</a>
-			<button>등록하기</button>
+			<button>수정하기</button>
 		</div>
 	</form>
 </main>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
-	$('#write').submit(function(e) {
+	$('#edit').submit(function(e) {
 		e.preventDefault();
 
-		const form = document.querySelector('#write');
+		const form = document.querySelector('#edit');
 		const formData = new FormData(form);
 		
-		const title = formData.get('title');
+		/* const title = formData.get('title');
 		const content = formData.get('content');
+		const reviewNo = formData.get('reviewNo');
+		console.log(reviewNo); */
 		
 		if (!title) {
 			alert('제목을 입력해주세요!');
@@ -56,7 +71,7 @@
 			alert('내용을 입력해주세요!');
 		} else {
 			$.ajax({
-				url : '/review/write',
+				url : '/review/edit',
 				type : 'post',
 				data : formData,
 				enctype : 'multipart/form-data',
