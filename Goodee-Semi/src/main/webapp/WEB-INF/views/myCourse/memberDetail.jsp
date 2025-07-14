@@ -17,30 +17,32 @@
 		<h1>타이틀</h1>
 	</div>
 	
-	<div>
+	<c:forEach>
 		<div>
 			<div>
-				<img alt="" src="">
+				<div>
+					<img alt="" src="">
+				</div>
+				<div>
+					<span>반려견이름</span>
+					<span>(회원이름**)</span>
+				</div>
+				<div>
+					<span>@세</span>
+					<span>/</span>
+					<span>성별</span>
+				</div>
+				<div>
+					품종
+				</div>
 			</div>
 			<div>
-				<span>반려견이름</span>
-				<span>(회원이름**)</span>
-			</div>
-			<div>
-				<span>@세</span>
-				<span>/</span>
-				<span>성별</span>
-			</div>
-			<div>
-				품종
+				<button type="button" onclick="">일정</button>
+				<button type="button" onclick="">과제</button>
+				<button type="button" id="btn_kick_out">추방</button>
 			</div>
 		</div>
-		<div>
-			<button type="button" onclick="">일정</button>
-			<button type="button" onclick="">과제</button>
-			<button type="button" id="btn_kick_out">추방</button>
-		</div>
-	</div>
+	</c:forEach>
 	
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	
