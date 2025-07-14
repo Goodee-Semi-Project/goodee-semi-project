@@ -7,8 +7,10 @@
 	<meta charset="UTF-8">
 	<title>비밀번호 재설정</title>
 	
-	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
+	
+<body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	
 	<form id="changePwSubmit">
@@ -17,6 +19,7 @@
 		<input type="submit" value="비밀번호 변경">
 	</form>
 	
+	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
 		$("#changePwSubmit").submit((event) => {
 			event.preventDefault();
@@ -51,8 +54,8 @@
 			}
 		});
 	</script>
-<body>
 
+	
 </body>
 
 </html>

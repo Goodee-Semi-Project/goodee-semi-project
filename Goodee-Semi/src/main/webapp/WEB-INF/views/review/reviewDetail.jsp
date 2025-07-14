@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>후기 조회</title>
 
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -18,18 +18,31 @@
 		<input type="text" hidden id="reviewNo" value="${ review.reviewNo }">
 		<label for="title">[후기]</label>
 		<span id="title" name="title">${ review.reviewTitle }</span>
-		<span id="date">${ review.reviewDate }</span>
+		<c:choose>
+			<c:when test="${ review.regDate eq review.modDate }">
+				<span id="date">작성일: ${ review.regDate }</span>
+			</c:when>
+			<c:otherwise>
+				<span>수정일: ${ review.modDate }</span>
+			</c:otherwise>
+		</c:choose>
 	</div>
 	<div id="accountId">${ review.accountId }</div>
 	<div>
 		<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;" readonly>
 			${ review.reviewContent }
 		</textarea>
+		<c:if test="${ not empty attach }">
+			<!-- filePathServlet 작성 후 실행 -->
+			<img src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+		</c:if>
 	</div>
 	<div>
 		<a href="<c:url value='/review/list' />">목록</a>
-		<a href="">수정</a>
-		<input type="button" value="삭제" onclick="deleteReview()">
+		<c:if test="${ review.accountId eq loginAccount.accountId }">
+			<a href="<c:url value='/review/edit?reviewNo=${ review.reviewNo }' />">수정</a>
+			<input type="button" value="삭제" onclick="deleteReview()">
+		</c:if>
 	</div>
 </main>
 
