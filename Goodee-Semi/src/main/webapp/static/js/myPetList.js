@@ -4,7 +4,7 @@
 // 수정사항 저장 시 유효성 검사
 // 유효성 검사 통과시: '수정되었습니다' 라는 메시지 창이 뜨고, '확인'을 누르면 메시지 창 사라짐
 
-// TODO 수정, 삭제 기능 먼저 구현 후 등록 기능 구현하기
+// TODO 반려견 이미지 등록하지 않을 시 기본 이미지 띄우기
 
 /////////////////////////////// 수정 /////////////////////////////// 
 
@@ -150,7 +150,7 @@ function closeDeleteModal() {
 	document.querySelector('#delete-modal-box').style.display = 'none';
 }
 
-// TODO 삭제 버튼 클릭 시 이벤트
+// 삭제 버튼 클릭 시 이벤트
 function deletePetEvent() {
 	const petNo = document.querySelector('#delete-confirm-btn').getAttribute('data-pet-no');
 	const val = document.querySelector('#delete-input').value;
