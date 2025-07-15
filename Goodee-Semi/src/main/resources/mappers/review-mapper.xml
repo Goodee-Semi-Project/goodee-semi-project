@@ -7,10 +7,12 @@
 		<result property="reviewNo" column="review_no" />
 		<result property="classNo" column="class_no" />
 		<result property="reviewTitle" column="review_title" />
-		<result property="accountId" column="account_id" />
 		<result property="reviewContent" column="review_content" />
 		<result property="regDate" column="reg_date" />
 		<result property="modDate" column="mod_date" />
+		
+		<result property="accountId" column="account_id" />
+		<result property="courseTitle" column="title" />
 	</resultMap>
 	
 	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
@@ -30,69 +32,102 @@
 			</where>
 		</if>
 	</select>
+	
 	<select id="selectReviewList" parameterType="com.goodee.semi.dto.Review" resultMap="reviewResultMap">
-		SELECT r.*, a.account_id
+		SELECT r.* ,a.account_id ,c.class_no ,co.title
 		FROM review AS r
 		JOIN (
-			SELECT c.class_no ,c.pet_no
-			FROM class AS c
+			SELECT class_no ,course_no ,pet_no
+			FROM class
 		) AS c ON r.class_no = c.class_no
 		JOIN (
-			SELECT p.pet_no ,p.account_no
-			FROM pet AS p
+			SELECT pet_no ,account_no
+			FROM pet
 		)AS p ON c.pet_no = p.pet_no
 		JOIN (
-			SELECT a.account_no ,a.account_id
-			FROM account AS a
+			SELECT account_no ,account_id
+			FROM account
 		) AS a ON p.account_no = a.account_no
+		JOIN (
+			SELECT course_no ,title
+			FROM course
+		) AS co ON c.course_no = co.course_no
 		<if test="keyword != null and keyword != ''">
 			<where>
-				review_title LIKE CONCAT('%' ,#{ keyword } ,'%')
+				<choose>
+					<when test="category == 'reviewTitle'">
+						review_title LIKE CONCAT('%' ,#{ keyword } ,'%')
+					</when>
+					<when test="category == 'courseTitle'">
+						title LIKE CONCAT('%' ,#{ keyword } ,'%')
+					</when>
+					<when test="category == 'accountId'">
+						account_id LIKE CONCAT('%' ,#{ keyword } ,'%')
+					</when>
+				</choose>
 			</where>
 		</if>
-		ORDER BY r.review_no
+		<choose>
+			<when test="order == 'asc'">
+				ORDER BY r.review_no
+			</when>
+			<otherwise>
+				ORDER BY r.review_no DESC
+			</otherwise>
+		</choose>
 		LIMIT #{ limitPageNo } ,#{ numPerPage }
 	</select>
+	
 	<insert id="insertReview" parameterType="com.goodee.semi.dto.Review" 
 		useGeneratedKeys="true" keyProperty="reviewNo">
 		INSERT INTO review (class_no ,review_title ,review_content)
 		VALUES (#{classNo} ,#{reviewTitle} ,#{reviewContent})
 	</insert>
+	
 	<select id="selectReivewOne" parameterType="_int" resultMap="reviewResultMap">
-		SELECT r.*, a.account_id
+		SELECT r.* ,a.account_id ,c.class_no ,co.title
 		FROM review AS r
 		JOIN (
-			SELECT c.class_no ,c.pet_no
-			FROM class AS c
+			SELECT class_no ,course_no ,pet_no
+			FROM class
 		) AS c ON r.class_no = c.class_no
 		JOIN (
-			SELECT p.pet_no ,p.account_no
-			FROM pet AS p
+			SELECT pet_no ,account_no
+			FROM pet
 		)AS p ON c.pet_no = p.pet_no
 		JOIN (
-			SELECT a.account_no ,a.account_id
-			FROM account AS a
+			SELECT account_no ,account_id
+			FROM account
 		) AS a ON p.account_no = a.account_no
+		JOIN (
+			SELECT course_no ,title
+			FROM course
+		) AS co ON c.course_no = co.course_no
 		WHERE r.review_no = #{ reviewNo }
 	</select>
+	
 	<delete id="deleteReview" parameterType="_int">
 		DELETE FROM review
 		WHERE review_no = #{ reviewNo }
 	</delete>
+	
 	<update id="updateReview" parameterType="com.goodee.semi.dto.Review" >
 		UPDATE review
 		SET review_title = #{ reviewTitle } ,review_content = #{ reviewContent }
 		WHERE review_no = #{ reviewNo }
 	</update>
+	
 	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
 		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
 		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
 	</insert>
+	
 	<select id="selectAttachByReviewNo" parameterType="_int" resultMap="attachResultMap">
 		SELECT *
 		FROM attachment
 		WHERE type_no = 7 AND pk_no = #{ reviewNo }
 	</select>
+	
 	<delete id="deleteAttach" parameterType="com.goodee.semi.dto.Attach">
 		DELETE FROM attachment
 		WHERE type_no = 7 AND  pk_no = #{ pkNo }

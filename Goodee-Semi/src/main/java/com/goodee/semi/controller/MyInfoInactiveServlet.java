@@ -1,11 +1,14 @@
 package com.goodee.semi.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.Account;
+import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.AccountService;
+import com.goodee.semi.service.PetService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,7 +23,8 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/myInfo/inactive")
 public class MyInfoInactiveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	AccountService service = new AccountService();
+	private AccountService service = new AccountService();
+	private PetService petService = new PetService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -33,7 +37,21 @@ public class MyInfoInactiveServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session =request.getSession(false);
+		
+		Account account = null;
+		if (session != null && session.getAttribute("loginAccount") instanceof Account) {
+			account = (Account) session.getAttribute("loginAccount");
+		}
+		
 		// TODO: 나의 반려견 리스트
+		Pet param = new Pet();
+		param.setAccountNo(account.getAccountNo());
+		param.setNowPage(1);
+		
+		List<Pet> petList = petService.selectPetList(param);
+		
+		request.setAttribute("petList", petList);
 		
 		request.getRequestDispatcher("/WEB-INF/views/myInfo/myInfoInactive.jsp").forward(request, response);
 	}
