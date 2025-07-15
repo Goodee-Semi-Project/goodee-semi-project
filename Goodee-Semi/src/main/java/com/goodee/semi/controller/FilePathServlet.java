@@ -29,7 +29,7 @@ public class FilePathServlet extends HttpServlet {
 		param.setTypeNo(typeNo);
 
 		Attach attach = service.selectAttachOne(param);  // DB에서 가져오기!
-		System.out.println("조회된 attach = " + attach);
+		
 
 		// ✅ attach null 체크
 		if (attach == null || attach.getSavedName() == null) {
@@ -38,7 +38,7 @@ public class FilePathServlet extends HttpServlet {
 		}
 
 		String filePath = "C:/goodee/upload/notice/" + attach.getSavedName();
-		System.out.println(filePath);
+		
 
 		File file = new File(filePath);
 		if (!file.exists()) {
