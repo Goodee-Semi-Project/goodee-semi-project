@@ -68,12 +68,12 @@
 			</where>
 		</if>
 		<choose>
-			<when test="order == 'asc'">
-				ORDER BY r.review_no
-			</when>
 			<when test="order == 'dsc'">
 				ORDER BY r.review_no DESC
 			</when>
+			<otherwise>
+				ORDER BY r.review_no
+			</otherwise>
 		</choose>
 		LIMIT #{ limitPageNo } ,#{ numPerPage }
 	</select>
