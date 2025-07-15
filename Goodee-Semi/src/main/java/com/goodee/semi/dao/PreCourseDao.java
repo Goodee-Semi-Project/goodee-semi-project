@@ -26,4 +26,11 @@ public class PreCourseDao {
 		return result;
 	}
 
+	public PreCourse selectPreCourse(int preNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		PreCourse preCourse = session.selectOne("com.goodee.semi.mapper.PreCourseMapper.selectPreCourse", preNo);
+		session.close();
+		return preCourse;
+	}
+
 }

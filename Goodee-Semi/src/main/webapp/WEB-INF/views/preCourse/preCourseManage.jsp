@@ -26,7 +26,7 @@
 				<ul>
 					<c:forEach var="p" items="${ preCourseMap.get(c.courseNo) }">
 						<!-- 회원이 조회하는 페이지에서 수정 삭제 버튼만 if로 표시 -->
-						<a href="/preCourse/manage/${ p.preNo }">
+						<a href="/preCourse/detail?preNo=${ p.preNo }">
 							사전학습명: ${ p.preTitle }
 						</a>
 						<br>
