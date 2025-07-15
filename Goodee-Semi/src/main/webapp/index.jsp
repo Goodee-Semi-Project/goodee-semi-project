@@ -60,9 +60,9 @@
 		</div>
 	</div>
 	<!-- Container End -->
-</section>
+	</section>
 
-<section class="popular-deals section bg-gray">
+	<section class="popular-deals section bg-gray">
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
@@ -76,48 +76,52 @@
 			<div class="col-12">
 				<div class="trending-ads-slide">
 					<div class="col-4">
-					
-						<!-- curriculum start -->
-<div class="product-item bg-light">
-	<div class="card">
-		<div class="thumb-content">
-			<!-- <div class="price">$200</div> -->
-			<a href="single.html">
-				<img class="card-img-top img-fluid" src="static/images/products/products-1.jpg" alt="Card image cap">
-			</a>
-		</div>
-		<div class="card-body">
-		    <h4 class="card-title"><a href="single.html">11inch Macbook Air</a></h4>
-		    <ul class="list-inline product-meta">
-		    	<li class="list-inline-item">
-		    		<a href="single.html"><i class="fa fa-folder-open-o"></i>Electronics</a>
-		    	</li>
-		    	<li class="list-inline-item">
-		    		<a href="category.html"><i class="fa fa-calendar"></i>26th December</a>
-		    	</li>
-		    </ul>
-		    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
-		    <div class="product-ratings">
-		    	<ul class="list-inline">
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-		    	</ul>
-		    </div>
-		</div>
-	</div>
-</div>
-						<!-- curriculum end -->
+						<c:forEach var="course" items="${ courseList }" varStatus="index">
+							
+							<div class="product-item bg-light">
+								<div class="card">
+									<div class="thumb-content">
+										<a href="/course/detail?no=${ course.courseNo }">
+											<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
+										</a>
+									</div>
+									<div class="card-body">
+		    						<h4 class="card-title"><a href="/course/detail?no=${ course.courseNo }">${ course.title }</a></h4>
+		    						<p class="card-text">${ course.subTitle }</p>
+		    						<div class="product-ratings">
+								    	<ul class="list-inline">
+								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+								    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
+								    	</ul>
+		    						</div>
+									</div>
+								</div>
+							</div>
+						
+						<c:if test="${ not index.last }">
+							</div>
+							<div class="col-4">
+						</c:if>
+							
+						</c:forEach>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</section>
+	</section>
 	
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	<c:if test="${ empty requestScope.courseList }">
+		<script>
+			$(() => {
+				location.href="<%= request.getContextPath() %>/home";
+			});
+		</script>
+	</c:if>
 </body>
 
 </html>
