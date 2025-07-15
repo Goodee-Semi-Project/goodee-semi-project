@@ -59,4 +59,12 @@ public class NoticeDao {
 	public int updateAttach(SqlSession session, Attach attach) {
 		return session.update("com.goodee.semi.mapper.NoticeMapper.updateAttach", attach);
 	}
+	public int deleteAttachByNoticeNo(SqlSession session, int noticeNo) {
+		return session.delete("com.goodee.semi.mapper.NoticeMapper.deleteAttachByNoticeNo", noticeNo);
+		
+	}
+	public int deleteNotice(SqlSession session, int noticeNo) {
+		return session.delete("com.goodee.semi.mapper.NoticeMapper.deleteNotice", noticeNo);
+		
+	}
 }

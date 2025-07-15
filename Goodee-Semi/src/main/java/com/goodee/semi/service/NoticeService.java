@@ -93,4 +93,19 @@ public class NoticeService {
 	public Attach selectAttachOne(Attach param) {
 		return dao.selectAttachOne(param);
 	}
+	public int deleteNoticeWithAttach(int noticeNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		try {
+			dao.deleteAttachByNoticeNo(session, noticeNo);
+			result = dao.deleteNotice(session, noticeNo);
+			session.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		}finally {
+			session.close();
+		}
+		return result;
+	}
 }
