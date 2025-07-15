@@ -17,14 +17,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import net.bramp.ffmpeg.FFprobe;
+import net.bramp.ffmpeg.probe.FFmpegFormat;
+import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 
 /**
  * Servlet implementation class PreCourseRegistServlet
  */
 @MultipartConfig (
 		fileSizeThreshold = 1024 * 1024,
-		maxFileSize = 1024 * 1024 * 5,
-		maxRequestSize = 1024 * 1024 * 20
+		maxFileSize = 1024 * 1024 * 200,
+		maxRequestSize = 1024 * 1024 * 200
 )
 @WebServlet("/preCourse/regist")
 public class PreCourseRegistServlet extends HttpServlet {
@@ -51,6 +54,7 @@ public class PreCourseRegistServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
+		// 사전 학습 등록
 		String title = request.getParameter("title");
 		int courseNo = -1;
 		if (request.getParameter("courseNo") != null) {
@@ -60,7 +64,7 @@ public class PreCourseRegistServlet extends HttpServlet {
 		PreCourse preCourse = null;
 		int result = -1;
 		if (courseNo != -1) {
-			// TODO: 첨부 파일
+			// 첨부 파일
 			Part file = null;
 			if (request.getPart("attach") != null) {
 				file = request.getPart("attach");
@@ -70,17 +74,34 @@ public class PreCourseRegistServlet extends HttpServlet {
 			if (file != null) {
 				File uploadDir = attachService.getUploadDirectory(Attach.PRE_COURSE);
 				attach = attachService.handleUploadFile(file, uploadDir);
+				System.out.println("파일 저장");
 			}
 			
-			// TODO: 영상 길이 구하기
-			String videoLen = "10:00";
+			// 영상 시간 구하기
+			// TODO: FFMpeg 설치하고 ffprobe.exe 경로 입력
+			int total = 0;
+			try {
+				FFprobe ffprobe = new FFprobe("C://ffmpeg/bin/ffprobe.exe");
+				FFmpegProbeResult probeResult = ffprobe.probe("C://goodee/upload/preCourse/" + attach.getSavedName());
+				FFmpegFormat format = probeResult.getFormat();
+				total = (int) format.duration;
+				
+			} catch (Exception e) {
+			}
+			
+			int hour = total / 360;
+			int minute = (total % 360) / 60;
+			int second = total % 60;
+			
+			
+			String videoLen = "" + hour + ":" + minute + ":" + second;
 			
 			preCourse = new PreCourse();
 			preCourse.setCourseNo(courseNo);
 			preCourse.setPreTitle(title);
 			preCourse.setVideoLen(videoLen);
 			
-			result = preCourseService.insertPreCourse(preCourse);
+			result = preCourseService.insertPreCourse(preCourse, attach);
 		}
 
 		JSONObject obj = new JSONObject();
