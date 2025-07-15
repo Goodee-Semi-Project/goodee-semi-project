@@ -23,5 +23,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="/mappers/review-mapper.xml"/>
 		<mapper resource="/mappers/course-mapper.xml"/>
 		<mapper resource="/mappers/attach-mapper.xml"/>
+		<mapper resource="/mappers/schedule-mapper.xml"/>
 	</mappers>
 </configuration>
