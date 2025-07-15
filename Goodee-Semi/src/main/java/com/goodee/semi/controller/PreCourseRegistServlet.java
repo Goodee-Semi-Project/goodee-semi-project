@@ -1,10 +1,13 @@
 package com.goodee.semi.controller;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.PreCourse;
+import com.goodee.semi.service.AttachService;
 import com.goodee.semi.service.PreCourseService;
 
 import jakarta.servlet.ServletException;
@@ -13,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
 /**
  * Servlet implementation class PreCourseRegistServlet
@@ -26,6 +30,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class PreCourseRegistServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PreCourseService preCourseService = new PreCourseService();
+	private AttachService attachService = new AttachService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -55,6 +60,18 @@ public class PreCourseRegistServlet extends HttpServlet {
 		PreCourse preCourse = null;
 		int result = -1;
 		if (courseNo != -1) {
+			// TODO: 첨부 파일
+			Part file = null;
+			if (request.getPart("attach") != null) {
+				file = request.getPart("attach");
+			}
+			
+			Attach attach = null;
+			if (file != null) {
+				File uploadDir = attachService.getUploadDirectory(Attach.PRE_COURSE);
+				attach = attachService.handleUploadFile(file, uploadDir);
+			}
+			
 			// TODO: 영상 길이 구하기
 			String videoLen = "10:00";
 			

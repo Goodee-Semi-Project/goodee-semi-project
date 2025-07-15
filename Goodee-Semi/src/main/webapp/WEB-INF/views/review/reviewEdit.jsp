@@ -56,6 +56,7 @@
 	</form>
 </main>
 
+<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 	$('#edit').submit(function(e) {
