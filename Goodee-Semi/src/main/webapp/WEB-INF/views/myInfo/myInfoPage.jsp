@@ -37,7 +37,9 @@
 						<br>
 					</c:when>
 					<c:otherwise>
-						<img alt="profile-img" src="<c:url value='/filePath?no=13'/>">
+						<%-- <img alt="profile-img" src="<c:url value='/filePath?no=13'/>"> --%>
+						<!-- TODO: 공통 사용 이미지로 -->
+						<img alt="profile-img" src=""/>
 						<br>
 					</c:otherwise>
 				</c:choose>
@@ -107,7 +109,7 @@
 	<a href="/myInfo/inactive">회원 탈퇴</a>
 </main>
 
-
+<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 

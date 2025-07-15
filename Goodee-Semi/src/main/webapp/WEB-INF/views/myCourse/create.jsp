@@ -12,6 +12,10 @@
 
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
+	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
+	<h3 class="widget-header">
+  	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
+  </h3>
 	
 	<form id="createCourseForm">
 		<label>과정명: </label>
@@ -48,6 +52,7 @@
 		<input type="submit" value="등록">
 	</form>
 	
+	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
 		$("#createCourseForm").submit((event) => {
