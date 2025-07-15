@@ -30,7 +30,7 @@
 		<div>
 			<!-- 정렬 방법 -->
 			<select>
-				<option></option>
+				<option>정렬</option>
 				<option></option>
 			</select>
 			<a href="/review/write">후기 작성</a>

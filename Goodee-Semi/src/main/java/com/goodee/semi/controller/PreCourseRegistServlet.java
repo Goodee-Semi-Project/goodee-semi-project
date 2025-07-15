@@ -74,7 +74,6 @@ public class PreCourseRegistServlet extends HttpServlet {
 			if (file != null) {
 				File uploadDir = attachService.getUploadDirectory(Attach.PRE_COURSE);
 				attach = attachService.handleUploadFile(file, uploadDir);
-				System.out.println("파일 저장");
 			}
 			
 			// 영상 시간 구하기
