@@ -1,5 +1,6 @@
 package com.goodee.semi.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class Schedule {
 	private int schedNo;
 	private int classNo;
 	private int schedStep;
-	private LocalDateTime schedDate;
+	private LocalDate schedDate;
 	private LocalDateTime schedStart;
 	private LocalDateTime schedEnd;
 	private char schedAttend;
