@@ -37,9 +37,8 @@
 						<br>
 					</c:when>
 					<c:otherwise>
-						<%-- <img alt="profile-img" src="<c:url value='/filePath?no=13'/>"> --%>
 						<!-- TODO: 공통 사용 이미지로 -->
-						<img alt="profile-img" src=""/>
+						<img alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"/>
 						<br>
 					</c:otherwise>
 				</c:choose>

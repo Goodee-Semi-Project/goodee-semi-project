@@ -56,6 +56,11 @@ public class PreCourseService {
 	public PreCourse selectPreCourse(int preNo) {
 		return preCourseDao.selectPreCourse(preNo);
 	}
+
+	public Attach selectAttach(int preNo) {
+		Attach attach = preCourseDao.selectAttach(preNo);
+		return attach;
+	}
 	
 
 }

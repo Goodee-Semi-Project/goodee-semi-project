@@ -33,4 +33,11 @@ public class PreCourseDao {
 		return preCourse;
 	}
 
+	public Attach selectAttach(int preNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Attach attach = session.selectOne("com.goodee.semi.mapper.PreCourseMapper.selectAttach", preNo);
+		session.close();
+		return attach;
+	}
+
 }
