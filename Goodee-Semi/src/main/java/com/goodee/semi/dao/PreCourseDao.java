@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.PreCourse;
 
 public class PreCourseDao {
@@ -18,6 +19,11 @@ public class PreCourseDao {
 
 	public int insertPreCourse(SqlSession session, PreCourse preCourse) {
 		return session.insert("com.goodee.semi.mapper.PreCourseMapper.insertPreCourse", preCourse);
+	}
+
+	public int insertAttach(SqlSession session, Attach attach) {
+		int result = session.insert("com.goodee.semi.mapper.PreCourseMapper.insertAttach", attach);
+		return result;
 	}
 
 }

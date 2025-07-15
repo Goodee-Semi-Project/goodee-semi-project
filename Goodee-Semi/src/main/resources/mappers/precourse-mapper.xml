@@ -10,6 +10,14 @@
 		<result property="videoLen" column="video_len"/>
 	</resultMap>
 	
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+	
 	<select id="selectList" parameterType="_int" resultMap="preCourseResultMap">
 		SELECT *
 		FROM pre_course
@@ -20,8 +28,13 @@
 		)
 	</select>
 	
-	<insert id="insertPreCourse" parameterType="com.goodee.semi.dto.PreCourse">
+	<insert id="insertPreCourse" parameterType="com.goodee.semi.dto.PreCourse" useGeneratedKeys="true" keyProperty="preNo">
 		INSERT INTO pre_course (`course_no`, `pre_title`, `video_len`)
 		VALUE (#{ courseNo } ,#{ preTitle } ,#{ videoLen })
+	</insert>
+	
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
+		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
 	</insert>
 </mapper>
