@@ -11,4 +11,5 @@ public interface PreCourseMapper {
 	List<PreCourse> selectList(int courseNo);
 	int insertPreCourse(SqlSession session, PreCourse preCourse);
 	int insertAttach(SqlSession session, Attach attach);
+	PreCourse selectPreCourse(int preNo);
 }

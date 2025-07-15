@@ -52,6 +52,10 @@ public class PreCourseService {
 		
 		return result;
 	}
+
+	public PreCourse selectPreCourse(int preNo) {
+		return preCourseDao.selectPreCourse(preNo);
+	}
 	
 
 }
