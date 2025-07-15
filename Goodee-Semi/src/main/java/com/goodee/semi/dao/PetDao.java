@@ -33,4 +33,11 @@ public class PetDao implements PetMapper {
 		return result;
 	}
 	
+	@Override
+	public List<Pet> selectAllPetByCourseNo(String selectAllPetByCourseNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Pet> list = session.selectList("com.goodee.semi.mapper.PetMapper.selectAllPetByCourseNo", selectAllPetByCourseNo);
+		session.close();
+		return list;
+	}
 }

@@ -8,4 +8,5 @@ public interface PetMapper {
 	 List<Pet> selectPetList(Pet param);
 	 int selectPetCount(Pet param);
 	 int updatePet(Pet param);
+	 List<Pet> selectAllPetByCourseNo(String courseNo);
 }
