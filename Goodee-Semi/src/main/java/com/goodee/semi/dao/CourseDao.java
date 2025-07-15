@@ -65,7 +65,6 @@ public class CourseDao {
 	public List<Course> selectAllCourseByAccountNo(int accountNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		List<Course> result = session.selectList("com.goodee.semi.mapper.CourseMapper.selectAllCourseByAccountNo", accountNo);
-		System.out.println(result);
 		session.close();
 		return result;
 	}
@@ -73,7 +72,6 @@ public class CourseDao {
 	public List<Attach> selectAllAttachByAccountNo(int accountNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		List<Attach> result = session.selectList("com.goodee.semi.mapper.CourseMapper.selectAllAttachByAccountNo", accountNo);
-		System.out.println(result);
 		session.close();
 		return result;
 	}

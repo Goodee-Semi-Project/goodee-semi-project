@@ -12,7 +12,9 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
-	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp"%>
+	<h3 class="widget-header">
+  	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
+  </h3>
 
 	<div>
 		<h1>수강 인원 관리</h2>
@@ -30,7 +32,7 @@
 				</div>
 				<div>
 					<div style="margin-top : 45px;">
-						<a href="<c:url value='/myCourse/MemberDetail?courseNo=${c.courseNo }'/>">상세보기</a>
+						<a href="<c:url value='/myCourse/memberDetail?courseNo=${c.courseNo }'/>">상세보기</a>
 						<div>수강 인원</div>
 						<span>${c.currentEnrollment}</span>/<span>${c.capacity}</span>
 					</div>
@@ -40,6 +42,7 @@
 		<hr>
 	</c:forEach>
  
+ 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 </body>
 </html>

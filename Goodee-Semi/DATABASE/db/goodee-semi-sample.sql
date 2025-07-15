@@ -2,16 +2,6 @@ INSERT INTO authority (auth_no, auth_name) VALUES
 (1, '훈련사'),
 (2, '회원');
 
-INSERT INTO attach_type VALUES
-(1, '사용자'),
-(2, '반려견'),
-(3, '교육과정'),
-(4, '사전학습'),
-(5, '과제'),
-(6, '제출물'),
-(7, '후기'),
-(8, '공지사항');
-
 INSERT INTO account VALUES
 (1, 2, 'admin1234', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '정유니', 'Y'),
 (2, 1, 'tame9010', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '이몽룡', 'Y'),
@@ -38,61 +28,15 @@ INSERT INTO course VALUES
 (3, 3, '반려견 관리법', '반려견 관리법입니다.', '반려견 관리법 테스트입니다.\n반려견 관리법 테스트입니다.\n반려견 관리법 테스트입니다.', 7, 20, 5),
 (4, 3, '반려견을 사랑하기', '반려견을 사랑합시다.', '반려견을 사랑하기 테스트입니다.\n반려견을 사랑하기 테스트입니다.\n반려견을 사랑하기 테스트입니다.', 5, 9, 7);
 
-
-INSERT INTO attachment VALUES
-(1, 3, 1, 'pet_train1.jpg', '3efa98eda83644b681e55fb61eca473a.jpg'),
-(2, 3, 1, 'pet_train2.jpg', 'be9f6e2d172d48748578cbf97a868a5b.jpg'),
-(3, 3, 2, 'pet_teach1.jpg', 'a7e9e18900d24c17b3ee8fd128a34275.jpg'),
-(4, 3, 2, 'pet_teach2.jpg', '2e37c4b8c4a24e10afead83341274640.jpg'),
-(5, 3, 3, 'pet_condition1.jpg', '09eab68f9307486f83a0b7b5854ac962.jpg'),
-(6, 3, 3, 'pet_condition2.jpg', 'f684843d23de4f0692690c40529429c0.jpg'),
-(7, 3, 4, 'pet_love1.jpg', '32ae56880aa64adc9178f03531d74f83.jpg'),
-(8, 3, 4, 'pet_love2.jpg', 'd3dca6385ed84ddf9d35e59ecf317e50.jpg'),
-(9, 1, 1, 'profile1.jpg', '8ac72eef054f444f841c4e4f31632710.jpg'),
-(10, 1, 2, 'profile2.jpg', '476268465eba45f18c52f77db388e801.jpg'),
-(11, 1, 3, 'profile3.jpg', '87d193b83a744ff8a0b1fd4a2ca61ff7.jpg'),
-(12, 1, 4, 'profile4.jpg', 'a9c6d5dc62ec4d5096c7be36a557e4ba.jpg'),
-(13, 1, 5, 'profile5.jpg', '9f274c2859d64fd5b15a4e3015188c5e.jpg'),
-(14, 1, 6, 'profile6.jpg', 'f0dda58476b742e7a810a5d83c81f4b3.jpg'),
-(15, 1, 7, 'profile7.jpg', '4e6fd08234c241f6bcd36843b78c8441.jpg'),
-(16, 1, 8, 'profile8.jpg', '0b52e7146faf400cba384fa0686310be.jpg');
-
-
-
-
-INSERT INTO pet (pet_no, account_no, pet_name, pet_gender, pet_age, pet_breed) VALUES
-(1, 1, '멍멍이1', 'M', 3, '치와와'),
-(2, 2, '멍멍이2', 'F', 5, '말티즈'),
-(3, 3, '멍멍이3', 'M', 6, '푸들'),
-(4, 4, '멍멍이4', 'F', 2, '포메라니안'),
-(5, 5, '멍멍이5', 'M', 4, '시바견'),
-(6, 6, '멍멍이6', 'F', 1, '치와와'),
-(7, 7, '멍멍이7', 'M', 7, '말티즈'),
-(8, 8, '멍멍이8', 'F', 3, '푸들'),
-(9, 8, '멍멍이9', 'M', 5, '포메라니안'),
-(10, 8, '멍멍이10', 'F', 2, '시바견');
-
-
-INSERT INTO course (course_no, account_no, title, sub_title, object, total_step, capacity, thumb)
-VALUES
-(1, 2, '반려견 기초 훈련', '반려견 기초 훈련입니다.', '반려견 기초 훈련 테스트입니다.\n반려견 기초 훈련 테스트입니다.\n반려견 기초 훈련 테스트입니다.', 10, 10, 1),
-(2, 2, '반려견 행동교정', '반려견 행동교정입니다.', '반려견 행동교정 테스트입니다.\n반려견 행동교정 테스트입니다.\n반려견 행동교정 테스트입니다.', 15, 7, 3),
-(3, 3, '반려견 관리법', '반려견 관리법입니다.', '반려견 관리법 테스트입니다.\n반려견 관리법 테스트입니다.\n반려견 관리법 테스트입니다.', 7, 20, 5),
-(4, 3, '반려견을 사랑하기', '반려견을 사랑합시다.', '반려견을 사랑하기 테스트입니다.\n반려견을 사랑하기 테스트입니다.\n반려견을 사랑하기 테스트입니다.', 5, 9, 7);
-
-
-INSERT INTO class (class_no, course_no, pet_no, class_prog) VALUES
-(1, 1, 4, 97),
-(2, 2, 6, 13),
-(3, 3, 2, 48),
-(4, 4, 2, 45),
-(5, 5, 6, 77),
-(6, 6, 5, 5),
-(7, 7, 8, 68),
-(8, 8, 2, 48),
-(9, 9, 2, 70),
-(10, 10, 5, 80);
-
+INSERT INTO attach_type VALUES
+(1, '사용자'),
+(2, '반려견'),
+(3, '교육과정'),
+(4, '사전학습'),
+(5, '과제'),
+(6, '제출물'),
+(7, '후기'),
+(8, '공지사항');
 
 INSERT INTO schedule (sched_no, class_no, sched_step, sched_date, sched_start, sched_end, sched_attend) VALUES
 (1, 1, 5, '2024-07-02', '2024-07-02 10:00:00', '2024-07-02 11:00:00', 'N'),
@@ -106,19 +50,7 @@ INSERT INTO schedule (sched_no, class_no, sched_step, sched_date, sched_start, s
 (9, 9, 3, '2024-07-10', '2024-07-10 10:00:00', '2024-07-10 11:00:00', 'N'),
 (10, 10, 2, '2024-07-11', '2024-07-11 10:00:00', '2024-07-11 11:00:00', 'N');
 
-
-INSERT INTO `review` (`class_no`, `review_title`, `account_id`, `review_content`)
-VALUES
-(1, '너무 유익한 수업이었어요!', 'account1', '처음 배우는 내용이었지만 강사님 설명이 친절해서 잘 이해할 수 있었습니다.'),
-(2, '좋았어요', 'account2', '실습 위주로 수업이 진행되어서 지루하지 않았어요.'),
-(3, '약간 어려웠지만 괜찮았어요', 'account3', '내용이 많아서 따라가기 조금 힘들었지만, 복습 자료가 잘 되어 있어 좋았어요.'),
-(1, '강의 자료가 훌륭합니다', 'account4', '자료가 잘 정리되어 있고 복습할 때도 유용했습니다.'),
-(4, '추천합니다!', 'account5', '개념 설명도 좋고 예제도 다양해서 많은 도움이 되었어요.'),
-(5, '시간 가는 줄 몰랐어요', 'account1', '몰입감 있게 들을 수 있었고, 질문도 잘 받아주셔서 만족스러웠습니다.'),
-(2, '조금 아쉬웠어요', 'account2', '진행 속도가 빨라서 기초가 부족한 사람에겐 어려울 수 있어요.'),
-(3, '완전 강추합니다', 'account3', '학원 다니는 것보다 이 강의가 더 실속 있었어요!'),
-(5, '평균 이상입니다', 'account4', '기대했던 만큼은 아니었지만 기본은 잘 가르쳐주십니다.'),
-(4, '실습이 많아서 좋았어요', 'account5', '이론만 듣는 게 아니라 직접 해볼 수 있어서 더 잘 이해됐어요.');
+SELECT * FROM review;
 
 INSERT INTO `review` (`class_no`, `review_title`, `account_id`, `review_content`)
 VALUES
@@ -175,13 +107,3 @@ VALUES
 (1, '강의가 지루하지 않아요', 'account2', '중간중간 인터랙션이 있어서 지루하지 않게 들었어요.'),
 (2, '적극 추천합니다', 'account3', '친구들에게도 추천할 정도로 만족했습니다.');
 
-INSERT INTO attachment (attach_no, type_no, pk_no, ori_name, save_name) VALUES
-(1, 3, 1, 'pet_train1.jpg', '3efa98eda83644b681e55fb61eca473a.jpg'),
-(2, 3, 1, 'pet_train2.jpg', 'be9f6e2d172d48748578cbf97a868a5b.jpg'),
-(3, 3, 2, 'pet_teach1.jpg', 'a7e9e18900d24c17b3ee8fd128a34275.jpg'),
-(4, 3, 2, 'pet_teach2.jpg', '2e37c4b8c4a24e10afead83341274640.jpg'),
-(5, 3, 3, 'pet_condition1.jpg', '09eab68f9307486f83a0b7b5854ac962.jpg'),
-(6, 3, 3, 'pet_condition2.jpg', 'f684843d23de4f0692690c40529429c0.jpg'),
-(7, 3, 4, 'pet_love1.jpg', '32ae56880aa64adc9178f03531d74f83.jpg'),
-(8, 3, 4, 'pet_love2.jpg', 'd3dca6385ed84ddf9d35e59ecf317e50.jpg');
-(10, 10, 2, '2024-07-11', '2024-07-11 10:00:00', '2024-07-11 11:00:00', 'N');

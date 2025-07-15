@@ -34,11 +34,6 @@ public class MyCouseMemberManagement extends HttpServlet {
 		int accountNo = account.getAccountNo();
 		
 		List<Course> courseList = service.selectAllCourseByAccountNo(accountNo);
-		for (Course list : courseList) {
-			if(list.getThumbAttach() != null) {
-			System.out.println(list.getThumbAttach().getAttachNo());
-			}
-		}
 		
 		request.setAttribute("courseList", courseList);
 		request.getRequestDispatcher("/WEB-INF/views/myCourse/memberManagement.jsp").forward(request, response);
