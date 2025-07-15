@@ -11,13 +11,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Enroll {
-	private int enrollNo;
+public class PetClass {
+	private int classNo;
 	private int courseNo;
 	private int petNo;
-	private char enrollStatus;
-	
-	private Course courseData;
-	private Pet petData;
-	private Account accountData;
+	private int classProg;
 }

@@ -9,6 +9,7 @@ import com.goodee.semi.dto.Pet;
 
 public interface PetMapper {
 	 List<Pet> selectPetList(Pet param);
+	 Pet selectPetOne(int petNo);
 	 int selectPetCount(Pet param);
 	 int updatePet(SqlSession session, Pet param);
 	 int updateAttach(SqlSession session, Attach param);
