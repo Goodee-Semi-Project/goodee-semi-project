@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.Like;
 
 public class CourseDao {
 	
@@ -58,6 +59,22 @@ public class CourseDao {
 
 	public int updateCourseThumb(SqlSession session, Course course) {
 		int result = session.update("com.goodee.semi.mapper.CourseMapper.updateCourseThumb", course);
+		
+		return result;
+	}
+
+	public int insertLike(Like like) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertLike", like);
+		session.close();
+		
+		return result;
+	}
+
+	public int deleteLike(Like like) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.CourseMapper.deleteLike", like);
+		session.close();
 		
 		return result;
 	}
