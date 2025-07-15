@@ -93,6 +93,18 @@ public class CourseService {
 		
 		return result;
 	}
+	
+	public List<Like> selectMyLikeByAccountNo(int accountNo) {
+		List<Like> likeList = courseDao.selectMyLikeByAccountNo(accountNo);
+		
+		if (likeList.size() > 0) {
+			for (Like like : likeList) {
+				like.setCourseData(courseDao.selectCourseOne(String.valueOf(like.getCourseNo())));
+			}
+		}
+		
+		return likeList;
+	}
 
 	public int insertLike(Like like) {
 		return courseDao.insertLike(like);
@@ -103,9 +115,7 @@ public class CourseService {
 	}
 	
 	public List<Enroll> selectMyEnroll(AccountDetail account) {
-		SqlSession session = SqlSessionTemplate.getSqlSession(false);
-		
-		List<Enroll> enrollList = courseDao.selectMyEnroll(session, account);
+		List<Enroll> enrollList = courseDao.selectMyEnroll(account);
 		
 		if (enrollList.size() > 0) {
 			for (Enroll enroll : enrollList) {
@@ -137,5 +147,5 @@ public class CourseService {
 	public int insertPetClass(PetClass petClass) {
 		return courseDao.insertPetClass(petClass);
 	}
-	
+
 }

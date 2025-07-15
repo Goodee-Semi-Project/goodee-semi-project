@@ -31,6 +31,12 @@
 		<result property="enrollStatus" column="enroll_status" />
 	</resultMap>
 	
+	<resultMap id="likeResultMap" type="com.goodee.semi.dto.Like">
+		<result property="pickNo" column="pick_no" />
+		<result property="courseNo" column="course_no" />
+		<result property="accountNo" column="account_no" />
+	</resultMap>
+	
 	<select id="selectCourseOne" parameterType="string" resultMap="courseResultMap">
 		SELECT
 				C.course_no
@@ -133,6 +139,13 @@
 		</where>
 	</update>
 	
+	<select id="selectMyLikeByAccountNo" parameterType="_int" resultMap="likeResultMap">
+		SELECT * FROM picked_course
+		<where>
+			account_no = #{accountNo}
+		</where>
+	</select>
+	
 	<insert id="insertLike" parameterType="com.goodee.semi.dto.Like">
 		INSERT INTO picked_course (course_no, account_no)
 		VALUE (#{courseNo}, #{accountNo})
@@ -141,7 +154,7 @@
 	<delete id="deleteLike" parameterType="com.goodee.semi.dto.Like">
 		DELETE FROM picked_course
 		<where>
-			course_no = #{courseNo} AND account_no = #{accountNo}
+			pick_no = #{pickNo}
 		</where>
 	</delete>
 	

@@ -30,15 +30,20 @@ public class MyCourseLikeServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String likeFlag = request.getParameter("likeFlag");
-		
-		Like like = new Like();
-		like.setAccountNo(Integer.parseInt(request.getParameter("accountNo")));
-		like.setCourseNo(Integer.parseInt(request.getParameter("courseNo")));
-		
 		int result = 0;
 		
-		if ("ADD".equals(likeFlag)) result = courseService.insertLike(like);
-		else result = courseService.deleteLike(like);
+		if ("ADD".equals(likeFlag)) {
+			Like like = new Like();
+			like.setAccountNo(Integer.parseInt(request.getParameter("accountNo")));
+			like.setCourseNo(Integer.parseInt(request.getParameter("courseNo")));
+			
+			result = courseService.insertLike(like);
+		} else {
+			Like like = new Like();
+			like.setPickNo(Integer.parseInt(request.getParameter("pickNo")));
+			
+			result = courseService.deleteLike(like);
+		}
 		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("resultCode", "500");

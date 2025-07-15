@@ -18,6 +18,7 @@ public interface CourseMapper {
 	int insertCourse(Course course);
 	int insertAttach(Attach attach);
 	int updateCourseThumb(Course course);
+	List<Like> selectMyLikeByAccountNo(int accountNo);
 	int insertLike(Like like);
 	int deleteLike(Like like);
 	Enroll selectEnrollOne(int enrollNo);
