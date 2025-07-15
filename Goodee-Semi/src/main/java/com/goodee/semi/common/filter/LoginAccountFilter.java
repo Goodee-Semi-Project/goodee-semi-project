@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
  * Servlet Filter implementation class MyInfoLoginFilter
  */
 // TODO: 비회원 접근 제한 경로 추가
-@WebFilter({"/myInfo/*", "/review/write"})
+@WebFilter({"/myInfo/*", "/review/write", "/preCourse/*"})
 public class LoginAccountFilter extends HttpFilter implements Filter {
        
     /**
@@ -41,7 +41,7 @@ public class LoginAccountFilter extends HttpFilter implements Filter {
 		// place your code here
 		HttpSession session = ((HttpServletRequest) request).getSession();
 		if (session == null || session.getAttribute("loginAccount") == null) {
-			((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/");
+			((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/account/login");
 			return;
 		}
 

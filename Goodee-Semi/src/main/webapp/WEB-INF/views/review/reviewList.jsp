@@ -21,17 +21,17 @@
 		</div>
 		<select name="category">
 			<option value="reviewTitle">선택</option>
-			<option value="reviewTitle">제목</option>
-			<option value="courseTitle">훈련 코스</option>
-			<option value="accountId">작성자</option>
+			<option value="reviewTitle" <c:if test="${ paging.category eq 'reviewTitle' }">selected</c:if> >제목</option>
+			<option value="courseTitle" <c:if test="${ paging.category eq 'courseTitle' }">selected</c:if> >훈련 코스</option>
+			<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
 		</select>
 		<input type="text" id="keyword" name="keyword" placeholder="검색" value="${ paging.keyword }">
 		<button>검색</button>
 		<!-- 정렬 방법 -->
 		<select name="order">
-			<option value="asc">정렬</option>
-			<option value="asc">오름차순</option>
-			<option value="dsc">내림차순</option>
+			<option value="dsc">정렬</option>
+			<option value="dsc" <c:if test="${ paging.order eq 'dsc' }">selected</c:if> >최신순</option>
+			<option value="asc" <c:if test="${ paging.order eq 'asc' }">selected</c:if> >오래된순</option>
 		</select>
 	</form>
 
