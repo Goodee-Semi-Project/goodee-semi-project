@@ -46,9 +46,9 @@ public class CourseService {
 		return result;
 	}
 	
-	public List<Course> selectAllCourse(int accountNo) {
-		List<Course> courseList = courseDao.selectAllCourse(accountNo);
-		List<Attach> attachList = courseDao.selectAllAttach(accountNo);
+	public List<Course> selectAllCourseByAccountNo(int accountNo) {
+		List<Course> courseList = courseDao.selectAllCourseByAccountNo(accountNo);
+		List<Attach> attachList = courseDao.selectAllAttachByAccountNo(accountNo);
 		
 		if(courseList != null && attachList != null) {
 			for(int i = 0; i < courseList.size(); i++) {
