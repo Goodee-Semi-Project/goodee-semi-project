@@ -38,6 +38,7 @@ public class PreCourseManageServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
+		// 훈련사가 사전학습을 조회
 		// TODO: 훈련사 권한이 아니면 redirection
 		Account account = null;
 		if (session != null && session.getAttribute("loginAccount") instanceof Account) {

@@ -91,7 +91,7 @@
 	<select id="selectAttachByReviewNo" parameterType="_int" resultMap="attachResultMap">
 		SELECT *
 		FROM attachment
-		WHERE type_no = #{ typeNo } AND pk_no = #{ reviewNo }
+		WHERE type_no = 7 AND pk_no = #{ reviewNo }
 	</select>
 	<delete id="deleteAttach" parameterType="com.goodee.semi.dto.Attach">
 		DELETE FROM attachment

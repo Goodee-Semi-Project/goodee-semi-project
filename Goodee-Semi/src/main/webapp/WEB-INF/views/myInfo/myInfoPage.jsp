@@ -31,11 +31,27 @@
 				<span>${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일</span>
 			</div>
 			<div>
-				<c:if test="${ not empty attach }">
-					<img alt="profile-img" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
-				</c:if>
+				<c:choose>
+					<c:when test="${ not empty attach }">
+						<img alt="profile-img" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+						<br>
+					</c:when>
+					<c:otherwise>
+						<img alt="profile-img" src="<c:url value='/filePath?no=13'/>">
+						<br>
+					</c:otherwise>
+				</c:choose>
+			</div>
+			<div>
 				<label for="attach">프로필 이미지 변경: </label>
 				<input type="file" name="attach">
+			</div>
+			<div>
+				<label for="removeImg">프로필 이미지 삭제: </label>
+				<%-- <input type="button" name="removeImg" onclick="removeImg(${ accountDetail.accountNo })"> --%>
+				<button type="button" type="button" onclick="removeImg(${ accountDetail.accountNo })">
+					삭제
+				</button>
 			</div>
 			<div>
 				<!-- 셀렉트로 입력 받기 -->
@@ -95,6 +111,25 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 
+	function removeImg(accountNo) {
+		if (confirm('프로필 사진을 삭제합니다.')) {
+			$.ajax({
+				url : '/myInfo/removeImg',
+				type : 'post',
+				data : {
+					accountNo : accountNo
+				},
+				dataType : 'json',
+				success : function(data) {
+					alert(data.res_msg);
+					if (data.res_code == 200) {
+						location.href = "<%= request.getContextPath() %>/myInfo"
+					}
+				}
+			});
+		}
+	}
+
 	$('#editPw').submit(function(e) {
 		e.preventDefault();
 		
@@ -123,7 +158,7 @@
 					success : function(data) {
 						alert(data.res_msg);
 						if (data.res_code == 200) {
-							location.href = "<%= request.getContextPath() %>/";
+							location.href = "<%= request.getContextPath() %>/myInfo";
 						}
 					},
 					error : function(data) {
