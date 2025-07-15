@@ -45,7 +45,6 @@ public class PreCourseDetailServlet extends HttpServlet {
 			Attach attach = preCourseService.selectAttach(preNo);
 			
 			if (attach != null) {
-				System.out.println(attach.getAttachNo());
 				request.setAttribute("preCourse", preCourse);
 				request.setAttribute("attach", attach);
 			}

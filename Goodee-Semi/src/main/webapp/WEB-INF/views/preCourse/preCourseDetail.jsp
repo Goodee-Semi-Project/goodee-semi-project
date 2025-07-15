@@ -24,9 +24,10 @@
 		</div>
 		<div>
 			<span>학습영상</span>
-			<video width="320" height="240" controls>
+			<video width="400" preload="auto" controls  id="preVideo">
 				<source src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
 			</video>
+			<button onclick="back10s()">10초 뒤로</button>
 			<span>${ preCourse.videoLen }</span>
 		</div>
 	
@@ -34,5 +35,11 @@
 
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<script type="text/javascript">
+	const vid = document.querySelector('#preVideo');
+	vid.ontimeupdate = function() {
+		console.log(vid.currentTime);
+	}
+</script>
 </body>
 </html>

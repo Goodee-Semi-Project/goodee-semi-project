@@ -58,12 +58,13 @@ public class ReviewWriteServlet extends HttpServlet {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		// TODO: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
+		// FIXME: 임시 수강 번호
+		int classNo = 1;
 		
 		Review review = new Review();
 		review.setReviewTitle(title);
 		review.setReviewContent(content);
-		// FIXME: 임시 클래스
-		review.setClassNo(-1);
+		review.setClassNo(classNo);
 		
 		// TODO: 첨부파일
 		Part file = null;
