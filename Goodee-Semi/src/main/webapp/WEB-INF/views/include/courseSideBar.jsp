@@ -9,7 +9,7 @@
           <div class="widget user-dashboard-profile">
           
             <div class="profile-thumb">
-              <img src="/static/images/user/user-thumb.jpg" alt="" class="rounded-circle">
+              <img src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="" class="rounded-circle">
             </div>
             
             <h5 class="text-center" style="margin-top: 10px;">${ sessionScope.loginAccount.name } 님</h5>

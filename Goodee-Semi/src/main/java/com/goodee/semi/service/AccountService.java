@@ -16,7 +16,10 @@ public class AccountService {
 		param.setAccountId(accountId);
 		param.setAccountPw(accountPw);
 		
-		return accountDao.loginInfo(param);
+		AccountDetail result = accountDao.loginInfo(param);
+		result.setProfileAttach(accountDao.selectAttachByAccountNo(result.getAccountNo()));
+		
+		return result;
 	}
 
 	public int insertAccount(AccountDetail account, Attach attach) {
