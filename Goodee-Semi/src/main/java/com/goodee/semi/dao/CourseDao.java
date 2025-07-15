@@ -5,10 +5,12 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
+import com.goodee.semi.dto.PetClass;
 
 public class CourseDao {
 	
@@ -23,6 +25,14 @@ public class CourseDao {
 	public List<Course> selectCourse(Course course) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		List<Course> list = session.selectList("com.goodee.semi.mapper.CourseMapper.selectCourse", course);
+		session.close();
+		
+		return list;
+	}
+	
+	public List<Course> selectMyCourse(AccountDetail account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Course> list = session.selectList("com.goodee.semi.mapper.CourseMapper.selectMyCourse", account);
 		session.close();
 		
 		return list;
@@ -79,6 +89,20 @@ public class CourseDao {
 		
 		return result;
 	}
+	
+	public List<Enroll> selectMyEnroll(SqlSession session, AccountDetail account) {
+		List<Enroll> enrollList = session.selectList("com.goodee.semi.mapper.CourseMapper.selectMyEnroll", account);
+		
+		return enrollList;
+	}
+
+	public Enroll selectEnrollOne(int enrollNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Enroll enroll = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectEnrollOne", enrollNo);
+		session.close();
+		
+		return enroll;
+	}
 
 	public int insertEnroll(Enroll enroll) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
@@ -99,6 +123,14 @@ public class CourseDao {
 	public int deleteEnroll(Enroll enroll) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.delete("com.goodee.semi.mapper.CourseMapper.deleteEnroll", enroll);
+		session.close();
+		
+		return result;
+	}
+
+	public int insertPetClass(PetClass petClass) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertPetClass", petClass);
 		session.close();
 		
 		return result;
