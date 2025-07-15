@@ -36,7 +36,6 @@
 					<td>${ enroll.petData.petName }<br>(${ enroll.petData.petBreed } / ${ enroll.petData.petAge }살)</td>
 					<td>${ enroll.accountData.name }</td>
 					<td>
-						<input type="hidden" id="enroll${ enroll.enrollNo }" value="${ enroll.enrollNo }">
 						<c:if test="${ sessionScope.loginAccount.author eq 1 }">
 							<button type="button" onclick="enrollYes(${ enroll.enrollNo })" class="btn btn-success" style="padding: 5px 10px;">승인</button>
 							<button type="button" onclick="enrollSorry(${ enroll.enrollNo })" class="btn btn-danger" style="padding: 5px 10px;">취소</button>
@@ -48,7 +47,7 @@
 									신청이 승인되었습니다.
 								</c:when>
 								
-								<c:when test="${ enroll.enrollStatus eq 78 }">
+								<c:when test="${ enroll.enrollStatus == 78 }">
 									신청이 취소되었습니다.
 								</c:when>
 								
@@ -69,87 +68,87 @@
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
-	function enrollYes(enrollNo) {
-		if (confirm("승인하시겠습니까?")) {
-			const enrollFlag = "UPDATE";
-			const status = "Y";
-			
-			$.ajax({
-				url : "/myCourse/enroll",
-				type : "POST",
-				data : {
-					enrollFlag : enrollFlag,
-					enrollNo : enrollNo,
-					status : status
-				},
-				dataType : "JSON",
-				success : function(data) {
-					alert(data.resultMsg);
-					
-					if (data.resultCode == 200) {
-						location.href = "<%= request.getContextPath() %>/myCourse/enrollList";
+		function enrollYes(enrollNo) {
+			if (confirm("승인하시겠습니까?")) {
+				const enrollFlag = "UPDATE";
+				const status = "Y";
+				
+				$.ajax({
+					url : "/myCourse/enroll",
+					type : "POST",
+					data : {
+						enrollFlag : enrollFlag,
+						enrollNo : enrollNo,
+						status : status
+					},
+					dataType : "JSON",
+					success : function(data) {
+						alert(data.resultMsg);
+						
+						if (data.resultCode == 200) {
+							location.href = "<%= request.getContextPath() %>/myCourse/enrollList";
+						}
+					},
+					error : function() {
+						alert("처리 중 오류가 발생했습니다.");
 					}
-				},
-				error : function() {
-					alert("처리 중 오류가 발생했습니다.");
-				}
-			});
+				});
+			}
 		}
-	}
-	
-	function enrollSorry(enrollNo) {
-		if (confirm("취소하시겠습니까?")) {
-			const enrollFlag = "UPDATE";
-			const status = "N";
-			
-			$.ajax({
-				url : "/myCourse/enroll",
-				type : "POST",
-				data : {
-					enrollFlag : enrollFlag,
-					enrollNo : enrollNo,
-					status : status
-				},
-				dataType : "JSON",
-				success : function(data) {
-					alert(data.resultMsg);
-					
-					if (data.resultCode == 200) {
-						location.href = "<%= request.getContextPath() %>/myCourse/enrollList";
+		
+		function enrollSorry(enrollNo) {
+			if (confirm("취소하시겠습니까?")) {
+				const enrollFlag = "UPDATE";
+				const status = "N";
+				
+				$.ajax({
+					url : "/myCourse/enroll",
+					type : "POST",
+					data : {
+						enrollFlag : enrollFlag,
+						enrollNo : enrollNo,
+						status : status
+					},
+					dataType : "JSON",
+					success : function(data) {
+						alert(data.resultMsg);
+						
+						if (data.resultCode == 200) {
+							location.href = "<%= request.getContextPath() %>/myCourse/enrollList";
+						}
+					},
+					error : function() {
+						alert("처리 중 오류가 발생했습니다.");
 					}
-				},
-				error : function() {
-					alert("처리 중 오류가 발생했습니다.");
-				}
-			});
+				});
+			}
 		}
-	}
-	
-	function enrollCancel(enrollNo) {
-		if (confirm("신청을 취소하시겠습니까?")) {
-			const enrollFlag = "DELETE";
-			
-			$.ajax({
-				url : "/myCourse/enroll",
-				type : "POST",
-				data : {
-					enrollFlag : enrollFlag,
-					enrollNo : enrollNo,
-				},
-				dataType : "JSON",
-				success : function(data) {
-					alert(data.resultMsg);
-					
-					if (data.resultCode == 200) {
-						location.href = "<%= request.getContextPath() %>/myCourse/enrollList";
+		
+		function enrollCancel(enrollNo) {
+			if (confirm("신청을 취소하시겠습니까?")) {
+				const enrollFlag = "DELETE";
+				
+				$.ajax({
+					url : "/myCourse/enroll",
+					type : "POST",
+					data : {
+						enrollFlag : enrollFlag,
+						enrollNo : enrollNo,
+					},
+					dataType : "JSON",
+					success : function(data) {
+						alert(data.resultMsg);
+						
+						if (data.resultCode == 200) {
+							location.href = "<%= request.getContextPath() %>/myCourse/enrollList";
+						}
+					},
+					error : function() {
+						alert("처리 중 오류가 발생했습니다.");
 					}
-				},
-				error : function() {
-					alert("처리 중 오류가 발생했습니다.");
-				}
-			});
+				});
+			}
 		}
-	}
 	</script>
 </body>
 
