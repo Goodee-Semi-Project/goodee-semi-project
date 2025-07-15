@@ -54,10 +54,10 @@
 	<div id="event-modal-box" class="modal-box" style="display: flex; justify-content: center; align-items: center; position: fixed; top: 0; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%;">
 		<div id="event-modal" class="modal" style="background: white;">
 			<div class="modal-header">
-				<h2 id="modalTitle">일정 등록</h2>
+				<h2 id="modal-title">일정 등록</h2>
 			</div>
 			<div class="modal-body">
-				<form>
+				<form id="modal-form">
 					<div class="form-group">
 						<label for="courseName">교육과정명 <span>*</span></label>
 						<select id="course-name" name="courseName" required>
@@ -106,6 +106,7 @@
 			</div>
 			<div class="modal-footer">
 					<button type="button" id="btn-add-event">저장</button>
+					<button type="button" id="btn-delete-event" style="display:none;">삭제</button>
 					<button type="button" id="btn-cancel-event">취소</button>
 			</div>
 		</div>

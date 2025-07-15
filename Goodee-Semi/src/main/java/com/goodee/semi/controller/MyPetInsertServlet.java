@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
-import com.goodee.semi.dto.Attachment;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.PetService;
 
@@ -18,8 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
-// TODO 반려견 정보 수정 로직만 복붙해놓은 상태임.... 정보 등록 로직으로 변경
-
+// TODO 사진 안넣어도 등록되게 하는 기능 추가
 // 내 반려견 정보 추가 servlet
 @WebServlet("/myPet/insert")
 @MultipartConfig
@@ -61,7 +60,7 @@ public class MyPetInsertServlet extends HttpServlet {
 		String uuid;
 		String saveFileName;
 		
-		Attachment attachment = new Attachment();;
+		Attach attach = new Attach();;
 
 		// 이미지 파일이 업로드된 경우에만 이미지 정보 수정
 		if(oriFileName != null) {
@@ -82,13 +81,13 @@ public class MyPetInsertServlet extends HttpServlet {
 			petImgPart.write(uploadPath + "/" + saveFileName);
 			
 			// Attachment 객체에 바인딩
-			attachment.setOriName(oriFileName);
-			attachment.setSaveName(saveFileName);
-			attachment.setTypeNo(2);
+			attach.setOriginName(oriFileName);
+			attach.setSavedName(saveFileName);
+			attach.setTypeNo(2);
 		}
 				
 		// 4. service의 등록 로직 호출 -> 실패: 상태 코드 전달 | 성공: 상태 코드와 수정한 값 전달
-		int result = service.insertPet(pet, attachment);
+		int result = service.insertPet(pet, attach);
 		
 		// 6. json에 정보 바인딩
 		String resCode = "";

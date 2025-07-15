@@ -5,35 +5,33 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
-import com.goodee.semi.dao.AttachmentDao;
 import com.goodee.semi.dao.PetDao;
-import com.goodee.semi.dto.Attachment;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Pet;
 
 public class PetService {
-private PetDao petDao = new PetDao();
-private AttachmentDao attachmentDao = new AttachmentDao();
+private PetDao dao = new PetDao();
 	
 	public List<Pet> selectPetList(Pet param) {
-		return petDao.selectPetList(param);
+		return dao.selectPetList(param);
 	}
 
 	public int selectPetCount(Pet param) {
-		return petDao.selectPetCount(param);
+		return dao.selectPetCount(param);
 	}
 
-	public int updatePet(Pet pet, Attachment attachment) {
+	public int updatePet(Pet pet, Attach attach) {
 		System.out.println("updatePetWithAttach() Pet:" + pet);
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
 		int result = 0;
 		
 		try {
 			// 1. 반려견 수정
-			result = petDao.updatePet(session, pet);
+			result = dao.updatePet(session, pet);
 			
 			// 2. 파일 정보 등록
-			if(attachment != null && result > 0) {
-				result = attachmentDao.updateAttachment(session, attachment);
+			if(attach != null && result > 0) {
+				result = dao.updateAttach(session, attach);
 			}
 			
 			// 3. commit 또는 rollback 처리
@@ -59,10 +57,10 @@ private AttachmentDao attachmentDao = new AttachmentDao();
 		
 		try {
 			// 1. 반려견 삭제
-			result = petDao.deletePet(session, petNo);
+			result = dao.deletePet(session, petNo);
 			
 			// 2. 파일 정보 삭제
-			result = attachmentDao.deleteAttachment(session, petNo);
+			result = dao.deleteAttach(session, petNo);
 			
 			// 3. commit 또는 rollback 처리
 			if(result > 0) {
@@ -80,19 +78,19 @@ private AttachmentDao attachmentDao = new AttachmentDao();
 		return result;
 	}
 
-	public int insertPet(Pet pet, Attachment attachment) {
+	public int insertPet(Pet pet, Attach attach) {
 		System.out.println("insertPetWithAttach() Pet:" + pet);
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
 		int result = 0;
 		
 		try {
 			// 1. 반려견 등록
-			result = petDao.insertPet(session, pet);
+			result = dao.insertPet(session, pet);
 			
 			// 2. 파일 정보 등록
-			if(attachment != null && result > 0) {
-				attachment.setPkNo(pet.getPetNo());
-				result = attachmentDao.insertAttachment(session, attachment);
+			if(attach != null && result > 0) {
+				attach.setPkNo(pet.getPetNo());
+				result = dao.insertAttach(session, attach);
 			}
 			
 			// 3. commit 또는 rollback 처리

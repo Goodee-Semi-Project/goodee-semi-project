@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
-import com.goodee.semi.dto.Attachment;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.PetService;
 
@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
+// FIXME 수정 기능 갑자기 안 됨.....(에러는 안 뜨는데 DB에 반영이 안됨)
 // 내 반려견 정보 수정 servlet
 @WebServlet("/myPet/update")
 @MultipartConfig
@@ -61,7 +62,7 @@ public class MyPetUpdateServlet extends HttpServlet {
 		String uuid;
 		String saveFileName;
 		
-		Attachment attachment = new Attachment();;
+		Attach attach = new Attach();
 
 		// 이미지 파일이 업로드된 경우에만 이미지 정보 수정
 		if(oriFileName != null) {
@@ -81,15 +82,15 @@ public class MyPetUpdateServlet extends HttpServlet {
 			// 2) 파일 저장
 			petImgPart.write(uploadPath + "/" + saveFileName);
 			
-			// Attachment 객체에 바인딩
-			attachment.setOriName(oriFileName);
-			attachment.setSaveName(saveFileName);
-			attachment.setPkNo(petNo);
-			attachment.setTypeNo(2);
+			// Attach 객체에 바인딩
+			attach.setOriginName(oriFileName);
+			attach.setSavedName(saveFileName);
+			attach.setPkNo(petNo);
+			attach.setTypeNo(2);
 		}
 				
 		// 4. service의 수정 로직 호출 -> 실패: 상태 코드 전달 | 성공: 상태 코드와 수정한 값 전달
-		int result = service.updatePet(pet, attachment);
+		int result = service.updatePet(pet, attach);
 		
 		// 6. json에 정보 바인딩
 		String resCode = "";
