@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
+
+import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.PreCourseDao;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.PreCourse;
@@ -19,6 +22,28 @@ public class PreCourseService {
 		}
 		
 		return map;
+	}
+
+	public int insertPreCourse(PreCourse preCourse) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = -1;
+		
+		try {
+			result = preCourseDao.insertPreCourse(session, preCourse);
+
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
 	}
 	
 

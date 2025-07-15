@@ -12,13 +12,13 @@ import jakarta.servlet.http.HttpServletResponse;
  * Servlet implementation class PreCourseServlet
  */
 @WebServlet("/preCourse/list")
-public class PreCourseServlet extends HttpServlet {
+public class PreCourseListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PreCourseServlet() {
+    public PreCourseListServlet() {
         super();
     }
 
@@ -26,6 +26,8 @@ public class PreCourseServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
 		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseList.jsp");
 	}
 

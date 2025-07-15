@@ -44,7 +44,7 @@ public class PreCourseManageServlet extends HttpServlet {
 			account = (Account) session.getAttribute("loginAccount");
 		}
 		List<Course> courseList = courseService.selectList(account.getAccountNo());
-		// TODO: courseList 넘기기
+		// courseList 넘기기
 		session.setAttribute("courseList", courseList);
 		session.setMaxInactiveInterval(60 * 30);
 		
