@@ -1,94 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC
-"-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.goodee.semi.mapper.NoticeMapper">
-	<resultMap type="com.goodee.semi.dto.Notice" id="noticeResultMap">
-		<result property="noticeNo" column="notice_no"/>
-		<result property="accountNo" column="account_no"/>
-		<result property="noticeTitle" column="notice_title"/>
-		<result property="noticeContent" column="notice_content"/>
-		<result property="regDate" column="reg_date"/>
-		<result property="modDate" column="mod_date"/>
-		<result property="writer" column="writer" />
-		<result property="nailUp" column="nail_up"/>
-	</resultMap>
-	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
-		<result property="attachNo" column="attach_no"/>
-		<result property="typeNo" column="type_no"/>
-		<result property="pkNo" column="pk_no"/>
-		<result property="originName" column="ori_name"/>
-		<result property="savedName" column="save_name"/>
-	</resultMap>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-	
-	<select id="selectList" resultMap="noticeResultMap">
-		SELECT n.notice_no,
-       n.account_no,                        <!-- ✅ 이거 꼭 추가 -->
-       n.notice_title,
-       n.notice_content,                    <!-- 혹시 resultMap에 있으면 이것도 -->
-       DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date,
-       DATE_FORMAT(n.mod_date, '%Y-%m-%d') AS mod_date,
-       a.account_name AS writer,
-       n.nail_up
-  		FROM notice n
- 		JOIN account a ON n.account_no = a.account_no
- 		<where>
-		<if test="keyword != null and keyword != ''">
-			(n.notice_title LIKE CONCAT('%', #{keyword}, '%')
-			OR a.account_name LIKE CONCAT('%', #{keyword}, '%'))
-		</if>
-	</where>
-  		ORDER BY 
-    	CASE WHEN n.nail_up = 'Y' THEN 1 ELSE 0 END DESC,
- 		n.notice_no DESC
-    	LIMIT #{limitPageNo},#{numPerPage}
-	</select>
-		 	 
- 	 <select id="selectListCount" resultType="_int" parameterType="com.goodee.semi.dto.Notice">
- 	 	SELECT COUNT(*)
- 	 	FROM notice n
- 	 	JOIN account a ON n.account_no = a.account_no
- 	 	<where>
-			<if test="keyword != null and keyword != ''">
-			<!-- 제목, 작성자 기준으로 검색 기능 -->
-				n.notice_title LIKE CONCAT('%', #{keyword},'%') 
-				OR a.account_name LIKE CONCAT('%', #{keyword},'%') 
-			</if> 	 	
-		</where>
- 	 </select>
- 	 
- 	 <insert id="insertNotice" parameterType="com.goodee.semi.dto.Notice" useGeneratedKeys="true" keyProperty="noticeNo">
-		INSERT INTO notice (notice_title, notice_content, account_no)
-      	VALUES (#{noticeTitle}, #{noticeContent}, #{accountNo})
-	</insert>
-	
-	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
-		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
-		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
-	</insert>
-	
-	<select id="selectNoticeDetail" resultMap="noticeResultMap" parameterType="int">
-		SELECT 
-		  n.notice_no,
-		  n.account_no,                
-		  n.notice_title,
-		  n.notice_content,
-		  DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date,
-		  a.account_name AS writer    
-		FROM notice n
-		JOIN account a ON n.account_no = a.account_no
-		WHERE n.notice_no = #{noticeNo}
-	</select>
-	
-	<select id="selectAttachOne" parameterType="com.goodee.semi.dto.Attach" resultMap="attachResultMap">
-	  SELECT 
-	    attach_no,
-	    type_no,
-	    pk_no,
-	    ori_name,
-	    save_name
-	  FROM attachment
-	  WHERE pk_no = #{pkNo} AND type_no = #{typeNo}
-	</select>
+<mapper namespace="com.goodee.semi.mapper.NoticeMapper">
+
+  <!-- 공지사항 매핑 -->
+  <resultMap id="noticeResultMap" type="com.goodee.semi.dto.Notice">
+    <result property="noticeNo" column="notice_no"/>
+    <result property="accountNo" column="account_no"/>
+    <result property="noticeTitle" column="notice_title"/>
+    <result property="noticeContent" column="notice_content"/>
+    <result property="regDate" column="reg_date"/>
+    <result property="modDate" column="mod_date"/>
+    <result property="writer" column="writer"/>
+    <result property="nailUp" column="nail_up"/>
+  </resultMap>
+
+  <!-- 첨부파일 매핑 -->
+  <resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+    <result property="attachNo" column="attach_no"/>
+    <result property="typeNo" column="type_no"/>
+    <result property="pkNo" column="pk_no"/>
+    <result property="originName" column="ori_name"/>
+    <result property="savedName" column="save_name"/> <!-- ✅ 여기가 기준 -->
+  </resultMap>
+
+  <!-- 공지사항 목록 -->
+  <select id="selectList" resultMap="noticeResultMap">
+    SELECT n.notice_no,
+           n.account_no,
+           n.notice_title,
+           n.notice_content,
+           DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date,
+           DATE_FORMAT(n.mod_date, '%Y-%m-%d') AS mod_date,
+           a.account_name AS writer,
+           n.nail_up
+    FROM notice n
+    JOIN account a ON n.account_no = a.account_no
+    <where>
+      <if test="keyword != null and keyword != ''">
+        (n.notice_title LIKE CONCAT('%', #{keyword}, '%')
+        OR a.account_name LIKE CONCAT('%', #{keyword}, '%'))
+      </if>
+    </where>
+    ORDER BY 
+      CASE WHEN n.nail_up = 'Y' THEN 1 ELSE 0 END DESC,
+      n.notice_no DESC
+    LIMIT #{limitPageNo}, #{numPerPage}
+  </select>
+
+  <!-- 총 개수 -->
+  <select id="selectListCount" resultType="_int" parameterType="com.goodee.semi.dto.Notice">
+    SELECT COUNT(*)
+    FROM notice n
+    JOIN account a ON n.account_no = a.account_no
+    <where>
+      <if test="keyword != null and keyword != ''">
+        n.notice_title LIKE CONCAT('%', #{keyword},'%') 
+        OR a.account_name LIKE CONCAT('%', #{keyword},'%') 
+      </if> 	 	
+    </where>
+  </select>
+
+  <!-- 공지사항 등록 -->
+  <insert id="insertNotice" parameterType="com.goodee.semi.dto.Notice" useGeneratedKeys="true" keyProperty="noticeNo">
+    INSERT INTO notice (notice_title, notice_content, account_no)
+    VALUES (#{noticeTitle}, #{noticeContent}, #{accountNo})
+  </insert>
+
+  <!-- 첨부파일 등록 -->
+  <insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+    INSERT INTO attachment (type_no, pk_no, ori_name, saved_name)
+    VALUES (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
+  </insert>
+
+  <!-- 공지사항 상세 -->
+  <select id="selectNoticeDetail" resultMap="noticeResultMap" parameterType="int">
+    SELECT n.notice_no,
+           n.account_no,
+           n.notice_title,
+           n.notice_content,
+           DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date,
+           a.account_name AS writer
+    FROM notice n
+    JOIN account a ON n.account_no = a.account_no
+    WHERE n.notice_no = #{noticeNo}
+  </select>
+
+  <!-- 첨부파일 단건 조회 -->
+  <select id="selectAttachOne" parameterType="com.goodee.semi.dto.Attach" resultMap="attachResultMap">
+    SELECT attach_no,
+           type_no,
+           pk_no,
+           ori_name,
+           save_name
+    FROM attachment
+    WHERE pk_no = #{pkNo}
+      AND type_no = #{typeNo}
+  </select>
+
+  <!-- 공지사항 수정 -->
+  <update id="updateNotice" parameterType="com.goodee.semi.dto.Notice">
+    UPDATE notice
+    SET notice_title = #{noticeTitle},
+        notice_content = #{noticeContent}
+    WHERE notice_no = #{noticeNo}
+  </update>
+
+  <!-- 첨부파일 수정 -->
+  <update id="updateAttach" parameterType="com.goodee.semi.dto.Attach">
+    UPDATE attachment
+    SET ori_name = #{originName},
+        save_name = #{savedName}
+    WHERE attach_no = #{attachNo}
+  </update>
 </mapper>
