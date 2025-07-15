@@ -43,4 +43,10 @@
 		FROM pre_course
 		WHERE pre_no = #{ preNo }
 	</select>
+	
+	<select id="selectAttach" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM attachment
+		WHERE type_no = 4 AND pk_no = #{ preNo }
+	</select>
 </mapper>
