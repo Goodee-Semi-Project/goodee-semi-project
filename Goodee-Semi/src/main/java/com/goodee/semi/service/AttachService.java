@@ -63,7 +63,4 @@ public class AttachService {
 		return attach;
 	}
 	
-	public Attach selectAttachOne(Attach param) {
-        return dao.selectAttachOne(param);    // ✅ DAO 호출만 위임
-    }
 }

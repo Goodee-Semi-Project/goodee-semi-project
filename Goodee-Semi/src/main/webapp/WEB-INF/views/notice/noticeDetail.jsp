@@ -28,7 +28,7 @@
       <div class="btn-group">
       <c:if test="${sessionScope.loginAccount.author == 1}">
         <button id="noticeUpdateBtn" type="button" data-no="${notice.noticeNo}">수정</button>
-        <button id="noticeDeleteBtn" type="button">삭제</button>
+        <button id="noticeDeleteBtn" type="button" data-no="${notice.noticeNo}">삭제</button>
         <button onclick="location.href='<%=request.getContextPath()%>/notice/list'">목록</button>
       </c:if>
       </div>
@@ -44,10 +44,30 @@
 
   
   <script>
-    $("#noticeUpdateBtn").click(function() {
+    $("#noticeUpdateBtn").click(function(){
       const noticeNo = $(this).data("no");
-      location.href = "<%=request.getContextPath()%>/noticeUpdate?noticeNo=" + noticeNo;
+      location.href = "<%=request.getContextPath()%>/noticeUpdate?noticeNo="+noticeNo;
     });
+    
+    $("#noticeDeleteBtn").click(function(e){
+    	e.preventDefault();
+    	if(confirm("삭제하시겠습니까?")){
+	    	const noticeNo = $(this).data("no");
+    		$.ajax({
+    			url:"<%=request.getContextPath()%>/noticeDelete",
+    			type : "post",
+    			data : {noticeNo : noticeNo},
+    			success : function(data){
+    				alert(data.res_msg);
+    				if(data.res_code == 200){
+    					location.href="<%=request.getContextPath() %>/notice/list"
+    				}
+    			}
+    		});		
+    	}
+    	
+    })
+    
   </script>
 </body>
 </html>
