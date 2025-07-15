@@ -91,12 +91,12 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 			accountDetail.setAddressDetail(addressDetail);
 			
 			if (attach != null) {
-				System.out.println("attach 데이터베이스 입력");
 				result = accountService.updateAccountDetailWithAttach(accountDetail, attach);
 			} else {
 				result = accountService.updateAccountDetail(accountDetail);
 			}
 		}
+		
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {
@@ -109,7 +109,6 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 		
 		response.setContentType("applictaion/json; charset=utf-8");
 		response.getWriter().print(obj);
-		
 	}
 
 }

@@ -51,6 +51,12 @@ public class ReviewService {
 
 	public int deleteReview(int reviewNo) {
 		int result = reviewDao.deleteReview(reviewNo);
+		
+		Attach attach = new Attach();
+		attach.setTypeNo(Attach.REVIEW);
+		attach.setPkNo(reviewNo);
+		reviewDao.deleteAttach(attach);
+		
 		return result;
 	}
 
@@ -121,7 +127,7 @@ public class ReviewService {
 			if (attach != null && result > 0) {
 				attach.setTypeNo(Attach.REVIEW);
 				attach.setPkNo(review.getReviewNo());
-				reviewDao.deleteAttach(session, attach);
+				reviewDao.deleteAttach(attach);
 				result = reviewDao.insertAttach(session, attach);
 			}
 			

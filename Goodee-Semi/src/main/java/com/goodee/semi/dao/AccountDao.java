@@ -96,8 +96,10 @@ public class AccountDao {
 		return attach;
 	}
 
-	public int deleteAttach(SqlSession session, Attach attach) {
+	public int deleteAttach(Attach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.delete("com.goodee.semi.mapper.AccountMapper.deleteAttach", attach);
+		session.close();
 		return result;
 	}
 
