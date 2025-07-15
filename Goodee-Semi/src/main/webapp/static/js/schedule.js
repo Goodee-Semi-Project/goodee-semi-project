@@ -87,14 +87,69 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
     },
 });
 
-// 모달 HTML 생성
-function createModal() {
-    const modalHtml = `
+// 모달 표시 함수
+function showEventModal(mode, info) {
+    // 폼 초기화
+    // reset(): 요소의 기본값 복원
+    form.reset();
 
-    `;
+    // 1. 모달의 요소 가져오기
+    const modal = document.querySelector('#event-modal-box');
+    const modalTitle = document.querySelector('#modal-title');
+    const form = document.querySelector('#modal-form');
+    const deleteBtn = document.querySelector('#btn-delete-event');
     
-    if (!document.getElementById('eventModal')) {
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    if (mode === 'create') {
+        modalTitle.textContent = '일정 등록';
+        deleteBtn.style.display = 'none';
+        
+        // 선택된 날짜/시간 설정
+        const startDate = new Date(info.start);
+        const endDate = new Date(info.end || info.start);
+        
+        document.getElementById('eventStart').value = formatDateTimeLocal(startDate);
+        
+        if (info.allDay) {
+            document.getElementById('allDay').checked = true;
+            document.getElementById('eventEnd').value = formatDateTimeLocal(endDate);
+        } else {
+            const endTime = new Date(startDate.getTime() + (60 * 60 * 1000)); // 1시간 후
+            document.getElementById('eventEnd').value = formatDateTimeLocal(endTime);
+        }
+        
+    } else if (mode === 'edit') {
+        modalTitle.textContent = '일정 수정';
+        deleteBtn.style.display = 'inline-block';
+        
+        const event = info.event;
+        
+        // 기존 데이터 설정
+        document.getElementById('eventTitle').value = event.title;
+        document.getElementById('eventDescription').value = event.extendedProps.description || '';
+        document.getElementById('eventStart').value = formatDateTimeLocal(event.start);
+        document.getElementById('eventEnd').value = event.end ? formatDateTimeLocal(event.end) : '';
+        document.getElementById('eventColor').value = event.backgroundColor || '#3788d8';
+        document.getElementById('allDay').checked = event.allDay;
+        
+        // 현재 편집 중인 이벤트 ID 저장
+        modal.setAttribute('data-event-id', event.id);
     }
+    
+    modal.style.display = 'block';
+    
+    // 종일 일정 체크박스 이벤트
+    document.getElementById('allDay').addEventListener('change', function() {
+        const startInput = document.getElementById('eventStart');
+        const endInput = document.getElementById('eventEnd');
+        
+        if (this.checked) {
+            // 종일 일정: 시간 부분 제거
+            startInput.type = 'date';
+            endInput.type = 'date';
+        } else {
+            // 시간 일정: 시간 포함
+            startInput.type = 'datetime-local';
+            endInput.type = 'datetime-local';
+        }
+    });
 }
-
