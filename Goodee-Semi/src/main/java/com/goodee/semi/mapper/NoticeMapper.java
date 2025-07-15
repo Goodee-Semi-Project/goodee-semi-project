@@ -14,5 +14,7 @@ public interface NoticeMapper {
 	Notice selectNoticeDetail(int noticeNo);
 	Attach selectAttachOne(Attach param); // ✅ Attach 타입으로 수정
 	int updateNotice(Notice notice);     // ✅ 공지사항 수정용
-	int updateAttach(Attach attach);     // ✅ 첨부파일 수정용
+	int updateAttach(Attach attach);// ✅ 첨부파일 수정용
+	int deleteAttachByNoticeNo(int noticeNo);
+	int deleteNotice(int noticeNo);
 }

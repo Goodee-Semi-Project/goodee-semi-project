@@ -27,8 +27,8 @@ import com.goodee.semi.service.NoticeService;
 )
 public class NoticeUpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private AttachService attachService = new AttachService();
-    private NoticeService noticeService = new NoticeService();
+   
+    private NoticeService service = new NoticeService();
 
     
     
@@ -94,7 +94,7 @@ public class NoticeUpdateServlet extends HttpServlet {
             param.setPkNo(noticeNo);
             param.setTypeNo(Attach.NOTICE);
 
-            Attach oldAttach = attachService.selectAttachOne(param);
+            Attach oldAttach = service.selectAttachOne(param);
             if (oldAttach != null) {
                 File oldFile = new File("C:/goodee/upload/notice/" + oldAttach.getSavedName());
                 if (oldFile.exists()) oldFile.delete();
@@ -112,7 +112,7 @@ public class NoticeUpdateServlet extends HttpServlet {
         notice.setAccountNo(accountNo);
 
         // 5. 공지사항 + 첨부 업데이트 서비스 호출
-        int result = noticeService.updateNotice(notice, newAttach);
+        int result = service.updateNotice(notice, newAttach);
 
         // 6. 결과 JSON 응답
         JSONObject obj = new JSONObject();

@@ -49,31 +49,34 @@
 <script>
 $(function(){
   $("#updateNoticeFrm").submit(function(e){
-    e.preventDefault();
+    e.preventDefault(); // ✅ 먼저 기본 제출 막기
 
-    const form = document.getElementById("updateNoticeFrm");
-    const formData = new FormData(form);
+    if(confirm("수정하시겠습니까?")) {
+      const form = document.getElementById("updateNoticeFrm");
+      const formData = new FormData(form);
 
-    $.ajax({
-      url: "<%=request.getContextPath()%>/noticeUpdate",  // ✅ 수정 URL
-      type: "post",
-      data: formData,
-      enctype: "multipart/form-data",
-      contentType: false,
-      processData: false,
-      cache: false,
-      dataType: "json",
-      success: function(res) {
-        alert(res.resultMsg || "수정 결과 수신");
+      $.ajax({
+        url: "<%=request.getContextPath()%>/noticeUpdate",  // ✅ 수정 URL
+        type: "post",
+        data: formData,
+        enctype: "multipart/form-data",
+        contentType: false,
+        processData: false,
+        cache: false,
+        dataType: "json",
+        success: function(res) {
+          alert(res.resultMsg || "수정 결과 수신");
 
-        if (res.resultCode == "200") {
-          location.href = "<%=request.getContextPath()%>/notice/list";
+          if (res.resultCode == "200") {
+            location.href = "<%=request.getContextPath()%>/notice/list";
+          }
+        },
+        error: function() {
+          alert("서버 오류 발생");
         }
-      },
-      error: function() {
-        alert("서버 오류 발생");
-      }
-    });
+      });
+    }
+    // else를 따로 안 써도, confirm이 false면 그냥 아무 일도 안 하고 끝나게 됨
   });
 });
 </script>
