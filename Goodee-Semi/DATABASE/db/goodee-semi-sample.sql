@@ -157,4 +157,4 @@ INSERT INTO attachment (attach_no, type_no, pk_no, ori_name, save_name) VALUES
 (6, 3, 3, 'pet_condition2.jpg', 'f684843d23de4f0692690c40529429c0.jpg'),
 (7, 3, 4, 'pet_love1.jpg', '32ae56880aa64adc9178f03531d74f83.jpg'),
 (8, 3, 4, 'pet_love2.jpg', 'd3dca6385ed84ddf9d35e59ecf317e50.jpg');
-
+(10, 10, 2, '2024-07-11', '2024-07-11 10:00:00', '2024-07-11 11:00:00', 'N');

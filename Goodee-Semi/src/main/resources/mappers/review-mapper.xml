@@ -9,8 +9,18 @@
 		<result property="reviewTitle" column="review_title" />
 		<result property="accountId" column="account_id" />
 		<result property="reviewContent" column="review_content" />
-		<result property="reviewDate" column="review_date" />
+		<result property="regDate" column="reg_date" />
+		<result property="modDate" column="mod_date" />
 	</resultMap>
+	
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+	
 	<select id="selectReviewCount" parameterType="com.goodee.semi.dto.Review" resultType="_int">
 		SELECT COUNT(*)
 		FROM review
@@ -64,5 +74,23 @@
 			FROM account AS a
 		) AS a ON p.account_no = a.account_no
 		WHERE r.review_no = #{ reviewNo }
+	</select>
+	<delete id="deleteReview" parameterType="_int">
+		DELETE FROM review
+		WHERE review_no = #{ reviewNo }
+	</delete>
+	<update id="updateReview" parameterType="com.goodee.semi.dto.Review" >
+		UPDATE review
+		SET review_title = #{ reviewTitle } ,review_content = #{ reviewContent }
+		WHERE review_no = #{ reviewNo }
+	</update>
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
+		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
+	</insert>
+	<select id="selectAttachByReviewNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM attachment
+		WHERE type_no = 7 AND pk_no = #{ reviewNo }
 	</select>
 </mapper>
