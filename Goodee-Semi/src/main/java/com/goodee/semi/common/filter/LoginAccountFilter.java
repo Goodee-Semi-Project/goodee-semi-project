@@ -17,13 +17,14 @@ import jakarta.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class MyInfoLoginFilter
  */
-@WebFilter("/myInfo/*")
-public class MyInfoLoginFilter extends HttpFilter implements Filter {
+// TODO: 비회원 접근 제한 경로 추가
+@WebFilter({"/myInfo/*", "/review/write"})
+public class LoginAccountFilter extends HttpFilter implements Filter {
        
     /**
      * @see HttpFilter#HttpFilter()
      */
-    public MyInfoLoginFilter() {
+    public LoginAccountFilter() {
         super();
     }
 
