@@ -191,7 +191,7 @@
 					<div class="widget user text-center">
 						<c:choose>
 							<c:when test="${ sessionScope.loginAccount.author eq 1 }">
-								<img class="rounded-circle img-fluid mb-5 px-5" src="/static/images/user/user-thumb.jpg" alt="profile">
+								<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
 								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
 								<div class="d-grid gap-2">
 									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">회원 관리</a>
@@ -203,12 +203,14 @@
 							</c:when>
 							
 							<c:when test="${ sessionScope.loginAccount.author eq 2 }">
-								<img class="rounded-circle img-fluid mb-5 px-5" src="/static/images/user/user-thumb.jpg" alt="profile">
+								<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
 								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
 								<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
 								<div class="d-grid gap-2">
 									<a href="#" class="btn btn-primary col-12 px-5 my-1">수강신청</a>
-									<a href="#" class="btn btn-warning col-12 px-5 my-1">수강신청 취소</a>
+									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">수강신청 취소</a>
+									<a href="#" class="btn btn-danger col-12 px-5 my-1">찜하기</a>
+									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">찜하기 취소</a>
 									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">사전학습</a>
 									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">일정표</a>
 									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">과제</a>
