@@ -64,10 +64,15 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
                 end: fetchInfo.endStr
             },
             dataType: 'json',
-            success: function(response) {
-                successCallback(response); // 서버로부터 받은 일정 배열
+            success: function(data) {
+				console.log("뭐라도 뱉어봐");
+				console.log("성공: ", data);
+				console.log(data.list);
+                successCallback(data.list); // 서버로부터 받은 일정 배열
             },
-            error: function() {
+            error: function(err) {
+				console.log("뭐라도 뱉어봐");
+				console.log("에러: ", err);
                 failureCallback();
             }
 		});
