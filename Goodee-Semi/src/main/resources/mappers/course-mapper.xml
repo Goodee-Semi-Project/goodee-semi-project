@@ -109,4 +109,24 @@
 			course_no = #{courseNo} AND account_no = #{accountNo}
 		</where>
 	</delete>
+	
+	<insert id="insertEnroll" parameterType="com.goodee.semi.dto.Enroll">
+		INSERT INTO enroll (course_no, pet_no)
+		VALUE (#{courseNo}, #{petNo})
+	</insert>
+	
+	<update id="updateEnroll" parameterType="com.goodee.semi.dto.Enroll">
+		UPDATE enroll
+		SET enroll_status = #{enrollStatus}
+		<where>
+			course_no = #{courseNo} AND pet_no = #{petNo}
+		</where>
+	</update>
+	
+	<delete id="deleteEnroll" parameterType="com.goodee.semi.dto.Enroll">
+		DELETE FROM enroll
+		<where>
+			course_no = #{courseNo} AND pet_no = #{petNo}
+		</where>
+	</delete>
 </mapper>

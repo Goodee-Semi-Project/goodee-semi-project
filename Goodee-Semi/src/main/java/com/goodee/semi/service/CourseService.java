@@ -8,6 +8,7 @@ import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.CourseDao;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
 
 public class CourseService {
@@ -79,6 +80,18 @@ public class CourseService {
 
 	public int deleteLike(Like like) {
 		return courseDao.deleteLike(like);
+	}
+
+	public int insertEnroll(Enroll enroll) {
+		return courseDao.insertEnroll(enroll);
+	}
+
+	public int updateEnroll(Enroll enroll) {
+		return courseDao.updateEnroll(enroll);
+	}
+
+	public int deleteEnroll(Enroll enroll) {
+		return courseDao.deleteEnroll(enroll);
 	}
 	
 }
