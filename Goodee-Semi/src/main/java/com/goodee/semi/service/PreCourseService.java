@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.PreCourseDao;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.PreCourse;
 
@@ -24,12 +25,18 @@ public class PreCourseService {
 		return map;
 	}
 
-	public int insertPreCourse(PreCourse preCourse) {
+	public int insertPreCourse(PreCourse preCourse, Attach attach) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
 		int result = -1;
 		
 		try {
 			result = preCourseDao.insertPreCourse(session, preCourse);
+			
+			if (attach != null && result > 0) {
+				attach.setTypeNo(Attach.PRE_COURSE);
+				attach.setPkNo(preCourse.getPreNo());
+				result = preCourseDao.insertAttach(session, attach);
+			}
 
 			if (result > 0) {
 				session.commit();
