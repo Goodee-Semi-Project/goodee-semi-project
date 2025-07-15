@@ -41,6 +41,10 @@ public class MyInfoServlet extends HttpServlet {
 		if (session != null && session.getAttribute("loginAccount") instanceof Account) {
 			account = (Account) session.getAttribute("loginAccount");
 		}
+//		else {
+//			response.sendRedirect(request.getContextPath() + "/");
+//			return;
+//		}
 		
 		String accountId = null;
 		if (account != null && account.getAccountId() != null) {
