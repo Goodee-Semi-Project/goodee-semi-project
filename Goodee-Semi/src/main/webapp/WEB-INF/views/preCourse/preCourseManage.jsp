@@ -14,13 +14,14 @@
 <%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
 
 <main>
+	<h1>사전 학습 관리</h1>
 	<div>
 		<!-- TODO: 버튼으로 courseList 넘겨주기 -->
-		<a href="/preCourse/regist" >사전학습 등록</a>
+		<a href="/preCourse/regist" >사전학습 등록하기</a>
 	</div>
 	<section>
 		<div>
-			<c:forEach var="c" items="${ courseList }" >
+			<c:forEach var="c" items="${ courseList }">
 				<p>코스명: ${ c.title }</p>
 				<ul>
 					<c:forEach var="p" items="${ preCourseMap.get(c.courseNo) }">
@@ -31,12 +32,14 @@
 						<br>
 					</c:forEach>
 				</ul>
+				<br>
 			</c:forEach>
 		</div>
 	</section>
 
 </main>
 
+<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </body>
 </html>

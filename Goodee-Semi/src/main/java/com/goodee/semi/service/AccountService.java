@@ -16,10 +16,13 @@ public class AccountService {
 		param.setAccountId(accountId);
 		param.setAccountPw(accountPw);
 		
-		return accountDao.loginInfo(param);
+		AccountDetail result = accountDao.loginInfo(param);
+		result.setProfileAttach(accountDao.selectAttachByAccountNo(result.getAccountNo()));
+		
+		return result;
 	}
 
-	public int insertAccount(AccountDetail account) {
+	public int insertAccount(AccountDetail account, Attach attach) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
 		int result = 0;
 		
@@ -28,6 +31,12 @@ public class AccountService {
 			
 			if (result > 0) {
 				result = accountDao.insertAccountInfo(session, account);
+			}
+			
+			if (result > 0) {
+				attach.setTypeNo(Attach.ACCOUNT);
+				attach.setPkNo(account.getAccountNo());
+				result = accountDao.insertAttach(session, attach);
 			}
 			
 			if (result > 0) {

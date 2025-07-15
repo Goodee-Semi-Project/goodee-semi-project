@@ -53,14 +53,13 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		
-		Object accountObj;
+		Account account = null;
 		int accountNo = -1;
-		if ((accountObj = session.getAttribute("loginAccount")) != null && accountObj instanceof Account) {
-			Account tmp = null;
-			tmp = (Account) accountObj;
-			accountNo = tmp.getAccountNo();
+		if (session.getAttribute("loginAccount") != null && session.getAttribute("loginAccount") instanceof Account) {
+			account = (Account) session.getAttribute("loginAccount");
+			accountNo = account.getAccountNo();
 		}
 		
 		int result = -1;
@@ -92,6 +91,7 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 			
 			if (attach != null) {
 				result = accountService.updateAccountDetailWithAttach(accountDetail, attach);
+				account.setProfileAttach(attach);
 			} else {
 				result = accountService.updateAccountDetail(accountDetail);
 			}

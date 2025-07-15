@@ -12,7 +12,7 @@
   <!-- favicon -->
   <link href="/static/images/favicon.png" rel="shortcut icon">
 
-  <!-- Essential stylesheets -->
+  <!-- Plugins -->
   <link href="/static/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
   <link href="/static/plugins/bootstrap/bootstrap-slider.css" rel="stylesheet">
   <link href="/static/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -23,5 +23,4 @@
   <!-- CSS -->
   <link href="/static/css/style.css" rel="stylesheet">
 	
-	<!-- jQuery -->
-	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	
