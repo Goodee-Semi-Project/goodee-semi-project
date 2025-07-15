@@ -16,8 +16,7 @@
 <main>
 	<div>
 		<input type="text" id="reviewNo" value="${ review.reviewNo }" hidden>
-		<label for="title">[후기]</label>
-		<span id="title" name="title">${ review.reviewTitle }</span>
+		<span id="title" name="title">[후기] ${ review.reviewTitle }</span>
 		<c:choose>
 			<c:when test="${ review.regDate eq review.modDate }">
 				<span id="date">작성일: ${ review.regDate }</span>
@@ -27,7 +26,12 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
-	<div id="accountId">${ review.accountId }</div>
+	<div>
+		<span>[코스명] ${ review.courseTitle }</span>
+		<span>
+			[작성자] ${ review.accountId }
+		</span>
+	</div>
 	<div>
 		<c:if test="${ not empty attach }">
 			<img src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
