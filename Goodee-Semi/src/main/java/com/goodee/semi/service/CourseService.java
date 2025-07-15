@@ -8,6 +8,7 @@ import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.CourseDao;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.Like;
 
 public class CourseService {
 	private CourseDao courseDao = new CourseDao();
@@ -70,6 +71,14 @@ public class CourseService {
 		}
 		
 		return result;
+	}
+
+	public int insertLike(Like like) {
+		return courseDao.insertLike(like);
+	}
+
+	public int deleteLike(Like like) {
+		return courseDao.deleteLike(like);
 	}
 	
 }

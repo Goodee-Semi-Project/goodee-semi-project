@@ -97,4 +97,16 @@
 			course_no = #{courseNo}
 		</where>
 	</update>
+	
+	<insert id="insertLike" parameterType="com.goodee.semi.dto.Like">
+		INSERT INTO picked_course (course_no, account_no)
+		VALUE (#{courseNo}, #{accountNo})
+	</insert>
+	
+	<delete id="deleteLike" parameterType="com.goodee.semi.dto.Like">
+		DELETE FROM picked_course
+		<where>
+			course_no = #{courseNo} AND account_no = #{accountNo}
+		</where>
+	</delete>
 </mapper>
