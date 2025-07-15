@@ -56,7 +56,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 		console.log(failureCallback);
 		
         // TODO 아래의 ajax에 응답해주는 서블릿 구현
-/*		$.ajax({
+		$.ajax({
             url: '/schedule/list',
             type: 'post',
             data: {
@@ -70,7 +70,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
             error: function() {
                 failureCallback();
             }
-		});*/
+		});
 		
 		successCallback(eventDatas);
 		console.log('이벤트 데이터 로드 완료');
@@ -168,7 +168,7 @@ function createEvent(eventData) {
 function updateEvent(eventId, eventData) {
     const event = calendar.getEventById(eventId);
     if (event) {
-		event.setTitle(`(${eventData.courseName}) ${memberName}-${petName}`)
+		event.setProp('title', `(${eventData.courseName}) ${eventData.memberName}-${eventData.petName}`)
         // event.setId(eventData.id);
         event.setExtendedProp('courseName', eventData.courseName);
         event.setExtendedProp('memberName', eventData.memberName);
