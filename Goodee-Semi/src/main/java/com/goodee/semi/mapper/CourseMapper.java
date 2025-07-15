@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
 
 public interface CourseMapper {
@@ -16,4 +17,7 @@ public interface CourseMapper {
 	int updateCourseThumb(Course course);
 	int insertLike(Like like);
 	int deleteLike(Like like);
+	int insertEnroll(Enroll enroll);
+	int updateEnroll(Enroll enroll);
+	int deleteEnroll(Enroll enroll);
 }

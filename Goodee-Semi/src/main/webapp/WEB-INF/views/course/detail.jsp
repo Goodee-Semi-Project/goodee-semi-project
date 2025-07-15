@@ -209,7 +209,16 @@
 								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
 								<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
 								<div class="d-grid gap-2">
-									<a href="#" class="btn btn-primary col-12 px-5 my-1">수강신청</a>
+									<a id="enrollOpen" class="btn btn-primary col-12 px-5 my-1">수강신청</a>
+									<div id="enrollDiv" style="display: none;">
+										<label for="selectPetForEnroll">수강을 신청할 반려견을 선택해주세요.</label>
+										<select id="selectPetForEnroll" class="col-8 px-5 mr-5 my-1">
+											<c:forEach var="pet" items="${ myPetList }">
+												<option value="${ pet.petNo }">${ pet.petName }</option>
+											</c:forEach>
+										</select>
+										<button id="enrollBtn" type="button" class="btn btn-success col-4 my-1">신청</button>
+									</div>
 									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">수강신청 취소</a>
 									<a id="addLikeBtn" class="btn btn-danger col-12 px-5 my-1">찜하기</a>
 									<a id="removeLikeBtn" class="btn btn-light btn-outline-dark col-12 px-5 my-1">찜하기 취소</a>
@@ -271,7 +280,7 @@
 			$("#removeLikeBtn").on("click", (event) => {
 				event.preventDefault();
 				
-				if(confirm("찜 목록에서 제거하시겠습니까?")) {
+				if (confirm("찜 목록에서 제거하시겠습니까?")) {
 					const likeFlag = "REMOVE";
 					const accountNo = $("#accountNo").val();
 					const courseNo = $("#courseNo").val();
@@ -298,6 +307,43 @@
 					});
 				}
 			});
+			
+			$("#enrollOpen").on("click", (event) => {
+				event.preventDefault();
+				
+				$("#enrollDiv").css("display", "block");
+			});
+			
+			$("#enrollBtn").on("click", (event) => {
+				if (confirm("수강을 신청하시겠습니까?")) {
+					const enrollFlag = "ADD";
+					const courseNo = $("#courseNo").val();
+					const petNo = $("#selectPetForEnroll").val();
+					
+					$.ajax({
+						url : "/myCourse/enroll",
+						type : "POST",
+						data : {
+							enrollFlag : enrollFlag,
+							courseNo : courseNo,
+							petNo : petNo
+						},
+						dataType : "JSON",
+						success : function(data) {
+							alert(data.resultMsg);
+							
+							if (data.resultCode == 200) {
+								location.href = "<%= request.getContextPath() %>/course/detail?no=" + courseNo;
+							}
+						},
+						error : function() {
+							alert("수강 신청 중 오류가 발생했습니다.");
+						}
+					});
+				}
+				
+			});
+			
 		});
 	</script>
 </body>
