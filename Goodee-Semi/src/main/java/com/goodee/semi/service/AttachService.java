@@ -8,11 +8,13 @@ import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 
+import com.goodee.semi.dao.NoticeDao;
 import com.goodee.semi.dto.Attach;
 
 import jakarta.servlet.http.Part;
 
 public class AttachService {
+	 private NoticeDao dao = new NoticeDao();
 	public static File getUploadDirectory(int type) {
 		String dirPath = "C://goodee/upload" + switch (type) {
 			case Attach.ACCOUNT -> "/account";
@@ -60,4 +62,8 @@ public class AttachService {
 		
 		return attach;
 	}
+	
+	public Attach selectAttachOne(Attach param) {
+        return dao.selectAttachOne(param);    // ✅ DAO 호출만 위임
+    }
 }
