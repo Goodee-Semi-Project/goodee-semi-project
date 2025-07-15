@@ -10,7 +10,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
+<%-- <%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %> --%>
 <%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
 
 <main>
@@ -54,7 +54,7 @@
 		
 		
 		// TODO: 첨부파일 등록 확인하기
-		if (!course) {
+		if (!courseNo) {
 			alert('교육과정을 선택해주세요.');
 		} else if (!title) {
 			alert('제목을 입력해주세요.');

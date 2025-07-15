@@ -19,4 +19,9 @@
 			WHERE course_no = #{ courseNo }
 		)
 	</select>
+	
+	<insert id="insertPreCourse" parameterType="com.goodee.semi.dto.PreCourse">
+		INSERT INTO pre_course (`course_no`, `pre_title`, `video_len`)
+		VALUE (#{ courseNo } ,#{ preTitle } ,#{ videoLen })
+	</insert>
 </mapper>

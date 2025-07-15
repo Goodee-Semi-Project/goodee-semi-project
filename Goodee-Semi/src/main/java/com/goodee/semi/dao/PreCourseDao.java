@@ -16,4 +16,8 @@ public class PreCourseDao {
 		return list;
 	}
 
+	public int insertPreCourse(SqlSession session, PreCourse preCourse) {
+		return session.insert("com.goodee.semi.mapper.PreCourseMapper.insertPreCourse", preCourse);
+	}
+
 }

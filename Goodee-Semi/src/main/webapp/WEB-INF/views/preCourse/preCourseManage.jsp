@@ -10,7 +10,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
+<%-- <%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %> --%>
 <%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
 
 <main>
@@ -24,9 +24,11 @@
 				<p>코스명: ${ c.title }</p>
 				<ul>
 					<c:forEach var="p" items="${ preCourseMap.get(c.courseNo) }">
-						<li>
+						<!-- 회원이 조회하는 페이지에서 수정 삭제 버튼만 if로 표시 -->
+						<a href="/preCourse/manage/${ p.preNo }">
 							사전학습명: ${ p.preTitle }
-						</li>
+						</a>
+						<br>
 					</c:forEach>
 				</ul>
 			</c:forEach>
