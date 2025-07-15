@@ -35,7 +35,9 @@ public class MyCouseMemberManagement extends HttpServlet {
 		
 		List<Course> courseList = service.selectAllCourseByAccountNo(accountNo);
 		for (Course list : courseList) {
+			if(list.getThumbAttach() != null) {
 			System.out.println(list.getThumbAttach().getAttachNo());
+			}
 		}
 		
 		request.setAttribute("courseList", courseList);
