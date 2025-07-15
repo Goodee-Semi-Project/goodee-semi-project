@@ -13,8 +13,8 @@
 		<result property="totalStep" column="total_step" />
 		<result property="capacity" column="capacity" />
 		<result property="thumb" column="thumb" />
+		<result property="name" column="account_name" />
 		<result property="currentEnrollment" column="current_enrollment" />
-		
 	</resultMap>
 	
 	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
@@ -24,6 +24,62 @@
 		<result property="originName" column="ori_name" />
 		<result property="savedName" column="save_name" />
 	</resultMap>
+	
+	<select id="selectCourseOne" parameterType="string" resultMap="courseResultMap">
+		SELECT
+				C.course_no
+			, C.account_no
+			, C.title
+			, C.sub_title
+			, C.object
+			, C.total_step
+			, C.capacity
+			, C.thumb
+			, A.account_name
+		FROM course C
+		INNER JOIN account A ON C.account_no = A.account_no
+		<where>
+			C.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<select id="selectCourse" parameterType="com.goodee.semi.dto.Course" resultMap="courseResultMap">
+		SELECT
+				C.course_no
+			, C.account_no
+			, C.title
+			, C.sub_title
+			, C.object
+			, C.total_step
+			, C.capacity
+			, C.thumb
+			, A.account_name
+		FROM course C
+		INNER JOIN account A ON C.account_no = A.account_no
+		<where>
+			<if test='title != null and title != ""'>
+				AND C.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			
+			<if test='name != null and name != ""'>
+				AND A.account_name LIKE CONCAT('%', #{name}, '%')
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectThumbAttach" parameterType="com.goodee.semi.dto.Course" resultMap="attachResultMap">
+		SELECT * FROM attachment
+		<where>
+			type_no = 3 AND pk_no = #{courseNo} AND attach_no = #{thumb}
+		</where>
+	</select>
+	
+	<select id="selectInputAttach" parameterType="com.goodee.semi.dto.Course" resultMap="attachResultMap">
+		SELECT * FROM attachment
+		<where>
+			type_no = 3 AND pk_no = #{courseNo} AND NOT attach_no = #{thumb}
+		</where>
+	</select>
 
 	<insert id="insertCourse" parameterType="com.goodee.semi.dto.Course" useGeneratedKeys="true" keyProperty="courseNo">
 		INSERT INTO course (account_no, title, sub_title, object, total_step, capacity)
