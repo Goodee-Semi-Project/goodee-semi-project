@@ -38,7 +38,7 @@
 				<c:forEach var="pet" items="${list }" varStatus="status">
 					<li>
 						<input type="file" class="pet-img-input" name="petImg" style="display: none;">
-						<img src="<c:url value='/upload${pet.imgFilePath }${pet.imgFileSaveName }'/>" class="pet-img" alt="반려견 이미지">
+						<img src="<c:url value='/upload/pet/${pet.imgFileSaveName }'/>" class="pet-img" alt="반려견 이미지">
 						<div class="pet-detail">
 							<input type="text" class="pet-name" name="petName" value="${pet.petName }" disabled>
 							<div>

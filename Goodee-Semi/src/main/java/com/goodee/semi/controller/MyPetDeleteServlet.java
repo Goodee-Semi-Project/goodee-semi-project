@@ -1,13 +1,9 @@
 package com.goodee.semi.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
-import com.goodee.semi.dto.Attachment;
-import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.PetService;
 
 import jakarta.servlet.ServletException;
@@ -16,7 +12,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
 
 // 내 반려견 정보 삭제 servlet
 @WebServlet("/myPet/delete")
