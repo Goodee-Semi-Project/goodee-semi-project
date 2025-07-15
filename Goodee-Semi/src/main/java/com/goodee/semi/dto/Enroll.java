@@ -16,4 +16,8 @@ public class Enroll {
 	private int courseNo;
 	private int petNo;
 	private char enrollStatus;
+	
+	private Course courseData;
+	private Pet petData;
+	private Account accountData;
 }

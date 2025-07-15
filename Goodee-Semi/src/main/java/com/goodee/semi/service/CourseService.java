@@ -5,14 +5,20 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dao.AccountDao;
 import com.goodee.semi.dao.CourseDao;
+import com.goodee.semi.dao.PetDao;
+import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
+import com.goodee.semi.dto.PetClass;
 
 public class CourseService {
 	private CourseDao courseDao = new CourseDao();
+	private PetDao petDao = new PetDao();
+	private AccountDao accountDao = new AccountDao();
 	
 	public Course selectCourseOne(String courseNo) {
 		Course course = courseDao.selectCourseOne(courseNo);
@@ -28,6 +34,20 @@ public class CourseService {
 	
 	public List<Course> selectCourse(Course course) {
 		List<Course> courseList = courseDao.selectCourse(course);
+		
+		for (Course cs : courseList) {
+			Attach thumbAttach = courseDao.selectThumbAttach(cs);
+			Attach inputAttach = courseDao.selectInputAttach(cs);
+			
+			cs.setThumbAttach(thumbAttach);
+			cs.setInputAttach(inputAttach);
+		}
+		
+		return courseList;
+	}
+	
+	public List<Course> selectMyCourse(AccountDetail account) {
+		List<Course> courseList = courseDao.selectMyCourse(account);
 		
 		for (Course cs : courseList) {
 			Attach thumbAttach = courseDao.selectThumbAttach(cs);
@@ -81,6 +101,26 @@ public class CourseService {
 	public int deleteLike(Like like) {
 		return courseDao.deleteLike(like);
 	}
+	
+	public List<Enroll> selectMyEnroll(AccountDetail account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		
+		List<Enroll> enrollList = courseDao.selectMyEnroll(session, account);
+		
+		if (enrollList.size() > 0) {
+			for (Enroll enroll : enrollList) {
+				enroll.setCourseData(courseDao.selectCourseOne(String.valueOf(enroll.getCourseNo())));
+				enroll.setPetData(petDao.selectPetOne(enroll.getPetNo()));
+				enroll.setAccountData(accountDao.selectAccountByPetNo(enroll.getPetNo()));
+			}
+		}
+		
+		return enrollList;
+	}
+
+	public Enroll selectEnrollOne(int enrollNo) {
+		return courseDao.selectEnrollOne(enrollNo);
+	}
 
 	public int insertEnroll(Enroll enroll) {
 		return courseDao.insertEnroll(enroll);
@@ -92,6 +132,10 @@ public class CourseService {
 
 	public int deleteEnroll(Enroll enroll) {
 		return courseDao.deleteEnroll(enroll);
+	}
+
+	public int insertPetClass(PetClass petClass) {
+		return courseDao.insertPetClass(petClass);
 	}
 	
 }

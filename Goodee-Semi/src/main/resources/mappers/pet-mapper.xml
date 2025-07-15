@@ -42,6 +42,13 @@
 		</where>
 	</select>
 	
+	<select id="selectPetOne" parameterType="_int" resultMap="petResultMap">
+		SELECT * FROM pet
+		<where>
+			pet_no = #{petNo}
+		</where>
+	</select>
+	
 	<update id="updatePet" parameterType="com.goodee.semi.dto.Pet">
 		UPDATE pet
 		SET pet_name = #{petName}
