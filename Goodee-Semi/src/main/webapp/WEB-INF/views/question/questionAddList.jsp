@@ -21,7 +21,8 @@
 		<button type="button" onclick="location.href='<c:url value="/qnaBoard/list"/>'">목록</button>
 		<button type="submit" id="btn_reg">등록</button>
 	</form>
-		
+	
+	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>	
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 			
 	<script>

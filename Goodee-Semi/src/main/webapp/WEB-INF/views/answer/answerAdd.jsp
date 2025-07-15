@@ -27,6 +27,7 @@
 		<button type="submit" id="btn_reg">답변등록</button>
 	</form>
 	
+	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	
 	<script>
