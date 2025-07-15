@@ -37,4 +37,10 @@
 		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
 		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
 	</insert>
+	
+	<select id="selectPreCourse" parameterType="_int" resultMap="preCourseResultMap">
+		SELECT *
+		FROM pre_course
+		WHERE pre_no = #{ preNo }
+	</select>
 </mapper>
