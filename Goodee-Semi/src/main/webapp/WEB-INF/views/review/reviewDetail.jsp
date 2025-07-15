@@ -36,9 +36,7 @@
 		<c:if test="${ not empty attach }">
 			<img src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
 		</c:if>
-		<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;" readonly>
-			${ review.reviewContent }
-		</textarea>
+		<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;" readonly>${ review.reviewContent }</textarea>
 	</div>
 	<div>
 		<a href="<c:url value='/review/list' />">목록</a>
