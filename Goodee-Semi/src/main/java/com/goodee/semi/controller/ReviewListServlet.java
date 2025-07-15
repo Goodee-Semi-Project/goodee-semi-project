@@ -1,17 +1,16 @@
 package com.goodee.semi.controller;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
 import java.util.List;
 
 import com.goodee.semi.dto.Review;
 import com.goodee.semi.service.ReviewService;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class ReviewListServlet
@@ -41,8 +40,13 @@ public class ReviewListServlet extends HttpServlet {
 		param.setNowPage(nowPage);
 		
 		// 검색어
+		String category = request.getParameter("category");
 		String keyword = request.getParameter("keyword");
+		String order = request.getParameter("order");
+		
+		param.setCategory(category);
 		param.setKeyword(keyword);
+		param.setOrder(order);
 		
 		// 게시글 개수
 		int totalData = service.selectReviewCount(param);

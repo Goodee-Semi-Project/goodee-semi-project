@@ -50,7 +50,7 @@
 			
 		</div>
 		<div>
-			<a href="">목록</a>
+			<a href="<c:url value='/review/list' />">목록</a>
 			<button>수정하기</button>
 		</div>
 	</form>
