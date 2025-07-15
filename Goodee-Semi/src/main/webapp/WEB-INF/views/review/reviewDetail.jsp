@@ -15,7 +15,7 @@
 
 <main>
 	<div>
-		<input type="text" hidden id="reviewNo" value="${ review.reviewNo }">
+		<input type="text" id="reviewNo" value="${ review.reviewNo }" hidden>
 		<label for="title">[후기]</label>
 		<span id="title" name="title">${ review.reviewTitle }</span>
 		<c:choose>
@@ -23,7 +23,7 @@
 				<span id="date">작성일: ${ review.regDate }</span>
 			</c:when>
 			<c:otherwise>
-				<span>수정일: ${ review.modDate }</span>
+				<span id="date">수정일: ${ review.modDate }</span>
 			</c:otherwise>
 		</c:choose>
 	</div>
