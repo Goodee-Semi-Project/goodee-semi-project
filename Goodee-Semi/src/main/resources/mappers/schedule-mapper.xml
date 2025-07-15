@@ -2,94 +2,23 @@
 <!DOCTYPE mapper PUBLIC
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.goodee.semi.mapper.PetMapper">
+<mapper namespace="com.goodee.semi.mapper.ScheduleMapper">
 
-	<resultMap id="petResultMap" type="com.goodee.semi.dto.ScheduleMapper">
-		<result property="petNo" column="pet_no" />
-		<result property="accountNo" column="account_no" />
-		<result property="petName" column="pet_name" />
-		<result property="petGender" column="pet_gender" />
-		<result property="petAge" column="pet_age" />
-		<result property="petBreed" column="pet_breed" />
-		<result property="imgFilePath" column="type_path" />
-		<result property="imgFileSaveName" column="save_name" />
+	<resultMap id="scheduleResultMap" type="com.goodee.semi.dto.Schedule">
+		<result property="schedNo" column="sched_no" />
+		<result property="classNo" column="class_no" />
+		<result property="schedStep" column="sched_step" />
+		<result property="schedDate" column="sched_date" />
+		<result property="schedStart" column="sched_start" />
+		<result property="schedEnd" column="sched_end" />
+		<result property="schedAttend" column="sched_attend" />
 	</resultMap>
 	
-	<resultMap id="AttachResultMap" type="com.goodee.semi.dto.Attach">
-		<result property="attachNo" column="attach_no" />
-		<result property="typeNo" column="type_no" />
-		<result property="pkNo" column="pk_no" />
-		<result property="originName" column="ori_name" />
-		<result property="savedName" column="save_name" />
-	</resultMap>
-	
-	<select id="selectPetList" parameterType="com.goodee.semi.dto.Pet" resultMap="petResultMap">
-		SELECT pet_no, account_no, pet_name, pet_gender, pet_age, pet_breed, save_name
-		FROM pet p
-		JOIN attachment a ON (p.pet_no = a.pk_no)
-		JOIN attach_type at ON (a.type_no = at.type_no)
+	<select id="selectScheduleList" parameterType="hashmap" resultMap="scheduleResultMap">
+		SELECT sched_no, class_no, sched_step, sched_date, sched_start, sched_end, sched_attend
+		FROM schedule
 		<where>
-			account_no = #{accountNo}
-		</where>
-		LIMIT #{limitPageNo}, #{numPerPage}
-	</select>
-	
-	<select id="selectPetCount" resultType="_int" parameterType="com.goodee.semi.dto.Pet">
-		SELECT COUNT(*)
-		FROM pet
-		<where>
-			account_no = #{accountNo}
+			sched_date BETWEEN #{start} AND #{end}
 		</where>
 	</select>
-	
-	<update id="updatePet" parameterType="com.goodee.semi.dto.Pet">
-		UPDATE pet
-		SET pet_name = #{petName}
-		<where>
-			account_no = #{accountNo}
-			AND pet_no = #{petNo}
-		</where>
-	</update>
-	
-	<update id="updateAttach" parameterType="com.goodee.semi.dto.Attach">
-		UPDATE attachment
-		<set>
-		  <if test="originName != null"> ori_name = #{originName}, </if>
-		  <if test="savedName != null"> save_name = #{savedName}, </if>
-		  type_no = type_no
-		</set>
-		<where>
-		  type_no = #{typeNo}
-		  AND pk_no = #{pkNo}
-		</where>
-	</update>
-	
-	<delete id="deletePet" parameterType="_int">
-		DELETE
-		FROM pet
-		<where>
-			pet_no = #{petNo}
-		</where>
-	</delete>
-	
-	<delete id="deleteAttach" parameterType="_int">
-		DELETE a
-		FROM attachment a
-		JOIN (
-			SELECT attach_no
-			FROM attachment
-			WHERE pk_no = #{petNo}
-			) b
-			ON a.attach_no = b.attach_no;
-	</delete>
-	
-	<insert id="insertPet" parameterType="com.goodee.semi.dto.Pet" useGeneratedKeys="true" keyProperty="petNo">
-		INSERT INTO pet (account_no, pet_name, pet_gender, pet_age, pet_breed)
-		VALUES (#{accountNo}, #{petName}, #{petGender}, #{petAge}, #{petBreed});
-	</insert>
-	
-	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach">
-		INSERT INTO attachment (attach_no, type_no, pk_no, ori_name, save_name)
-		VALUES (#{attachNo}, #{typeNo}, #{pkNo}, #{originName}, #{savedName});
-	</insert>
 </mapper>

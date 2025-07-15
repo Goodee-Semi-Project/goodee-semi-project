@@ -1,13 +1,13 @@
 package com.goodee.semi.mapper;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.goodee.semi.dto.Schedule;
 
 public interface ScheduleMapper {
 
-	List<Schedule> selectScheduleList(HashMap<String, LocalDateTime> map);
+	List<Schedule> selectScheduleList(Map<String, LocalDate> map);
 
 }

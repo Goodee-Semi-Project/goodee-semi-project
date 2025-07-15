@@ -1,8 +1,8 @@
 package com.goodee.semi.service;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.goodee.semi.dao.ScheduleDao;
 import com.goodee.semi.dto.Schedule;
@@ -10,7 +10,7 @@ import com.goodee.semi.dto.Schedule;
 public class ScheduleService {
 	private ScheduleDao dao = new ScheduleDao();
 
-	public List<Schedule> selectScheduleList(HashMap<String, LocalDateTime> map) {
+	public List<Schedule> selectScheduleList(Map<String, LocalDate> map) {
 		return dao.selectScheduleList(map);
 	}
 
