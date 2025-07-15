@@ -39,7 +39,7 @@
 		</div>
 		<hr>
 	</c:forEach>
-
+ 
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 </body>
 </html>
