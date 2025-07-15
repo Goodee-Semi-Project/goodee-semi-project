@@ -45,17 +45,17 @@
 	
 	<c:if test="${not empty questionList}">
 		<div>
-			<c:if test="${paging.prev}">
+			<c:if test="${question.prev}">
 				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarStart - 1}&keyword=${question.keyword}'/>">
 				&laquo;
-				</a>A
+				</a>
 			</c:if>
 			<c:forEach var="i" begin="${question.pageBarStart}" end="${question.pageBarEnd}">
 				<a href="<c:url value='/qnaBoard/list?nowPage=${i}'/>">
 					${i}
 				</a>			
 			</c:forEach>
-			<c:if test="${paging.next}">
+			<c:if test="${question.next}">
 				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarEnd + 1 }&keyword=${question.keyword}'/>">
 					&raquo;
 				</a>
