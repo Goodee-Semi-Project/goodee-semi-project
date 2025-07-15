@@ -15,16 +15,17 @@
 	
 	<form id="update_quest_form">
 		<div>
-			<input type="number" id="quest_account_no" value="${loginAccount.accountNo}">
+			<input type="hidden" id="quest_account_no" value="${loginAccount.accountNo}">
 			<label for="qna_title">제목</label>
 			<input type="hidden" id="quest_no" value="${question.questNo}">
 			<input type="text" name="quest_title" id="quest_title" value="${question.questTitle}">
-			<textarea rows="40" cols="70" id="quest_content" style="resize: none; display: block">${question.questContent}</textarea>
-			<button type="button" onclick="location.href='<c:url value="/\/list"/>'">목록</button>
+			<textarea rows="100" cols="70" id="quest_content" style="resize: none; display: block">${question.questContent}</textarea>
+			<button type="button" onclick="location.href='<c:url value="/qnaBoard/list"/>'">목록</button>
 			<button type="submit" id="btn_reg">수정완료</button>
 		</div>
 	</form>
 	
+	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	
 	<script>
