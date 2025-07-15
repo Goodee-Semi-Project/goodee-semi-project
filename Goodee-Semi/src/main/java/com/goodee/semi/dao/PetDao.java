@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Pet;
 import com.goodee.semi.mapper.PetMapper;
 
@@ -26,11 +27,33 @@ public class PetDao implements PetMapper {
 	}
 	
 	@Override
-	public int updatePet(Pet param) {
-		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int result = session.update("com.goodee.semi.mapper.PetMapper.updatePet", param);
-		session.close();
-		return result;
+	public int updatePet(SqlSession session, Pet param) {
+		return session.update("com.goodee.semi.mapper.PetMapper.updatePet", param);
+	}
+	
+	@Override
+	public int updateAttach(SqlSession session, Attach param) {
+		return session.update("com.goodee.semi.mapper.PetMapper.updateAttach", param);
+	}
+	
+	@Override
+	public int deletePet(SqlSession session, int petNo) {
+		return session.delete("com.goodee.semi.mapper.PetMapper.deletePet", petNo);
+	}
+	
+	@Override
+	public int deleteAttach(SqlSession session, int petNo) {
+		return session.update("com.goodee.semi.mapper.PetMapper.deleteAttach", petNo);
+	}
+	
+	@Override
+	public int insertPet(SqlSession session, Pet param) {
+		return session.insert("com.goodee.semi.mapper.PetMapper.insertPet", param);
+	}
+	
+	@Override
+	public int insertAttach(SqlSession session, Attach param) {
+		return session.update("com.goodee.semi.mapper.PetMapper.insertAttach", param);
 	}
 	
 }

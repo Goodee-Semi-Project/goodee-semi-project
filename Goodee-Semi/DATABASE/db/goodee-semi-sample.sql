@@ -21,6 +21,10 @@ INSERT INTO account VALUES
 (6, 2, 'cloud2931', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '박태우', 'Y'),
 (7, 2, 'stone7645', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '최영민', 'Y'),
 (8, 2, 'rain6273', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '정지훈', 'Y');
+
+INSERT INTO account VALUES
+(9, 2, 'rain6274', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '정지훈', 'Y'),
+(10, 2, 'rain6275', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '정지훈', 'Y');
 	
 INSERT INTO account_info VALUES
 (1, 1, '2025-07-11 16:44:09', 'M', '000101', '010-4444-3321', 'comasocean@gmail.com', '08591', '서울 금천구 가산디지털1로 16', 'KM타워'),
@@ -56,7 +60,6 @@ INSERT INTO attachment VALUES
 (14, 1, 6, 'profile6.jpg', 'f0dda58476b742e7a810a5d83c81f4b3.jpg'),
 (15, 1, 7, 'profile7.jpg', '4e6fd08234c241f6bcd36843b78c8441.jpg'),
 (16, 1, 8, 'profile8.jpg', '0b52e7146faf400cba384fa0686310be.jpg');
-
 
 
 
