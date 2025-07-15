@@ -50,7 +50,6 @@ public class MyInfoInactiveServlet extends HttpServlet {
 		param.setNowPage(1);
 		
 		List<Pet> petList = petService.selectPetList(param);
-		System.out.println(petList);
 		
 		request.setAttribute("petList", petList);
 		
