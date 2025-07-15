@@ -2,6 +2,7 @@ package com.goodee.semi.controller;
 
 import java.io.IOException;
 
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.PreCourse;
 import com.goodee.semi.service.PreCourseService;
 
@@ -41,7 +42,14 @@ public class PreCourseDetailServlet extends HttpServlet {
 		}
 		
 		if (preCourse != null) {
-			request.setAttribute("preCourse", preCourse);
+			Attach attach = preCourseService.selectAttach(preNo);
+			
+			if (attach != null) {
+				System.out.println(attach.getAttachNo());
+				request.setAttribute("preCourse", preCourse);
+				request.setAttribute("attach", attach);
+			}
+			
 		}
 
 		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseDetail.jsp").forward(request, response);

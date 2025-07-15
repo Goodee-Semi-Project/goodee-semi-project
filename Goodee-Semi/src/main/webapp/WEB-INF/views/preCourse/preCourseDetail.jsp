@@ -24,6 +24,9 @@
 		</div>
 		<div>
 			<span>학습영상</span>
+			<video width="320" height="240" controls>
+				<source src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+			</video>
 			<span>${ preCourse.videoLen }</span>
 		</div>
 	

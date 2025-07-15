@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.service.AccountService;
 
 import jakarta.servlet.ServletException;
@@ -11,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class MyInfoRemoveImgServlet
@@ -53,6 +55,15 @@ public class MyInfoRemoveImgServlet extends HttpServlet {
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {
+			// 세션에 등록된 이미지 지우기
+			HttpSession session = request.getSession(false);
+
+			Account account = null;
+			if (session != null && session.getAttribute("loginAccount") instanceof Account) {
+				account = (Account) session.getAttribute("loginAccount");
+			}
+			account.setProfileAttach(null);
+			
 			obj.put("res_code", "200");
 			obj.put("res_msg", "삭제되었습니다.");
 		} else {
