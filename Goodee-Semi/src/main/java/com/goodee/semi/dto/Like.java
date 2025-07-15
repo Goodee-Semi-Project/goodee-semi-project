@@ -15,4 +15,6 @@ public class Like {
 	private int pickNo;
 	private int courseNo;
 	private int accountNo;
+	
+	private Course courseData;
 }

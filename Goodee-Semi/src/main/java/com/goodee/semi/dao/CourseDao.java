@@ -73,6 +73,14 @@ public class CourseDao {
 		
 		return result;
 	}
+	
+	public List<Like> selectMyLikeByAccountNo(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Like> likeList = session.selectList("com.goodee.semi.mapper.CourseMapper.selectMyLikeByAccountNo", accountNo);
+		session.close();
+		
+		return likeList;
+	}
 
 	public int insertLike(Like like) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
@@ -90,8 +98,10 @@ public class CourseDao {
 		return result;
 	}
 	
-	public List<Enroll> selectMyEnroll(SqlSession session, AccountDetail account) {
+	public List<Enroll> selectMyEnroll(AccountDetail account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		List<Enroll> enrollList = session.selectList("com.goodee.semi.mapper.CourseMapper.selectMyEnroll", account);
+		session.close();
 		
 		return enrollList;
 	}
@@ -135,5 +145,7 @@ public class CourseDao {
 		
 		return result;
 	}
+
+	
 
 }
