@@ -13,7 +13,9 @@
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	
-	<h1>QnA 게시판</h1>
+	<div>
+		<h1>QnA 게시판</h1>
+	</div>
 	<hr>
 	<a href="<c:url value='/qnaBoard/questionAdd'/>">질문 등록</a>
 	<div>
@@ -34,35 +36,46 @@
 		</form>
 	</div>
 	
-	<c:forEach var="q" items="${questionList}" >
-		<div>
-		<span>${q.questNo }</span>
-		<a href="<c:url value='/qnaBoard/detail?no=${q.questNo}'/>">${q.questTitle}</a>
-		<span>${q.accountId }</span>
-		<span>${q.questReg }</span>
-		</div>
-	</c:forEach>
+	<table class="text-center" style="width: 100%">
+		<tbody>
+			<tr style="height: 70px;">
+				<th>글번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>등록날짜</th>
+			</tr>
+			<c:forEach var="q" items="${questionList}">
+				<tr>
+					<td>${q.questNo}</td>
+					<td><a href="<c:url value='/qnaBoard/detail?no=${q.questNo}'/>">${q.questTitle}</a></td>
+					<td>${q.accountId}</td>
+					<td>${q.questReg}</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 	
 	<c:if test="${not empty questionList}">
 		<div>
 			<c:if test="${question.prev}">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarStart - 1}&keyword=${question.keyword}'/>">
+				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarStart - 1}&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">
 				&laquo;
 				</a>
 			</c:if>
 			<c:forEach var="i" begin="${question.pageBarStart}" end="${question.pageBarEnd}">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${i}'/>">
+				<a href="<c:url value='/qnaBoard/list?nowPage=${i}&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">
 					${i}
 				</a>			
 			</c:forEach>
 			<c:if test="${question.next}">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarEnd + 1 }&keyword=${question.keyword}'/>">
+				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarEnd + 1 }&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">
 					&raquo;
 				</a>
 			</c:if>
 		</div>
 	</c:if>
 	
+	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 </body>
 </html>
