@@ -2,6 +2,16 @@ INSERT INTO authority (auth_no, auth_name) VALUES
 (1, '훈련사'),
 (2, '회원');
 
+INSERT INTO attach_type VALUES
+(1, '사용자'),
+(2, '반려견'),
+(3, '교육과정'),
+(4, '사전학습'),
+(5, '과제'),
+(6, '제출물'),
+(7, '후기'),
+(8, '공지사항');
+
 INSERT INTO account VALUES
 (1, 2, 'admin1234', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '정유니', 'Y'),
 (2, 1, 'tame9010', 'ffGLRdHRm2GUrvSDsMbTdvmjzJJfKpGarBSeMtEaFmUjPug1lC/poBs7AS+C2XYNS+FI416hCQhaP+SahuFTog==', '이몽룡', 'Y'),
@@ -28,32 +38,41 @@ INSERT INTO course VALUES
 (3, 3, '반려견 관리법', '반려견 관리법입니다.', '반려견 관리법 테스트입니다.\n반려견 관리법 테스트입니다.\n반려견 관리법 테스트입니다.', 7, 20, 5),
 (4, 3, '반려견을 사랑하기', '반려견을 사랑합시다.', '반려견을 사랑하기 테스트입니다.\n반려견을 사랑하기 테스트입니다.\n반려견을 사랑하기 테스트입니다.', 5, 9, 7);
 
-INSERT INTO attach_type VALUES
-(1, '사용자'),
-(2, '반려견'),
-(3, '교육과정'),
-(4, '사전학습'),
-(5, '과제'),
-(6, '제출물'),
-(7, '후기'),
-(8, '공지사항');
+INSERT INTO pet VALUES
+(1, 1, '유니', 'F', 4, '시바견'),
+(2, 1, '칸나', 'F', 7, '비글'),
+(3, 4, '시로', 'M', 2, '포메라니안'),
+(4, 5, '나나', 'M', 3, '리트리버'),
+(5, 6, '밥', 'M', 6, '닥스훈트'),
+(6, 7, '이즈리얼', 'M', 5, '말티즈'),
+(7, 8, '아메', 'F', 1, '사모예드');
 
-INSERT INTO schedule (sched_no, class_no, sched_step, sched_date, sched_start, sched_end, sched_attend) VALUES
-(1, 1, 5, '2024-07-02', '2024-07-02 10:00:00', '2024-07-02 11:00:00', 'N'),
-(2, 2, 5, '2024-07-03', '2024-07-03 10:00:00', '2024-07-03 11:00:00', 'Y'),
-(3, 3, 1, '2024-07-04', '2024-07-04 10:00:00', '2024-07-04 11:00:00', 'Y'),
-(4, 4, 2, '2024-07-05', '2024-07-05 10:00:00', '2024-07-05 11:00:00', 'N'),
-(5, 5, 1, '2024-07-06', '2024-07-06 10:00:00', '2024-07-06 11:00:00', 'Y'),
-(6, 6, 1, '2024-07-07', '2024-07-07 10:00:00', '2024-07-07 11:00:00', 'N'),
-(7, 7, 3, '2024-07-08', '2024-07-08 10:00:00', '2024-07-08 11:00:00', 'N'),
-(8, 8, 3, '2024-07-09', '2024-07-09 10:00:00', '2024-07-09 11:00:00', 'Y'),
-(9, 9, 3, '2024-07-10', '2024-07-10 10:00:00', '2024-07-10 11:00:00', 'N'),
-(10, 10, 2, '2024-07-11', '2024-07-11 10:00:00', '2024-07-11 11:00:00', 'N');
+INSERT INTO attachment VALUES
+(1, 3, 1, 'pet_train1.jpg', '3efa98eda83644b681e55fb61eca473a.jpg'),
+(2, 3, 1, 'pet_train2.jpg', 'be9f6e2d172d48748578cbf97a868a5b.jpg'),
+(3, 3, 2, 'pet_teach1.jpg', 'a7e9e18900d24c17b3ee8fd128a34275.jpg'),
+(4, 3, 2, 'pet_teach2.jpg', '2e37c4b8c4a24e10afead83341274640.jpg'),
+(5, 3, 3, 'pet_condition1.jpg', '09eab68f9307486f83a0b7b5854ac962.jpg'),
+(6, 3, 3, 'pet_condition2.jpg', 'f684843d23de4f0692690c40529429c0.jpg'),
+(7, 3, 4, 'pet_love1.jpg', '32ae56880aa64adc9178f03531d74f83.jpg'),
+(8, 3, 4, 'pet_love2.jpg', 'd3dca6385ed84ddf9d35e59ecf317e50.jpg'),
+(9, 1, 1, 'profile1.jpg', '8ac72eef054f444f841c4e4f31632710.jpg'),
+(10, 1, 2, 'profile2.jpg', '476268465eba45f18c52f77db388e801.jpg'),
+(11, 1, 3, 'profile3.jpg', '87d193b83a744ff8a0b1fd4a2ca61ff7.jpg'),
+(12, 1, 4, 'profile4.jpg', 'a9c6d5dc62ec4d5096c7be36a557e4ba.jpg'),
+(13, 1, 5, 'profile5.jpg', '9f274c2859d64fd5b15a4e3015188c5e.jpg'),
+(14, 1, 6, 'profile6.jpg', 'f0dda58476b742e7a810a5d83c81f4b3.jpg'),
+(15, 1, 7, 'profile7.jpg', '4e6fd08234c241f6bcd36843b78c8441.jpg'),
+(16, 1, 8, 'profile8.jpg', '0b52e7146faf400cba384fa0686310be.jpg'),
+(17, 2, 1, 'pet-1-1.jpg', '4801f52fcfab48c8b16dcaa85e703186.jpg'),
+(18, 2, 2, 'pet-1-2.jpg', 'dfca20573a8f46c891c68f9c35a010a2.jpg'),
+(19, 2, 3, 'pet-4.jpg', '3f00fcc687564c63a49a789026a399e2.jpg'),
+(20, 2, 4, 'pet-5.jpg', '7443a609c70d420287899546a1de9e6d.jpg'),
+(21, 2, 5, 'pet-6.jpg', '3adb965971514f62995506c297b4a24b.jpg'),
+(22, 2, 6, 'pet-7.jpg', '31739c62bd02455f81d6296b3acef18d.jpg'),
+(23, 2, 7, 'pet-8.jpg', 'f937f8312f86445d92175d06668e3f81.jpg');
 
-SELECT * FROM review;
-
-INSERT INTO `review` (`class_no`, `review_title`, `account_id`, `review_content`)
-VALUES
+INSERT INTO review (`class_no`, `review_title`, `account_id`, `review_content`) VALUES
 (1, '기초부터 잘 가르쳐주세요', 'account1', '처음 배우는 내용인데도 쉽게 설명해주셔서 좋았어요.'),
 (2, '실습이 많아 실력이 늘어요', 'account2', '이론만 듣는 것보다 직접 해보니 이해가 잘 됐습니다.'),
 (3, '강사님 설명이 최고예요', 'account3', '복잡한 개념도 쉽게 풀어주셔서 만족했습니다.'),
@@ -106,4 +125,3 @@ VALUES
 (5, '실제 업무에 바로 적용 가능', 'account1', '회사 업무에서 바로 써먹을 수 있을 것 같아요.'),
 (1, '강의가 지루하지 않아요', 'account2', '중간중간 인터랙션이 있어서 지루하지 않게 들었어요.'),
 (2, '적극 추천합니다', 'account3', '친구들에게도 추천할 정도로 만족했습니다.');
-
