@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.AttachMapper">
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+	<select id="selectAttachNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM attachment
+		WHERE attach_no = #{ attachNo }
+	</select>
+	<!-- 첨부파일 등록 -->
+  <insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+    INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
+    VALUES (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
+  </insert>
+  <!-- 첨부파일 수정 -->
+  <update id="updateAttach" parameterType="com.goodee.semi.dto.Attach">
+    UPDATE attachment
+    SET ori_name = #{originName},
+        save_name = #{savedName}
+    WHERE attach_no = #{attachNo}
+  </update>
+  
+  <delete id="deleteAttachByNoticeNo" parameterType="int">
+  	DELETE FROM attachment
+  	WHERE pk_no = #{noticeNo} AND type_no = 8
+  </delete>
+  
+  <select id="selectAttachOne" parameterType="com.goodee.semi.dto.Attach" resultMap="attachResultMap">
+	  SELECT * 
+	  FROM attachment
+	  WHERE pk_no = #{pkNo}
+	    AND type_no = #{typeNo}
+	</select>
+</mapper>

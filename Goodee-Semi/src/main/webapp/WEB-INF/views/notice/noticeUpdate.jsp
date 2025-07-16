@@ -33,7 +33,8 @@
       <input type="file" id="noticeFile" name="upfile" />
       <c:if test="${not empty attach}">
         <p>현재 파일: ${attach.originName}</p>
-        <img src="<c:url value='/filePath?pkNo=${notice.noticeNo}&typeNo=8'/>" style="max-width: 300px;">
+        <img src="<c:url value='/filePath?no=${attach.attachNo}'/>" style="max-width: 300px;">
+
       </c:if>
     </div>
 

@@ -5,12 +5,14 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dao.AttachDao;
 import com.goodee.semi.dao.NoticeDao;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Notice;
 
 public class NoticeService {
-	private NoticeDao dao = new NoticeDao();
+	private NoticeDao noticeDao = new NoticeDao();
+	private AttachDao attachDao = new AttachDao();
 
 	public int updateNotice(Notice notice, Attach newAttach) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
@@ -18,7 +20,7 @@ public class NoticeService {
 
 		try {
 			// 1. 공지사항 수정
-			result = dao.updateNotice(session, notice);
+			result = noticeDao.updateNotice(session, notice);
 
 			// 2. 첨부파일 처리 (있으면)
 			if (newAttach != null) {
@@ -26,15 +28,15 @@ public class NoticeService {
 				param.setPkNo(notice.getNoticeNo());
 				param.setTypeNo(Attach.NOTICE);
 
-				Attach existing = dao.selectAttachOne(session, param);
+				Attach existing = attachDao.selectAttachOne(session, param);
 
 				if (existing != null) {
 					newAttach.setAttachNo(existing.getAttachNo());
-					result += dao.updateAttach(session, newAttach);
+					result += attachDao.updateAttach(session, newAttach);
 				} else {
 					newAttach.setPkNo(notice.getNoticeNo());
 					newAttach.setTypeNo(Attach.NOTICE);
-					result += dao.insertAttach(session, newAttach);
+					result += attachDao.insertAttach(session, newAttach);
 				}
 			}
 
@@ -58,12 +60,12 @@ public class NoticeService {
 		int result = 0;
 
 		try {
-			result = dao.insertNotice(session, notice);
+			result = noticeDao.insertNotice(session, notice);
 
 			if (result > 0 && inputAttach != null) {
 				inputAttach.setTypeNo(Attach.NOTICE);
 				inputAttach.setPkNo(notice.getNoticeNo());
-				result = dao.insertAttach(session, inputAttach);
+				result = attachDao.insertAttach(session, inputAttach);
 			}
 
 			if (result > 0) session.commit();
@@ -79,26 +81,26 @@ public class NoticeService {
 	}
 
 	public List<Notice> selectList(Notice param) {
-		return dao.selectList(param);
+		return noticeDao.selectList(param);
 	}
 
 	public int selectListCount(Notice param) {
-		return dao.selectListCount(param);
+		return noticeDao.selectListCount(param);
 	}
 
 	public Notice selectNoticeDetail(int noticeNo) {
-		return dao.selectNoticeDetail(noticeNo);
+		return noticeDao.selectNoticeDetail(noticeNo);
 	}
 
 	public Attach selectAttachOne(Attach param) {
-		return dao.selectAttachOne(param);
+		return attachDao.selectAttachOne(param);
 	}
 	public int deleteNoticeWithAttach(int noticeNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
 		int result = 0;
 		try {
-			dao.deleteAttachByNoticeNo(session, noticeNo);
-			result = dao.deleteNotice(session, noticeNo);
+			attachDao.deleteAttachByNoticeNo(session, noticeNo);
+			result = noticeDao.deleteNotice(session, noticeNo);
 			session.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
