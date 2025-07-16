@@ -27,7 +27,7 @@
 			<div class="col-12">
 			
 				<c:forEach var="course" items="${ courseList }" varStatus="index">
-					<div class="col-4" style="display: inline-block;">
+					<div class="col-4" style="display: inline-block; max-width: 32%;">
 						<div class="product-item bg-light">
 								<div class="card">
 									<div class="thumb-content">
@@ -35,11 +35,13 @@
 											<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
 										</a>
 									</div>
-									<div class="card-body">
+									<div class="card-body" style="padding: 10px;">
 		    						<h4 class="card-title"><a href="/course/detail?no=${ course.courseNo }">${ course.title }</a></h4>
 		    						<c:if test="${ sessionScope.loginAccount.author eq 1 }">
 		    							<p>수강중인 회원: <br>제출된 과제: </p>
-		    							<a href="<c:url value='/myCourse/update?no=${ course.courseNo }' />">수정</a>
+		    							<div style="text-align: right;">
+		    								<a href="<c:url value='/myCourse/update?no=${ course.courseNo }' />" class="btn btn-outline-secondary" style="padding: 2px 5px;">수정</a>
+		    							</div>
 										</c:if>
 										
 										<c:if test="${ sessionScope.loginAccount.author eq 2 }">

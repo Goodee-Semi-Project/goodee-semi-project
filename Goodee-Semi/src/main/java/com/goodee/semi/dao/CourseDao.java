@@ -38,6 +38,12 @@ public class CourseDao {
 		return list;
 	}
 	
+	public int updateCourse(SqlSession session, Course course) {
+		int result = session.update("com.goodee.semi.mapper.CourseMapper.updateCourse", course);
+		
+		return result;
+	}
+	
 	public Attach selectThumbAttach(Course course) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		Attach attach = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectThumbAttach", course);
@@ -59,11 +65,15 @@ public class CourseDao {
 		
 		return result;
 	}
-
-	public int insertAttach(SqlSession session, Attach thumbAttach, Attach inputAttach) {
+	
+	public int insertThumbAttach(SqlSession session, Attach thumbAttach) {
 		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertAttach", thumbAttach);
 		
-		if (result > 0) result = session.insert("com.goodee.semi.mapper.CourseMapper.insertAttach", inputAttach);
+		return result;
+	}
+	
+	public int insertInputAttach(SqlSession session, Attach inputAttach) {
+		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertAttach", inputAttach);
 		
 		return result;
 	}
@@ -166,5 +176,6 @@ public class CourseDao {
 		session.close();
 		return result;
 	}
+
 
 }
