@@ -68,7 +68,7 @@ public class MyPetListServlet extends HttpServlet {
 		request.setAttribute("list", list);
 		
 		// 6. 페이지 이동
-		request.getRequestDispatcher("/WEB-INF/views/passing7by/my-pet/myPetList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/my-pet/myPetList.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

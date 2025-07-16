@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/qnaBoard/questionAdd")
 public class QuestionAddServlet extends HttpServlet {
@@ -24,22 +25,21 @@ public class QuestionAddServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session =  request.getSession();
+		
+		
 		request.getRequestDispatcher("/WEB-INF/views/question/questionAddList.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		
-		int qnaAccountNo = Integer.parseInt(request.getParameter("qnaAccountNo"));
-		String qnaTitle = request.getParameter("qnaTitle");
-		String qnaContent = request.getParameter("qnaContent");
 		
-		Question question = new Question();
-		question.setAccountNo(qnaAccountNo);
-		question.setQuestTitle(qnaTitle);
-		question.setQuestContent(qnaContent);
+		int accountNo = Integer.parseInt(request.getParameter("qnaAccountNo"));
+		String questTitle = request.getParameter("qnaTitle");
+		String questContent = request.getParameter("qnaContent");
 		
-		int result = service.insertQuestion(question);
+		int result = service.insertQuestion(accountNo, questTitle, questContent);
 		
 		JSONObject obj = new JSONObject();
 		

@@ -18,4 +18,6 @@ public class Answer {
 	private String answerContent;
 	private String answerReg;
 	private String answerMod;
+	
+	private String accountId;
 }

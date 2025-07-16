@@ -29,7 +29,10 @@ public class NoticeListServlet extends HttpServlet {
 		String nowPage = request.getParameter("nowPage");
 		String keyword = request.getParameter("keyword");
 		
+		
 		Notice param = new Notice();
+		param.setNowPage(1);
+		// paging이 음수처리 -> 시작을 1로 설정
 		if(nowPage != null) {
 			param.setNowPage(Integer.parseInt(nowPage));
 		}
@@ -46,8 +49,7 @@ public class NoticeListServlet extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+	
 	}
 
 }
