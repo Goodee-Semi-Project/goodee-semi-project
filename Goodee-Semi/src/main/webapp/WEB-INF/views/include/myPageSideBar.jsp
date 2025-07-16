@@ -14,7 +14,7 @@
 			            </div>
 					</c:when>
 					<c:otherwise>
-						<!-- TODO: 공통 사용 이미지로 -->
+						<!-- NOTE: 공통 사용 이미지로 -->
 			            <div class="profile-thumb">
 							<img alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"  alt="" class="rounded-circle"/>
 			            </div>

@@ -36,7 +36,7 @@ public class MyInfoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		// TODO: 로그인 정보 받아오기
+
 		Account account = null;
 		if (session != null && session.getAttribute("loginAccount") instanceof Account) {
 			account = (Account) session.getAttribute("loginAccount");

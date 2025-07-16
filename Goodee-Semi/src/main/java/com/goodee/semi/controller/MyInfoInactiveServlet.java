@@ -44,7 +44,6 @@ public class MyInfoInactiveServlet extends HttpServlet {
 			account = (Account) session.getAttribute("loginAccount");
 		}
 		
-		// TODO: 나의 반려견 리스트
 		Pet param = new Pet();
 		param.setAccountNo(account.getAccountNo());
 		param.setNowPage(1);
@@ -60,7 +59,6 @@ public class MyInfoInactiveServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO: 비밀번호 확인을 세션으로?
 		request.setCharacterEncoding("UTF-8");
 		
 		String checkPw = null;
@@ -88,7 +86,6 @@ public class MyInfoInactiveServlet extends HttpServlet {
 			}
 			
 			if (result > 0) {
-				// TODO: 탈퇴 처리
 				session.removeAttribute("loginAccount");
 				
 				obj.put("res_code", "200");
