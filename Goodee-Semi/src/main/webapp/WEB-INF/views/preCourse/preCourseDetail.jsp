@@ -30,10 +30,11 @@
 			<button onclick="back10s()">10초 뒤로</button>
 			<span>${ preCourse.videoLen }</span>
 		</div>
-		<div>
-			<a href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
-		</div>
-	
+		<c:if test="${ loginAccount.author eq 1 }">
+			<div>
+				<a href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
+			</div>
+		</c:if>
 	</main>
 
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
