@@ -42,7 +42,7 @@ public class ScheduleServlet extends HttpServlet {
 		request.setAttribute("authurName", authurName);
 		request.setAttribute("regDate", regDate);
 		
-		request.getRequestDispatcher("/WEB-INF/views/passing7by/schedule/schedule.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/schedule/schedule.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
