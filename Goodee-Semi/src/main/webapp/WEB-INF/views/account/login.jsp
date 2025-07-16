@@ -62,11 +62,12 @@ pageEncoding="UTF-8"%>
           },
           dataType : 'json',
           success : function(data){
-            alert(data.res_msg);
-            
-            if(data.res_code == 200){
-              location.href = "<%= request.getContextPath() %>/";
-            }
+            if (data.res_code === "200") {
+            	  alert(data.res_msg);
+            	  location.href = "<%= request.getContextPath() %>/";
+            	} else {
+            	  alert(data.res_msg); // 실패 메시지 or 탈퇴 안내
+            	}
           }
         });
       }

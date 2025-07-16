@@ -23,7 +23,7 @@ import jakarta.servlet.http.Part;
 /**
  * Servlet implementation class myInfoEditDetailServlet
  */
-//CARE: 첨부 파일 사이즈
+// SJ: 첨부 파일 사이즈
 @MultipartConfig (
 		fileSizeThreshold = 1024 * 1024,
 		maxFileSize = 1024 * 1024 * 5,
@@ -53,14 +53,13 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		
-		Object accountObj;
+		Account account = null;
 		int accountNo = -1;
-		if ((accountObj = session.getAttribute("loginAccount")) != null && accountObj instanceof Account) {
-			Account tmp = null;
-			tmp = (Account) accountObj;
-			accountNo = tmp.getAccountNo();
+		if (session.getAttribute("loginAccount") != null && session.getAttribute("loginAccount") instanceof Account) {
+			account = (Account) session.getAttribute("loginAccount");
+			accountNo = account.getAccountNo();
 		}
 		
 		int result = -1;
@@ -71,7 +70,7 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 			String phone = request.getParameter("phone");
 			String postNum = request.getParameter("postNum");
 			String address = request.getParameter("address");
-			String addressDetail = request.getParameter("addressDetail");
+			String addressDetail = request.getParameter("addressDetail").trim();
 			
 			Attach attach = null;
 			Part file = null;
@@ -91,12 +90,13 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 			accountDetail.setAddressDetail(addressDetail);
 			
 			if (attach != null) {
-				System.out.println("attach 데이터베이스 입력");
 				result = accountService.updateAccountDetailWithAttach(accountDetail, attach);
+				account.setProfileAttach(attach);
 			} else {
 				result = accountService.updateAccountDetail(accountDetail);
 			}
 		}
+		
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {
@@ -109,7 +109,6 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 		
 		response.setContentType("applictaion/json; charset=utf-8");
 		response.getWriter().print(obj);
-		
 	}
 
 }
