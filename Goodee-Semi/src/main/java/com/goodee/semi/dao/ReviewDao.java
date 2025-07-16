@@ -64,5 +64,5 @@ public class ReviewDao {
 		int result = session.delete("com.goodee.semi.mapper.ReviewMapper.deleteAttach", attach);
 		return result;
 	}
-
+	
 }

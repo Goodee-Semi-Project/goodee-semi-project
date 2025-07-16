@@ -56,7 +56,7 @@ public class QuestionUpdateServlet extends HttpServlet {
 			obj.put("res_msg", "게시글 수정에 실패했습니다");
 		}
 		
-		response.setContentType("application/json; charset=utf=8");
+		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().print(obj);
 		
 	}
