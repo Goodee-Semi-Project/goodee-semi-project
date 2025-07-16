@@ -1,7 +1,9 @@
 package com.goodee.semi.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
+import com.goodee.semi.dto.Answer;
 import com.goodee.semi.dto.Question;
 import com.goodee.semi.service.QuestionService;
 
@@ -22,10 +24,13 @@ public class QuestionDetailServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		int questNo = Integer.parseInt( request.getParameter("no"));
-		Question question = service.selectOneQuest(questNo);
+		int questNo = Integer.parseInt(request.getParameter("no"));
+		Map<String, Object> result= service.selectDetail(questNo);
+		Question question = (Question)result.get("question");
+		Answer answer= (Answer)result.get("answer");
 		
 		request.setAttribute("question", question);
+		request.setAttribute("answer", answer);
 		request.getRequestDispatcher("/WEB-INF/views/question/questionDetail.jsp").forward(request, response);
 	}
 
