@@ -18,20 +18,11 @@
 	<!-- header -->
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	
+	<!-- sideBar start -->
+	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
+	
 	<!-- 중앙정렬용 container -->
 	<div id="container">
-		<aside>
-			<div id="profile">
-				<img src="https://picsum.photos/150" alt="프로필 이미지">
-				<h4>${loginAccount.name } 님</h4>
-				<div>
-					<p>${authurName }</p>
-					<p>${regDate } 가입</p>
-				</div>
-			</div>
-			<%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
-		</aside>
-		
 		<section>
 			<div id="title">
 				<h3>일정표</h3>
@@ -42,10 +33,12 @@
 			<div id='calendar-container'>
 				<div id='calendar'></div>
 			</div>
-			
 		</section>
 	</div>
 	
+	<!-- sideBar end -->
+	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
+
 	<!-- footer -->
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	
@@ -97,9 +90,9 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-					<button type="button" id="btn-add-event">저장</button>
-					<button type="button" id="btn-delete-event" style="display:none;">삭제</button>
-					<button type="button" id="btn-cancel-event">취소</button>
+				<button type="button" id="btn-add-event">저장</button>
+				<button type="button" id="btn-delete-event" style="display:none;">삭제</button>
+				<button type="button" id="btn-cancel-event">취소</button>
 			</div>
 		</div>
 	</div>
