@@ -27,7 +27,7 @@
 			</select>
 			<label for="keyword"></label>
 			<input type="text" name="keyword" id="keyword" value="${question.keyword}">
-			<input type="submit" class="btn btn-primary active w-100" value="검색">
+			<input type="submit" value="검색">
 			<select name="orderBy">
 				<option value="0" ${question.orderBy == 0 ? 'selected' : ''}>정렬</option>
 				<option value="1" ${question.orderBy == 1 ? 'selected' : ''}>최근 날짜순</option>
