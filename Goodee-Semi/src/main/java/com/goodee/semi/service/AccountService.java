@@ -11,6 +11,11 @@ import com.goodee.semi.dto.Attach;
 public class AccountService {
 	private AccountDao accountDao = new AccountDao();
 	
+	public AccountDetail selectAccountById(String accountId) {
+		
+		return accountDao.selectAccountById(accountId);
+	}
+	
 	public AccountDetail getLoginInfo(String accountId, String accountPw) {
 		Account param = new Account();
 		param.setAccountId(accountId);
@@ -21,6 +26,7 @@ public class AccountService {
 		
 		return result;
 	}
+	
 
 	public int insertAccount(AccountDetail account, Attach attach) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);

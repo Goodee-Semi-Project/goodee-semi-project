@@ -36,24 +36,35 @@ public class AccountLoginServlet extends HttpServlet {
 		String accountId = request.getParameter("accountId");
 		String accountPw = request.getParameter("accountPw");
 		
+		
 		AccountDetail account = service.getLoginInfo(accountId, accountPw);
-		
 		JSONObject obj = new JSONObject();
-		obj.put("res_code", "401");
-		obj.put("res_msg", "로그인 실패");
-		
-		if(account != null) {
-			HttpSession session = request.getSession(true);
-			session.setAttribute("loginAccount", account);
-			session.setMaxInactiveInterval(60 * 30);
-			
-			obj.put("res_code", "200");
-			obj.put("res_msg", "로그인 성공");
-			
+
+		if (account != null) {
+		    // 로그인 성공
+		    HttpSession session = request.getSession();
+		    session.setAttribute("loginAccount", account);
+		    session.setMaxInactiveInterval(60 * 30);
+
+		    obj.put("res_code", "200");
+		    obj.put("res_msg", "로그인 성공");
+		} else {
+		    // 존재하는 아이디인지 다시 조회
+		    AccountDetail foundAccount = service.selectAccountById(accountId);
+
+		    if (foundAccount == null) {
+		        obj.put("res_code", "404");
+		        obj.put("res_msg", "존재하지 않는 아이디입니다.");
+		    } else if (foundAccount.getAvailable() == 'N') {
+		        obj.put("res_code", "403");
+		        obj.put("res_msg", "탈퇴한 회원입니다.");
+		    } else {
+		        obj.put("res_code", "401");
+		        obj.put("res_msg", "비밀번호가 일치하지 않습니다.");
+		    }
 		}
-		
+	
 		response.setContentType("application/json; charset=UTF-8");
 		response.getWriter().print(obj);
 	}
-
 }
