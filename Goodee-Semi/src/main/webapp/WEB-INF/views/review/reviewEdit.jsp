@@ -37,21 +37,26 @@
 				</c:otherwise>
 			</c:choose>
 		</div>
+		<c:if test="${ not empty attach }">
+			<img src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+		</c:if>
 		<div>
 			<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;">${ review.reviewContent }</textarea>
 		</div>
 		<div>
 			<!-- 우선은 첨부파일은 1개 -->
+			<label for="attach">첨부 이미지 변경: </label>
 			<input type="file" id="attach" name="attach">
 			
 		</div>
 		<div>
-			<a href="">목록</a>
+			<a href="<c:url value='/review/list' />">목록</a>
 			<button>수정하기</button>
 		</div>
 	</form>
 </main>
 
+<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 	$('#edit').submit(function(e) {
@@ -60,15 +65,20 @@
 		const form = document.querySelector('#edit');
 		const formData = new FormData(form);
 		
-		/* const title = formData.get('title');
+		const title = formData.get('title');
 		const content = formData.get('content');
-		const reviewNo = formData.get('reviewNo');
-		console.log(reviewNo); */
+		// SJ: 이미지 파일만 등록할 수 있음
+		const attachName = formData.get('attach').name;
+		const attachExtIdx = attachName.lastIndexOf('.') + 1;
+		const attachExt = attachName.slice(attachExtIdx).toLowerCase();
+		const imgExt = ['', 'png', 'jpg', 'jpeg', 'webp', 'gif']
 		
 		if (!title) {
 			alert('제목을 입력해주세요!');
 		} else if (!content) {
 			alert('내용을 입력해주세요!');
+		} else if(!imgExt.includes(attachExt)){
+			alert('이미지 파일만 첨부할 수 있습니다!')
 		} else {
 			$.ajax({
 				url : '/review/edit',

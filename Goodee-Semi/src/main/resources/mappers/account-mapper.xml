@@ -42,6 +42,14 @@
 		<result property="nailUp" column="nail_up"/>
 	</resultMap>
 	
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+	
 	<insert id="insertAccount" parameterType="com.goodee.semi.dto.AccountDetail" useGeneratedKeys="true" keyProperty="accountNo">
 		INSERT INTO account (auth_no, account_id, account_pw, account_name)
 		VALUE (#{author}, #{accountId}, #{accountPw}, #{name})
@@ -73,6 +81,14 @@
 		FROM account AS u
 		JOIN account_info AS i ON u.account_no = i.account_no
 		WHERE u.account_id = #{ accountId }
+	</select>
+	
+	<select id="selectAccountByPetNo" parameterType="_int" resultMap="accountResultMap">
+		SELECT * FROM account A
+		INNER JOIN pet P ON A.account_no = P.account_no
+		<where>
+			P.pet_no = #{petNo}
+		</where>
 	</select>
 
 	<update id="updateAccountDetail" parameterType="com.goodee.semi.dto.AccountDetail">
@@ -119,4 +135,20 @@
 			account_id = #{accountId}
 		</where>
 	</update>
+	
+	<select id="selectAttachByAccountNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM attachment
+		WHERE type_no = 1 AND pk_no = #{ accountNo }
+	</select>
+	
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
+		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
+	</insert>
+	
+	<delete id="deleteAttach" parameterType="com.goodee.semi.dto.Attach">
+		DELETE FROM attachment
+		WHERE type_no = #{ typeNo } AND  pk_no = #{ pkNo }
+	</delete>
 </mapper>

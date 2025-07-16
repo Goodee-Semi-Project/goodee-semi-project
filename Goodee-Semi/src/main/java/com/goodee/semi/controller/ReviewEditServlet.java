@@ -1,11 +1,14 @@
 package com.goodee.semi.controller;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.Account;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Review;
+import com.goodee.semi.service.AttachService;
 import com.goodee.semi.service.ReviewService;
 
 import jakarta.servlet.ServletException;
@@ -15,11 +18,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 /**
  * Servlet implementation class ReviewEditServlet
  */
-//CARE: 첨부 파일 사이즈
+// SJ: 첨부 파일 사이즈
 @MultipartConfig (
 		fileSizeThreshold = 1024 * 1024,
 		maxFileSize = 1024 * 1024 * 5,
@@ -29,6 +33,7 @@ import jakarta.servlet.http.HttpSession;
 public class ReviewEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ReviewService reviewService = new ReviewService();
+	AttachService attachService = new AttachService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -59,11 +64,15 @@ public class ReviewEditServlet extends HttpServlet {
 		}
 		
 		Review review = null;
+		Attach attach = null;
 		
 		if (accountId != null && reviewNo != -1) {
 			review = reviewService.selectReivewOne(reviewNo);
+			attach = reviewService.selectAttachByReviewNo(reviewNo);
+			
 			if (review.getAccountId().equals(accountId)) {
 				request.setAttribute("review", review);
+				request.setAttribute("attach", attach);
 			}
 		}
 		
@@ -74,18 +83,24 @@ public class ReviewEditServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("UTF-8");
 		
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
-		// TODO: 후기 번호 가져오기
+		String title = request.getParameter("title").trim();
+		String content = request.getParameter("content").trim();
 		String reviewNoStr = null;
 		int reviewNo = -1;
-		System.out.println(request.getParameter("reviewNo"));
 		if ((reviewNoStr = request.getParameter("reviewNo")) != null) {
 			reviewNo = Integer.parseInt(reviewNoStr);
 		}
-		// TODO: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
+		
+		Attach attach = null;
+		Part file = null;
+		if ((file = request.getPart("attach")) != null) {
+			File uploadDir = attachService.getUploadDirectory(Attach.REVIEW);
+			attach = attachService.handleUploadFile(file, uploadDir);
+		}
+		
+		// SJ: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
 //		String classNoStr = null;
 //		int classNo = -1;
 //		if ((classNoStr = request.getParameter("classNo")) != null) {
@@ -96,13 +111,17 @@ request.setCharacterEncoding("UTF-8");
 		review.setReviewNo(reviewNo);
 		review.setReviewTitle(title);
 		review.setReviewContent(content);
-		// FIXME: 임시 클래스
+		// FIXME: 임시 수강 번호
 //		review.setClassNo(11);
 		
-		// TODO: 첨부파일 클래스 논의 후 작성
 		
 		// 데이터베이스에 추가
-		int result = reviewService.updateReview(review);
+		int result = -1;
+		if (attach != null) {
+			result = reviewService.updateReviewWithAttach(review, attach);
+		} else {
+			result = reviewService.updateReview(review);
+		}
 		
 		JSONObject obj = new JSONObject();
 		
