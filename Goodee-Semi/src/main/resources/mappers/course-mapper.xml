@@ -263,6 +263,14 @@
 		</where>
 	</select>
 	
+	<select id="selectCourseTag" parameterType="com.goodee.semi.dto.Course" resultMap="tagResultMap">
+		SELECT * FROM hashtag H
+		INNER JOIN tag_course TC ON H.tag_no = TC.tag_no
+		<where>
+			TC.course_no = #{courseNo}
+		</where>
+	</select>
+	
 	<insert id="insertTag" parameterType="com.goodee.semi.dto.Tag" useGeneratedKeys="true" keyProperty="tagNo">
 		INSERT IGNORE INTO hashtag (tag_text)
 		VALUE (#{tagText})
@@ -272,4 +280,11 @@
 		INSERT INTO tag_course (tag_no, course_no)
 		VALUE (#{tagNo}, #{courseNo})
 	</insert>
+	
+	<delete id="deleteCourseTag" parameterType="com.goodee.semi.dto.Course">
+		DELETE FROM tag_course
+		<where>
+			course_no = #{courseNo}
+		</where>
+	</delete>
 </mapper>

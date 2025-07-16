@@ -206,5 +206,24 @@ public class CourseDao {
 		return result;
 	}
 
+	public String selectCourseTag(Course course) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Tag> tags = session.selectList("com.goodee.semi.mapper.CourseMapper.selectCourseTag", course);
+		session.close();
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		for (Tag tag : tags) {
+			stringBuilder.append(tag.getTagText() + " ");
+		}
+		
+		return stringBuilder.toString().trim();
+	}
+
+	public int deleteCourseTag(SqlSession session, Course course) {
+		int result = session.delete("com.goodee.semi.mapper.CourseMapper.deleteCourseTag", course);
+		
+		return result;
+	}
+
 
 }
