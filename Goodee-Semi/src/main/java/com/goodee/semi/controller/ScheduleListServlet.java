@@ -60,7 +60,10 @@ public class ScheduleListServlet extends HttpServlet {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("start", startDate.toString());
 		map.put("end", endDate.toString());
+		
+		// 회원/훈련사 조회 데이터 분기
 		map.put("accountNo", String.valueOf(accountDetail.getAccountNo()));
+		
 		System.out.println("map: " + map);
 		
 		// 4. service에서 일정 리스트 데이터 받아오기
