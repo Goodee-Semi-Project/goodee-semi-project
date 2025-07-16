@@ -52,6 +52,7 @@
 		
 		const courseNo = formData.get('courseNo');
 		const title = formData.get('title');
+		const preNo = formData.get('preNo');
 		
 		// TODO: 첨부파일 등록 확인하기
 		if (!courseNo) {
@@ -72,7 +73,7 @@
 					success : function(data) {
 						alert(data.res_msg);
 						if (data.res_code == 200) {
-							location.href = "<%= request.getContextPath() %>/preCourse/manage";
+							location.href = "<%= request.getContextPath() %>/preCourse/detail?preNo=" + preNo;
 						}
 					},
 					error : function(data) {

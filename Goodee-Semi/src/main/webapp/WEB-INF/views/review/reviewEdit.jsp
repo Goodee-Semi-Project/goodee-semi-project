@@ -77,6 +77,8 @@
 		const attachExt = attachName.slice(attachExtIdx).toLowerCase();
 		const imgExt = ['', 'png', 'jpg', 'jpeg', 'webp', 'gif']
 		
+		const reviewNo = formData.get('reviewNo');
+		
 		if (!title) {
 			alert('제목을 입력해주세요!');
 		} else if (!content) {
@@ -98,7 +100,7 @@
 				success : function(data) {
 					alert(data.res_msg);
 					if (data.res_code == 200) {
-						location.href = "<%= request.getContextPath() %>/review/list";
+						location.href = "<%= request.getContextPath() %>/review/detail?no=" + reviewNo;
 					}
 				},
 				error : function(data) {
