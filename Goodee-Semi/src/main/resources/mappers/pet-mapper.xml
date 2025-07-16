@@ -122,4 +122,8 @@
 		VALUES (#{attachNo}, #{typeNo}, #{pkNo}, #{originName}, #{savedName});
 	</insert>
 
+	<select id="countTotalPetNo" resultType="_int">
+		SELECT COUNT(pet_no)
+		FROM pet
+	</select>
 </mapper>

@@ -48,16 +48,13 @@
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 
 	<section class="page-title">
-		<!-- Container Start -->
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8 offset-md-2 text-center">
-					<!-- Title text -->
 					<h3>찾아오시는 길</h3>
 				</div>
 			</div>
 		</div>
-		<!-- Container End -->
 	</section>
 
 	<section class="section">
@@ -65,8 +62,8 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="about-img text-center">
-						<img src="<c:url value='/static/images/about/location.png'/>"
-							class="img-fluid w-100 rounded" alt="">
+						<img src="<c:url value='/static/images/about/location.png'/>" 
+						class="img-fluid w-100 rounded" alt="건물">
 					</div>
 				</div>
 			</div>
@@ -78,12 +75,12 @@
 			<div class="row">
 				<div class="col-lg-6 pt-5 pt-lg-0" style="display : flex; align-items : center;">
 					<div class="about-content">
-						<h3 class="font-weight-bold">찾아오시는 길</h3>
+						<h2 class="font-weight-bold">찾아오시는 길</h2>
 						<p>
-							<span class="font-weight-bold">주소 : </span> 
+							<span class="font-weight-bold text-dark">주소 : </span> 
 							<span>서울 금천구	가산디지털2로 95</span>
 						</p>
-						<h3 class="font-weight-bold">교통편</h3>
+						<h2 class="font-weight-bold">교통편</h2>
 						<p>
 							<span class="font-weight-bold text-dark">지하철 : </span>
 							<span>1,7호선 가산디지털단지역 8번 출구 도보 499m</span> 
@@ -94,7 +91,6 @@
 							<span class="font-weight-bold text-dark">주차 : </span>
 							<span>고객 전용 주차장운영</span>
 						</p>
-						
 					</div>
 				</div>
 				<div class="col-lg-6">
@@ -106,9 +102,6 @@
 		</div>
 	</section>
 
-
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
-
-
 </body>
 </html>

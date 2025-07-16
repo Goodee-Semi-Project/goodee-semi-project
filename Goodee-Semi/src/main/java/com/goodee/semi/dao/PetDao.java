@@ -72,4 +72,12 @@ public class PetDao implements PetMapper {
 		session.close();
 		return list;
 	}
+	
+	@Override
+	public int countTotalPetNo() {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int count = session.selectOne("com.goodee.semi.mapper.PetMapper.countTotalPetNo");
+		session.close();
+		return count;
+	}
 }
