@@ -55,16 +55,32 @@
 										</a>
 									</div>
 									<div class="card-body">
-		    						<h4 class="card-title"><a href="/course/detail?no=${ course.courseNo }">${ course.title }</a></h4>
+		    						<h4 class="card-title"><a href="<c:url value='/course/detail?no=${ course.courseNo }' />">${ course.title }</a></h4>
 		    						<p class="card-text">${ course.subTitle }</p>
-		    						<div class="product-ratings">
-								    	<ul class="list-inline">
-								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-								    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-								    	</ul>
+		    						<div class="container" style="padding: 0; display: flex; justify-content: space-between;">
+		    							<div class="product-ratings" style="padding: 0;">
+									    	<ul class="list-inline">
+									    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+									    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+									    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+									    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+									    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
+									    		<li class="list-inline-item"><span style="font-size: 20px; margin-left: 8px;">4.8</span></li>
+									    	</ul>
+			    						</div>
+			    						<c:choose>
+			    							<c:when test="${ course.petInCourseCount ge course.capacity }">
+			    								<div>
+			    									<button type="button" class="btn btn-secondary" style="padding: 5px 10px;" disabled>수강 불가</button>
+			    								</div>
+			    							</c:when>
+			    							
+			    							<c:otherwise>
+			    								<div>
+			    									<a href="<c:url value='/course/detail?no=${ course.courseNo }' />" class="btn btn-success" style="padding: 5px 10px;">수강 가능</a>
+			    								</div>
+			    							</c:otherwise>
+			    						</c:choose>
 		    						</div>
 									</div>
 								</div>
