@@ -7,15 +7,15 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
-import com.goodee.semi.dto.Schedule;
-import com.goodee.semi.mapper.ScheduleMapper;
+import com.goodee.semi.dto.Event;
+import com.goodee.semi.mapper.EventMapper;
 
-public class ScheduleDao implements ScheduleMapper {
+public class EventDao implements EventMapper {
 	
 	@Override
-	public List<Schedule> selectScheduleList(Map<String, LocalDate> map) {
+	public List<Event> selectEventList(Map<String, String> map) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		List<Schedule> list = session.selectList("com.goodee.semi.mapper.ScheduleMapper.selectScheduleList", map);
+		List<Event> list = session.selectList("com.goodee.semi.mapper.EventMapper.selectEventList", map);
 		session.close();
 		return list;
 	}
