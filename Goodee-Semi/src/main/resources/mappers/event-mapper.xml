@@ -42,4 +42,10 @@
 			AND s.sched_date BETWEEN #{start} AND #{end}		
 		</where>
 	</select>
+	
+	<select id="selectCourseList" parameterType="_int" resultMap="eventResultMap">
+		SELECT course_no, title
+		FROM course
+		WHERE account_no = #{accountNo};
+	</select>
 </mapper>

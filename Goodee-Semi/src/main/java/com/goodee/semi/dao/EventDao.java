@@ -1,6 +1,5 @@
 package com.goodee.semi.dao;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +15,14 @@ public class EventDao implements EventMapper {
 	public List<Event> selectEventList(Map<String, String> map) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		List<Event> list = session.selectList("com.goodee.semi.mapper.EventMapper.selectEventList", map);
+		session.close();
+		return list;
+	}
+	
+	@Override
+	public List<Event> selectCourseList(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Event> list = session.selectList("com.goodee.semi.mapper.EventMapper.selectCourseList", accountNo);
 		session.close();
 		return list;
 	}
