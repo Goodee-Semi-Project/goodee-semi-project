@@ -22,7 +22,7 @@
 				반려견 <br>
 					<!-- 내 반려견 목록 -->
 					<c:forEach var="p" items="${ petList }">
-						${ p.petName } 
+						<b>${ p.petName } </b>
 					</c:forEach>
 				<br>
 				의 정보도 함께 삭제됩니다.
