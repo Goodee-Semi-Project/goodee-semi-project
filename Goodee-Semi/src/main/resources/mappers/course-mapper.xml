@@ -140,6 +140,12 @@
 		</where>
 	</update>
 	
+	<select id="selectList" parameterType="_int" resultMap="courseResultMap">
+		SELECT *
+		FROM course
+		WHERE account_no = #{ accountNo }
+	</select>
+
 	<select id="selectAllCourseByAccountNo" parameterType="_int" resultMap="courseResultMap">
 		SELECT 
 			account_no,

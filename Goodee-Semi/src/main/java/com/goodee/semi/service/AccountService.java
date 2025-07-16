@@ -110,7 +110,7 @@ public class AccountService {
 			if (attach != null && result > 0) {
 				attach .setTypeNo(Attach.ACCOUNT);
 				attach.setPkNo(accountDetail.getAccountNo());
-				accountDao.deleteAttach(session, attach);
+				accountDao.deleteAttach(attach);
 				result = accountDao.insertAttach(session, attach);
 			}
 			
@@ -126,5 +126,12 @@ public class AccountService {
 			session.close();
 		}
 		return result;
+	}
+
+	public int deleteAttach(int accountNo) {
+		Attach attach = new Attach();
+		attach.setTypeNo(Attach.ACCOUNT);
+		attach.setPkNo(accountNo);
+		return accountDao.deleteAttach(attach);
 	}
 }

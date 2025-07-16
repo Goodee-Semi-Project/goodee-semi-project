@@ -138,6 +138,13 @@ public class CourseDao {
 		return result;
 	}
 
+	public List<Course> selectList(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Course> list = session.selectList("com.goodee.semi.mapper.CourseMapper.selectList", accountNo);
+		session.close();
+		return list;
+	}
+
 	public int insertPetClass(PetClass petClass) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertPetClass", petClass);
@@ -145,8 +152,6 @@ public class CourseDao {
 		
 		return result;
 	}
-
-	
 
 	public List<Course> selectAllCourseByAccountNo(int accountNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
@@ -161,4 +166,5 @@ public class CourseDao {
 		session.close();
 		return result;
 	}
+
 }
