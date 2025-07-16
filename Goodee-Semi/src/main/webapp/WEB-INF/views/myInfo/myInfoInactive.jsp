@@ -18,11 +18,17 @@
 			탈퇴 전 확인해주세요 <br>
 			
 			이름: ${ loginAccount.name } <br>
-			<c:if test="">
-				<!-- 내 반려견 목록 -->
+			<c:if test="${ not empty petList }">
+				반려견 <br>
+					<!-- 내 반려견 목록 -->
+					<c:forEach var="p" items="${ petList }">
+						${ p.petName } 
+					</c:forEach>
+				<br>
+				의 정보도 함께 삭제됩니다.
 			</c:if>
 			<br>
-			
+			<br>
 			탈퇴가 완료되면 등록 정보는 즉시 파기되며, <br>
 			복구할 수 없습니다 <br>
 			
@@ -36,14 +42,13 @@
 		</form>
 	</section>
 
+<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 	$('#dropOut').submit(function(e) {
 		e.preventDefault();
 		
-		const checkPw = $('#checkPw').val();
-		
-		console.log(checkPw);
+		const checkPw = $('#checkPw').val().trim();
 		
 		if(!checkPw) {
 			alert('비밀 번호를 입력하세요.');

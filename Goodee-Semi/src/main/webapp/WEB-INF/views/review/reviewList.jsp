@@ -16,23 +16,27 @@
 <main>
 	<h1>참여 후기</h1>
 
-	<form id="search" method="get">
-		<select id="category">
-			<option>제목</option>
-			<option>훈련 코스</option>
-			<option>훈련사</option>
+	<form action="<c:url value='/review/list'/>" id="search" method="get">
+		<div>
+		</div>
+		<select name="category">
+			<option value="reviewTitle">선택</option>
+			<option value="reviewTitle" <c:if test="${ paging.category eq 'reviewTitle' }">selected</c:if> >제목</option>
+			<option value="courseTitle" <c:if test="${ paging.category eq 'courseTitle' }">selected</c:if> >훈련 코스</option>
+			<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
 		</select>
 		<input type="text" id="keyword" name="keyword" placeholder="검색" value="${ paging.keyword }">
 		<button>검색</button>
+		<!-- 정렬 방법 -->
+		<select name="order">
+			<option value="dsc">정렬</option>
+			<option value="dsc" <c:if test="${ paging.order eq 'dsc' }">selected</c:if> >최신순</option>
+			<option value="asc" <c:if test="${ paging.order eq 'asc' }">selected</c:if> >오래된순</option>
+		</select>
 	</form>
 
 	<section>
 		<div>
-			<!-- 정렬 방법 -->
-			<select>
-				<option></option>
-				<option></option>
-			</select>
 			<a href="/review/write">후기 작성</a>
 		</div>
 		<div>
@@ -51,7 +55,7 @@
 							<td>${ r.reviewNo }</td>
 							<td onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
 							<td>${ r.accountId }</td>
-							<td>${ r.reviewDate }</td>
+							<td>${ r.regDate }</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -60,15 +64,15 @@
 		<c:if test="${ not empty reviewList }">
 			<div>
 				<c:if test="${ paging.prev }">
-					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarStart - 1 }&keyword=${ paging.keyword }'/>">
+					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarStart - 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
 						&laquo;
 					</a>
 				</c:if>
 				<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
-					<a href="<c:url value='/review/list?nowPage=${ i }&keyword=${ paging.keyword }'/>">${ i }</a>
+					<a href="<c:url value='/review/list?nowPage=${ i }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">${ i }</a>
 				</c:forEach>
 				<c:if test="${ paging.next }">
-					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarEnd + 1 }&keyword=${ paging.keyword }'/>">
+					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarEnd + 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
 						&raquo;
 					</a>
 				</c:if>
@@ -79,31 +83,7 @@
 	
 </main>
 
+<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-<script type="text/javascript">
-	<%-- $('#search').submit(function(e) {
-		e.preventDefault();
-		
-		const keyword = $('keyword').val();
-		$.ajax({
-			url : '/review/list',
-			type : 'get',
-			data : {
-				keyword : keyword
-			},
-			dataType : 'json',
-			success : function(data) {
-				console.log(data.res_msg);
-				if (data.res_code == 200) {
-					location.href="<%= request.getContextPath() %>/review/list?nowPage=1&keyword=${ paging.keyword }"
-				}
-			},
-			error : function(data) {
-				alert('요청 실패');
-			}
-			
-		});
-	}); --%>
-</script>
 </body>
 </html>

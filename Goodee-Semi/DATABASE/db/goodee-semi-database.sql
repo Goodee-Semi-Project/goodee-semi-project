@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `schedule` (
 	`sched_end` DATETIME DEFAULT NULL,
 	`sched_attend` CHAR(1),
 	PRIMARY KEY (`sched_no`),
-	FOREIGN KEY (`class_no`) REFERENCES `class`(`class_no`)
+	FOREIGN KEY (`class_no`) REFERENCES `class`(`class_no`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `review` (
@@ -88,9 +88,10 @@ CREATE TABLE IF NOT EXISTS `review` (
 	`class_no` INT NOT NULL,
 	`review_title` VARCHAR(255) NOT NULL,
 	`review_content` TEXT NOT NULL,
-	`review_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`reg_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`mod_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`review_no`),
-	FOREIGN KEY (`class_no`) REFERENCES `class`(`class_no`)
+	FOREIGN KEY (`class_no`) REFERENCES `class`(`class_no`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `picked_course` (
@@ -201,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `assignment` (
 	`assign_start` DATETIME DEFAULT NULL,
 	`assign_end` DATETIME DEFAULT NULL,
 	PRIMARY KEY (`assign_no`),
-	FOREIGN KEY (`class_no`) REFERENCES `class`(`class_no`),
+	FOREIGN KEY (`class_no`) REFERENCES `class`(`class_no`) ON DELETE CASCADE,
 	FOREIGN KEY (`sched_no`) REFERENCES `schedule`(`sched_no`)
 );
 

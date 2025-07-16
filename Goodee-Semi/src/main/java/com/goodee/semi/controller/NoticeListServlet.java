@@ -1,17 +1,16 @@
 package com.goodee.semi.controller;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-
 import java.io.IOException;
 import java.util.List;
 
 import com.goodee.semi.dto.Notice;
 import com.goodee.semi.service.NoticeService;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 
 @WebServlet("/notice/list")
@@ -45,14 +44,12 @@ public class NoticeListServlet extends HttpServlet {
 		request.setAttribute("noticeList", list);
 		request.setAttribute("paging", param);
 		request.getRequestDispatcher("/WEB-INF/views/notice/list.jsp").forward(request, response);
-		
 	}
 	
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+	
 	}
 
 }
