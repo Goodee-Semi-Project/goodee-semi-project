@@ -12,4 +12,6 @@ public class PreCourse {
 	private int courseNo;
 	private String preTitle;
 	private String videoLen;
+	
+	private String courseTitle;
 }

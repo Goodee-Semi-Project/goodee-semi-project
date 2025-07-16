@@ -15,20 +15,23 @@
 	<main>
 		<h1>사전학습 세부 정보</h1>
 		<div>
-			<span>교육과정</span>
-			<span>${ preCourse.courseNo }</span>
+			<span>[교육과정]</span>
+			<span>${ preCourse.courseTitle }</span>
 		</div>
 		<div>
-			<span>제목</span>
+			<span>[제목]</span>
 			<span>${ preCourse.preTitle }</span>
 		</div>
 		<div>
-			<span>학습영상</span>
+			<span>[학습영상]</span>
 			<video width="400" preload="auto" controls  id="preVideo">
 				<source src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
 			</video>
 			<button onclick="back10s()">10초 뒤로</button>
 			<span>${ preCourse.videoLen }</span>
+		</div>
+		<div>
+			<a href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
 		</div>
 	
 	</main>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사전 학습 등록</title>
+<title>Insert title here</title>
 
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
@@ -13,28 +13,30 @@
 <%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
 
 <main>
-	<h1>사전 학습 등록</h1>
+	<h1>사전 학습 수정</h1>
 	
-	<form id="regist" method="post">
+	<form id="edit" method="post">
+		<input type="text" name="preNo" value="${ preCourse.preNo }" hidden>
 		<div>
 			<select name="courseNo">
 				<c:forEach var="c" items="${ courseList }">
-					<option value="${ c.courseNo }">${ c.title }</option>
+					<option value="${ c.courseNo }" <c:if test="${ c.courseNo eq preCourse.courseNo }">selected</c:if> >${ c.title }</option>
 				</c:forEach>
 			</select>
 		</div>
 		<div>
-			<label for="title">제목</label>
-			<input type="text" name="title">
+			<label for="title">[제목] </label>
+			<input type="text" name="title" value="${ preCourse.preTitle }">
 		</div>
 		<div>
-			<label for="attach">학습영상</label>
+			<label for="attach">[학습영상] </label>
 			<input type="file" name="attach">
+			<input type="text" name="videoLen" value="${ preCourse.videoLen }" readonly>
 		</div>
 	
 		<!-- SJ: 퀴즈 추가 -->
 		
-		<button>등록</button>
+		<button>수정</button>
 	</form>
 
 </main>
@@ -42,16 +44,14 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
-	$('#regist').submit(function(e) {
+	$('#edit').submit(function(e) {
 		e.preventDefault();
 		
-		const form = document.querySelector('#regist');
+		const form = document.querySelector('#edit');
 		const formData = new FormData(form);
 		
 		const courseNo = formData.get('courseNo');
 		const title = formData.get('title');
-		const attach = formData.get('attach');
-		
 		
 		// TODO: 첨부파일 등록 확인하기
 		if (!courseNo) {
@@ -59,9 +59,9 @@
 		} else if (!title) {
 			alert('제목을 입력해주세요.');
 		} else {
-			if (confirm('사전 교육을 저장 하시겠습니까?')) {
+			if (confirm('사전 교육을 수정 하시겠습니까?')) {
 				$.ajax({
-					url : '/preCourse/regist',
+					url : '/preCourse/edit',
 					type : 'post',
 					data : formData,
 					enctype : 'multipart/form-data',
