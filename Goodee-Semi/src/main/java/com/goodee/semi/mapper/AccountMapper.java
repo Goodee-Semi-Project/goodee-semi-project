@@ -21,4 +21,5 @@ public interface AccountMapper {
 	Attach selectAttachByAccountNo(int accountNo);
 	int deleteAttach(SqlSession session, Attach attach);
 	int insertAttach(SqlSession session, Attach attach);
+	Account selectAccountByPetNo(int petNo);
 }
