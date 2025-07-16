@@ -48,9 +48,7 @@
 	$('#dropOut').submit(function(e) {
 		e.preventDefault();
 		
-		const checkPw = $('#checkPw').val();
-		
-		console.log(checkPw);
+		const checkPw = $('#checkPw').val().trim();
 		
 		if(!checkPw) {
 			alert('비밀 번호를 입력하세요.');

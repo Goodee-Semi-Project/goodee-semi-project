@@ -23,7 +23,7 @@ import jakarta.servlet.http.Part;
 /**
  * Servlet implementation class ReviewEditServlet
  */
-//CARE: 첨부 파일 사이즈
+// SJ: 첨부 파일 사이즈
 @MultipartConfig (
 		fileSizeThreshold = 1024 * 1024,
 		maxFileSize = 1024 * 1024 * 5,
@@ -85,16 +85,14 @@ public class ReviewEditServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
+		String title = request.getParameter("title").trim();
+		String content = request.getParameter("content").trim();
 		String reviewNoStr = null;
 		int reviewNo = -1;
 		if ((reviewNoStr = request.getParameter("reviewNo")) != null) {
 			reviewNo = Integer.parseInt(reviewNoStr);
 		}
 		
-		// TODO: 첨부 파일을 새로 등록하면 기존것 지우고 바꾸기
-		// FIXME: 첨부 파일이 없는 게시물에 수정으로 첨부파일을 등록하면 에러 발생
 		Attach attach = null;
 		Part file = null;
 		if ((file = request.getPart("attach")) != null) {
@@ -102,7 +100,7 @@ public class ReviewEditServlet extends HttpServlet {
 			attach = attachService.handleUploadFile(file, uploadDir);
 		}
 		
-		// TODO: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
+		// SJ: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
 //		String classNoStr = null;
 //		int classNo = -1;
 //		if ((classNoStr = request.getParameter("classNo")) != null) {
@@ -113,10 +111,9 @@ public class ReviewEditServlet extends HttpServlet {
 		review.setReviewNo(reviewNo);
 		review.setReviewTitle(title);
 		review.setReviewContent(content);
-		// FIXME: 임시 클래스
+		// FIXME: 임시 수강 번호
 //		review.setClassNo(11);
 		
-		// TODO: 첨부파일 클래스 논의 후 작성
 		
 		// 데이터베이스에 추가
 		int result = -1;
