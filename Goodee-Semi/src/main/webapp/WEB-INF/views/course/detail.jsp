@@ -68,7 +68,23 @@
 							<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 								<h3 class="tab-title" style="font-size: 32px;">${ course.subTitle }</h3>
 								<p style="font-size: 20px;">${ course.object }</p>
-								<img class="card-img-top img-fluid" style="width: 800px; height: 450px; border: 3px solid white" src="<c:url value='/filePath?no=${ course.inputAttach.attachNo }' />" alt="img">
+								<img class="card-img-top img-fluid" style="width: 800px; height: 400px; object-fit: cover; border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.inputAttach.attachNo }' />" alt="img">
+								<div class="container" style="display: flex; align-items: center; margin: 40px auto;">
+									<div class="col-4">
+										<img class="rounded-circle img-fluid" style="border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+									</div>
+									<div class="col-8">
+										<h3 class="tab-title" style="font-size: 32px;">훈련사 ${ course.name }</h3>
+										<p>
+											강아지는 생후 약 8주부터 사회화하기 시작합니다.<br>
+											적절한 시기, 적절한 훈련은 반려견의 사회화에<br>
+											긍정적인 영향을 줍니다.<br>
+											<br>
+											12년간 쌓아올린 훈련 경력으로<br>
+											반려견의 소중한 시기를 함께합니다.
+										</p>
+									</div>
+								</div>
 							</div>
 							<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
 								<h3 class="tab-title">교육과정 세부 정보</h3>
