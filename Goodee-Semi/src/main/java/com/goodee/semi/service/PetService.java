@@ -113,4 +113,8 @@ private PetDao dao = new PetDao();
 		return result;
 	}
 	
+	public int countTotalPetNo() {
+		return dao.countTotalPetNo();
+	}
+	
 }
