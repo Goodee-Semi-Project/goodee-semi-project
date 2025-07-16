@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.ScheduleMapper">
+
+	<resultMap id="scheduleResultMap" type="com.goodee.semi.dto.Schedule">
+		<result property="schedNo" column="sched_no" />
+		<result property="classNo" column="class_no" />
+		<result property="schedStep" column="sched_step" />
+		<result property="schedDate" column="sched_date" />
+		<result property="schedStart" column="sched_start" />
+		<result property="schedEnd" column="sched_end" />
+		<result property="schedAttend" column="sched_attend" />
+	</resultMap>
+	
+	<select id="selectScheduleList" parameterType="hashmap" resultMap="scheduleResultMap">
+		SELECT sched_no, class_no, sched_step, sched_date, sched_start, sched_end, sched_attend
+		FROM schedule
+		<where>
+			sched_date BETWEEN #{start} AND #{end}
+		</where>
+	</select>
+</mapper>

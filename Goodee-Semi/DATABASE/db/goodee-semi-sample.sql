@@ -125,3 +125,4 @@ INSERT INTO review (`class_no`, `review_title`, `account_id`, `review_content`) 
 (5, '실제 업무에 바로 적용 가능', 'account1', '회사 업무에서 바로 써먹을 수 있을 것 같아요.'),
 (1, '강의가 지루하지 않아요', 'account2', '중간중간 인터랙션이 있어서 지루하지 않게 들었어요.'),
 (2, '적극 추천합니다', 'account3', '친구들에게도 추천할 정도로 만족했습니다.');
+
