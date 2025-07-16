@@ -2,10 +2,12 @@ package com.goodee.semi.controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.Schedule;
@@ -17,7 +19,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// TODO dto, service 만들고 마저 구현
 @WebServlet("/schedule/list")
 public class ScheduleListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -55,11 +56,29 @@ public class ScheduleListServlet extends HttpServlet {
 		// 4. service에서 일정 리스트 데이터 받아오기
 		List<Schedule> list = service.selectScheduleList(map);
 		System.out.println(list);
+				
+		// 7. 응답 보내기
+		// json-simple 라이브러리를 이용하여 List 타입을 응답하고싶다면 
+		// List에 들어있는 Schedule 객체 하나하나를 JSONObject에 바인딩하여 
+		// List를 JSONObject로 만들어 리턴해야 함
+		// (GSon은 List -> Json 자동 파싱을 지원함)
+		JSONArray jsonArr = new JSONArray();
 		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		for (Schedule s : list) {
+			JSONObject j = new JSONObject();
+			j.put("classNo", s.getClassNo());
+			j.put("schedNo", s.getSchedNo());
+			j.put("SchedDate", s.getSchedDate().format(formatter));
+			
+			jsonArr.add(j);
+		}
+		
+		// 응답으로 넘길 jsonObject
 		JSONObject json = new JSONObject();
-		json.put("list", list);
+		json.put("jsonArr", jsonArr);
 		
-		// 7. 응답 인코딩하고 보내기
 		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().print(json);
 	}
