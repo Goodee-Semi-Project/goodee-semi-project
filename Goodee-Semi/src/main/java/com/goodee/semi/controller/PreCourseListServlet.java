@@ -3,10 +3,6 @@ package com.goodee.semi.controller;
 import java.io.IOException;
 
 import com.goodee.semi.dto.Account;
-import com.goodee.semi.dto.AccountDetail;
-import com.goodee.semi.dto.Attach;
-import com.goodee.semi.service.AccountService;
-import com.goodee.semi.service.AttachService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,18 +12,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class myInfoServlet
+ * Servlet implementation class PreCourseServlet
  */
-@WebServlet("/myInfo")
-public class MyInfoServlet extends HttpServlet {
+@WebServlet("/preCourse/list")
+public class PreCourseListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	AccountService accountService = new AccountService();
-	AttachService attachService = new AttachService();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MyInfoServlet() {
+    public PreCourseListServlet() {
         super();
     }
 
@@ -36,30 +30,20 @@ public class MyInfoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-
+		
+		// 회원이 사전학습을 조회
 		Account account = null;
 		if (session != null && session.getAttribute("loginAccount") instanceof Account) {
 			account = (Account) session.getAttribute("loginAccount");
 		}
-//		else {
-//			response.sendRedirect(request.getContextPath() + "/");
-//			return;
-//		}
 		
-		String accountId = null;
-		if (account != null && account.getAccountId() != null) {
-			accountId = account.getAccountId();
+		if (account.getAuthor() == 1) {
+			response.sendRedirect("/preCourse/manage");
 		}
 		
-		AccountDetail accountDetail = accountService.selectAccountDetail(accountId);
-		Attach attach = accountService.selectAttachByAccountNo(account.getAccountNo());
+		// SJ: 수강에 대한 기능이 필요함
 		
-		request.setAttribute("accountDetail", accountDetail);
-		if (attach != null) {
-			request.setAttribute("attach", attach);
-		}
-		
-		request.getRequestDispatcher("/WEB-INF/views/myInfo/myInfoPage.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseList.jsp");
 	}
 
 	/**
