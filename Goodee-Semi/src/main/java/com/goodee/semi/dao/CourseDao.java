@@ -11,6 +11,7 @@ import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
 import com.goodee.semi.dto.PetClass;
+import com.goodee.semi.dto.Tag;
 
 public class CourseDao {
 	
@@ -174,6 +175,34 @@ public class CourseDao {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		List<Attach> result = session.selectList("com.goodee.semi.mapper.CourseMapper.selectAllAttachByAccountNo", accountNo);
 		session.close();
+		return result;
+	}
+
+	public int insertTag(SqlSession session, Course course) {
+		String[] tags = course.getTag().split(" ");
+		int result = 0;
+		
+		for (String tag : tags) {
+			result = 0;
+			
+			Tag myTag = new Tag();
+			myTag.setTagText(tag);
+			
+			result = session.insert("com.goodee.semi.mapper.CourseMapper.insertTag", myTag);
+			
+			if (result == 0) {
+				myTag = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectTagByText", myTag);
+				if (myTag != null) result = 1;
+			}
+			
+			if (result > 0) {
+				myTag.setCourseNo(course.getCourseNo());
+				result = session.insert("com.goodee.semi.mapper.CourseMapper.insertCourseTag", myTag);
+			}
+			
+			if (result <= 0) break;
+		}
+		
 		return result;
 	}
 

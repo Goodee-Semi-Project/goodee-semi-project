@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `pre_progress` (
 
 CREATE TABLE IF NOT EXISTS `hashtag` (
 	`tag_no` INT AUTO_INCREMENT NOT NULL,
-	`tag_text` VARCHAR(10) NOT NULL,
+	`tag_text` VARCHAR(10) UNIQUE NOT NULL,
 	PRIMARY KEY (`tag_no`)
 );
 
