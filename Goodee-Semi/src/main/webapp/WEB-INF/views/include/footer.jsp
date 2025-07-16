@@ -34,3 +34,15 @@
     <i class="fa fa-angle-up"></i>
   </div>
 </footer>
+
+<!-- Plugins -->
+<script src="/static/plugins/jquery/jquery.min.js"></script>
+<script src="/static/plugins/bootstrap/popper.min.js"></script>
+<script src="/static/plugins/bootstrap/bootstrap.min.js"></script>
+<script src="/static/plugins/bootstrap/bootstrap-slider.js"></script>
+<script src="/static/plugins/tether/js/tether.min.js"></script>
+<script src="/static/plugins/raty/jquery.raty-fa.js"></script>
+<script src="/static/plugins/slick/slick.min.js"></script>
+<script src="/static/plugins/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+
+<script src="/static/js/script.js"></script>

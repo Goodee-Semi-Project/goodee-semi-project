@@ -18,4 +18,6 @@ public class Account {
 	private String accountPw;
 	private String name;
 	private char available;
+	
+	private Attach profileAttach;
 }

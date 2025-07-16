@@ -51,6 +51,12 @@ public class ReviewService {
 
 	public int deleteReview(int reviewNo) {
 		int result = reviewDao.deleteReview(reviewNo);
+		
+		Attach attach = new Attach();
+		attach.setTypeNo(Attach.REVIEW);
+		attach.setPkNo(reviewNo);
+		reviewDao.deleteAttach(attach);
+		
 		return result;
 	}
 
@@ -108,6 +114,36 @@ public class ReviewService {
 
 	public Attach selectAttachByReviewNo(int reviewNo) {
 		return reviewDao.selectAttachByReviewNo(reviewNo);
+	}
+
+	public int updateReviewWithAttach(Review review, Attach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = -1;
+		
+		// 첨부파일 클래스, DAO가 정해지면 트랜잭션으로 처리
+		try {
+			result = reviewDao.updateReview(session, review);
+			
+			if (attach != null && result > 0) {
+				attach.setTypeNo(Attach.REVIEW);
+				attach.setPkNo(review.getReviewNo());
+				reviewDao.deleteAttach(attach);
+				result = reviewDao.insertAttach(session, attach);
+			}
+			
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
 	}
 
 }
