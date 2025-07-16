@@ -30,6 +30,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	  <mapper resource="/mappers/answer-mapper.xml"/>
 	  <mapper resource="/mappers/attach-mapper.xml"/>
 	  <mapper resource="/mappers/class-mapper.xml"/>
-		<mapper resource="/mappers/schedule-mapper.xml"/>
+		<mapper resource="/mappers/event-mapper.xml"/>
 	</mappers>
 </configuration>

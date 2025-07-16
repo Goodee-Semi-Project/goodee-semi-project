@@ -43,7 +43,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
  	editable: true, // 드래그해서 수정 가능한지
 	selectable: true,
 	selectMirror: true,
-	dayMaxEvents: true, // +more 표시 전 최대 이벤트 갯수, default: false | true: 셀 높이에 의해 결정, false: 일정만큼 셀 높이 확장
+	dayMaxEvents: false, // +more 표시 전 최대 이벤트 갯수, default: false | true: 셀 높이에 의해 결정, false: 일정만큼 셀 높이 확장
 	
     // 이벤트 데이터 로드
     events: function(fetchInfo, successCallback, failureCallback) {
@@ -65,16 +65,14 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
             },
             dataType: 'json',
             success: function (data) {
-				console.log("뭐라도 뱉어봐");
 				console.log("성공: ", data);
+				successCallback(data);
             },
             error: function (err) {
-				console.log("뭐라도 뱉어봐");
 				console.log("에러: ", err);
             }
 		});
 		
-		successCallback(eventDatas);
 		console.log('이벤트 데이터 로드 완료');
     },
 
@@ -89,6 +87,69 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 		selectedDate = clickInfo.event.startStr.split('T')[0]; // 이벤트 날짜 저장
         showEventModal('edit', clickInfo);
     },
+	
+	// 마우스 위치에 툴팁 표시
+	eventDidMount: function(info) {
+	    // 기존 시간 표시 요소 삭제
+		const oriTimeDiv = document.querySelector('.fc-event-time');
+		oriTimeDiv.remove();
+		
+		let tooltipText = '';
+	    let displayText = '';
+	    
+	    // 시간 정보 생성 (timezone 고려)
+	    if (info.event.start && !info.event.allDay) {
+	        // 한국 시간으로 변환
+	        const startTime = new Date(info.event.startStr).toLocaleTimeString('ko-KR', {
+	            hour: '2-digit',
+	            minute: '2-digit',
+	            hour12: false,
+	            timeZone: 'Asia/Seoul'
+	        });
+	        
+	        if (info.event.end) {
+	            const endTime = new Date(info.event.endStr).toLocaleTimeString('ko-KR', {
+	                hour: '2-digit',
+	                minute: '2-digit',
+	                hour12: false,
+	                timeZone: 'Asia/Seoul'
+	            });
+	            displayText = `${startTime} - ${endTime}`;
+	        } else {
+	            displayText = startTime;
+	        }
+	    }
+	    
+	    // 캘린더 표시용 HTML 생성
+	    const eventTitle = info.event.title;
+	    let htmlContent = '';
+	    
+	    if (displayText) {
+	        htmlContent = `<div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div><div style="font-size: 12px; line-height: 1.2;">${eventTitle}</div>`;
+	        tooltipText = displayText + '\n' + eventTitle;
+	    } else {
+	        htmlContent = `<div style="font-size: 12px;">${eventTitle}</div>`;
+	        tooltipText = eventTitle;
+	    }
+	    
+	    // 기존 title 속성 제거 (중복 방지)
+	    info.el.removeAttribute('title');
+	    
+	    // 이벤트 요소의 내용 수정
+	    const titleElement = info.el.querySelector('.fc-event-title');
+	    if (titleElement) {
+	        titleElement.innerHTML = htmlContent;
+	    }
+	    
+	    // 전체 이벤트 요소의 내용을 직접 수정 (더 확실한 방법)
+	    const eventMain = info.el.querySelector('.fc-event-main');
+	    if (eventMain) {
+	        eventMain.innerHTML = htmlContent;
+	    }
+	    
+	    // 새로운 툴팁용 title 속성 추가
+	    info.el.setAttribute('title', tooltipText);
+	}
 });
 
 // 모달 표시 함수
