@@ -166,5 +166,11 @@ public class CourseDao {
 		session.close();
 		return result;
 	}
-
+	
+	public int countTotalClassNo() {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int count = session.selectOne("com.goodee.semi.mapper.CourseMapper.countTotalClassNo");
+		session.close();
+		return count;
+	}
 }
