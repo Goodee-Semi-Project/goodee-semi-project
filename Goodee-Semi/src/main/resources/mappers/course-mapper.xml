@@ -108,6 +108,19 @@
 		</where>
 	</select>
 	
+	<update id="updateCourse" parameterType="com.goodee.semi.dto.Course">
+		UPDATE course
+		SET 
+				title = #{title}
+			,	sub_title = #{subTitle}
+			, object = #{object}
+			, total_step = #{totalStep}
+			, capacity = #{capacity}
+		<where>
+			course_no = #{courseNo}
+		</where>
+	</update>
+	
 	<select id="selectThumbAttach" parameterType="com.goodee.semi.dto.Course" resultMap="attachResultMap">
 		SELECT * FROM attachment
 		<where>
@@ -120,6 +133,8 @@
 		<where>
 			type_no = 3 AND pk_no = #{courseNo} AND NOT attach_no = #{thumb}
 		</where>
+		ORDER BY attach_no DESC
+		LIMIT 1
 	</select>
 
 	<insert id="insertCourse" parameterType="com.goodee.semi.dto.Course" useGeneratedKeys="true" keyProperty="courseNo">
