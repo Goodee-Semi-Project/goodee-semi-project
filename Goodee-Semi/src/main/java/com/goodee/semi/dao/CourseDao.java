@@ -225,5 +225,13 @@ public class CourseDao {
 		return result;
 	}
 
+	public List<String> selectCourseNoByKey(Tag tag) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<String> courseNoList = session.selectList("com.goodee.semi.mapper.CourseMapper.selectCourseNoByKey", tag);
+		session.close();
+		
+		return courseNoList;
+	}
+
 
 }

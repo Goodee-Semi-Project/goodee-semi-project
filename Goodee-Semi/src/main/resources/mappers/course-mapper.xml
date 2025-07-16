@@ -271,6 +271,18 @@
 		</where>
 	</select>
 	
+	<select id="selectCourseNoByKey" parameterType="com.goodee.semi.dto.Tag" resultType="string">
+		SELECT course_no FROM hashtag H
+		INNER JOIN tag_course TC ON H.tag_no = TC.tag_no
+		<where>
+			<foreach collection="keyTag" item="tag" open="H.tag_text IN (" separator="," close=")">
+				#{tag}
+			</foreach>
+		</where>
+		GROUP BY course_no
+		HAVING COUNT(DISTINCT tag_text) = #{totalTags}
+	</select>
+	
 	<insert id="insertTag" parameterType="com.goodee.semi.dto.Tag" useGeneratedKeys="true" keyProperty="tagNo">
 		INSERT IGNORE INTO hashtag (tag_text)
 		VALUE (#{tagText})

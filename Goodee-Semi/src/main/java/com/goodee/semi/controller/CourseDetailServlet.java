@@ -34,12 +34,15 @@ public class CourseDetailServlet extends HttpServlet {
 		Course course = courseService.selectCourseOne(courseNo);
 		course.setObject(course.getObject().replaceAll("\n", "<br>"));
 		
-		Pet pet = new Pet();
-		pet.setAccountNo(account.getAccountNo());
-		List<Pet> myPetList = petService.selectPetList(pet);
+		if (account != null) {
+			Pet pet = new Pet();
+			pet.setAccountNo(account.getAccountNo());
+			List<Pet> myPetList = petService.selectPetList(pet);
+			
+			request.setAttribute("myPetList", myPetList);
+		}
 		
 		request.setAttribute("course", course);
-		request.setAttribute("myPetList", myPetList);
 		request.getRequestDispatcher("/WEB-INF/views/course/detail.jsp").forward(request, response);
 	}
 
