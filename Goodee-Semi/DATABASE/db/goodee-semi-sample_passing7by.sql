@@ -5,7 +5,7 @@ INSERT INTO authority (auth_no, auth_name) VALUES
 INSERT INTO attach_type VALUES
 (1, '사용자'),
 (2, '반려견'),
-(3, '교육과정'),
+(3, '교육과정'),s
 (4, '사전학습'),
 (5, '과제'),
 (6, '제출물'),
@@ -202,12 +202,32 @@ join course co on (c.course_no = co.course_no)
 where a.account_no = 9;
 
 -- 어떤 사용자의 모든 수강 중인 반려견의 일정과 그 일정의 교육과정 중 특정 기간의 일정
-select a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
-from account a
-join pet p on (a.account_no = p.account_no)
-join class c on (p.pet_no = c.pet_no)
-join schedule s on (c.class_no = s.class_no)
-join course co on (c.course_no = co.course_no)
-where a.account_no = 9;
+SELECT auth.auth_no, a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
+FROM authority auth
+JOIN account a ON (auth.auth_no = a.auth_no)
+JOIN pet p ON (a.account_no = p.account_no)
+JOIN class c ON (p.pet_no = c.pet_no)
+JOIN schedule s ON (c.class_no = s.class_no)
+JOIN course co ON (c.course_no = co.course_no)
+WHERE 
+a.account_no = 9
+AND s.sched_date BETWEEN '2025-07-19' AND '2025-07-20';
 
+-- 어떤 훈련사가 운영하고 있는 모든 교육과정에 대한 일정
+-- 어떤 훈련사가 운영하고 있는 모든 교육과정
+select *
+from course
+where account_no = 2;
+
+-- 어떤 훈련사의 강의를 수강 중인 사용자의 모든 수강 중인 반려견의 일정과 그 일정의 교육과정 중 특정 기간의 일정
+SELECT auth.auth_no, a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step, co.account_no
+FROM authority auth
+JOIN account a ON (auth.auth_no = a.auth_no)
+JOIN pet p ON (a.account_no = p.account_no)
+JOIN class c ON (p.pet_no = c.pet_no)
+JOIN schedule s ON (c.class_no = s.class_no)
+JOIN course co ON (c.course_no = co.course_no)
+WHERE 
+co.account_no = 3
+AND s.sched_date BETWEEN '2025-07-19' AND '2025-07-20';
 
