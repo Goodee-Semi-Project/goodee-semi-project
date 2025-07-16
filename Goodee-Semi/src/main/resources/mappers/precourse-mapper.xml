@@ -41,10 +41,10 @@
 	</insert>
 	
 	<select id="selectPreCourse" parameterType="_int" resultMap="preCourseResultMap">
-		SELECT pc.* ,co.title AS course_title
+		SELECT pc.* ,co.title AS course_title ,account_no
 		FROM pre_course as pc
 		JOIN (
-			SELECT course_no ,title
+			SELECT course_no ,title ,account_no
 			FROM course
 		) AS co ON pc.course_no = co.course_no
 		WHERE pre_no = #{ preNo }

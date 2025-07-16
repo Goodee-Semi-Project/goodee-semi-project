@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.PreCourse;
 import com.goodee.semi.service.AttachService;
@@ -16,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.probe.FFmpegFormat;
@@ -46,9 +48,19 @@ public class PreCourseEditServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		Account account = null;
+		if (session != null && session.getAttribute("loginAccount") != null) {
+			account = (Account) session.getAttribute("loginAccount");
+		}
+		
 		int preNo = Integer.parseInt(request.getParameter("no"));
 		
 		PreCourse preCourse = preCourseService.selectPreCourse(preNo);
+		if (preCourse.getAccountNo() != account.getAccountNo()) {
+			request.getRequestDispatcher("/preCourse/list").forward(request, response);
+			return;
+		}
 //		Attach attach = preCourseService.selectAttach(preNo);
 		
 		request.setAttribute("preCourse", preCourse);
