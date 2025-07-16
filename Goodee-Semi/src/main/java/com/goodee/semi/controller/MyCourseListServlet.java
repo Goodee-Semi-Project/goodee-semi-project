@@ -13,11 +13,13 @@ import java.util.List;
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.service.CourseService;
+import com.goodee.semi.service.PetService;
 
 @WebServlet("/myCourse/list")
 public class MyCourseListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CourseService courseService = new CourseService();
+	private PetService petService = new PetService();
        
   public MyCourseListServlet() {
     super();
@@ -28,6 +30,12 @@ public class MyCourseListServlet extends HttpServlet {
 		AccountDetail account = (AccountDetail) session.getAttribute("loginAccount");
 		
 		List<Course> courseList = courseService.selectMyCourse(account);
+		
+		if (account.getAuthor() == 1) {
+			for (Course course : courseList) {
+				course.setPetInCourseCount(petService.selectAllPetByCourseNo(String.valueOf(course.getCourseNo())).size());
+			}
+		}
 		
 		request.setAttribute("courseList", courseList);
 		request.getRequestDispatcher("/WEB-INF/views/myCourse/list.jsp").forward(request, response);

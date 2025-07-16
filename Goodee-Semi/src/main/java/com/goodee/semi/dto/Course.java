@@ -27,5 +27,6 @@ public class Course {
 	private Attach inputAttach;
 	private String name;
 	private int currentEnrollment;
+	private int petInCourseCount;
 
 }
