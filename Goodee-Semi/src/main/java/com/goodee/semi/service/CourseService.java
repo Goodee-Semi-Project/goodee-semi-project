@@ -93,7 +93,12 @@ public class CourseService {
 		
 		return result;
 	}
-  
+
+	public List<Course> selectList(int accountNo) {
+		List<Course> list = courseDao.selectList(accountNo);
+		return list;
+	}
+ 
   public List<Course> selectAllCourseByAccountNo(int accountNo) {
 		List<Course> courseList = courseDao.selectAllCourseByAccountNo(accountNo);
 		List<Attach> attachList = courseDao.selectAllAttachByAccountNo(accountNo);
@@ -104,6 +109,7 @@ public class CourseService {
 			}
 		}
 		return courseList;
+  }
 	
 	public List<Like> selectMyLikeByAccountNo(int accountNo) {
 		List<Like> likeList = courseDao.selectMyLikeByAccountNo(accountNo);
@@ -158,5 +164,4 @@ public class CourseService {
 	public int insertPetClass(PetClass petClass) {
 		return courseDao.insertPetClass(petClass);
 	}
-
 }

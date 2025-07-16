@@ -15,6 +15,10 @@ private PetDao dao = new PetDao();
 	public List<Pet> selectPetList(Pet param) {
 		return dao.selectPetList(param);
 	}
+	
+	public List<Pet> selectAllPetByCourseNo(String courseNo) {
+		return dao.selectAllPetByCourseNo(courseNo);
+	}
 
 	public int selectPetCount(Pet param) {
 		return dao.selectPetCount(param);
