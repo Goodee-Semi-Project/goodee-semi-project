@@ -167,4 +167,11 @@ public class CourseDao {
 		return result;
 	}
 
+	public List<Course> selectListByPetAccount(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Course> list = session.selectList("com.goodee.semi.mapper.CourseMapper.selectListByPetAccount", accountNo);
+		session.close();
+		return list;
+	}
+
 }
