@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS `review` (
 	`reg_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`mod_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`review_no`),
+	UNIQUE KEY (`class_no`),
 	FOREIGN KEY (`class_no`) REFERENCES `class`(`class_no`) ON DELETE CASCADE
 );
 
@@ -145,7 +146,8 @@ CREATE TABLE IF NOT EXISTS `pre_progress` (
 CREATE TABLE IF NOT EXISTS `hashtag` (
 	`tag_no` INT AUTO_INCREMENT NOT NULL,
 	`tag_text` VARCHAR(10) NOT NULL,
-	PRIMARY KEY (`tag_no`)
+	PRIMARY KEY (`tag_no`),
+	UNIQUE KEY (`tag_text`)
 );
 
 CREATE TABLE IF NOT EXISTS `tag_course` (
