@@ -23,11 +23,9 @@ public class CourseService {
 	public Course selectCourseOne(String courseNo) {
 		Course course = courseDao.selectCourseOne(courseNo);
 		
-		Attach thumbAttach = courseDao.selectThumbAttach(course);
-		Attach inputAttach = courseDao.selectInputAttach(course);
-		
-		course.setThumbAttach(thumbAttach);
-		course.setInputAttach(inputAttach);
+		course.setThumbAttach(courseDao.selectThumbAttach(course));
+		course.setInputAttach(courseDao.selectInputAttach(course));
+		course.setTag(courseDao.selectCourseTag(course));
 		
 		return course;
 	}
@@ -36,11 +34,9 @@ public class CourseService {
 		List<Course> courseList = courseDao.selectCourse(course);
 		
 		for (Course cs : courseList) {
-			Attach thumbAttach = courseDao.selectThumbAttach(cs);
-			Attach inputAttach = courseDao.selectInputAttach(cs);
-			
-			cs.setThumbAttach(thumbAttach);
-			cs.setInputAttach(inputAttach);
+			cs.setThumbAttach(courseDao.selectThumbAttach(cs));
+			cs.setInputAttach(courseDao.selectInputAttach(cs));
+			cs.setTag(courseDao.selectCourseTag(cs));
 		}
 		
 		return courseList;
@@ -50,11 +46,9 @@ public class CourseService {
 		List<Course> courseList = courseDao.selectMyCourse(account);
 		
 		for (Course cs : courseList) {
-			Attach thumbAttach = courseDao.selectThumbAttach(cs);
-			Attach inputAttach = courseDao.selectInputAttach(cs);
-			
-			cs.setThumbAttach(thumbAttach);
-			cs.setInputAttach(inputAttach);
+			cs.setThumbAttach(courseDao.selectThumbAttach(cs));
+			cs.setInputAttach(courseDao.selectInputAttach(cs));
+			cs.setTag(courseDao.selectCourseTag(cs));
 		}
 		
 		return courseList;
@@ -122,6 +116,14 @@ public class CourseService {
 		try {
 			
 			result = courseDao.updateCourse(session, course);
+			
+			if (result > 0) {
+				result = courseDao.deleteCourseTag(session, course);
+				
+				if (result > 0) {
+					result = courseDao.insertTag(session, course);
+				}
+			}
 			
 			if (result > 0 && thumbAttach != null) {
 				thumbAttach.setTypeNo(Attach.COURSE);

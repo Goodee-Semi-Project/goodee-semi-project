@@ -75,7 +75,7 @@
 							<h1 class="product-title" style="font-size: 48px;">${ course.title }</h1>
 							<ul class="list-inline">
 								<li class="list-inline-item"><i class="fa fa-user-o"></i> 훈련사 ${ course.name }</li>
-								<li class="list-inline-item"><i class="fa fa-tags"></i> 태그 </li>
+								<li class="list-inline-item"><i class="fa fa-tags"></i> 태그 ${ course.tag }</li>
 							</ul>
 						</div>
 					</div>
