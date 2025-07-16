@@ -67,6 +67,8 @@ public class CourseService {
 		try {
 			result = courseDao.insertCourse(session, course);
 			
+			if (result > 0) result = courseDao.insertTag(session, course);
+			
 			if (result > 0) {
 				thumbAttach.setTypeNo(Attach.COURSE);
 				inputAttach.setTypeNo(Attach.COURSE);

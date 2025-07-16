@@ -8,6 +8,7 @@ import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
 import com.goodee.semi.dto.PetClass;
+import com.goodee.semi.dto.Tag;
 
 public interface CourseMapper {
 	Course selectCourseOne(String courseNo);
@@ -31,4 +32,7 @@ public interface CourseMapper {
 	int updateEnroll(Enroll enroll);
 	int deleteEnroll(Enroll enroll);
 	int insertPetClass(PetClass petClass);
+	Tag selectTagByText(Tag tag);
+	int insertTag(Tag tag);
+	int insertCourseTag(Tag tag);
 }
