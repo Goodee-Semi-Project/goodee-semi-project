@@ -21,7 +21,7 @@ import jakarta.servlet.http.Part;
 /**
  * Servlet implementation class ReviewWriteServlet
  */
-// CARE: 첨부 파일 사이즈
+// SJ: 첨부 파일 사이즈
 @MultipartConfig (
 		fileSizeThreshold = 1024 * 1024,
 		maxFileSize = 1024 * 1024 * 5,
@@ -55,9 +55,9 @@ public class ReviewWriteServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
-		// TODO: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
+		String title = request.getParameter("title").trim();
+		String content = request.getParameter("content").trim();
+		// SJ: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
 		// FIXME: 임시 수강 번호
 		int classNo = 1;
 		
@@ -66,7 +66,6 @@ public class ReviewWriteServlet extends HttpServlet {
 		review.setReviewContent(content);
 		review.setClassNo(classNo);
 		
-		// TODO: 첨부파일
 		Part file = null;
 		if (request.getPart("attach") != null) {
 			file = request.getPart("attach");

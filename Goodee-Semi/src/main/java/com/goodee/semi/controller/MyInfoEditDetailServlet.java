@@ -23,7 +23,7 @@ import jakarta.servlet.http.Part;
 /**
  * Servlet implementation class myInfoEditDetailServlet
  */
-//CARE: 첨부 파일 사이즈
+// SJ: 첨부 파일 사이즈
 @MultipartConfig (
 		fileSizeThreshold = 1024 * 1024,
 		maxFileSize = 1024 * 1024 * 5,
@@ -70,7 +70,7 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 			String phone = request.getParameter("phone");
 			String postNum = request.getParameter("postNum");
 			String address = request.getParameter("address");
-			String addressDetail = request.getParameter("addressDetail");
+			String addressDetail = request.getParameter("addressDetail").trim();
 			
 			Attach attach = null;
 			Part file = null;

@@ -41,7 +41,7 @@ public class PreCourseListServlet extends HttpServlet {
 			response.sendRedirect("/preCourse/manage");
 		}
 		
-		// TODO: 수강에 대한 기능이 필요함
+		// SJ: 수강에 대한 기능이 필요함
 		
 		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseList.jsp");
 	}
