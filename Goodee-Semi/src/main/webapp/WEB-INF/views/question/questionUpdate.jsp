@@ -13,25 +13,23 @@
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	
-	<form id="btn_quest_update">
+	<form id="update_quest_form">
 		<div>
-		<%-- 		<input type="hidden" id="qna_account_no" value="${loginAccount.accountNo}"> --%>
-		<label for="qna_account_no">임시 accountNo</label>
-		<input type="number" id="quest_account_no" value="${question.accountNo}">
-
-		<label for="qna_title">제목</label>
-		<input type="hidden" id="quest_no" value="${question.questNo}">
-		<input type="text" name="quest_title" id="quest_title" value="${question.questTitle}">
-		<textarea rows="40" cols="70" id="quest_content" style="resize: none; display: block">${question.questContent}</textarea>
-		<button type="button" onclick="location.href='<c:url value="/qnaBoard"/>'">목록</button>
-		<button type="submit" id="btn_reg">수정완료</button>
+			<input type="hidden" id="quest_account_no" value="${loginAccount.accountNo}">
+			<label for="qna_title">제목</label>
+			<input type="hidden" id="quest_no" value="${question.questNo}">
+			<input type="text" name="quest_title" id="quest_title" value="${question.questTitle}">
+			<textarea rows="100" cols="70" id="quest_content" style="resize: none; display: block">${question.questContent}</textarea>
+			<button type="button" onclick="location.href='<c:url value="/qnaBoard/list"/>'">목록</button>
+			<button type="submit" id="btn_reg">수정완료</button>
 		</div>
 	</form>
 	
+	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	
 	<script>
-		$("#btn_quest_update").submit(function (e){
+		$("#update_quest_form").submit(function (e){
 			e.preventDefault();
 			
 			if(confirm("수정하시겠습니까?")) {

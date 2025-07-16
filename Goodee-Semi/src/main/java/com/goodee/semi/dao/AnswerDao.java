@@ -1,5 +1,38 @@
 package com.goodee.semi.dao;
 
+import org.apache.ibatis.session.SqlSession;
+
+import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.Answer;
+
 public class AnswerDao {
 
+	public Answer selectOneAnswer(int questNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Answer result = session.selectOne("com.goodee.semi.mapper.AnswerMapper.selectOneAnswer", questNo);
+		session.close();
+		return result;
+	}
+	
+	public int insertAnswer(Answer answer) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.goodee.semi.mapper.AnswerMapper.insertAnswer", answer);
+		session.close();
+		return result;
+	}
+	
+	public int updateAnswer(Answer answer) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.AnswerMapper.updateAnswer", answer);
+		session.close();
+		return result;
+	}
+	
+	public int deleteAnswer(int questNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.AnswerMapper.deleteAnswer", questNo);
+		session.close();
+		return result;
+	}
+	
 }

@@ -43,6 +43,14 @@ public class AccountDao {
 		
 		return result;
 	}
+	
+	public Account selectAccountByPetNo(int petNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Account result = session.selectOne("com.goodee.semi.mapper.AccountMapper.selectAccountByPetNo", petNo);
+		session.close();
+		
+		return result;
+	}
 
 	public int updateNewPassword(AccountDetail account) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
@@ -107,4 +115,6 @@ public class AccountDao {
 		int result = session.insert("com.goodee.semi.mapper.AccountMapper.insertAttach", attach);
 		return result;
 	}
+
+	
 }
