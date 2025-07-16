@@ -26,13 +26,37 @@
 				<span>${ accountDetail.name }</span>
 			</div>
 			<div>
-				<!-- TODO: 출생년 앞자리 -->
+				<!-- SJ: 출생년 앞자리 -->
 				<c:if test="${ accountDetail.birth.substring(0, 2) } le "></c:if>
 				<span>${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일</span>
 			</div>
 			<div>
+				<c:choose>
+					<c:when test="${ not empty attach }">
+						<img alt="profile-img" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+						<br>
+					</c:when>
+					<c:otherwise>
+						<!-- NOTE: 공통 사용 이미지로 -->
+						<img alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"/>
+						<br>
+					</c:otherwise>
+				</c:choose>
+			</div>
+			<div>
+				<label for="attach">프로필 이미지 변경: </label>
+				<input type="file" name="attach">
+			</div>
+			<div>
+				<label for="removeImg">프로필 이미지 삭제: </label>
+				<%-- <input type="button" name="removeImg" onclick="removeImg(${ accountDetail.accountNo })"> --%>
+				<button type="button" type="button" onclick="removeImg(${ accountDetail.accountNo })">
+					삭제
+				</button>
+			</div>
+			<div>
 				<!-- 셀렉트로 입력 받기 -->
-				<select id="gender">
+				<select id="gender" name="gender">
 					<c:choose>
 						<c:when test="${ accountDetail.gender eq 'M'.charAt(0) }">
 							<option value="M" selected>남자</option>
@@ -84,16 +108,35 @@
 	<a href="/myInfo/inactive">회원 탈퇴</a>
 </main>
 
-
+<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+
+	function removeImg(accountNo) {
+		if (confirm('프로필 사진을 삭제합니다.')) {
+			$.ajax({
+				url : '/myInfo/removeImg',
+				type : 'post',
+				data : {
+					accountNo : accountNo
+				},
+				dataType : 'json',
+				success : function(data) {
+					alert(data.res_msg);
+					if (data.res_code == 200) {
+						location.href = "<%= request.getContextPath() %>/myInfo"
+					}
+				}
+			});
+		}
+	}
 
 	$('#editPw').submit(function(e) {
 		e.preventDefault();
 		
-		const currentPw = $('#currentPw').val();
-		const newPw = $('#newPw').val();
-		const newPwCheck = $('#newPwCheck').val();
+		const currentPw = $('#currentPw').val().trim();
+		const newPw = $('#newPw').val().trim();
+		const newPwCheck = $('#newPwCheck').val().trim();
 		const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/;
 		
 		if (!currentPw || !newPw || !newPwCheck) {
@@ -116,7 +159,7 @@
 					success : function(data) {
 						alert(data.res_msg);
 						if (data.res_code == 200) {
-							location.href = "<%= request.getContextPath() %>/";
+							location.href = "<%= request.getContextPath() %>/myInfo";
 						}
 					},
 					error : function(data) {
@@ -142,12 +185,20 @@
 	$('#editDetail').submit(function(e) {
 		e.preventDefault();
 		
-		const gender = $('#gender').val();
-		const email = $('#email').val();
-		const phone = $('#phone').val();
-		const postNum = $('#postNum').val();
-		const address = $('#address').val();
-		const addressDetail = $('#addressDetail').val();
+		const form = document.querySelector('#editDetail');
+		const formData = new FormData(form);
+		
+		const gender = formData.get('gender');
+		const email = formData.get('email');
+		const phone = formData.get('phone');
+		const postNum = formData.get('postNum');
+		const address = formData.get('address');
+		const addressDetail = formData.get('addressDetail');
+		// SJ: 이미지 파일만 등록할 수 있음
+		const attachName = formData.get('attach').name;
+		const attachExtIdx = attachName.lastIndexOf('.') + 1;
+		const attachExt = attachName.slice(attachExtIdx).toLowerCase();
+		const imgExt = ['', 'png', 'jpg', 'jpeg', 'webp', 'gif']
 		
 		const emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 		const phoneReg = /^\d{3}-\d{3,4}-\d{4}$/;
@@ -156,7 +207,6 @@
 			alert('성별은 M 또는 F로 입력해주세요');
 		} */
 		
-		console.log(gender);
 		if (!gender) {
 			alert('성별을 선택해주세요.');
 		} else if (!email) {
@@ -172,22 +222,21 @@
 			alert('주소를 입력해주세요.');
 		} else if (!addressDetail) {
 			alert('상세 주소를 입력해주세요.');
+		} else if(!imgExt.includes(attachExt)){
+			alert('이미지 파일만 첨부할 수 있습니다!')
 		} else {
 			if(confirm('회원 정보를 변경하시겠습니까?')) {
 				$.ajax({
 					url : '/myInfo/editDetail',
 					type : 'post',
-					data : {
-						gender : gender,
-						email : email,
-						phone : phone,
-						postNum : postNum,
-						address : address,
-						addressDetail : addressDetail
-					},
+					data : formData,
+					enctype : 'multipart/form-data',
+					contentType : false,
+					processData : false,
+					cache : false,
 					dataType : 'json',
 					success : function(data) {
-							alert(data.res_msg);
+						alert(data.res_msg);
 						if (data.res_code == 200) {
 							location.href = "<%= request.getContextPath() %>/myInfo";
 						}

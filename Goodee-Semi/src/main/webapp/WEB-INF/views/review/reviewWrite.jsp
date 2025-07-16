@@ -17,44 +17,53 @@
 	<form id="write" method="post">
 		<div>
 			<label for="class">수료 목록</label>
-			<select id="class">
+			<select name="class">
 				<option></option>
 			</select>
 			<label for="title">제목</label>
-			<input type="text" id="title" name="title">
+			<input type="text" name="title">
 		</div>
 		<div></div>
 		<div>
-			<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;"></textarea>
+			<textarea rows="30" cols="100" name="content" spellcheck="false" style="resize: none;"></textarea>
 		</div>
 		<div>
 			<!-- 우선은 첨부파일은 1개 -->
-			<input type="file" id="attach" name="attach">
+			<!-- SJ: 이미지 첨부파일만 등록할 수 있게 -->
+			<input type="file" name="attach">
 			
 		</div>
 		<div>
-			<a href="">목록</a>
+			<a href="<c:url value='/review/list' />">목록</a>
 			<button>등록하기</button>
 		</div>
 	</form>
 </main>
 
+<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 	$('#write').submit(function(e) {
 		e.preventDefault();
+		
 
 		const form = document.querySelector('#write');
 		const formData = new FormData(form);
 		
 		const title = formData.get('title');
 		const content = formData.get('content');
-		/* TODO: 이미지 파일만 등록할 수 있음 */
+		// SJ: 이미지 파일만 등록할 수 있음
+		const attachName = formData.get('attach').name;
+		const attachExtIdx = attachName.lastIndexOf('.') + 1;
+		const attachExt = attachName.slice(attachExtIdx).toLowerCase();
+		const imgExt = ['', 'png', 'jpg', 'jpeg', 'webp', 'gif']
 		
 		if (!title) {
 			alert('제목을 입력해주세요!');
 		} else if (!content) {
 			alert('내용을 입력해주세요!');
+		} else if(!imgExt.includes(attachExt)){
+			alert('이미지 파일만 첨부할 수 있습니다!')
 		} else {
 			$.ajax({
 				url : '/review/write',
