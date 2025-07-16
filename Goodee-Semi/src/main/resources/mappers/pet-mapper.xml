@@ -14,13 +14,25 @@
 		<result property="attachNo" column="attach_no" />
 		<result property="accountName" column="account_name" />
 		<result property="classNo" column="class_no" />
+		<result property="imgFilePath" column="type_path" />
+		<result property="imgFileSaveName" column="save_name" />
+	</resultMap>
+	
+	<resultMap id="AttachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
 	</resultMap>
 	
 	<select id="selectPetList" parameterType="com.goodee.semi.dto.Pet" resultMap="petResultMap">
-		SELECT *
-		FROM pet
+		SELECT pet_no, account_no, pet_name, pet_gender, pet_age, pet_breed, save_name
+		FROM pet p
+		JOIN attachment a ON (p.pet_no = a.pk_no)
+		JOIN attach_type at ON (a.type_no = at.type_no)
 		<where>
-			account_no = #{accountNo}
+			a.type_no = 2 AND account_no = #{accountNo}
 		</where>
 		LIMIT #{limitPageNo}, #{numPerPage}
 	</select>
@@ -30,6 +42,13 @@
 		FROM pet
 		<where>
 			account_no = #{accountNo}
+		</where>
+	</select>
+	
+	<select id="selectPetOne" parameterType="_int" resultMap="petResultMap">
+		SELECT * FROM pet
+		<where>
+			pet_no = #{petNo}
 		</where>
 	</select>
 	
@@ -61,4 +80,46 @@
 		 </where>		
 	</select>
 	
+	<update id="updateAttach" parameterType="com.goodee.semi.dto.Attach">
+		UPDATE attachment
+		<set>
+		  <if test="originName != null"> ori_name = #{originName}, </if>
+		  <if test="savedName != null"> save_name = #{savedName}, </if>
+		  type_no = type_no
+		</set>
+		<where>
+		  type_no = #{typeNo}
+		  AND pk_no = #{pkNo}
+		</where>
+	</update>
+	
+	<delete id="deletePet" parameterType="_int">
+		DELETE
+		FROM pet
+		<where>
+			pet_no = #{petNo}
+		</where>
+	</delete>
+	
+	<delete id="deleteAttach" parameterType="_int">
+		DELETE a
+		FROM attachment a
+		JOIN (
+			SELECT attach_no
+			FROM attachment
+			WHERE pk_no = #{petNo}
+			) b
+			ON a.attach_no = b.attach_no;
+	</delete>
+	
+	<insert id="insertPet" parameterType="com.goodee.semi.dto.Pet" useGeneratedKeys="true" keyProperty="petNo">
+		INSERT INTO pet (account_no, pet_name, pet_gender, pet_age, pet_breed)
+		VALUES (#{accountNo}, #{petName}, #{petGender}, #{petAge}, #{petBreed});
+	</insert>
+	
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach">
+		INSERT INTO attachment (attach_no, type_no, pk_no, ori_name, save_name)
+		VALUES (#{attachNo}, #{typeNo}, #{pkNo}, #{originName}, #{savedName});
+	</insert>
+
 </mapper>
