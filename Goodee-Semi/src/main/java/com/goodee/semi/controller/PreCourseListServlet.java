@@ -45,13 +45,15 @@ public class PreCourseListServlet extends HttpServlet {
 			account = (Account) session.getAttribute("loginAccount");
 		}
 		
+		List<Course> courseList = null;
 		if (account.getAuthor() == 1) {
-			response.sendRedirect("/preCourse/manage");
-			return;
+			courseList = courseService.selectList(account.getAccountNo());
+			// courseList 넘기기
+			session.setAttribute("courseList", courseList);
+			session.setMaxInactiveInterval(60 * 30);
+		} else {
+			courseList = courseService.selectListByPetAccount(account.getAccountNo());
 		}
-		
-		// SJ: 수강에 대한 기능이 필요함
-		List<Course> courseList = courseService.selectListByPetAccount(account.getAccountNo());
 		
 		Map<Integer, List<PreCourse>> preCourseMap = preCourseService.selectMap(courseList);
 		request.setAttribute("courseList", courseList);
@@ -64,6 +66,8 @@ public class PreCourseListServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseRegist.jsp").forward(request, response);
 	}
 
 }
