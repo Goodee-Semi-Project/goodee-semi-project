@@ -8,13 +8,14 @@ import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 
-import com.goodee.semi.dao.NoticeDao;
+import com.goodee.semi.dao.AttachDao;
 import com.goodee.semi.dto.Attach;
 
 import jakarta.servlet.http.Part;
 
 public class AttachService {
-	 private NoticeDao dao = new NoticeDao();
+	private AttachDao attachDao = new AttachDao();
+	
 	public static File getUploadDirectory(int type) {
 		String dirPath = "C://goodee/upload" + switch (type) {
 			case Attach.ACCOUNT -> "/account";
@@ -63,4 +64,7 @@ public class AttachService {
 		return attach;
 	}
 	
+	public Attach selectAttachNo(int attachNo) {
+		return attachDao.selectAttachNo(attachNo);
+	}
 }

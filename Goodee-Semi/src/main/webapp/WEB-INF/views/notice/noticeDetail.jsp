@@ -37,7 +37,7 @@
 
   <c:if test="${not empty attach}">
     <h4>첨부파일</h4>
-    <img src="<c:url value='/filePath?pkNo=${notice.noticeNo}&typeNo=8'/>">
+    <img src="<c:url value='/filePath?no=${attach.attachNo}'/>" style="max-width: 300px;">
   </c:if>
 
   <%@ include file="/WEB-INF/views/include/footer.jsp" %>
