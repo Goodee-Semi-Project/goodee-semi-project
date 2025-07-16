@@ -21,14 +21,33 @@ public class HomeServlet extends HttpServlet {
   }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Course> courselist = courseService.selectCourse(new Course());
+		List<Course> courseList = courseService.selectCourse(new Course());
 		
-		request.setAttribute("courseList", courselist);
+		request.setAttribute("courseList", courseList);
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		request.setCharacterEncoding("UTF-8");
+		
+		String keyTitle = request.getParameter("searchByTitle").trim();
+		String keyName = request.getParameter("searchByTrainer").trim();
+		String keyTag = request.getParameter("searchByTag").trim();
+		
+		List<Course> courseList = null;
+		
+		if ("".equals(keyTag)) {
+			Course course = new Course();
+			course.setTitle(keyTitle);
+			course.setName(keyName);
+			
+			courseList = courseService.selectCourse(course);
+		} else {
+			courseList = courseService.selectCourseByTag(keyTag);
+		}
+		
+		request.setAttribute("courseList", courseList);
+		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 
 }

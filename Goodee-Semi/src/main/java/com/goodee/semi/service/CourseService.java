@@ -1,5 +1,7 @@
 package com.goodee.semi.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -14,6 +16,7 @@ import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
 import com.goodee.semi.dto.PetClass;
+import com.goodee.semi.dto.Tag;
 
 public class CourseService {
 	private CourseDao courseDao = new CourseDao();
@@ -209,6 +212,31 @@ public class CourseService {
 
 	public int insertPetClass(PetClass petClass) {
 		return courseDao.insertPetClass(petClass);
+	}
+
+	public List<Course> selectCourseByTag(String keyTag) {
+		List<String> keyTags = Arrays.asList(keyTag.split(" "));
+		
+		Tag tag = new Tag();
+		tag.setKeyTag(keyTags);
+		tag.setTotalTags(keyTags.size());
+		
+		List<String> courseNoList = courseDao.selectCourseNoByKey(tag);
+		
+		List<Course> courseList = new ArrayList<Course>();
+		if (courseNoList.size() > 0) {
+			for (String courseNo : courseNoList) {
+				courseList.add(courseDao.selectCourseOne(courseNo));
+			}
+			
+			for (Course cs : courseList) {
+				cs.setThumbAttach(courseDao.selectThumbAttach(cs));
+				cs.setInputAttach(courseDao.selectInputAttach(cs));
+				cs.setTag(courseDao.selectCourseTag(cs));
+			}
+		}
+		
+		return courseList;
 	}
 
 	

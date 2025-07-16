@@ -14,6 +14,7 @@ public interface CourseMapper {
 	Course selectCourseOne(String courseNo);
 	List<Course> selectCourse(Course course);
 	List<Course> selectMyCourse(AccountDetail account);
+	List<String> selectCourseNoByKey(Tag tag);
 	int updateCourse(Course course);
 	Attach selectThumbAttach(Course course);
 	Attach selectInputAttach(Course course);
