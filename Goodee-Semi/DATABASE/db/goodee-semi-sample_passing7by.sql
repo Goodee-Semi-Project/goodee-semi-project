@@ -228,6 +228,13 @@ JOIN class c ON (p.pet_no = c.pet_no)
 JOIN schedule s ON (c.class_no = s.class_no)
 JOIN course co ON (c.course_no = co.course_no)
 WHERE 
-co.account_no = 3
+co.account_no = 2
 AND s.sched_date BETWEEN '2025-07-19' AND '2025-07-20';
+
+-- 어떤 훈련사의 교육과정
+select course_no, title
+from course
+where account_no = 2;
+-- 어떤 훈련사의 강의를 수강 중인 사용자의 모든 수강 중인 반려견이 듣는 교육과정
+
 
