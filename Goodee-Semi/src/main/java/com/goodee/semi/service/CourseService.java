@@ -109,6 +109,7 @@ public class CourseService {
 			}
 		}
 		return courseList;
+  }
 	
 	public List<Like> selectMyLikeByAccountNo(int accountNo) {
 		List<Like> likeList = courseDao.selectMyLikeByAccountNo(accountNo);
