@@ -1,8 +1,14 @@
 package com.goodee.semi.controller;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import com.goodee.semi.dto.Account;
+import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.PreCourse;
+import com.goodee.semi.service.CourseService;
+import com.goodee.semi.service.PreCourseService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,6 +23,8 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/preCourse/list")
 public class PreCourseListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private CourseService courseService = new CourseService();
+	PreCourseService preCourseService = new PreCourseService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,11 +47,17 @@ public class PreCourseListServlet extends HttpServlet {
 		
 		if (account.getAuthor() == 1) {
 			response.sendRedirect("/preCourse/manage");
+			return;
 		}
 		
 		// SJ: 수강에 대한 기능이 필요함
+		List<Course> courseList = courseService.selectListByPetAccount(account.getAccountNo());
 		
-		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseList.jsp");
+		Map<Integer, List<PreCourse>> preCourseMap = preCourseService.selectMap(courseList);
+		request.setAttribute("courseList", courseList);
+		request.setAttribute("preCourseMap", preCourseMap);
+		
+		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseList.jsp").forward(request, response);
 	}
 
 	/**

@@ -30,4 +30,5 @@ public interface CourseMapper {
 	int updateEnroll(Enroll enroll);
 	int deleteEnroll(Enroll enroll);
 	int insertPetClass(PetClass petClass);
+	List<Course> selectListByPetAccount(int accountNo);
 }

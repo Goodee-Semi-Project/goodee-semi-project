@@ -164,4 +164,8 @@ public class CourseService {
 	public int insertPetClass(PetClass petClass) {
 		return courseDao.insertPetClass(petClass);
 	}
+
+	public List<Course> selectListByPetAccount(int accountNo) {
+		return courseDao.selectListByPetAccount(accountNo);
+	}
 }
