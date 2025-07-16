@@ -37,16 +37,14 @@
 									</div>
 									<div class="card-body">
 		    						<h4 class="card-title"><a href="/course/detail?no=${ course.courseNo }">${ course.title }</a></h4>
-		    						<p class="card-text">${ course.subTitle }</p>
-		    						<div class="product-ratings">
-								    	<ul class="list-inline">
-								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-								    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-								    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-								    	</ul>
-		    						</div>
+		    						<c:if test="${ sessionScope.loginAccount.author eq 1 }">
+		    							<p>수강중인 회원: <br>제출된 과제: </p>
+		    							<a href="<c:url value='/myCourse/update?no=${ course.courseNo }' />">수정</a>
+										</c:if>
+										
+										<c:if test="${ sessionScope.loginAccount.author eq 2 }">
+		    						
+										</c:if>
 									</div>
 								</div>
 							</div>
