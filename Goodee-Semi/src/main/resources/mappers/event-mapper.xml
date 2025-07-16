@@ -33,8 +33,11 @@
 		JOIN schedule s ON (c.class_no = s.class_no)
 		JOIN course co ON (c.course_no = co.course_no)
 		<where>
-			<if test='accountNo != null and accountNo != ""'>
-				AND a.account_no = #{accountNo}
+			<if test='memberAccountNo != null and memberAccountNo != ""'>
+				AND a.account_no = #{memberAccountNo}
+			</if>
+			<if test='trainerAccountNo != null and trainerAccountNo != ""'>
+				AND co.account_no = #{trainerAccountNo}
 			</if>
 			AND s.sched_date BETWEEN #{start} AND #{end}		
 		</where>

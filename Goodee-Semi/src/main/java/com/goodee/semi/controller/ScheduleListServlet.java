@@ -62,7 +62,8 @@ public class ScheduleListServlet extends HttpServlet {
 		map.put("end", endDate.toString());
 		
 		// 회원/훈련사 조회 데이터 분기
-		map.put("accountNo", String.valueOf(accountDetail.getAccountNo()));
+		if(accountDetail.getAuthor() == 1) map.put("trainerAccountNo", String.valueOf(accountDetail.getAccountNo()));
+		else map.put("memberAccountNo", String.valueOf(accountDetail.getAccountNo()));
 		
 		System.out.println("map: " + map);
 		
