@@ -15,7 +15,12 @@
 
 
 <main>
-	<h1>사전 학습</h1>
+	<h2>사전 학습</h2>
+	<c:if test="${ loginAccount.author eq 1 }">
+		<div>
+			<a href="/preCourse/regist" >사전학습 등록하기</a>
+		</div>
+	</c:if>
 	<section>
 		<div>
 			<c:forEach var="c" items="${ courseList }" >
@@ -23,12 +28,13 @@
 				<ul>
 					<c:forEach var="p" items="${ preCourseMap.get(c.courseNo) }">
 						<!-- 회원이 조회하는 페이지에서 수정 삭제 버튼만 if로 표시 -->
-						<a href="/preCourse/list/${ p.preNo }">
+						<a href="/preCourse/detail?preNo=${ p.preNo }">
 							사전학습명: ${ p.preTitle }
 						</a>
 						<br>
 					</c:forEach>
 				</ul>
+				<br>
 			</c:forEach>
 		</div>
 	</section>

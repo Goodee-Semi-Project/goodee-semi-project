@@ -50,7 +50,7 @@
 		
 		const courseNo = formData.get('courseNo');
 		const title = formData.get('title');
-		const attach = formData.get('attach');
+		const attachName = formData.get('attach').name;
 		
 		
 		// TODO: 첨부파일 등록 확인하기
@@ -58,6 +58,8 @@
 			alert('교육과정을 선택해주세요.');
 		} else if (!title) {
 			alert('제목을 입력해주세요.');
+		} else if (!attachName) {
+			alert('학습 영상을 첨부해주세요.');
 		} else {
 			if (confirm('사전 교육을 저장 하시겠습니까?')) {
 				$.ajax({
