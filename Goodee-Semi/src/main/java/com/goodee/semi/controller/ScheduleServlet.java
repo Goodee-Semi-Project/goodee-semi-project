@@ -1,5 +1,12 @@
 package com.goodee.semi.controller;
 
+import java.io.IOException;
+import java.util.List;
+
+import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Event;
+import com.goodee.semi.service.EventService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -7,20 +14,27 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.io.IOException;
-
-import com.goodee.semi.dto.AccountDetail;
-import com.goodee.semi.dto.Pet;
-
 @WebServlet("/schedule")
 public class ScheduleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private EventService service = new EventService();
+
     public ScheduleServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String valueType = request.getParameter("valueType");
+		String value = request.getParameter("value");
+		
+		// TODO 마저 구현
+		switch (valueType) {
+			case "courseNo" -> service.selectAccountList(value);
+			case "accountNo" -> service.selectPetList(value);
+		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1. 로그인한 사용자만 접근을 허용하는 로직
 		HttpSession session = request.getSession(false);
 		if (session == null) {
@@ -33,23 +47,18 @@ public class ScheduleServlet extends HttpServlet {
 		
 		// 2. session에서 accountNo 가져오기
 		AccountDetail accountDetail = (AccountDetail) session.getAttribute("loginAccount");
-		Pet param = new Pet();
-		param.setAccountNo(accountDetail.getAccountNo());
-		
-		// 3. 표시할 회원 정보 바인딩
 		int authorNo = accountDetail.getAuthor();
-		String authurName = (authorNo == 1) ? "훈련사" : "회원";
-		String regDate = accountDetail.getReg_date().split(" ")[0].replace("-", ".");
-		request.setAttribute("authurName", authurName);
-		request.setAttribute("regDate", regDate);
-		
-		// 훈련사와 회원은 서로 다른 페이지로 이동
-		if(authorNo == 1) request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_trainer.jsp").forward(request, response);
-		else request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_member.jsp").forward(request, response);
-	}
+		int accountNo = accountDetail.getAccountNo();
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		// 훈련사와 회원은 서로 다른 페이지로 이동
+		if(authorNo == 1) {
+			// 3. 모달에 표시할 정보 service로부터 받아와 바인딩
+			List<Event> courseList = service.selectCourseList(accountNo);
+			request.setAttribute("courseList", courseList);
+			
+			request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_trainer.jsp").forward(request, response);
+		}
+		else request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_member.jsp").forward(request, response);
 	}
 
 }

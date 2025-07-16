@@ -12,8 +12,6 @@ import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Event;
-import com.goodee.semi.dto.Pet;
-import com.goodee.semi.dto.Schedule;
 import com.goodee.semi.service.EventService;
 
 import jakarta.servlet.ServletException;
@@ -94,7 +92,7 @@ public class ScheduleListServlet extends HttpServlet {
 			extenedProp.put("classNo", event.getClassNo());
 			extenedProp.put("schedStep", event.getSchedStep());
 			extenedProp.put("schedDate", event.getSchedDate().format(formatDate));
-			extenedProp.put("schedAttend", String.valueOf(event.getSchedAttend()));
+			extenedProp.put("schedAttend", String.valueOf(event.getSchedAttend())); // char타입은 String으로 변환해서 보내야 화면에서 parserror가 발생하지 않음
 			extenedProp.put("courseNo", event.getCourseNo());
 			extenedProp.put("courseTitle", event.getCourseTitle());
 			extenedProp.put("courseTotalStep", event.getCourseTotalStep());
