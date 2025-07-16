@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.AnswerMapper">
+	<resultMap id="answerResultMap"  type="com.goodee.semi.dto.Answer">
+		<result property="accountId" column="account_id" />	
+		<result property="answerNo" column="answer_no" />	
+		<result property="questNo" column="quest_no" />	
+		<result property="accountNo" column="account_no" />	
+		<result property="answerContent" column="answer_content" />
+		<result property="answerReg" column="answer_reg" />	
+		<result property="answerMod" column="answer_mod" />
+	</resultMap>
+	<select id="selectOneAnswer" resultMap="answerResultMap" parameterType="_int">
+		SELECT *
+		FROM answer aw
+		JOIN account a ON aw.account_no = a.account_no
+		WHERE quest_no = #{questNo}
+	</select>
+	
+	<insert id="insertAnswer" parameterType="com.goodee.semi.dto.Answer">
+		INSERT INTO answer (quest_no, account_no, answer_content)
+		VALUES (#{questNo}, #{accountNo}, #{answerContent})
+	</insert>
+	
+	<update id="updateAnswer" parameterType="com.goodee.semi.dto.Answer">
+		UPDATE answer
+		SET answer_content = #{answerContent} ,account_no = #{accountNo}
+		WHERE quest_no = #{questNo}
+	</update>
+	
+	<delete id="deleteAnswer" parameterType="_int">
+		DELETE FROM answer
+		WHERE quest_no = #{questNo}
+	</delete>
+</mapper>
