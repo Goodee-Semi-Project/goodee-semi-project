@@ -132,4 +132,5 @@
 		DELETE FROM attachment
 		WHERE type_no = 7 AND  pk_no = #{ pkNo }
 	</delete>
+
 </mapper>
