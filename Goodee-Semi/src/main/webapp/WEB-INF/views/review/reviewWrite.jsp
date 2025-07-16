@@ -56,7 +56,7 @@
 		const attachName = formData.get('attach').name;
 		const attachExtIdx = attachName.lastIndexOf('.') + 1;
 		const attachExt = attachName.slice(attachExtIdx).toLowerCase();
-		const imgExt = ['png', 'jpg', 'jpeg', 'webp', 'gif']
+		const imgExt = ['', 'png', 'jpg', 'jpeg', 'webp', 'gif']
 		
 		if (!title) {
 			alert('제목을 입력해주세요!');

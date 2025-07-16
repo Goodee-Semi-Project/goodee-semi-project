@@ -66,7 +66,7 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 		if (accountNo != -1) {
 	//		String birDate = request.getParameter("birDate");
 			char gender = request.getParameter("gender").charAt(0);
-			String email = request.getParameter("email").trim();
+			String email = request.getParameter("email");
 			String phone = request.getParameter("phone");
 			String postNum = request.getParameter("postNum");
 			String address = request.getParameter("address");

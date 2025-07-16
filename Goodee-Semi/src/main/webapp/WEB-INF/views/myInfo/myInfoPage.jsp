@@ -198,7 +198,7 @@
 		const attachName = formData.get('attach').name;
 		const attachExtIdx = attachName.lastIndexOf('.') + 1;
 		const attachExt = attachName.slice(attachExtIdx).toLowerCase();
-		const imgExt = ['png', 'jpg', 'jpeg', 'webp', 'gif']
+		const imgExt = ['', 'png', 'jpg', 'jpeg', 'webp', 'gif']
 		
 		const emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 		const phoneReg = /^\d{3}-\d{3,4}-\d{4}$/;
