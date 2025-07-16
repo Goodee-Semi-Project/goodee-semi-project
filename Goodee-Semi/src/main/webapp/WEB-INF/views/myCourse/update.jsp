@@ -26,7 +26,7 @@
 		<input type="hidden" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
 		
 		<label>태그: </label>
-		<input type="text" name="tag">
+		<input type="text" name="tag" value="${ course.tag }">
 		<br>
 		
 		<label>소주제: </label>
