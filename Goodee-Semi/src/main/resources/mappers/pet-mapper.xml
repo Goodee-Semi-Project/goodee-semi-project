@@ -11,6 +11,9 @@
 		<result property="petGender" column="pet_gender" />
 		<result property="petAge" column="pet_age" />
 		<result property="petBreed" column="pet_breed" />
+		<result property="attachNo" column="attach_no" />
+		<result property="accountName" column="account_name" />
+		<result property="classNo" column="class_no" />
 		<result property="imgFilePath" column="type_path" />
 		<result property="imgFileSaveName" column="save_name" />
 	</resultMap>
@@ -58,6 +61,25 @@
 		</where>
 	</update>
 	
+	<select id="selectAllPetByCourseNo" parameterType="string" resultMap="petResultMap">
+		SELECT 
+			p.*, 
+			c.course_no, 
+			c.class_no AS class_no,
+			at.attach_no AS attach_no, 
+			a.account_name AS account_name
+		FROM pet p
+		JOIN class c ON p.pet_no = c.pet_no
+		JOIN (
+			SELECT account_name, account_no
+		    FROM account AS a
+		) AS a ON p.account_no = a.account_no
+		LEFT JOIN attachment at ON p.pet_no = at.pk_no AND at.type_no = 2
+		<where>
+		 	course_no = #{courseNo}
+		 </where>		
+	</select>
+	
 	<update id="updateAttach" parameterType="com.goodee.semi.dto.Attach">
 		UPDATE attachment
 		<set>
@@ -99,4 +121,5 @@
 		INSERT INTO attachment (attach_no, type_no, pk_no, ori_name, save_name)
 		VALUES (#{attachNo}, #{typeNo}, #{pkNo}, #{originName}, #{savedName});
 	</insert>
+
 </mapper>
