@@ -38,6 +38,12 @@
 		<result property="accountNo" column="account_no" />
 	</resultMap>
 	
+	<resultMap id="tagResultMap" type="com.goodee.semi.dto.Tag">
+		<result property="tagNo" column="tag_no" />
+		<result property="tagText" column="tag_text" />
+		<result property="courseNo" column="course_no" />
+	</resultMap>
+	
 	<select id="selectCourseOne" parameterType="string" resultMap="courseResultMap">
 		SELECT
 				C.course_no
@@ -248,5 +254,22 @@
 	<insert id="insertPetClass" parameterType="com.goodee.semi.dto.PetClass">
 		INSERT INTO class (course_no, pet_no)
 		VALUE (#{courseNo}, #{petNo})
+	</insert>
+	
+	<select id="selectTagByText" parameterType="com.goodee.semi.dto.Tag" resultMap="tagResultMap">
+		SELECT * FROM hashtag
+		<where>
+			tag_text = #{tagText}
+		</where>
+	</select>
+	
+	<insert id="insertTag" parameterType="com.goodee.semi.dto.Tag" useGeneratedKeys="true" keyProperty="tagNo">
+		INSERT IGNORE INTO hashtag (tag_text)
+		VALUE (#{tagText})
+	</insert>
+	
+	<insert id="insertCourseTag" parameterType="com.goodee.semi.dto.Tag">
+		INSERT INTO tag_course (tag_no, course_no)
+		VALUE (#{tagNo}, #{courseNo})
 	</insert>
 </mapper>
