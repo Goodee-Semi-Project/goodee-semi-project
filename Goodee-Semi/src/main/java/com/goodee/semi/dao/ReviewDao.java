@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Review;
 
 public class ReviewDao {
@@ -35,4 +36,34 @@ public class ReviewDao {
 		return review;
 	}
 
+	public int deleteReview(int reviewNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.ReviewMapper.deleteReview", reviewNo);
+		session.close();
+		return result;
+	}
+
+	public int updateReview(SqlSession session, Review review) {
+		int result = session.update("com.goodee.semi.mapper.ReviewMapper.updateReview", review);
+		return result;
+	}
+
+	public int insertAttach(SqlSession session, Attach attach) {
+		int result = session.insert("com.goodee.semi.mapper.ReviewMapper.insertAttach", attach);
+		return result;
+	}
+
+	public Attach selectAttachByReviewNo(int reviewNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Attach attach = session.selectOne("com.goodee.semi.mapper.ReviewMapper.selectAttachByReviewNo", reviewNo);
+		
+		return attach;
+	}
+
+	public int deleteAttach(Attach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.ReviewMapper.deleteAttach", attach);
+		return result;
+	}
+	
 }
