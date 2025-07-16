@@ -16,7 +16,6 @@
 <main>
 	<h1>사전 학습 관리</h1>
 	<div>
-		<!-- TODO: 버튼으로 courseList 넘겨주기 -->
 		<a href="/preCourse/regist" >사전학습 등록하기</a>
 	</div>
 	<section>

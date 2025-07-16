@@ -33,7 +33,7 @@
 			<input type="file" name="attach">
 		</div>
 	
-		<!-- TODO: 퀴즈 추가 -->
+		<!-- SJ: 퀴즈 추가 -->
 		
 		<button>등록</button>
 	</form>
