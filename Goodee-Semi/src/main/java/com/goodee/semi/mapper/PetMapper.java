@@ -11,6 +11,7 @@ public interface PetMapper {
 	 List<Pet> selectPetList(Pet param);
 	 Pet selectPetOne(int petNo);
 	 int selectPetCount(Pet param);
+	 List<Pet> selectAllPetByCourseNo(String courseNo);
 	 int updatePet(SqlSession session, Pet param);
 	 int updateAttach(SqlSession session, Attach param);
 	 int deletePet(SqlSession session, int petNo);

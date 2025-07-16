@@ -14,6 +14,7 @@
 		<result property="capacity" column="capacity" />
 		<result property="thumb" column="thumb" />
 		<result property="name" column="account_name" />
+		<result property="currentEnrollment" column="current_enrollment" />
 	</resultMap>
 	
 	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
@@ -139,6 +140,33 @@
 		</where>
 	</update>
 	
+	<select id="selectList" parameterType="_int" resultMap="courseResultMap">
+		SELECT *
+		FROM course
+		WHERE account_no = #{ accountNo }
+	</select>
+
+	<select id="selectAllCourseByAccountNo" parameterType="_int" resultMap="courseResultMap">
+		SELECT 
+			account_no,
+			c.course_no,
+		    c.title,
+		    c.capacity,
+		    c.thumb,
+		    COUNT(cl.class_no) AS current_enrollment
+		FROM course c
+		JOIN class cl ON c.course_no = cl.course_no
+		WHERE account_no = #{accountNo}
+		GROUP BY account_no, c.course_no, c.title, c.capacity, c.thumb
+	</select>
+	
+	<select id="selectAllAttachByAccountNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM course c
+		LEFT JOIN attachment a ON c.thumb = a.attach_no
+		WHERE c.account_no = #{accountNo} 
+	</select>
+
 	<select id="selectMyLikeByAccountNo" parameterType="_int" resultMap="likeResultMap">
 		SELECT * FROM picked_course
 		<where>
