@@ -23,7 +23,6 @@ import jakarta.servlet.http.Part;
 /**
  * Servlet implementation class ReviewEditServlet
  */
-// SJ: 첨부 파일 사이즈
 @MultipartConfig (
 		fileSizeThreshold = 1024 * 1024,
 		maxFileSize = 1024 * 1024 * 5,

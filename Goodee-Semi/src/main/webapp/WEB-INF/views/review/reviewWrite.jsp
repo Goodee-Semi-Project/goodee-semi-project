@@ -16,9 +16,12 @@
 	<h1>후기 작성</h1>
 	<form id="write" method="post">
 		<div>
-			<label for="class">수료 목록</label>
-			<select name="class">
-				<option></option>
+			<label for="classNo">수료 목록</label>
+			<select name="classNo">
+				<option value="-1">선택</option>
+				<c:forEach var="c" items="${ list }">
+					<option value="${ c.classNo }">${ c.petName } - ${ c.courseTitle }</option>
+				</c:forEach>
 			</select>
 			<label for="title">제목</label>
 			<input type="text" name="title">
@@ -29,7 +32,6 @@
 		</div>
 		<div>
 			<!-- 우선은 첨부파일은 1개 -->
-			<!-- SJ: 이미지 첨부파일만 등록할 수 있게 -->
 			<input type="file" name="attach">
 			
 		</div>
@@ -52,6 +54,7 @@
 		
 		const title = formData.get('title');
 		const content = formData.get('content');
+		const classNo = formData.get('classNo');
 		// SJ: 이미지 파일만 등록할 수 있음
 		const attachName = formData.get('attach').name;
 		const attachExtIdx = attachName.lastIndexOf('.') + 1;
@@ -62,6 +65,8 @@
 			alert('제목을 입력해주세요!');
 		} else if (!content) {
 			alert('내용을 입력해주세요!');
+		} else if (!classNo || classNo == -1) {
+			alert('해당 과정을 선택해주세요');
 		} else if(!imgExt.includes(attachExt)){
 			alert('이미지 파일만 첨부할 수 있습니다!')
 		} else {

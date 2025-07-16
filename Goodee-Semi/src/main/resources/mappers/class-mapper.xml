@@ -3,11 +3,35 @@
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.goodee.semi.mapper.ClassMapper">
+	<resultMap type="com.goodee.semi.dto.PetClass" id="classResultMap">
+		<result property="classNo" column="class_no"/>
+		<result property="courseNo" column="course_no"/>
+		<result property="petNo" column="pet_no"/>
+		<result property="classProg" column="class_prog"/>
+		<result property="courseTitle" column="title"/>
+		<result property="accountNo" column="account_no"/>
+		<result property="petName" column="pet_name"/>
+	</resultMap>
 
-<delete id="deleteClass" parameterType="_int">
-	DELETE FROM class
-	<where>
-		class_no = #{classNo}
-	</where>
-</delete>
+	<delete id="deleteClass" parameterType="_int">
+		DELETE FROM class
+		<where>
+			class_no = #{classNo}
+		</where>
+	</delete>
+	
+	<select id="selectListByAccountNo" parameterType="_int" resultMap="classResultMap">
+		SELECT c.* ,co.title ,p.account_no ,pet_name
+		FROM class AS c
+		JOIN (
+			SELECT course_no ,title
+			FROM course
+		) AS co ON c.course_no = co.course_no
+		JOIN (
+			SELECT pet_no ,pet_name ,account_no
+			FROM pet
+		) AS p ON c.pet_no = p.pet_no
+		WHERE p.account_no = #{ accountNo }
+	</select>
+
 </mapper>
