@@ -18,6 +18,7 @@ public interface AccountMapper {
 	int updateAccountPw(Account account);
 	Account selectAccountByIdNameEmail(AccountDetail account);
 	int updateNewPassword(AccountDetail account);
+	AccountDetail selectAccountById(String param);
 	Attach selectAttachByAccountNo(int accountNo);
 	int deleteAttach(SqlSession session, Attach attach);
 	int insertAttach(SqlSession session, Attach attach);

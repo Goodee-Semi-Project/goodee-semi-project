@@ -15,26 +15,28 @@
 
 <main>
 	<div>
-		<input type="text" hidden id="reviewNo" value="${ review.reviewNo }">
-		<label for="title">[후기]</label>
-		<span id="title" name="title">${ review.reviewTitle }</span>
+		<input type="text" id="reviewNo" value="${ review.reviewNo }" hidden>
+		<span id="title" name="title">[후기] ${ review.reviewTitle }</span>
 		<c:choose>
 			<c:when test="${ review.regDate eq review.modDate }">
 				<span id="date">작성일: ${ review.regDate }</span>
 			</c:when>
 			<c:otherwise>
-				<span>수정일: ${ review.modDate }</span>
+				<span id="date">수정일: ${ review.modDate }</span>
 			</c:otherwise>
 		</c:choose>
 	</div>
-	<div id="accountId">${ review.accountId }</div>
+	<div>
+		<span>[코스명] ${ review.courseTitle }</span>
+		<span>
+			[작성자] ${ review.accountId }
+		</span>
+	</div>
 	<div>
 		<c:if test="${ not empty attach }">
 			<img src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
 		</c:if>
-		<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;" readonly>
-			${ review.reviewContent }
-		</textarea>
+		<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;" readonly>${ review.reviewContent }</textarea>
 	</div>
 	<div>
 		<a href="<c:url value='/review/list' />">목록</a>
@@ -45,6 +47,7 @@
 	</div>
 </main>
 
+<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 	function deleteReview() {

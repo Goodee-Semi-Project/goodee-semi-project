@@ -51,8 +51,8 @@
 	
 	<!-- modal -->
 	<!-- 일정 등록/수정 모달 -->
-	<div id="event-modal-box" class="modal-box" style="display: flex; justify-content: center; align-items: center; position: fixed; top: 0; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%;">
-		<div id="event-modal" class="modal" style="background: white;">
+	<div id="event-modal-box" style="display: none; justify-content: center; align-items: center; position: fixed; z-index: 9999; top: 0; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%;">
+		<div id="event-modal" style="background: white;">
 			<div class="modal-header">
 				<h2 id="modal-title">일정 등록</h2>
 			</div>
@@ -62,36 +62,28 @@
 						<label for="courseName">교육과정명 <span>*</span></label>
 						<select id="course-name" name="courseName" required>
 							<option value="" disabled selected>교육과정명 선택</option>
-							<option value="#3788d8">파랑</option>
-							<option value="#28a745">초록</option>
-							<option value="#ffc107">노랑</option>
-							<option value="#dc3545">빨강</option>
-							<option value="#6f42c1">보라</option>
-							<option value="#fd7e14">주황</option>
+						    <option value="기초교육">기초교육</option>
+						    <option value="중급교육">중급교육</option>
+						    <option value="고급교육">고급교육</option>
+						    <option value="특별교육">특별교육</option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label for="memberName">회원명 <span>*</span></label>
 						<select id="member-name" name="memberName" required>
 							<option value="" disabled selected>회원명 선택</option>
-							<option value="#3788d8">파랑</option>
-							<option value="#28a745">초록</option>
-							<option value="#ffc107">노랑</option>
-							<option value="#dc3545">빨강</option>
-							<option value="#6f42c1">보라</option>
-							<option value="#fd7e14">주황</option>
+						    <option value="김철수">김철수</option>
+						    <option value="이영희">이영희</option>
+						    <option value="박민수">박민수</option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label for="petName">반려견명 <span>*</span></label>
 						<select id="pet-name" name="petName" required>
 							<option value="" disabled selected>반려견명 선택</option>
-							<option value="#3788d8">파랑</option>
-							<option value="#28a745">초록</option>
-							<option value="#ffc107">노랑</option>
-							<option value="#dc3545">빨강</option>
-							<option value="#6f42c1">보라</option>
-							<option value="#fd7e14">주황</option>
+						    <option value="멍멍이">멍멍이</option>
+						    <option value="바둑이">바둑이</option>
+						    <option value="뽀삐">뽀삐</option>	
 						</select>
 					</div>
 					<div class="form-group">

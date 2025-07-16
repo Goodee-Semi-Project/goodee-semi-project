@@ -41,7 +41,6 @@ public class ReviewDetailServlet extends HttpServlet {
 			reviewNo = Integer.parseInt(reviewNoStr);
 		}
 		
-		// TODO: 첨부파일 통일화 후 추가 작성
 		Review review = reviewService.selectReivewOne(reviewNo);
 		Attach attach = reviewService.selectAttachByReviewNo(reviewNo);
 		

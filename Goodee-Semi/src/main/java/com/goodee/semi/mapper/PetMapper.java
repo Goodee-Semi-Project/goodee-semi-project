@@ -12,10 +12,10 @@ public interface PetMapper {
 	 Pet selectPetOne(int petNo);
 	 int selectPetCount(Pet param);
 	 List<Pet> selectAllPetByCourseNo(String courseNo);
-	 int updatePet(Pet param);
-	 int updateAttach(Attach param);
-	 int deletePet(int petNo);
-	 int deleteAttach(int petNo);
-	 int insertPet(Pet param);
-	 int insertAttach(Attach param);
+	 int updatePet(SqlSession session, Pet param);
+	 int updateAttach(SqlSession session, Attach param);
+	 int deletePet(SqlSession session, int petNo);
+	 int deleteAttach(SqlSession session, int petNo);
+	 int insertPet(SqlSession session, Pet param);
+	 int insertAttach(SqlSession session, Attach param);
 }
