@@ -1,27 +1,39 @@
 package com.goodee.semi.controller;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.service.AccountService;
+import com.goodee.semi.service.AttachService;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 /**
  * Servlet implementation class myInfoEditDetailServlet
  */
+// SJ: 첨부 파일 사이즈
+@MultipartConfig (
+		fileSizeThreshold = 1024 * 1024,
+		maxFileSize = 1024 * 1024 * 5,
+		maxRequestSize = 1024 * 1024 * 20
+)
 @WebServlet("/myInfo/editDetail")
 public class MyInfoEditDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	AccountService service = new AccountService();
+	AccountService accountService = new AccountService();
+	AttachService attachService = new AttachService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,28 +53,31 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		
-		Object accountObj;
+		Account account = null;
 		int accountNo = -1;
-		if ((accountObj = session.getAttribute("loginAccount")) != null && accountObj instanceof Account) {
-			Account tmp = null;
-			tmp = (Account) accountObj;
-			accountNo = tmp.getAccountNo();
+		if (session.getAttribute("loginAccount") != null && session.getAttribute("loginAccount") instanceof Account) {
+			account = (Account) session.getAttribute("loginAccount");
+			accountNo = account.getAccountNo();
 		}
-		
-		System.out.println(accountNo);
 		
 		int result = -1;
 		if (accountNo != -1) {
 	//		String birDate = request.getParameter("birDate");
 			char gender = request.getParameter("gender").charAt(0);
-			System.out.println(gender);
 			String email = request.getParameter("email");
 			String phone = request.getParameter("phone");
 			String postNum = request.getParameter("postNum");
 			String address = request.getParameter("address");
-			String addressDetail = request.getParameter("addressDetail");
+			String addressDetail = request.getParameter("addressDetail").trim();
+			
+			Attach attach = null;
+			Part file = null;
+			if ((file = request.getPart("attach")) != null) {
+				File uploadDir = attachService.getUploadDirectory(Attach.ACCOUNT);
+				attach = attachService.handleUploadFile(file, uploadDir);
+			}
 			
 			AccountDetail accountDetail = new AccountDetail();
 			accountDetail.setAccountNo(accountNo);
@@ -74,8 +89,14 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 			accountDetail.setAddress(address);
 			accountDetail.setAddressDetail(addressDetail);
 			
-			result = service.updateAccountDetail(accountDetail);
+			if (attach != null) {
+				result = accountService.updateAccountDetailWithAttach(accountDetail, attach);
+				account.setProfileAttach(attach);
+			} else {
+				result = accountService.updateAccountDetail(accountDetail);
+			}
 		}
+		
 		JSONObject obj = new JSONObject();
 		
 		if (result > 0) {
@@ -88,7 +109,6 @@ public class MyInfoEditDetailServlet extends HttpServlet {
 		
 		response.setContentType("applictaion/json; charset=utf-8");
 		response.getWriter().print(obj);
-		
 	}
 
 }

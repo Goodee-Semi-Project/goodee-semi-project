@@ -1,11 +1,58 @@
 package com.goodee.semi.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
+import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.Enroll;
+import com.goodee.semi.dto.Like;
+import com.goodee.semi.dto.PetClass;
 
 public class CourseDao {
+	
+	public Course selectCourseOne(String courseNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Course course = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectCourseOne", courseNo);
+		session.close();
+		
+		return course;
+	}
+	
+	public List<Course> selectCourse(Course course) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Course> list = session.selectList("com.goodee.semi.mapper.CourseMapper.selectCourse", course);
+		session.close();
+		
+		return list;
+	}
+	
+	public List<Course> selectMyCourse(AccountDetail account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Course> list = session.selectList("com.goodee.semi.mapper.CourseMapper.selectMyCourse", account);
+		session.close();
+		
+		return list;
+	}
+	
+	public Attach selectThumbAttach(Course course) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Attach attach = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectThumbAttach", course);
+		session.close();
+		
+		return attach;
+	}
+	
+	public Attach selectInputAttach(Course course) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Attach attach = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectInputAttach", course);
+		session.close();
+		
+		return attach;
+	}
 
 	public int insertCourse(SqlSession session, Course course) {
 		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertCourse", course);
@@ -24,6 +71,99 @@ public class CourseDao {
 	public int updateCourseThumb(SqlSession session, Course course) {
 		int result = session.update("com.goodee.semi.mapper.CourseMapper.updateCourseThumb", course);
 		
+		return result;
+	}
+	
+	public List<Like> selectMyLikeByAccountNo(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Like> likeList = session.selectList("com.goodee.semi.mapper.CourseMapper.selectMyLikeByAccountNo", accountNo);
+		session.close();
+		
+		return likeList;
+	}
+
+	public int insertLike(Like like) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertLike", like);
+		session.close();
+		
+		return result;
+	}
+
+	public int deleteLike(Like like) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.CourseMapper.deleteLike", like);
+		session.close();
+		
+		return result;
+	}
+	
+	public List<Enroll> selectMyEnroll(AccountDetail account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Enroll> enrollList = session.selectList("com.goodee.semi.mapper.CourseMapper.selectMyEnroll", account);
+		session.close();
+		
+		return enrollList;
+	}
+
+	public Enroll selectEnrollOne(int enrollNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Enroll enroll = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectEnrollOne", enrollNo);
+		session.close();
+		
+		return enroll;
+	}
+
+	public int insertEnroll(Enroll enroll) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertEnroll", enroll);
+		session.close();
+		
+		return result;
+	}
+
+	public int updateEnroll(Enroll enroll) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.CourseMapper.updateEnroll", enroll);
+		session.close();
+		
+		return result;
+	}
+
+	public int deleteEnroll(Enroll enroll) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.CourseMapper.deleteEnroll", enroll);
+		session.close();
+		
+		return result;
+	}
+
+	public List<Course> selectList(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Course> list = session.selectList("com.goodee.semi.mapper.CourseMapper.selectList", accountNo);
+		session.close();
+		return list;
+	}
+
+	public int insertPetClass(PetClass petClass) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertPetClass", petClass);
+		session.close();
+		
+		return result;
+	}
+
+	public List<Course> selectAllCourseByAccountNo(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Course> result = session.selectList("com.goodee.semi.mapper.CourseMapper.selectAllCourseByAccountNo", accountNo);
+		session.close();
+		return result;
+	}
+	
+	public List<Attach> selectAllAttachByAccountNo(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Attach> result = session.selectList("com.goodee.semi.mapper.CourseMapper.selectAllAttachByAccountNo", accountNo);
+		session.close();
 		return result;
 	}
 

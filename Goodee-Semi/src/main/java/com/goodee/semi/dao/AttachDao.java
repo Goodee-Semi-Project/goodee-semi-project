@@ -13,7 +13,6 @@ public class AttachDao {
 		return attach;
 	}
 	
-
 	public int updateAttach(SqlSession session, Attach attach) {
 		return session.update("com.goodee.semi.mapper.AttachMapper.updateAttach", attach);
 	}

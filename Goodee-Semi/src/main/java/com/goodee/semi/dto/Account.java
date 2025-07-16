@@ -19,4 +19,5 @@ public class Account {
 	private String name;
 	private char available;
 	
+	private Attach profileAttach;
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.PreCourseMapper">
+	<resultMap type="com.goodee.semi.dto.PreCourse" id="preCourseResultMap">
+		<result property="preNo" column="pre_no"/>
+		<result property="courseNo" column="course_no"/>
+		<result property="preTitle" column="pre_title"/>
+		<result property="videoLen" column="video_len"/>
+	</resultMap>
+	
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+	
+	<select id="selectList" parameterType="_int" resultMap="preCourseResultMap">
+		SELECT *
+		FROM pre_course
+		WHERE course_no = (
+			SELECT course_no
+			FROM course
+			WHERE course_no = #{ courseNo }
+		)
+	</select>
+	
+	<insert id="insertPreCourse" parameterType="com.goodee.semi.dto.PreCourse" useGeneratedKeys="true" keyProperty="preNo">
+		INSERT INTO pre_course (`course_no`, `pre_title`, `video_len`)
+		VALUE (#{ courseNo } ,#{ preTitle } ,#{ videoLen })
+	</insert>
+	
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
+		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
+	</insert>
+	
+	<select id="selectPreCourse" parameterType="_int" resultMap="preCourseResultMap">
+		SELECT *
+		FROM pre_course
+		WHERE pre_no = #{ preNo }
+	</select>
+	
+	<select id="selectAttach" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM attachment
+		WHERE type_no = 4 AND pk_no = #{ preNo }
+	</select>
+</mapper>

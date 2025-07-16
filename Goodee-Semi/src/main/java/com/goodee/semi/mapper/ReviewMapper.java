@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Review;
 
 public interface ReviewMapper {
@@ -11,4 +12,9 @@ public interface ReviewMapper {
 	List<Review> selectReviewList(Review param);
 	int insertReview(SqlSession session, Review review);
 	Review selectReivewOne(int reviewNo);
+	int deleteReview(int reviewNo);
+	int updateReview(SqlSession session, Review review);
+	int insertAttach(SqlSession session, Attach attach);
+	Attach selectAttachByReviewNo(int reviewNo);
+	int deleteAttach(SqlSession session, Attach attach);
 }

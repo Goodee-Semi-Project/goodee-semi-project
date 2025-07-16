@@ -1,7 +1,10 @@
 package com.goodee.semi.mapper;
 
+import org.apache.ibatis.session.SqlSession;
+
 import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Attach;
 
 public interface AccountMapper {
 	int insertAccount(AccountDetail account);
@@ -13,7 +16,11 @@ public interface AccountMapper {
 	int checkIdPw(Account account);
 	int deactivateAccount(Account account);
 	int updateAccountPw(Account account);
-  Account selectAccountByIdNameEmail(AccountDetail account);
+	Account selectAccountByIdNameEmail(AccountDetail account);
 	int updateNewPassword(AccountDetail account);
 	AccountDetail selectAccountById(String param);
+	Attach selectAttachByAccountNo(int accountNo);
+	int deleteAttach(SqlSession session, Attach attach);
+	int insertAttach(SqlSession session, Attach attach);
+	Account selectAccountByPetNo(int petNo);
 }

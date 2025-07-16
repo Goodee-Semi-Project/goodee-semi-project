@@ -1,23 +1,27 @@
 package com.goodee.semi.controller;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
-import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.PetService;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
+// FIXME 수정 기능 갑자기 안 됨.....(에러는 안 뜨는데 DB에 반영이 안됨)
 // 내 반려견 정보 수정 servlet
 @WebServlet("/myPet/update")
+@MultipartConfig
 public class MyPetUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PetService service = new PetService();
@@ -30,7 +34,8 @@ public class MyPetUpdateServlet extends HttpServlet {
 		// 1. 요청값 인코딩
 		request.setCharacterEncoding("UTF-8");
 		
-		// 2. 바인딩된 값 받아와서 Pet 객체에 바인딩
+		// 2. 바인딩된 값 받아와서 Pet, Attachment 객체에 바인딩
+		// 텍스트 데이터 받기
 		String petName = request.getParameter("petName");
 		int petAge = Integer.parseInt(request.getParameter("petAge"));
 		char petGender = (request.getParameter("petGender").equals("남")) ? 'M' : 'F';
@@ -38,6 +43,7 @@ public class MyPetUpdateServlet extends HttpServlet {
 		int petNo = Integer.parseInt(request.getParameter("petNo"));
 		int accountNo = Integer.parseInt(request.getParameter("accountNo"));
 		
+		// Pet 객체에 바인딩
 		Pet pet = new Pet();
 		pet.setPetName(petName);
 		pet.setPetAge(petAge);
@@ -46,9 +52,47 @@ public class MyPetUpdateServlet extends HttpServlet {
 		pet.setPetNo(petNo);
 		pet.setAccountNo(accountNo);
 		
-		// 4. service의 수정 로직 호출 -> 실패: 상태 코드 전달 | 성공: 상태 코드와 수정한 값 전달
-		int result = service.updatePet(pet);
+		// 이미지 파일 받기
+		Part petImgPart = request.getPart("petImg");
+		System.out.println("petImgPart: " + petImgPart);
 		
+		String uploadPath = "C:/goodee/upload/pet";
+		String oriFileName = petImgPart.getSubmittedFileName();
+		String fileExtension;
+		String uuid;
+		String saveFileName;
+		
+		Attach attach = new Attach();
+
+		// 이미지 파일이 업로드된 경우에만 이미지 정보 수정
+		if(oriFileName != null) {
+			// 업로드된 경우
+			// 1. 파일 경로, 이름 지정
+			fileExtension = oriFileName.substring(oriFileName.lastIndexOf("."));
+			uuid = UUID.randomUUID().toString().replace("-", "");
+			saveFileName = uuid + fileExtension;
+			
+			// 2. 로컬에 파일 저장
+			// 1) 폴더 없으면 생성
+			File uploadDir = new File(uploadPath);
+			if (!uploadDir.exists()) {
+			    uploadDir.mkdirs(); // 폴더 없으면 생성
+			}
+			
+			// 2) 파일 저장
+			petImgPart.write(uploadPath + "/" + saveFileName);
+			
+			// Attach 객체에 바인딩
+			attach.setOriginName(oriFileName);
+			attach.setSavedName(saveFileName);
+			attach.setPkNo(petNo);
+			attach.setTypeNo(2);
+		}
+				
+		// 4. service의 수정 로직 호출 -> 실패: 상태 코드 전달 | 성공: 상태 코드와 수정한 값 전달
+		int result = service.updatePet(pet, attach);
+		
+		// 6. json에 정보 바인딩
 		String resCode = "";
 		String resMsg = "";
 		if (result == 0) {
@@ -58,8 +102,7 @@ public class MyPetUpdateServlet extends HttpServlet {
 			resCode = "200";
 			resMsg = "반려견 정보 수정 성공";
 		}
-		
-		// 5. json에 정보 바인딩
+
 		JSONObject json = new JSONObject();
 		
 		json.put("resCode", resCode);
@@ -74,7 +117,7 @@ public class MyPetUpdateServlet extends HttpServlet {
 		json.put("petNo", petNo);
 		json.put("accountNo", accountNo);
 		
-		// 6. 응답 인코딩하고 보내기
+		// 7. 응답 인코딩하고 보내기
 		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().print(json);
 	}
