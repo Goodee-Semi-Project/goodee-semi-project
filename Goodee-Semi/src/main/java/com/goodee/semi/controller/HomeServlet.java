@@ -33,6 +33,7 @@ public class HomeServlet extends HttpServlet {
 		String keyTitle = request.getParameter("searchByTitle").trim();
 		String keyName = request.getParameter("searchByTrainer").trim();
 		String keyTag = request.getParameter("searchByTag").trim();
+		String onlyAvailable = request.getParameter("onlyAvailable");
 		
 		List<Course> courseList = null;
 		
@@ -44,6 +45,14 @@ public class HomeServlet extends HttpServlet {
 			courseList = courseService.selectCourse(course);
 		} else {
 			courseList = courseService.selectCourseByTag(keyTag);
+		}
+		
+		if ("Y".equals(onlyAvailable)) {
+			for (Course cs : courseList) {
+				if (cs.getCapacity() <= cs.getPetInCourseCount()) {
+					courseList.remove(cs);
+				}
+			}
 		}
 		
 		request.setAttribute("courseList", courseList);
