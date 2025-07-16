@@ -26,7 +26,7 @@
 				<span>${ accountDetail.name }</span>
 			</div>
 			<div>
-				<!-- TODO: 출생년 앞자리 -->
+				<!-- SJ: 출생년 앞자리 -->
 				<c:if test="${ accountDetail.birth.substring(0, 2) } le "></c:if>
 				<span>${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일</span>
 			</div>
@@ -37,7 +37,7 @@
 						<br>
 					</c:when>
 					<c:otherwise>
-						<!-- TODO: 공통 사용 이미지로 -->
+						<!-- NOTE: 공통 사용 이미지로 -->
 						<img alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"/>
 						<br>
 					</c:otherwise>
@@ -134,9 +134,9 @@
 	$('#editPw').submit(function(e) {
 		e.preventDefault();
 		
-		const currentPw = $('#currentPw').val();
-		const newPw = $('#newPw').val();
-		const newPwCheck = $('#newPwCheck').val();
+		const currentPw = $('#currentPw').val().trim();
+		const newPw = $('#newPw').val().trim();
+		const newPwCheck = $('#newPwCheck').val().trim();
 		const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/;
 		
 		if (!currentPw || !newPw || !newPwCheck) {
@@ -194,6 +194,11 @@
 		const postNum = formData.get('postNum');
 		const address = formData.get('address');
 		const addressDetail = formData.get('addressDetail');
+		// SJ: 이미지 파일만 등록할 수 있음
+		const attachName = formData.get('attach').name;
+		const attachExtIdx = attachName.lastIndexOf('.') + 1;
+		const attachExt = attachName.slice(attachExtIdx).toLowerCase();
+		const imgExt = ['png', 'jpg', 'jpeg', 'webp', 'gif']
 		
 		const emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 		const phoneReg = /^\d{3}-\d{3,4}-\d{4}$/;
@@ -202,7 +207,6 @@
 			alert('성별은 M 또는 F로 입력해주세요');
 		} */
 		
-		console.log(gender);
 		if (!gender) {
 			alert('성별을 선택해주세요.');
 		} else if (!email) {
@@ -218,6 +222,8 @@
 			alert('주소를 입력해주세요.');
 		} else if (!addressDetail) {
 			alert('상세 주소를 입력해주세요.');
+		} else if(!imgExt.includes(attachExt)){
+			alert('이미지 파일만 첨부할 수 있습니다!')
 		} else {
 			if(confirm('회원 정보를 변경하시겠습니까?')) {
 				$.ajax({

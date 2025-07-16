@@ -29,7 +29,7 @@
 		</div>
 		<div>
 			<!-- 우선은 첨부파일은 1개 -->
-			<!-- TODO: 이미지 첨부파일만 등록할 수 있게 -->
+			<!-- SJ: 이미지 첨부파일만 등록할 수 있게 -->
 			<input type="file" name="attach">
 			
 		</div>
@@ -45,18 +45,25 @@
 <script type="text/javascript">
 	$('#write').submit(function(e) {
 		e.preventDefault();
+		
 
 		const form = document.querySelector('#write');
 		const formData = new FormData(form);
 		
 		const title = formData.get('title');
 		const content = formData.get('content');
-		/* TODO: 이미지 파일만 등록할 수 있음 */
+		// SJ: 이미지 파일만 등록할 수 있음
+		const attachName = formData.get('attach').name;
+		const attachExtIdx = attachName.lastIndexOf('.') + 1;
+		const attachExt = attachName.slice(attachExtIdx).toLowerCase();
+		const imgExt = ['png', 'jpg', 'jpeg', 'webp', 'gif']
 		
 		if (!title) {
 			alert('제목을 입력해주세요!');
 		} else if (!content) {
 			alert('내용을 입력해주세요!');
+		} else if(!imgExt.includes(attachExt)){
+			alert('이미지 파일만 첨부할 수 있습니다!')
 		} else {
 			$.ajax({
 				url : '/review/write',

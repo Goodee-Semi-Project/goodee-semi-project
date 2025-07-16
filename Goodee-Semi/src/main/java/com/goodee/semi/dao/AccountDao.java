@@ -82,7 +82,7 @@ public class AccountDao {
 
 	public int updateAccountPw(Account account) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		// TODO: Account dto에 매개변수를 담을 필드가 필요함 - 다른 방식으로 하면 테이블을 두 번 조회하게 됨
+		// SJ: 두 번 조회하는 방식으로 구현, 필요하다면 Account에 새 비밀번호를 담는 필드를 만들어서 구현하는걸로
 		int result = session.update("com.goodee.semi.mapper.AccountMapper.updateAccountPw", account);
 		session.close();
 		return result;
