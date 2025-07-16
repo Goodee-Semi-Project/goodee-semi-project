@@ -98,6 +98,8 @@ public class NoticeUpdateServlet extends HttpServlet {
             if (oldAttach != null) {
                 File oldFile = new File("C:/goodee/upload/notice/" + oldAttach.getSavedName());
                 if (oldFile.exists()) oldFile.delete();
+                
+                
                 newAttach.setAttachNo(oldAttach.getAttachNo());
             }
             newAttach.setPkNo(noticeNo); // 이게 없으면 DB에 어떤 글 첨부인지 모름
