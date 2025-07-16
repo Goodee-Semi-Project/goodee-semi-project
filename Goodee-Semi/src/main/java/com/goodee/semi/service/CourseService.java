@@ -40,6 +40,7 @@ public class CourseService {
 			cs.setThumbAttach(courseDao.selectThumbAttach(cs));
 			cs.setInputAttach(courseDao.selectInputAttach(cs));
 			cs.setTag(courseDao.selectCourseTag(cs));
+			cs.setPetInCourseCount(petDao.selectAllPetByCourseNo(String.valueOf(cs.getCourseNo())).size());
 		}
 		
 		return courseList;
@@ -233,6 +234,7 @@ public class CourseService {
 				cs.setThumbAttach(courseDao.selectThumbAttach(cs));
 				cs.setInputAttach(courseDao.selectInputAttach(cs));
 				cs.setTag(courseDao.selectCourseTag(cs));
+				cs.setPetInCourseCount(petDao.selectAllPetByCourseNo(String.valueOf(cs.getCourseNo())).size());
 			}
 		}
 		
