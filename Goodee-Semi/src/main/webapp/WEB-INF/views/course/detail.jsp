@@ -68,6 +68,7 @@
 			<!-- Left sidebar -->
 			<div class="col-lg-8">
 				<div class="product-details">
+					<input id="courseNo" type="hidden" value="${ course.courseNo }">
 					<div style="display: flex; justify-content: center;">
 						<img class="card-img-top img-fluid" style="width: 200px; height: 200px; margin-right: 50px; border: 3px solid white" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
 						<div class="product-meta" style="display: flex; flex-direction: column; justify-content: center;">
@@ -189,6 +190,7 @@
 			<div class="col-lg-4">
 				<div class="sidebar">
 					<div class="widget user text-center">
+						<input id="accountNo" type="hidden" value="${ sessionScope.loginAccount.accountNo }">
 						<c:choose>
 							<c:when test="${ sessionScope.loginAccount.author eq 1 }">
 								<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
@@ -207,10 +209,19 @@
 								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
 								<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
 								<div class="d-grid gap-2">
-									<a href="#" class="btn btn-primary col-12 px-5 my-1">수강신청</a>
+									<a id="enrollOpen" class="btn btn-primary col-12 px-5 my-1">수강신청</a>
+									<div id="enrollDiv" style="display: none;">
+										<label for="selectPetForEnroll">수강을 신청할 반려견을 선택해주세요.</label>
+										<select id="selectPetForEnroll" class="col-8 px-5 mr-5 my-1">
+											<c:forEach var="pet" items="${ myPetList }">
+												<option value="${ pet.petNo }">${ pet.petName }</option>
+											</c:forEach>
+										</select>
+										<button id="enrollBtn" type="button" class="btn btn-success col-4 my-1">신청</button>
+									</div>
 									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">수강신청 취소</a>
-									<a href="#" class="btn btn-danger col-12 px-5 my-1">찜하기</a>
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">찜하기 취소</a>
+									<a id="addLikeBtn" class="btn btn-danger col-12 px-5 my-1">찜하기</a>
+									<a id="removeLikeBtn" class="btn btn-light btn-outline-dark col-12 px-5 my-1">찜하기 취소</a>
 									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">사전학습</a>
 									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">일정표</a>
 									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">과제</a>
@@ -233,6 +244,108 @@
 	</section>
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	<script>
+		$(() => {
+			$("#addLikeBtn").on("click", (event) => {
+				event.preventDefault();
+				
+				if(confirm("찜 목록에 추가하시겠습니까?")) {
+					const likeFlag = "ADD";
+					const accountNo = $("#accountNo").val();
+					const courseNo = $("#courseNo").val();
+					
+					$.ajax({
+						url : "/myCourse/like",
+						type : "POST",
+						data : {
+							likeFlag : likeFlag,
+							accountNo : accountNo,
+							courseNo : courseNo
+						},
+						dataType : "JSON",
+						success : function(data) {
+							alert(data.resultMsg);
+							
+							if (data.resultCode == 200) {
+								location.href = "<%= request.getContextPath() %>/course/detail?no=" + courseNo;
+							}
+						},
+						error : function() {
+							alert("찜 목록 추가 중 오류가 발생했습니다.");
+						}
+					});
+				}
+			});
+			
+			$("#removeLikeBtn").on("click", (event) => {
+				event.preventDefault();
+				
+				if (confirm("찜 목록에서 제거하시겠습니까?")) {
+					const likeFlag = "REMOVE";
+					const accountNo = $("#accountNo").val();
+					const courseNo = $("#courseNo").val();
+					
+					$.ajax({
+						url : "/myCourse/like",
+						type : "POST",
+						data : {
+							likeFlag : likeFlag,
+							accountNo : accountNo,
+							courseNo : courseNo
+						},
+						dataType : "JSON",
+						success : function(data) {
+							alert(data.resultMsg);
+							
+							if (data.resultCode == 200) {
+								location.href = "<%= request.getContextPath() %>/course/detail?no=" + courseNo;
+							}
+						},
+						error : function() {
+							alert("찜 목록 추가 중 오류가 발생했습니다.");
+						}
+					});
+				}
+			});
+			
+			$("#enrollOpen").on("click", (event) => {
+				event.preventDefault();
+				
+				$("#enrollDiv").css("display", "block");
+			});
+			
+			$("#enrollBtn").on("click", (event) => {
+				if (confirm("수강을 신청하시겠습니까?")) {
+					const enrollFlag = "ADD";
+					const courseNo = $("#courseNo").val();
+					const petNo = $("#selectPetForEnroll").val();
+					
+					$.ajax({
+						url : "/myCourse/enroll",
+						type : "POST",
+						data : {
+							enrollFlag : enrollFlag,
+							courseNo : courseNo,
+							petNo : petNo
+						},
+						dataType : "JSON",
+						success : function(data) {
+							alert(data.resultMsg);
+							
+							if (data.resultCode == 200) {
+								location.href = "<%= request.getContextPath() %>/course/detail?no=" + courseNo;
+							}
+						},
+						error : function() {
+							alert("수강 신청 중 오류가 발생했습니다.");
+						}
+					});
+				}
+				
+			});
+			
+		});
+	</script>
 </body>
 
 </html>
