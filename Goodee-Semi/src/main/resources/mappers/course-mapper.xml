@@ -234,4 +234,18 @@
 		INSERT INTO class (course_no, pet_no)
 		VALUE (#{courseNo}, #{petNo})
 	</insert>
+	
+	<select id="selectListByPetAccount" parameterType="_int" resultMap="courseResultMap">
+		SELECT co.*
+		FROM course AS co
+		JOIN (
+			SELECT course_no ,pet_no
+			FROM class
+		) as c ON co.course_no = c.course_no
+		JOIN (
+			SELECT pet_no ,account_no
+			FROM pet
+		) AS p ON c.pet_no = p.pet_no
+		WHERE p.pet_no = #{ accountNo }
+	</select>
 </mapper>

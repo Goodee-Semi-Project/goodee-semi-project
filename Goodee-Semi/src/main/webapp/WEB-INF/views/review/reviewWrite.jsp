@@ -19,6 +19,7 @@
 			<label for="classNo">수료 목록</label>
 			<select name="classNo">
 				<option value="-1">선택</option>
+				<!-- SJ: 수강 진도 확인 하기 -->
 				<c:forEach var="c" items="${ list }">
 					<option value="${ c.classNo }">${ c.petName } - ${ c.courseTitle }</option>
 				</c:forEach>
@@ -31,7 +32,7 @@
 			<textarea rows="30" cols="100" name="content" spellcheck="false" style="resize: none;"></textarea>
 		</div>
 		<div>
-			<!-- 우선은 첨부파일은 1개 -->
+			<!-- SJ: 우선은 첨부파일은 1개 -->
 			<input type="file" name="attach">
 			
 		</div>
