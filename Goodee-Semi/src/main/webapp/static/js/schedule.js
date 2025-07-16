@@ -179,20 +179,20 @@ function updateEvent(eventId, eventData) {
         event.setEnd(eventData.end);
         
 		// 데이터 저장소 업데이트
-	    const dataIndex = eventDatas.findIndex(e => e.id === eventId);
-	    if (dataIndex !== -1) {
-	        eventDatas[dataIndex] = {
-	            ...eventDatas[dataIndex],
-	            title: `(${eventData.courseName}) ${eventData.memberName}-${eventData.petName}`,
-	            start: eventData.start,
-	            end: eventData.end,
-	            extendedProps: {
-	                courseName: eventData.courseName,
-	                memberName: eventData.memberName,
-	                petName: eventData.petName,
-	            }
-	        };
-	    }
+		const dataIndex = eventDatas.findIndex(e => e.id === eventId);
+			    if (dataIndex !== -1) {
+						eventDatas[dataIndex] = {
+			            ...eventDatas[dataIndex],
+			            title: `(${eventData.courseName}) ${eventData.memberName}-${eventData.petName}`,
+			            start: eventData.start,
+			            end: eventData.end,
+			            extendedProps: {
+			                courseName: eventData.courseName,
+			                memberName: eventData.memberName,
+			                petName: eventData.petName,
+			            }
+			        };
+			    }
         
 	    // TODO 서버로 데이터 전송
 	    console.log('이벤트 수정:', event);
