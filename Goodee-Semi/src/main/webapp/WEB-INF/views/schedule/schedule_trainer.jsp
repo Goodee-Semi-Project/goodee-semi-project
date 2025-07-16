@@ -12,7 +12,7 @@
 	<!-- Fullcalendar CDN -->
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"></script>
 	
-	<script defer src="<c:url value='/static/js/schedule.js'/>"></script>
+	<script defer src="<c:url value='/static/js/schedule.trainer'/>"></script>
 </head>
 <body>
 	<!-- header -->
