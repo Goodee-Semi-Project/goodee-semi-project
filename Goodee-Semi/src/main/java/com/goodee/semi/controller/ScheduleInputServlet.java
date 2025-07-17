@@ -31,14 +31,11 @@ public class ScheduleInputServlet extends HttpServlet {
 		List<Event> list = null;
 		JSONArray jsonArr = new JSONArray();
 		
-		// TODO 마저 구현
 		switch (valueType) {
 			case "courseNo" -> {
 				int courseNo = Integer.parseInt(request.getParameter("courseNo"));
-				System.out.println("courseNo: " + courseNo);
 				list = service.selectAccountList(courseNo);
 				
-				System.out.println("list: " + list);
 				
 				for(Event event : list) {
 					JSONObject prop = new JSONObject();
@@ -51,8 +48,6 @@ public class ScheduleInputServlet extends HttpServlet {
 			case "accountNo" -> {
 				int courseNo = Integer.parseInt(request.getParameter("courseNo"));
 				int accountNo = Integer.parseInt(request.getParameter("accountNo"));
-				System.out.println("courseNo: " + courseNo);
-				System.out.println("accountNo: " + accountNo);
 				Map<String, Integer> map = new HashMap<String, Integer>();
 				map.put("courseNo", courseNo);
 				map.put("accountNo", accountNo);
@@ -70,7 +65,6 @@ public class ScheduleInputServlet extends HttpServlet {
 		
 		JSONObject json = new JSONObject();
 		json.put("jsonArr", jsonArr);
-		System.out.println(json.toJSONString());
 		
 		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().print(json);
