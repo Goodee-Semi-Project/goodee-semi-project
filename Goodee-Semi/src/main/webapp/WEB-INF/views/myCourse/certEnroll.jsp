@@ -54,16 +54,16 @@
 	        			<div style="position: relative;">
 	        				<img src="/static/images/cert/cert_enroll.png" style="width: 100%;" alt="cert_enroll">
 	        				<div style="position: absolute; top: 11%; left: 28%;">
-	        					<p style="color: black; font-size: 18px; margin-bottom: 2px; text-align: left;">이것이 앱솔루트의 힘입니다</p>
-	        					<p style="color: black; font-size: 18px; margin-bottom: 2px; margin-left: 90px; text-align: left;">테스트</p>
-	        					<p style="color: black; font-size: 18px; margin-bottom: 2px; margin-left: 90px; text-align: left;">테스트</p>
-										<p style="color: black; font-size: 18px; margin-bottom: 2px; text-align: left;">이것이 앱솔루트의 힘입니다</p>
+	        					<p id="printTitle" style="color: black; font-size: 18px; margin-bottom: 2px; text-align: left;"></p>
+	        					<p id="printPetName" style="color: black; font-size: 18px; margin-bottom: 2px; margin-left: 90px; text-align: left;"></p>
+	        					<p id="printMemberName" style="color: black; font-size: 18px; margin-bottom: 2px; margin-left: 90px; text-align: left;"></p>
+										<p id="printProgress" style="color: black; font-size: 18px; margin-bottom: 2px; text-align: left;"></p>
 	        				</div>
 	        				<div style="position: absolute; bottom: 11%; left: 0; right: 0;">
-	        					<p style="color: black; font-size: 15px;">2025년 7월 17일</p>
+	        					<p id="printDate" style="color: black; font-size: 15px;"></p>
 	        				</div>
 	        				<div style="position: absolute; bottom: 5%; right: 10%;">
-	        					<p style="color: black; font-size: 15px;">훈련사 이몽룡</p>
+	        					<p id="printTrainerName" style="color: black; font-size: 15px;"></p>
 	        				</div>
 	        				<div style="position: absolute; bottom: 10px; right: 5%;">
 	        					<img src="/static/images/cert/sign.png" style="width: 100px; opacity: 0.5;" alt="sign">
@@ -96,7 +96,7 @@
 		   	<span class="ml-1" style="font-size: 15px;">${ course.myPetInCourse.petName }</span>
 			</div>
 			<div class="col-3" style="display: flex; justify-content: flex-end; align-items: center;">
-				<button type="button" class="btn btn-outline-secondary" style="height: 30px; padding: 2px 5px;" onclick="openPrintModal()" >다운로드</button>
+				<button type="button" class="btn btn-outline-secondary" style="height: 30px; padding: 2px 5px;" onclick="openPrintModal('${ course.title }', '${ course.myPetInCourse.petName }', '${ sessionScope.loginAccount.name }', '40', '${ course.name }')" >다운로드</button>
 			</div>
 		</div>
 	</c:forEach>
@@ -104,7 +104,17 @@
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
-		function openPrintModal() {
+		function openPrintModal(title, petName, memberName, prog, trainerName) {
+			const date = new Date();
+			const dateString = date.getFullYear() + "년 " + (date.getMonth() + 1) + "월 " + date.getDate() + "일";
+			
+			$("#printTitle").text(title);
+			$("#printPetName").text(petName);
+			$("#printMemberName").text(memberName);
+			$("#printProgress").text(prog + "%");
+			$("#printDate").text(dateString);
+			$("#printTrainerName").text("훈련사 " + trainerName);
+			
 			$("#printModal").modal("show");
 		}
 		
