@@ -74,7 +74,7 @@
 					success : function(data) {
 						alert(data.res_msg);
 						if (data.res_code == 200) {
-							location.href = "<%= request.getContextPath() %>/preCourse/manage";
+							location.href = "<%= request.getContextPath() %>/preCourse/list";
 						}
 					},
 					error : function(data) {

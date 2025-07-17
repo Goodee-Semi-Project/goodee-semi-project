@@ -41,6 +41,11 @@ public class PreCourseDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int petNo = -1;
+		if (request.getParameter("petNo") != null) {
+			petNo = Integer.parseInt(request.getParameter("petNo"));
+		}
+		
 		int preNo = -1;
 		if (request.getParameter("preNo") != null) {
 			preNo = Integer.parseInt(request.getParameter("preNo"));
@@ -55,6 +60,7 @@ public class PreCourseDetailServlet extends HttpServlet {
 			Attach attach = preCourseService.selectAttach(preNo);
 			
 			if (attach != null) {
+				request.setAttribute("petNo", petNo);
 				request.setAttribute("preCourse", preCourse);
 				request.setAttribute("attach", attach);
 			}
@@ -80,9 +86,16 @@ public class PreCourseDetailServlet extends HttpServlet {
 		String preNo = request.getParameter("preNo");;
 		String watchLen = request.getParameter("watchLen");
 		String videoLen = request.getParameter("videoLen");
+		int petNo = -1;
+		if (request.getParameter("petNo") != null && request.getParameter("petNo") != "-1") {
+			petNo = Integer.parseInt(request.getParameter("petNo"));
+		}
 		
 		int idx = watchLen.indexOf('.');
-		int watched = Integer.parseInt(watchLen.substring(0, idx));
+		int watched = 0;
+		if (idx > 0) {
+			watched = Integer.parseInt(watchLen.substring(0, idx));
+		}
 		
 		watchLen = "" + watched / 3600 + ":" + watched / 60 % 60 + ":" + watched % 60;
 		
@@ -107,9 +120,9 @@ public class PreCourseDetailServlet extends HttpServlet {
 		preProgress.setWatchLen(watchLen);
 		preProgress.setPreProg(preProg);
 		preProgress.setAccountNo(account.getAccountNo());
-		
+		preProgress.setPetNo(petNo);
+
 		int result = preProgressService.insertOneWithAccountNo(preProgress);
-		
 		
 		JSONObject obj = new JSONObject();
 		if (result > 0) {
