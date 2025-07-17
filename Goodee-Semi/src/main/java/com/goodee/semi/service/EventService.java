@@ -21,4 +21,8 @@ public class EventService {
 		return dao.selectAccountList(courseNo);
 	}
 
+	public List<Event> selectPetList(Map<String, Integer> map) {
+		return dao.selectPetList(map);
+	}
+
 }
