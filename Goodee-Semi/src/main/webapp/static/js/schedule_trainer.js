@@ -40,6 +40,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
             dataType: 'json',
             success: function (data) {
 				console.log("성공: ", data);
+				eventDatas = data;
 				successCallback(data);
             },
             error: function (err) {
@@ -183,33 +184,31 @@ function buildDateTime(date, timeStr) {
 // 이벤트 생성
 function createEvent(eventData) { // eventData: 모달 form에서 받아온 데이터
     // TODO jsp의 모달에 데이터 뿌리고 아래의 기능 구현
-    // 1. 데이터를 서버로 전송
-    $.ajax({
+	// 1. 데이터를 서버로 전송
+	$.ajax({
         url: '/schedule/create',
         type: 'post',
         data: {
-            start: fetchInfo.startStr,
-            end: fetchInfo.endStr
+            accountNo: eventData.accountName,
+            courseNo: eventData.courseTitle,
+            petNo: eventData.petName,
+            start: eventData.start,
+            end: eventData.end,
         },
         dataType: 'json',
         success: function (data) {
             console.log("성공: ", data);
-            successCallback(data);
+
+			// 2. 임시데이터 저장소에 추가 (굳이 해야되나?)
+			eventDatas.push(data);
+
+			// 3. 추가된 이벤트를 캘린더에 반영
+			calendar.addEvent(data);
         },
         error: function (err) {
             console.log("에러: ", err);
         }
     });
-
-    // 2. 임시데이터 저장소에 추가 (굳이 해야되나?)
-    eventDatas.push(newEvent);
-    
-    // 3. 추가된 이벤트를 캘린더에 반영
-    calendar.addEvent(newEvent);
-    
-    console.log('이벤트 생성:', newEvent);
-    
-    return newEvent;
 }
 
 // 이벤트 수정
@@ -267,21 +266,21 @@ const baseSelect = document.getElementById('course-title'); // 기준 select
 const targetSelect1 = document.getElementById('account-name');
 const targetSelect2 = document.getElementById('pet-name');
 
+let courseNo;
+
 baseSelect.addEventListener('change', function() {
 	const form = document.querySelector('#modal-form');
 	form.querySelector('#pet-name').disabled = true;
 	
-	const courseNo = this.value;
+	courseNo = this.value;
 	console.log("courseNo: " + courseNo);
 	
 	if (this.value) { // 기준 select에 값이 선택되었는지 확인
-        // if(targetSelect1.value = '') = 
-		
-		targetSelect1.disabled = false;
+        targetSelect1.disabled = false;
 		
 		const accountName = document.getElementById('account-name');
 		
-		// TODO 비동기통신하여 option에 데이터 뿌리기
+		// 비동기통신하여 option에 데이터 뿌리기
 		$.ajax({
 			url: '/schedule/input',
 			type: 'get',
@@ -293,7 +292,7 @@ baseSelect.addEventListener('change', function() {
 			success: function (data) {
 			    console.log("성공: ", data);
                 
-                html = '<option value="" disabled selected>반려견명 선택</option>';
+                html = '<option value="" disabled selected>회원명 선택</option>';
 				data.jsonArr.forEach(json => {
                     html += `<option value="${json.accountNo}">${json.accountName}</option>`;
                 });
@@ -311,8 +310,38 @@ baseSelect.addEventListener('change', function() {
 });
 
 targetSelect1.addEventListener('change', function() {
-    if (this.value) { // 기준 select에 값이 선택되었는지 확인
+	const accountNo = this.value;
+	console.log("accountNo: " + accountNo);
+	
+	if (this.value) { // 기준 select에 값이 선택되었는지 확인
         targetSelect2.disabled = false;
+		
+		const petName = document.getElementById('pet-name');
+		
+		// 비동기통신하여 option에 데이터 뿌리기
+		$.ajax({
+			url: '/schedule/input',
+			type: 'get',
+			data: {
+				valueType: "accountNo",
+				courseNo: courseNo,
+				accountNo: accountNo
+			},
+			dataType: 'json',
+			success: function (data) {
+			    console.log("성공: ", data);
+		        
+		        html = '<option value="" disabled selected>반려견명 선택</option>';
+				data.jsonArr.forEach(json => {
+		            html += `<option value="${json.petNo}">${json.petName}</option>`;
+		        });
+				
+				petName.innerHTML = html;
+			},
+			error: function (err) {
+			    console.log("에러: ", err);
+			}
+		});
     } else {
         targetSelect2.disabled = true;
         targetSelect2.value = ''; // 값 초기화
@@ -327,17 +356,22 @@ $(document).on('click', '#btn-cancel-event', function() {
 $(document).on('click', '#btn-add-event', function() {
     const form = document.getElementById('modal-form');
     const formData = new FormData(form);
+	console.log('[저장 클릭] formData: ');
+	for (const x of formData.entries()) {
+	 console.log(x);
+	};
     const modal = document.getElementById('event-modal-box');
     const eventId = modal.getAttribute('data-event-id');
-    
+  	console.log('eventId: ', eventId);
+	
     if (!form.checkValidity()) {
         form.reportValidity();
         return;
     }
     
 	// 시간 검증
-    const startTime = formData.get('startTime');
-    const endTime = formData.get('endTime');
+    const startTime = formData.get('start');
+    const endTime = formData.get('end');
     
     if (!startTime || !endTime) {
         alert('시작 시간과 종료 시간을 입력해주세요.');
@@ -350,18 +384,21 @@ $(document).on('click', '#btn-add-event', function() {
     }
 	
 	const eventData = {
-	    courseName: formData.get('courseName'),
-	    memberName: formData.get('memberName'),
+	    courseTitle: formData.get('courseTitle'),
+	    accountName: formData.get('accountName'),
 	    petName: formData.get('petName'),
 	    start: buildDateTime(selectedDate, startTime),
 	    end: buildDateTime(selectedDate, endTime)
 	};
     
+	console.log('eventData 받아오기 완료: ', eventData);
+	
     if (eventId) {
         // 수정
         updateEvent(eventId, eventData);
     } else {
         // 생성
+		console.log('createEvent() 실행 시작');
         createEvent(eventData);
     }
     
