@@ -1,9 +1,9 @@
 package com.goodee.semi.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.RandomAccessFile;
 
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.service.AttachService;
@@ -15,17 +15,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class FilePathServlet
+ * Servlet implementation class FileStreamServlet
  */
-@WebServlet("/filePath")
-public class FilePathServlet extends HttpServlet {
+@WebServlet("/fileStream")
+public class FileStreamServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	AttachService service = new AttachService();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FilePathServlet() {
+    public FileStreamServlet() {
         super();
     }
 
@@ -67,19 +67,50 @@ public class FilePathServlet extends HttpServlet {
 			return;
 		}
 		
-		String mimeType = getServletContext().getMimeType(filePath);
-		if (mimeType == null) mimeType = "application/octet-stream";
-		response.setContentType(mimeType);
+		long rangeStart = 0, rangeEnd = 0;
+		boolean isPart = false;
 		
-		try (FileInputStream fis = new FileInputStream(file);
-				OutputStream os = response.getOutputStream()) {
-			byte[] buffer = new byte[1024 * 1024];
-			int byteRead;
-			while ((byteRead = fis.read(buffer)) != -1) {
-				os.write(buffer, 0, byteRead);
+		try (RandomAccessFile randomFile = new RandomAccessFile(file, "r");
+				BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream())) {
+			long movieSize = randomFile.length();
+			String range = request.getHeader("range");
+			
+			if (range != null) {
+				if(range.endsWith("-")) {
+					range = range + (movieSize -1);
+				}
+				int idxm = range.trim().indexOf("-");
+				rangeStart = Long.parseLong(range.substring(6, idxm));
+				rangeEnd = Long.parseLong(range.substring(idxm + 1));
+				
+				if(rangeStart > 0) isPart = true;
+			} else {
+				rangeStart = 0;
+				rangeEnd = movieSize - 1;
+			}
+			
+			long partSize = rangeEnd - rangeStart + 1;
+			response.reset();
+			response.setStatus(isPart ? 206 : 200);
+			
+			String mimeType = getServletContext().getMimeType(filePath);
+			if (mimeType == null) mimeType = "application/octet-stream";
+			response.setContentType(mimeType);
+			
+			response.setHeader("Content-Range", "bytes " + rangeStart + "-" + rangeEnd + "/" + movieSize);
+			response.setHeader("Accept-Ranges", "bytes");
+			response.setHeader("Content-Length", String.valueOf(partSize));
+			randomFile.seek(rangeStart);
+
+			int bufferSize = 8 * 1024;
+			byte[] buffer = new byte[bufferSize];
+			int byteRead = partSize > bufferSize ? bufferSize : (int) partSize;
+			while (partSize > 0) {
+				int len = randomFile.read(buffer, 0, byteRead);
+				bos.write(buffer, 0, len);
+				partSize -= byteRead;
 			}
 		} catch (Exception e) {
-			
 		}
 	}
 
@@ -88,4 +119,5 @@ public class FilePathServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	}
+
 }
