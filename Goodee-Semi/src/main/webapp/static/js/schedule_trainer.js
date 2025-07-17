@@ -3,7 +3,7 @@ const calendarEl = document.querySelector('#calendar');
 // 선택된 날짜 저장 변수
 let selectedDate = null;
 
-// DB에서 받아온 일정 데이터들을 담는 변수
+// DB에서 받아온 일정 데이터들을 담는 변수 (fullcalendar의 임시 데이터 저장소)
 let eventDatas = [];
 
 const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -67,10 +67,12 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 	// 마우스 위치에 툴팁 표시
 	eventDidMount: function(info) {
 	    // 기존 시간 표시 요소 삭제
-		const oriTimeDiv = document.querySelector('.fc-event-time');
-		oriTimeDiv.remove();
-		
-		let tooltipText = '';
+	    const oriTimeDiv = document.querySelector('.fc-event-time');
+	    if (oriTimeDiv) {
+	        oriTimeDiv.remove();
+	    }
+	    
+	    let tooltipText = '';
 	    let displayText = '';
 	    
 	    // 시간 정보 생성 (timezone 고려)
@@ -101,8 +103,25 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 	    let htmlContent = '';
 	    
 	    if (displayText) {
-	        htmlContent = `<div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div><div style="font-size: 12px; line-height: 1.2;">${eventTitle}</div>`;
-	        tooltipText = displayText + '\n' + eventTitle;
+	        // 교육과정명과 회원명-반려견명을 분리
+	        const titleMatch = eventTitle.match(/\(([^)]+)\)\s*(.+)/);
+	        if (titleMatch) {
+	            const courseTitle = titleMatch[1];  // 교육과정명
+	            const memberInfo = titleMatch[2];   // 회원명-반려견명
+	            
+	            htmlContent = `
+	                <div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div>
+	                <div style="font-size: 12px; line-height: 1.2; margin-bottom: 2px;">${courseTitle}</div>
+	                <div style="font-size: 11px; line-height: 1.2; color: #555;">${memberInfo}</div>
+	            `;
+	            tooltipText = displayText + '\n' + courseTitle + '\n' + memberInfo;
+	        } else {
+	            htmlContent = `
+	                <div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div>
+	                <div style="font-size: 12px; line-height: 1.2;">${eventTitle}</div>
+	            `;
+	            tooltipText = displayText + '\n' + eventTitle;
+	        }
 	    } else {
 	        htmlContent = `<div style="font-size: 12px;">${eventTitle}</div>`;
 	        tooltipText = eventTitle;
@@ -146,7 +165,7 @@ function showEventModal(mode, info) {
         case 'create': // 일정 등록
             modalTitle.textContent = '일정 등록';
             deleteBtn.style.display = 'none';
-            // modal.removeAttribute('data-event-id');
+            modal.removeAttribute('data-event-id');
             break;
     
         case 'edit': // 일정 수정
@@ -166,7 +185,7 @@ function showEventModal(mode, info) {
             document.querySelector('#end').value = event.endStr? event.endStr.split('T')[1] : "";
 
             // 현재 편집 중인 이벤트 ID 저장
-            // modal.setAttribute('data-event-id', event.id);
+            modal.setAttribute('data-event-id', event.id);
     }
     
     modal.style.display = 'flex';
@@ -212,36 +231,182 @@ function createEvent(eventData) { // eventData: 모달 form에서 받아온 데�
 }
 
 // 이벤트 수정
+// TODO 차수까지 고려해서 코드 수정한 이후에 구현
 function updateEvent(eventId, eventData) {
-    const event = calendar.getEventById(eventId);
-    if (event) {
-		event.setProp('title', `(${eventData.courseName}) ${eventData.memberName}-${eventData.petName}`)
-        // event.setId(eventData.id);
-        event.setExtendedProp('courseName', eventData.courseName);
-        event.setExtendedProp('memberName', eventData.memberName);
+	/*
+	$.ajax({
+	    url: '/schedule/update',
+	    type: 'post',
+	    data: {
+	        schedNo: eventId,
+			
+	        accountNo: eventData.accountNo,
+	        accountName: eventData.accountName,
+			
+	        petNo: eventData.petNo,
+	        petName: eventData.petName,
+			
+	        accountNo: eventData.accountNo,
+	        accountNo: eventData.accountNo,
+	    },
+	    success: function(data) {
+            location.reload(); // 또는 window.location.reload();
+	    },
+	    error: function(err) {
+	        console.log("에러: ", err);
+	    }
+	});
+	*/
+	
+	/*
+	accountNo: accountValue,
+	accountName: accountText,
+
+	petNo: petValue,
+	petName: petText,
+
+	classNo: null,
+
+	schedStep: null,
+	schedDate: selectedDate,
+	schedAttend: null,
+	courseNo: courseValue,
+	courseTitle: courseText,
+	courseTotalStep: null,
+
+	id: null,
+
+	start: buildDateTime(selectedDate, startTime),
+	end: buildDateTime(selectedDate, endTime),
+
+	title: `(${courseTitle}) ${accountName}-${petName}`
+	*/
+	
+	/*
+	const event = calendar.getEventById(eventId);
+	console.log("[일정 수정] event: ", event);
+	
+	// 이벤트 요소에 받아온 이벤트 데이터 덮어씌우기
+	if (event) {
+        event.setExtendedProp('accountNo', eventData.accountNo);
+        event.setExtendedProp('accountName', eventData.accountName);
+		
+        event.setExtendedProp('petNo', eventData.petNo);
         event.setExtendedProp('petName', eventData.petName);
+        
+		event.setExtendedProp('schedDate', eventData.schedDate);
+		event.setExtendedProp('courseNo', eventData.courseNo);
+		event.setExtendedProp('courseTitle', eventData.courseTitle);
+		
         event.setStart(eventData.start);
         event.setEnd(eventData.end);
+
+		event.setProp('title', eventData.title)
         
-		// 데이터 저장소 업데이트
-		const dataIndex = eventDatas.findIndex(e => e.id === eventId);
-			    if (dataIndex !== -1) {
-						eventDatas[dataIndex] = {
-			            ...eventDatas[dataIndex],
-			            title: `(${eventData.courseName}) ${eventData.memberName}-${eventData.petName}`,
-			            start: eventData.start,
-			            end: eventData.end,
-			            extendedProps: {
-			                courseName: eventData.courseName,
-			                memberName: eventData.memberName,
-			                petName: eventData.petName,
-			            }
-			        };
-			    }
+		// fullcalendar의 임시 데이터 저장소 업데이트
+		const dataIndex = eventDatas.findIndex(e => e.id === eventId); // 조건에 맞는 첫 번째 요소의 인덱스를 반환 (못찾으면 -1 반환)
+	    if (dataIndex !== -1) {
+			eventDatas[dataIndex] = {
+	            ...eventDatas[dataIndex], // 기존 객체의 모든 속성을 복사
+				
+				// 값 덮어씌우기
+				// id: eventId,
+	            extendedProps: {
+					accountNo: eventData.accountNo,
+	                accountName: eventData.accountName,
+					
+					petNo: eventData.petNo,
+					petName: eventData.petName,
+					
+					schedDate: eventData.schedDate,
+					courseNo: eventData.courseNo,
+					courseTitle: eventData.courseTitle,
+	            },
+
+				start: eventData.start,
+	            end: eventData.end,
+	            
+				title: eventData.title
+        	}
+	    }
         
 	    // TODO 서버로 데이터 전송
 	    console.log('이벤트 수정:', event);
+
+		// 이벤트 요소를 직접 업데이트
+		updateEventDisplay(event);
     }
+	*/
+	
+	// 
+}
+
+// 이벤트 표시 업데이트 함수
+function updateEventDisplay(event) {
+    const eventEl = document.querySelector(`[data-event-id="${event.id}"]`);
+    if (!eventEl) return;
+    
+    // 기존 시간 표시 요소 삭제
+    const oriTimeDiv = eventEl.querySelector('.fc-event-time');
+    if (oriTimeDiv) {
+        oriTimeDiv.remove();
+    }
+    
+    let tooltipText = '';
+    let displayText = '';
+    
+    // 시간 정보 생성 (timezone 고려)
+    if (event.start && !event.allDay) {
+        // 한국 시간으로 변환
+        const startTime = new Date(event.startStr).toLocaleTimeString('ko-KR', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+            timeZone: 'Asia/Seoul'
+        });
+        
+        if (event.end) {
+            const endTime = new Date(event.endStr).toLocaleTimeString('ko-KR', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+                timeZone: 'Asia/Seoul'
+            });
+            displayText = `${startTime} - ${endTime}`;
+        } else {
+            displayText = startTime;
+        }
+    }
+    
+    // 캘린더 표시용 HTML 생성
+    const eventTitle = event.title;
+    let htmlContent = '';
+    
+    if (displayText) {
+        htmlContent = `<div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div><div style="font-size: 12px; line-height: 1.2;">${eventTitle}</div>`;
+        tooltipText = displayText + '\n' + eventTitle;
+    } else {
+        htmlContent = `<div style="font-size: 12px;">${eventTitle}</div>`;
+        tooltipText = eventTitle;
+    }
+    
+    // 기존 title 속성 제거 (중복 방지)
+    eventEl.removeAttribute('title');
+    
+    // 이벤트 요소의 내용 수정
+    const titleElement = eventEl.querySelector('.fc-event-title');
+    if (titleElement) {
+        titleElement.innerHTML = htmlContent;
+    }
+    
+    // 전체 이벤트 요소의 내용을 직접 수정 (더 확실한 방법)
+    const eventMain = eventEl.querySelector('.fc-event-main');
+    if (eventMain) {
+        eventMain.innerHTML = htmlContent;
+    }
+    
+    // 새로운 툴팁용 title 속성 추가
+    eventEl.setAttribute('title', tooltipText);
 }
 
 // 이벤트 삭제
@@ -360,9 +525,26 @@ $(document).on('click', '#btn-add-event', function() {
 	for (const x of formData.entries()) {
 	 console.log(x);
 	};
+	
     const modal = document.getElementById('event-modal-box');
     const eventId = modal.getAttribute('data-event-id');
   	console.log('eventId: ', eventId);
+	
+	// value 값 가져오기
+	const courseValue = formData.get('courseTitle');
+	const accountValue = formData.get('accountName');
+	const petValue = formData.get('petName');
+
+	// text 값 가져오기
+	const courseText = $('#course-title option:selected').text();
+	const accountText = $('#account-name option:selected').text();
+	const petText = $('#pet-name option:selected').text();
+	
+	console.log('선택된 값들:');
+	console.log('코스 - value:', courseValue, 'text:', courseText);
+	console.log('회원 - value:', accountValue, 'text:', accountText);
+	console.log('펫 - value:', petValue, 'text:', petText);
+	
 	
     if (!form.checkValidity()) {
         form.reportValidity();
@@ -384,11 +566,27 @@ $(document).on('click', '#btn-add-event', function() {
     }
 	
 	const eventData = {
-	    courseTitle: formData.get('courseTitle'),
-	    accountName: formData.get('accountName'),
-	    petName: formData.get('petName'),
-	    start: buildDateTime(selectedDate, startTime),
-	    end: buildDateTime(selectedDate, endTime)
+		accountNo: accountValue,
+		accountName: accountText,
+
+		petNo: petValue,
+		petName: petText,
+
+		classNo: null,
+
+		schedStep: null,
+		schedDate: selectedDate,
+		schedAttend: null,
+		courseNo: courseValue,
+		courseTitle: courseText,
+		courseTotalStep: null,
+		
+		id: null,
+
+		start: buildDateTime(selectedDate, startTime),
+		end: buildDateTime(selectedDate, endTime),
+
+		title: `(${courseText}) ${accountText}-${petText}`
 	};
     
 	console.log('eventData 받아오기 완료: ', eventData);
