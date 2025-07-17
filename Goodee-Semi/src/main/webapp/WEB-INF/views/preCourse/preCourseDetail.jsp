@@ -14,6 +14,7 @@
 
 	<main>
 		<h1>사전학습 세부 정보</h1>
+		<input type="text" id="preNo" value="${ preCourse.preNo }" hidden>
 		<div>
 			<span>[교육과정]</span>
 			<span>${ preCourse.courseTitle }</span>
@@ -27,8 +28,11 @@
 			<video width="400" id="preVideo" controls preload="metadata">
 				<source src="<c:url value='/fileStream?no=${ attach.attachNo }'/>">
 			</video>
-			<p>${ preCourse.videoLen }</p>
-			<button onclick="button()">버튼</button>
+			<p id="videoLen">${ preCourse.videoLen }</p>
+		</div>
+		<div>
+			<a href="/preCourse/list">목록</a>
+			<button id="test" disabled>학습 완료</button>
 		</div>
 		<c:if test="${ loginAccount.author eq 1 }">
 			<div>
@@ -40,6 +44,7 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+
 	const vid = document.querySelector('#preVideo');
 	let lastTime = 0;
 	
@@ -55,13 +60,53 @@
 		}
 	}
 	
-	vid.ontimeupdate  = function() {
+	vid.ontimeupdate = function() {
 		if (vid.currentTime > lastTime + 1) {
 			vid.currentTime = lastTime;
 		} else if (vid.currentTime > lastTime) {
 			lastTime = vid.currentTime;
 		}
 	}
+	
+	vid.onended = function() {
+		$('#test').removeAttr('disabled');
+	}
+	
+	// TODO: beforeunload, popstate 이벤트로 시청 시간 보내기
+$(function() {
+	let saveState = true;
+	function sendWatchLen() {
+		const preNo = $('#preNo').val();
+		const videoLen = $('#videoLen').text();
+		$.ajax({
+			url : '/preCourse/detail',
+			type : 'post',
+			data : {
+				preNo : preNo,
+				videoLen : videoLen,
+				watchLen : lastTime
+			},
+			dataType : 'json',
+			success : function(data) {
+				if (data.res_code != 200) {
+					saveState = false;
+					alert(daga.res_msg);
+				}
+			},
+			error : function() {
+				saveState = false;
+			}
+		});
+	}
+	onbeforeunload = function(event) {
+		event.preventDefault();
+		saveState = true;
+		sendWatchLen();
+		if (saveState === false) {
+			event.returnValue = '진행 상황이 저장되지 않았습니다.';
+		}
+	};
+})
 </script>
 </body>
 </html>
