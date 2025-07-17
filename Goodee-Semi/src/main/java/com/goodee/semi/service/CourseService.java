@@ -29,6 +29,7 @@ public class CourseService {
 		course.setThumbAttach(courseDao.selectThumbAttach(course));
 		course.setInputAttach(courseDao.selectInputAttach(course));
 		course.setTag(courseDao.selectCourseTag(course));
+		course.setPetInCourseCount(petDao.selectAllPetByCourseNo(String.valueOf(course.getCourseNo())).size());
 		
 		return course;
 	}
@@ -237,6 +238,5 @@ public class CourseService {
 		
 		return courseList;
 	}
-
 	
 }

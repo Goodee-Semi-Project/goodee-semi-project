@@ -3,11 +3,24 @@
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.goodee.semi.mapper.ClassMapper">
+	<resultMap type="com.goodee.semi.dto.PetClass" id="classResultMap">
+		<result property="classNo" column="class_no" />
+		<result property="courseNo" column="course_no" />
+		<result property="petNo" column="pet_no" />
+		<result property="classProg" column="class_prog" />
+	</resultMap>
+	
+	<select id="selectClassByCourseNoAndPetNo" parameterType="com.goodee.semi.dto.PetClass" resultMap="classResultMap">
+		SELECT * FROM class
+		<where>
+			course_no = #{courseNo} AND pet_no = #{petNo}
+		</where>
+	</select>
 
-<delete id="deleteClass" parameterType="_int">
-	DELETE FROM class
-	<where>
-		class_no = #{classNo}
-	</where>
-</delete>
+	<delete id="deleteClass" parameterType="_int">
+		DELETE FROM class
+		<where>
+			class_no = #{classNo}
+		</where>
+	</delete>
 </mapper>

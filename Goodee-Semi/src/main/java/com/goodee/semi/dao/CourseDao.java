@@ -233,5 +233,4 @@ public class CourseDao {
 		return courseNoList;
 	}
 
-
 }
