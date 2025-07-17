@@ -17,10 +17,8 @@ public class EventService {
 		return dao.selectCourseList(accountNo);
 	}
 	
-	// TODO 마저 구현
-	public Object selectAccountList(String value) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Event> selectAccountList(int courseNo) {
+		return dao.selectAccountList(courseNo);
 	}
 
 }
