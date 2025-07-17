@@ -23,38 +23,7 @@
 					<h1>기초부터 확실하게.</h1>
 					<p>더 안전한 훈련, 더 정확한 행동 교정,<br>고객과 훈련사의 1:1 맞춤 관리 시스템으로<br>반려견과 함께하는 더 나은 삶을 위해 노력합니다.</p>
 				</div>
-				<div class="advance-search">
-					<div class="container">
-						<div class="row justify-content-center">
-							<div class="col-lg-12 col-md-12 align-content-center">
-								<form>
-									<div class="form-row">
-										<div class="form-group col-3">
-											<input type="text" class="form-control my-2" id="inputtext4" placeholder="교육과정">
-											<input type="checkbox" id="" value="onlyAvailable"> 수강 가능 과정만 검색하기
-										</div>
-										
-										<div class="form-group col-3">
-											<input type="text" class="form-control my-2" id="inputLocation4" placeholder="훈련사">
-										</div>
-										
-										<div class="form-group col-2">
-											<input type="text" class="form-control my-2" id="inputLocation4" placeholder="태그">
-										</div>
-										
-										<div class="form-group col-2">
-											<button type="submit" class="btn btn-primary active mt-1 w-100">검색</button>
-										</div>
-										
-										<div class="form-group col-2">
-											<button type="submit" class="btn btn-primary active mt-1 w-100">전체 조회</button>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
+				<%@ include file="/WEB-INF/views/include/search.jsp" %>
 			</div>
 		</div>
 	</div>
@@ -75,7 +44,7 @@
 							<h1 class="product-title" style="font-size: 48px;">${ course.title }</h1>
 							<ul class="list-inline">
 								<li class="list-inline-item"><i class="fa fa-user-o"></i> 훈련사 ${ course.name }</li>
-								<li class="list-inline-item"><i class="fa fa-tags"></i> 태그 </li>
+								<li class="list-inline-item"><i class="fa fa-tags"></i> 태그 ${ course.tag }</li>
 							</ul>
 						</div>
 					</div>
@@ -98,8 +67,24 @@
 						<div class="tab-content" id="pills-tabContent">
 							<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 								<h3 class="tab-title" style="font-size: 32px;">${ course.subTitle }</h3>
-								<p style="font-size: 20px;">${ course.object }</p>
-								<img class="card-img-top img-fluid" style="width: 800px; height: 450px; border: 3px solid white" src="<c:url value='/filePath?no=${ course.inputAttach.attachNo }' />" alt="img">
+								<p style="font-size: 16px;">${ course.object }</p>
+								<img class="card-img-top img-fluid" style="width: 800px; height: 400px; object-fit: cover; border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.inputAttach.attachNo }' />" alt="img">
+								<div class="container" style="display: flex; align-items: center; margin: 40px auto;">
+									<div class="col-4">
+										<img class="rounded-circle img-fluid" style="border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.profileAttach.attachNo }' />" alt="profile">
+									</div>
+									<div class="col-8">
+										<h3 class="tab-title" style="font-size: 32px;">훈련사 ${ course.name }</h3>
+										<p>
+											강아지는 생후 약 8주부터 사회화하기 시작합니다.<br>
+											적절한 시기, 적절한 훈련은 반려견의 사회화에<br>
+											긍정적인 영향을 줍니다.<br>
+											<br>
+											12년간 쌓아올린 훈련 경력으로<br>
+											반려견의 소중한 시기를 함께합니다.
+										</p>
+									</div>
+								</div>
 							</div>
 							<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
 								<h3 class="tab-title">교육과정 세부 정보</h3>

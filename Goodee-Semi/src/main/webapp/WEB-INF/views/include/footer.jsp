@@ -46,3 +46,31 @@
 <script src="/static/plugins/jquery-nice-select/js/jquery.nice-select.min.js"></script>
 
 <script src="/static/js/script.js"></script>
+<script>
+	$(() => {
+		$("#searchCourseForm").submit((event) => {
+			event.preventDefault();
+			
+			const keyTitle = $("#searchByTitle").val();
+			const keyName = $("#searchByTrainer").val();
+			const keyTag = $("#searchByTag").val();
+			
+			if ((keyTitle != "" || keyName != "") && keyTag != "") alert("태그는 다른 조건과 함께 검색할 수 없습니다.");
+			else {
+				const form = document.getElementById("searchCourseForm");
+				
+				form.action = "/home";
+				form.method = "POST";
+				form.submit();
+			}
+		});
+		
+		$("#searchReset").on("click", (event) => {
+			event.preventDefault();
+			
+			if (confirm("검색을 초기화 하시겠습니까?")) {
+				location.href = "<%= request.getContextPath() %>/home";
+			}
+		});
+	});
+</script>
