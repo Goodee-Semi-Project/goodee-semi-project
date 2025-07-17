@@ -267,21 +267,21 @@ const baseSelect = document.getElementById('course-title'); // 기준 select
 const targetSelect1 = document.getElementById('account-name');
 const targetSelect2 = document.getElementById('pet-name');
 
+let courseNo;
+
 baseSelect.addEventListener('change', function() {
 	const form = document.querySelector('#modal-form');
 	form.querySelector('#pet-name').disabled = true;
 	
-	const courseNo = this.value;
+	courseNo = this.value;
 	console.log("courseNo: " + courseNo);
 	
 	if (this.value) { // 기준 select에 값이 선택되었는지 확인
-        // if(targetSelect1.value = '') = 
-		
-		targetSelect1.disabled = false;
+        targetSelect1.disabled = false;
 		
 		const accountName = document.getElementById('account-name');
 		
-		// TODO 비동기통신하여 option에 데이터 뿌리기
+		// 비동기통신하여 option에 데이터 뿌리기
 		$.ajax({
 			url: '/schedule/input',
 			type: 'get',
@@ -293,7 +293,7 @@ baseSelect.addEventListener('change', function() {
 			success: function (data) {
 			    console.log("성공: ", data);
                 
-                html = '<option value="" disabled selected>반려견명 선택</option>';
+                html = '<option value="" disabled selected>회원명 선택</option>';
 				data.jsonArr.forEach(json => {
                     html += `<option value="${json.accountNo}">${json.accountName}</option>`;
                 });
@@ -311,8 +311,38 @@ baseSelect.addEventListener('change', function() {
 });
 
 targetSelect1.addEventListener('change', function() {
-    if (this.value) { // 기준 select에 값이 선택되었는지 확인
+	const accountNo = this.value;
+	console.log("accountNo: " + accountNo);
+	
+	if (this.value) { // 기준 select에 값이 선택되었는지 확인
         targetSelect2.disabled = false;
+		
+		const petName = document.getElementById('pet-name');
+		
+		// 비동기통신하여 option에 데이터 뿌리기
+		$.ajax({
+			url: '/schedule/input',
+			type: 'get',
+			data: {
+				valueType: "accountNo",
+				courseNo: courseNo,
+				accountNo: accountNo
+			},
+			dataType: 'json',
+			success: function (data) {
+			    console.log("성공: ", data);
+		        
+		        html = '<option value="" disabled selected>반려견명 선택</option>';
+				data.jsonArr.forEach(json => {
+		            html += `<option value="${json.petNo}">${json.petName}</option>`;
+		        });
+				
+				petName.innerHTML = html;
+			},
+			error: function (err) {
+			    console.log("에러: ", err);
+			}
+		});
     } else {
         targetSelect2.disabled = true;
         targetSelect2.value = ''; // 값 초기화
