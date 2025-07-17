@@ -24,17 +24,6 @@ public class ScheduleServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String valueType = request.getParameter("valueType");
-		String value = request.getParameter("value");
-		
-		// TODO 마저 구현
-		switch (valueType) {
-			case "courseNo" -> service.selectAccountList(value);
-			case "accountNo" -> service.selectPetList(value);
-		}
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1. 로그인한 사용자만 접근을 허용하는 로직
 		HttpSession session = request.getSession(false);
 		if (session == null) {
@@ -59,6 +48,10 @@ public class ScheduleServlet extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_trainer.jsp").forward(request, response);
 		}
 		else request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_member.jsp").forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }

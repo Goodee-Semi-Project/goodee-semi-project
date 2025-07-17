@@ -137,6 +137,8 @@ function showEventModal(mode, info) {
     
     // 2. 폼 초기화
     form.reset(); // reset(): 요소의 기본값 복원
+	form.querySelector('#account-name').disabled = true;
+	form.querySelector('#pet-name').disabled = true;
 
 	// 3. 일정 등록 / 수정
     switch (mode) {
@@ -266,25 +268,37 @@ const targetSelect1 = document.getElementById('account-name');
 const targetSelect2 = document.getElementById('pet-name');
 
 baseSelect.addEventListener('change', function() {
+	const form = document.querySelector('#modal-form');
+	form.querySelector('#pet-name').disabled = true;
+	
 	const courseNo = this.value;
 	console.log("courseNo: " + courseNo);
 	
 	if (this.value) { // 기준 select에 값이 선택되었는지 확인
-        targetSelect1.disabled = false;
+        // if(targetSelect1.value = '') = 
 		
+		targetSelect1.disabled = false;
+		
+		const accountName = document.getElementById('account-name');
 		
 		// TODO 비동기통신하여 option에 데이터 뿌리기
 		$.ajax({
-			url: '/schedule',
+			url: '/schedule/input',
 			type: 'get',
 			data: {
 				valueType: "courseNo",
-				value: courseNo
+				courseNo: courseNo
 			},
 			dataType: 'json',
 			success: function (data) {
 			    console.log("성공: ", data);
-			    // option에 데이터 뿌리기
+                
+                html = '<option value="" disabled selected>반려견명 선택</option>';
+				data.jsonArr.forEach(json => {
+                    html += `<option value="${json.accountNo}">${json.accountName}</option>`;
+                });
+				
+				accountName.innerHTML = html;
 			},
 			error: function (err) {
 			    console.log("에러: ", err);

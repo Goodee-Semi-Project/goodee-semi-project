@@ -64,9 +64,6 @@
 						<label for="accountName">회원명 <span>*</span></label>
 						<select id="account-name" name="accountName" required disabled>
 							<option value="" disabled selected>회원명 선택</option>
-						    <option value="김철수">김철수</option>
-						    <option value="이영희">이영희</option>
-						    <option value="박민수">박민수</option>
 						</select>
 					</div>
 					<div class="form-group">
