@@ -40,6 +40,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
             dataType: 'json',
             success: function (data) {
 				console.log("성공: ", data);
+				eventDatas = data;
 				successCallback(data);
             },
             error: function (err) {
@@ -183,33 +184,31 @@ function buildDateTime(date, timeStr) {
 // 이벤트 생성
 function createEvent(eventData) { // eventData: 모달 form에서 받아온 데이터
     // TODO jsp의 모달에 데이터 뿌리고 아래의 기능 구현
-    // 1. 데이터를 서버로 전송
-    $.ajax({
+	// 1. 데이터를 서버로 전송
+	$.ajax({
         url: '/schedule/create',
         type: 'post',
         data: {
-            start: fetchInfo.startStr,
-            end: fetchInfo.endStr
+            accountNo: eventData.accountName,
+            courseNo: eventData.courseTitle,
+            petNo: eventData.petName,
+            start: eventData.start,
+            end: eventData.end,
         },
         dataType: 'json',
         success: function (data) {
             console.log("성공: ", data);
-            successCallback(data);
+
+			// 2. 임시데이터 저장소에 추가 (굳이 해야되나?)
+			eventDatas.push(data);
+
+			// 3. 추가된 이벤트를 캘린더에 반영
+			calendar.addEvent(data);
         },
         error: function (err) {
             console.log("에러: ", err);
         }
     });
-
-    // 2. 임시데이터 저장소에 추가 (굳이 해야되나?)
-    eventDatas.push(newEvent);
-    
-    // 3. 추가된 이벤트를 캘린더에 반영
-    calendar.addEvent(newEvent);
-    
-    console.log('이벤트 생성:', newEvent);
-    
-    return newEvent;
 }
 
 // 이벤트 수정
@@ -357,17 +356,22 @@ $(document).on('click', '#btn-cancel-event', function() {
 $(document).on('click', '#btn-add-event', function() {
     const form = document.getElementById('modal-form');
     const formData = new FormData(form);
+	console.log('[저장 클릭] formData: ');
+	for (const x of formData.entries()) {
+	 console.log(x);
+	};
     const modal = document.getElementById('event-modal-box');
     const eventId = modal.getAttribute('data-event-id');
-    
+  	console.log('eventId: ', eventId);
+	
     if (!form.checkValidity()) {
         form.reportValidity();
         return;
     }
     
 	// 시간 검증
-    const startTime = formData.get('startTime');
-    const endTime = formData.get('endTime');
+    const startTime = formData.get('start');
+    const endTime = formData.get('end');
     
     if (!startTime || !endTime) {
         alert('시작 시간과 종료 시간을 입력해주세요.');
@@ -380,18 +384,21 @@ $(document).on('click', '#btn-add-event', function() {
     }
 	
 	const eventData = {
-	    courseName: formData.get('courseName'),
-	    memberName: formData.get('memberName'),
+	    courseTitle: formData.get('courseTitle'),
+	    accountName: formData.get('accountName'),
 	    petName: formData.get('petName'),
 	    start: buildDateTime(selectedDate, startTime),
 	    end: buildDateTime(selectedDate, endTime)
 	};
     
+	console.log('eventData 받아오기 완료: ', eventData);
+	
     if (eventId) {
         // 수정
         updateEvent(eventId, eventData);
     } else {
         // 생성
+		console.log('createEvent() 실행 시작');
         createEvent(eventData);
     }
     
