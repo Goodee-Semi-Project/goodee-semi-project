@@ -41,14 +41,26 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 	const vid = document.querySelector('#preVideo');
-	vid.ontimeupdate = function() {
-		// console.log(vid.currentTime);
+	let lastTime = 0;
+	
+	vid.onseeked = function() {
+		if (vid.currentTime > lastTime) {
+			vid.currentTime = lastTime;
+		}
 	}
 	
+	vid.onseeking = function() {
+		if (vid.currentTime > lastTime) {
+			vid.currentTime = lastTime;
+		}
+	}
 	
-	function button() {
-		console.log(vid.readyState);
-		vid.currentTime += 10;
+	vid.ontimeupdate  = function() {
+		if (vid.currentTime > lastTime + 1) {
+			vid.currentTime = lastTime;
+		} else if (vid.currentTime > lastTime) {
+			lastTime = vid.currentTime;
+		}
 	}
 </script>
 </body>
