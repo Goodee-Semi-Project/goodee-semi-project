@@ -16,7 +16,11 @@ public class AttendDetailServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		int petNo = Integer.parseInt(request.getParameter("no"));
+		System.out.println(petNo);
 		
+		request.getRequestDispatcher("/WEB-INF/views/attend/attendDetail.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
