@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.PreProgressMapper">
+	
+	<insert id="insertOneWithAccountNo" parameterType="com.goodee.semi.dto.PreProgress"
+		useGeneratedKeys="true" keyProperty="progNo">
+		INSERT INTO pre_progress (`pre_no` ,`class_no` ,`watch_len` ,`pre_prog`)
+		VALUE (
+			#{ preNo }
+			,(
+				SELECT class_no
+				FROM class AS c
+				JOIN (
+					SELECT pet_no
+					FROM pet
+					WHERE account_no = #{ accountNo }
+				) AS p ON c.pet_no = p.pet_no
+				JOIN (
+					SELECT course_no
+					FROM pre_course
+					WHERE pre_no = #{ preNo }
+				) AS co ON c.course_no = co.course_no
+			)
+			,#{ watchLen }
+			,#{ preProg }
+		)
+		
+	</insert>
+</mapper>
