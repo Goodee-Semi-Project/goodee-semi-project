@@ -24,6 +24,7 @@
 	<section>
 		<div>
 			<c:forEach var="c" items="${ courseList }" >
+				<p>반려견: ${ c.name }</p>
 				<p>코스명: ${ c.title }</p>
 				<ul>
 					<c:forEach var="p" items="${ preCourseMap.get(c.courseNo) }">
