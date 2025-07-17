@@ -70,9 +70,6 @@
 						<label for="petName">반려견명 <span>*</span></label>
 						<select id="pet-name" name="petName" required disabled>
 							<option value="" disabled selected>반려견명 선택</option>
-						    <option value="멍멍이">멍멍이</option>
-						    <option value="바둑이">바둑이</option>
-						    <option value="뽀삐">뽀삐</option>	
 						</select>
 					</div>
 					<div class="form-group">
