@@ -34,5 +34,13 @@ public class EventDao implements EventMapper {
 		session.close();
 		return list;
 	}
+	
+	@Override
+	public List<Event> selectPetList(Map<String, Integer> map) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Event> list = session.selectList("com.goodee.semi.mapper.EventMapper.selectPetList", map);
+		session.close();
+		return list;
+	}
 
 }

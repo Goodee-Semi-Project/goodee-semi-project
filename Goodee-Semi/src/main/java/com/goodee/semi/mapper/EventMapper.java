@@ -10,4 +10,5 @@ public interface EventMapper {
 	List<Event> selectEventList(Map<String, String> map);
 	List<Event> selectCourseList(int accountNo);
 	List<Event> selectAccountList(int accountNo);
+	List<Event> selectPetList(Map<String, Integer> map);
 }
