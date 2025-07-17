@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `course` (
 	`course_no` INT AUTO_INCREMENT NOT NULL,
 	`account_no` INT NOT NULL,
 	`title` VARCHAR(255) NOT NULL,
-	`sub_title` VARCHAR(20) NOT NULL,
+	`sub_title` VARCHAR(255) NOT NULL,
 	`object` TEXT NOT NULL,
 	`total_step` TINYINT NOT NULL,
 	`capacity` TINYINT NOT NULL,
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `pre_progress` (
 
 CREATE TABLE IF NOT EXISTS `hashtag` (
 	`tag_no` INT AUTO_INCREMENT NOT NULL,
-	`tag_text` VARCHAR(10) NOT NULL,
+	`tag_text` VARCHAR(10) UNIQUE NOT NULL,
 	PRIMARY KEY (`tag_no`)
 );
 

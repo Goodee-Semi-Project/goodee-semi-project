@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.dto.Attach;
+import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Pet;
 
 public interface PetMapper {
@@ -12,6 +13,7 @@ public interface PetMapper {
 	 Pet selectPetOne(int petNo);
 	 int selectPetCount(Pet param);
 	 List<Pet> selectAllPetByCourseNo(String courseNo);
+	 List<Pet> selectMyPetInCourse(Course key);
 	 int updatePet(SqlSession session, Pet param);
 	 int updateAttach(SqlSession session, Attach param);
 	 int deletePet(SqlSession session, int petNo);

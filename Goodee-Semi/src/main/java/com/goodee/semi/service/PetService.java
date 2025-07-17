@@ -5,12 +5,16 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dao.AttachDao;
 import com.goodee.semi.dao.PetDao;
+import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Attach;
+import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Pet;
 
 public class PetService {
-private PetDao dao = new PetDao();
+	private PetDao dao = new PetDao();
+	private AttachDao attachDao = new AttachDao();
 	
 	public List<Pet> selectPetList(Pet param) {
 		return dao.selectPetList(param);
@@ -111,6 +115,16 @@ private PetDao dao = new PetDao();
 		}
 		
 		return result;
+	}
+
+	public List<Pet> selectMyPetInCourse(Course course, AccountDetail account) {
+		Course key = new Course();
+		key.setCourseNo(course.getCourseNo());
+		key.setAccountNo(account.getAccountNo());
+		
+		List<Pet> petList = dao.selectMyPetInCourse(key);
+		
+		return petList;
 	}
 	
 	public int countTotalPetNo() {
