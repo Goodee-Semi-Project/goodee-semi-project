@@ -48,4 +48,13 @@
 		FROM course
 		WHERE account_no = #{accountNo};
 	</select>
+	
+	<select id="selectAccountList" parameterType="_int" resultMap="eventResultMap">
+		SELECT a.account_no, a.account_name
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN pet p ON (p.pet_no = c.pet_no)
+		JOIN account a ON (p.account_no = a.account_no)
+		WHERE co.course_no = #{courseNo};
+	</select>
 </mapper>
