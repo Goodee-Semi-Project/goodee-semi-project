@@ -8,8 +8,26 @@
 	<title>수강확인증</title>
 	
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
-</head>
 	
+	<style>
+		@media print {
+	    body * {
+	        visibility: hidden;
+	    }
+	    
+	    #printableArea, #printableArea * {
+	        visibility: visible;
+	    }
+	    
+	    #printableArea {
+	        position: fixed;
+	        left: 25%;
+	        right: 25%;
+	        top: 0;
+	    }
+		}
+	</style>
+</head>
 
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -18,23 +36,82 @@
   	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
   </h3>
   
+  <!-- 모달 창 -->
+	<div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="printModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 700px;">
+	    <div class="modal-content">
+	      <div class="modal-header border-bottom-0">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body text-center">
+	        <h3 class="tab-title mb-2">수강확인증 발급</h3>
+	        <p>다음의 이미지 형태로 출력됩니다.</p>
+	        <div class="col-12" style="background-color: gray; padding: 0; display: flex; justify-content: center;">
+	        	<div style="width: 80%; margin: 15px auto;">
+	        		<div id="printableArea">
+	        			<div style="position: relative;">
+	        				<img src="/static/images/cert/cert_enroll.png" style="width: 100%;" alt="cert_enroll">
+	        				<div style="position: absolute; top: 11%; left: 28%;">
+	        					<p style="color: black; font-size: 18px; margin-bottom: 2px; text-align: left;">이것이 앱솔루트의 힘입니다</p>
+	        					<p style="color: black; font-size: 18px; margin-bottom: 2px; margin-left: 90px; text-align: left;">테스트</p>
+	        					<p style="color: black; font-size: 18px; margin-bottom: 2px; margin-left: 90px; text-align: left;">테스트</p>
+										<p style="color: black; font-size: 18px; margin-bottom: 2px; text-align: left;">이것이 앱솔루트의 힘입니다</p>
+	        				</div>
+	        				<div style="position: absolute; bottom: 11%; left: 0; right: 0;">
+	        					<p style="color: black; font-size: 15px;">2025년 7월 17일</p>
+	        				</div>
+	        				<div style="position: absolute; bottom: 5%; right: 10%;">
+	        					<p style="color: black; font-size: 15px;">훈련사 이몽룡</p>
+	        				</div>
+	        				<div style="position: absolute; bottom: 10px; right: 5%;">
+	        					<img src="/static/images/cert/sign.png" style="width: 100px; opacity: 0.5;" alt="sign">
+	        				</div>
+	        			</div>
+	        		</div>
+	        	</div>
+	        </div>
+	      </div>
+	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
+	        <button type="button" class="btn btn-primary" style="padding: 5px 10px;" onclick="printCert()">출력</button>
+	        <button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;" data-dismiss="modal">취소</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 모달 창 종료 -->
+  
   <h3 class="tab-title mb-4 text-center">수강확인증 발급</h3>
   <c:forEach var="course" items="${ courseList }" varStatus="index">
 		<div class="container my-2" style="border: 1px solid black; border-radius: 10px; overflow: hidden; padding: 0; display: flex;">
 			<div class="col-4" style="padding: 0;">
 			 <img style="width: 200px; height: 50px; object-fit: cover;" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
 			</div>
-			<div class="col-4" style="display: flex; align-items: center;">
+			<div class="col-3" style="display: flex; align-items: center;">
 				<span style="font-size: 18px;">${ course.title }</span>
 			</div>
-			<div class="col-4" style="display: flex; justify-content: flex-end; align-items: center;">
-				<button type="button" class="btn btn-outline-secondary" style="height: 30px; padding: 2px 5px;">다운로드</button>
+			<div class="col-2" style="display:flex; align-items:center;">
+				<img class="rounded-circle" style="width: 40px; display: inline-block; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.myPetInCourse.attachNo }' />" alt="img">
+		   	<span class="ml-1" style="font-size: 15px;">${ course.myPetInCourse.petName }</span>
+			</div>
+			<div class="col-3" style="display: flex; justify-content: flex-end; align-items: center;">
+				<button type="button" class="btn btn-outline-secondary" style="height: 30px; padding: 2px 5px;" onclick="openPrintModal()" >다운로드</button>
 			</div>
 		</div>
 	</c:forEach>
 
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	<script>
+		function openPrintModal() {
+			$("#printModal").modal("show");
+		}
+		
+		function printCert() {
+			window.print();
+		}
+	</script>
 </body>
 
 </html>
