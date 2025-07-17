@@ -47,7 +47,9 @@
 	<select id="selectCourseList" parameterType="_int" resultMap="eventResultMap">
 		SELECT course_no, title
 		FROM course
-		WHERE account_no = #{accountNo};
+		<where>
+			account_no = #{accountNo}
+		</where>
 	</select>
 	
 	<select id="selectAccountList" parameterType="_int" resultMap="eventResultMap">
@@ -56,7 +58,49 @@
 		JOIN class c ON (co.course_no = c.course_no)
 		JOIN pet p ON (p.pet_no = c.pet_no)
 		JOIN account a ON (p.account_no = a.account_no)
-		WHERE co.course_no = #{courseNo};
+		<where>
+			co.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<select id="selectPetList" parameterType="hashmap" resultMap="eventResultMap">
+		SELECT p.pet_no, p.pet_name
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN pet p ON (p.pet_no = c.pet_no)
+		JOIN account a ON (p.account_no = a.account_no)
+		<where>
+			co.course_no = #{courseNo}
+			AND a.account_no = #{accountNo}
+		</where>
+	</select>
+	
+	<select id="selectClassNo" parameterType="com.goodee.semi.dto.Event" resultType="_int">
+		SELECT c.class_no
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN Pet p ON (c.pet_no = p.pet_no)
+		<where>
+			p.pet_no = #{petNo}
+			AND co.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.goodee.semi.dto.Event" useGeneratedKeys="true" keyProperty="schedNo">
+		INSERT INTO schedule (class_no, sched_step, sched_date, sched_start, sched_end)
+		VALUES (#{classNo}, #{schedStep}, #{schedDate}, #{schedStart}, #{schedEnd});
+	</insert>
+	
+	<select id="selectEvent" parameterType="_int" resultMap="eventResultMap">
+		SELECT a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
+		FROM account a
+		JOIN pet p ON (a.account_no = p.account_no)
+		JOIN class c ON (p.pet_no = c.pet_no)
+		JOIN schedule s ON (c.class_no = s.class_no)
+		JOIN course co ON (c.course_no = co.course_no)
+		<where>
+			s.sched_no = #{schedNo}		
+		</where>
 	</select>
 	
 </mapper>
