@@ -17,13 +17,13 @@ import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.CourseService;
 import com.goodee.semi.service.PetService;
 
-@WebServlet("/myCourse/list")
-public class MyCourseListServlet extends HttpServlet {
+@WebServlet("/myCourse/certEnroll")
+public class MyCourseCertEnrollServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CourseService courseService = new CourseService();
 	private PetService petService = new PetService();
        
-  public MyCourseListServlet() {
+  public MyCourseCertEnrollServlet() {
     super();
   }
 
@@ -32,37 +32,25 @@ public class MyCourseListServlet extends HttpServlet {
 		AccountDetail account = (AccountDetail) session.getAttribute("loginAccount");
 		
 		List<Course> courseList = courseService.selectMyCourse(account);
+		List<Course> myCourseList = new ArrayList<Course>();
 		
-		if (account.getAuthor() == 1) {
-			for (Course course : courseList) {
-				course.setPetInCourseCount(petService.selectAllPetByCourseNo(String.valueOf(course.getCourseNo())).size());
-			}
+		for (Course course : courseList) {
+			List<Pet> myPetInCourse = petService.selectMyPetInCourse(course, account);
 			
-			request.setAttribute("courseList", courseList);
-		}
-		
-		if (account.getAuthor() == 2) {
-			List<Course> myCourseList = new ArrayList<Course>();
-			
-			for (Course course : courseList) {
-				List<Pet> myPetInCourse = petService.selectMyPetInCourse(course, account);
+			for (Pet pet : myPetInCourse) {
+				Course courseByPet = courseService.selectCourseOne(String.valueOf(course.getCourseNo()));
+				courseByPet.setMyPetInCourse(pet);
 				
-				for (Pet pet : myPetInCourse) {
-					Course courseByPet = courseService.selectCourseOne(String.valueOf(course.getCourseNo()));
-					courseByPet.setMyPetInCourse(pet);
-					
-					myCourseList.add(courseByPet);
-				}
+				myCourseList.add(courseByPet);
 			}
-			
-			request.setAttribute("courseList", myCourseList);
 		}
 		
-		request.getRequestDispatcher("/WEB-INF/views/myCourse/list.jsp").forward(request, response);
+		request.setAttribute("courseList", myCourseList);
+		request.getRequestDispatcher("/WEB-INF/views/myCourse/certEnroll.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		doGet(request, response);
 	}
 
 }

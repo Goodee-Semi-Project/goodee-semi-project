@@ -8,11 +8,14 @@ import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
 import com.goodee.semi.dto.PetClass;
+import com.goodee.semi.dto.Tag;
 
 public interface CourseMapper {
 	Course selectCourseOne(String courseNo);
 	List<Course> selectCourse(Course course);
 	List<Course> selectMyCourse(AccountDetail account);
+	List<String> selectCourseNoByKey(Tag tag);
+	int updateCourse(Course course);
 	Attach selectThumbAttach(Course course);
 	Attach selectInputAttach(Course course);
 	int insertCourse(Course course);
@@ -31,4 +34,9 @@ public interface CourseMapper {
 	int deleteEnroll(Enroll enroll);
 	int insertPetClass(PetClass petClass);
 	int countTotalClassNo();
+	Tag selectTagByText(Tag tag);
+	List<Tag> selectCourseTag(Course course);
+	int insertTag(Tag tag);
+	int insertCourseTag(Tag tag);
+	int deleteCourseTag(Course course);
 }

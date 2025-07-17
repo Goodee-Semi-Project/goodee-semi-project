@@ -38,6 +38,12 @@
 		<result property="accountNo" column="account_no" />
 	</resultMap>
 	
+	<resultMap id="tagResultMap" type="com.goodee.semi.dto.Tag">
+		<result property="tagNo" column="tag_no" />
+		<result property="tagText" column="tag_text" />
+		<result property="courseNo" column="course_no" />
+	</resultMap>
+	
 	<select id="selectCourseOne" parameterType="string" resultMap="courseResultMap">
 		SELECT
 				C.course_no
@@ -108,6 +114,19 @@
 		</where>
 	</select>
 	
+	<update id="updateCourse" parameterType="com.goodee.semi.dto.Course">
+		UPDATE course
+		SET 
+				title = #{title}
+			,	sub_title = #{subTitle}
+			, object = #{object}
+			, total_step = #{totalStep}
+			, capacity = #{capacity}
+		<where>
+			course_no = #{courseNo}
+		</where>
+	</update>
+	
 	<select id="selectThumbAttach" parameterType="com.goodee.semi.dto.Course" resultMap="attachResultMap">
 		SELECT * FROM attachment
 		<where>
@@ -120,6 +139,8 @@
 		<where>
 			type_no = 3 AND pk_no = #{courseNo} AND NOT attach_no = #{thumb}
 		</where>
+		ORDER BY attach_no DESC
+		LIMIT 1
 	</select>
 
 	<insert id="insertCourse" parameterType="com.goodee.semi.dto.Course" useGeneratedKeys="true" keyProperty="courseNo">
@@ -239,4 +260,48 @@
 		SELECT COUNT(course_no)
 		FROM course
 	</select>
+
+	<select id="selectTagByText" parameterType="com.goodee.semi.dto.Tag" resultMap="tagResultMap">
+		SELECT * FROM hashtag
+		<where>
+			tag_text = #{tagText}
+		</where>
+	</select>
+	
+	<select id="selectCourseTag" parameterType="com.goodee.semi.dto.Course" resultMap="tagResultMap">
+		SELECT * FROM hashtag H
+		INNER JOIN tag_course TC ON H.tag_no = TC.tag_no
+		<where>
+			TC.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<select id="selectCourseNoByKey" parameterType="com.goodee.semi.dto.Tag" resultType="string">
+		SELECT course_no FROM hashtag H
+		INNER JOIN tag_course TC ON H.tag_no = TC.tag_no
+		<where>
+			<foreach collection="keyTag" item="tag" open="H.tag_text IN (" separator="," close=")">
+				#{tag}
+			</foreach>
+		</where>
+		GROUP BY course_no
+		HAVING COUNT(DISTINCT tag_text) = #{totalTags}
+	</select>
+	
+	<insert id="insertTag" parameterType="com.goodee.semi.dto.Tag" useGeneratedKeys="true" keyProperty="tagNo">
+		INSERT IGNORE INTO hashtag (tag_text)
+		VALUE (#{tagText})
+	</insert>
+	
+	<insert id="insertCourseTag" parameterType="com.goodee.semi.dto.Tag">
+		INSERT INTO tag_course (tag_no, course_no)
+		VALUE (#{tagNo}, #{courseNo})
+	</insert>
+	
+	<delete id="deleteCourseTag" parameterType="com.goodee.semi.dto.Course">
+		DELETE FROM tag_course
+		<where>
+			course_no = #{courseNo}
+		</where>
+	</delete>
 </mapper>
