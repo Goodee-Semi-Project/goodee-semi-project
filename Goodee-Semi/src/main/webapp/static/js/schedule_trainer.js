@@ -3,33 +3,8 @@ const calendarEl = document.querySelector('#calendar');
 // 선택된 날짜 저장 변수
 let selectedDate = null;
 
-// 임시 데이터 저장소 (실제로는 서버 API와 연동)
-let eventDatas = [
-    {
-        id: '1',
-        title: "회의",
-        start: '2025-07-01T10:00:00',
-        end: '2025-07-01T11:00:00',
-        backgroundColor: '#3788d8',
-		extendedProps: {
-			courseName: 'sdf'
-		}
-    },
-    {
-        id: '2',
-        title: "점심 약속",
-        start: '2025-07-02T12:00:00',
-        end: '2025-07-02T13:00:00',
-        backgroundColor: '#28a745'
-    },
-    {
-        id: '3',
-        title: "프로젝트 발표",
-        start: '2025-07-03',
-        backgroundColor: '#ffc107',
-        textColor: '#000'
-    }
-];
+// DB에서 받아온 일정 데이터들을 담는 변수
+let eventDatas = [];
 
 const calendar = new FullCalendar.Calendar(calendarEl, {
 	timeZone: 'Asia/Seoul', // 기준시간 설정
@@ -43,7 +18,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
  	editable: true, // 드래그해서 수정 가능한지
 	selectable: true,
 	selectMirror: true,
-	dayMaxEvents: true, // +more 표시 전 최대 이벤트 갯수, default: false | true: 셀 높이에 의해 결정, false: 일정만큼 셀 높이 확장
+	dayMaxEvents: false, // +more 표시 전 최대 이벤트 갯수, default: false | true: 셀 높이에 의해 결정, false: 일정만큼 셀 높이 확장
 	
     // 이벤트 데이터 로드
     events: function(fetchInfo, successCallback, failureCallback) {
@@ -55,7 +30,6 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 		console.log(successCallback);
 		console.log(failureCallback);
 		
-        // TODO 아래의 ajax에 응답해주는 서블릿 구현
 		$.ajax({
             url: '/schedule/list',
             type: 'post',
@@ -65,22 +39,21 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
             },
             dataType: 'json',
             success: function (data) {
-				console.log("뭐라도 뱉어봐");
 				console.log("성공: ", data);
+				successCallback(data);
             },
             error: function (err) {
-				console.log("뭐라도 뱉어봐");
 				console.log("에러: ", err);
             }
 		});
 		
-		successCallback(eventDatas);
 		console.log('이벤트 데이터 로드 완료');
     },
 
     // 날짜 선택 시 새 이벤트 생성
     select: function(selectionInfo) {
-		selectedDate = selectionInfo.startStr.split('T')[0]; // 선택된 날짜 저장
+        console.log("[날짜 선택] 받아온 정보: ", selectionInfo);
+		selectedDate = selectionInfo.startStr.split('T')[0]; // 선택된 날짜 저장 (ex. 0000-00-00)
         showEventModal('create', selectionInfo);
     },
 
@@ -89,6 +62,69 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 		selectedDate = clickInfo.event.startStr.split('T')[0]; // 이벤트 날짜 저장
         showEventModal('edit', clickInfo);
     },
+	
+	// 마우스 위치에 툴팁 표시
+	eventDidMount: function(info) {
+	    // 기존 시간 표시 요소 삭제
+		const oriTimeDiv = document.querySelector('.fc-event-time');
+		oriTimeDiv.remove();
+		
+		let tooltipText = '';
+	    let displayText = '';
+	    
+	    // 시간 정보 생성 (timezone 고려)
+	    if (info.event.start && !info.event.allDay) {
+	        // 한국 시간으로 변환
+	        const startTime = new Date(info.event.startStr).toLocaleTimeString('ko-KR', {
+	            hour: '2-digit',
+	            minute: '2-digit',
+	            hour12: false,
+	            timeZone: 'Asia/Seoul'
+	        });
+	        
+	        if (info.event.end) {
+	            const endTime = new Date(info.event.endStr).toLocaleTimeString('ko-KR', {
+	                hour: '2-digit',
+	                minute: '2-digit',
+	                hour12: false,
+	                timeZone: 'Asia/Seoul'
+	            });
+	            displayText = `${startTime} - ${endTime}`;
+	        } else {
+	            displayText = startTime;
+	        }
+	    }
+	    
+	    // 캘린더 표시용 HTML 생성
+	    const eventTitle = info.event.title;
+	    let htmlContent = '';
+	    
+	    if (displayText) {
+	        htmlContent = `<div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div><div style="font-size: 12px; line-height: 1.2;">${eventTitle}</div>`;
+	        tooltipText = displayText + '\n' + eventTitle;
+	    } else {
+	        htmlContent = `<div style="font-size: 12px;">${eventTitle}</div>`;
+	        tooltipText = eventTitle;
+	    }
+	    
+	    // 기존 title 속성 제거 (중복 방지)
+	    info.el.removeAttribute('title');
+	    
+	    // 이벤트 요소의 내용 수정
+	    const titleElement = info.el.querySelector('.fc-event-title');
+	    if (titleElement) {
+	        titleElement.innerHTML = htmlContent;
+	    }
+	    
+	    // 전체 이벤트 요소의 내용을 직접 수정 (더 확실한 방법)
+	    const eventMain = info.el.querySelector('.fc-event-main');
+	    if (eventMain) {
+	        eventMain.innerHTML = htmlContent;
+	    }
+	    
+	    // 새로운 툴팁용 title 속성 추가
+	    info.el.setAttribute('title', tooltipText);
+	}
 });
 
 // 모달 표시 함수
@@ -100,32 +136,34 @@ function showEventModal(mode, info) {
     const deleteBtn = document.querySelector('#btn-delete-event');
     
     // 2. 폼 초기화
-    // reset(): 요소의 기본값 복원
-    form.reset();
+    form.reset(); // reset(): 요소의 기본값 복원
 
-	// 3-1. 일정 등록
-    if (mode === 'create') {
-        modalTitle.textContent = '일정 등록';
-        deleteBtn.style.display = 'none';
-		modal.removeAttribute('data-event-id');
-    // 3-2. 일정 수정
-    } else if (mode === 'edit') {
-        modalTitle.textContent = '일정 수정';
-        deleteBtn.style.display = 'inline-block';
-        
-        // 기존의 일정 가져옴
-        const event = info.event;
-        
-		console.log(info);
-        // 기존의 일정에 담긴 데이터를 표시
-        document.querySelector('#course-name').value = event.extendedProps.courseName;
-        document.querySelector('#member-name').value = event.extendedProps.memberName;
-        document.querySelector('#pet-name').value = event.extendedProps.petName;
-        document.querySelector('#start-time').value = event.start? event.start.toTimeString().substring(0, 5) : '';
-        document.querySelector('#end-time').value = event.end? event.end.toTimeString().substring(0, 5) : '';
-        
-        // 현재 편집 중인 이벤트 ID 저장
-        modal.setAttribute('data-event-id', event.id);
+	// 3. 일정 등록 / 수정
+    switch (mode) {
+        case 'create': // 일정 등록
+            modalTitle.textContent = '일정 등록';
+            deleteBtn.style.display = 'none';
+            // modal.removeAttribute('data-event-id');
+            break;
+    
+        case 'edit': // 일정 수정
+            modalTitle.textContent = '일정 수정';
+            deleteBtn.style.display = 'inline-block';
+            
+            // 기존의 일정 정보 가져옴
+            console.log("[일정 정보] info: ", info);
+            console.log("[일정 정보] info.event: ", info.event);
+            const event = info.event;
+            
+            // 기존의 일정에 담긴 데이터를 표시
+            document.querySelector('#course-title').value = event.extendedProps.courseTitle;
+            document.querySelector('#account-name').value = event.extendedProps.accountName;
+            document.querySelector('#pet-name').value = event.extendedProps.petName;
+            document.querySelector('#start').value = event.startStr? event.startStr.split('T')[1] : "";
+            document.querySelector('#end').value = event.endStr? event.endStr.split('T')[1] : "";
+
+            // 현재 편집 중인 이벤트 ID 저장
+            // modal.setAttribute('data-event-id', event.id);
     }
     
     modal.style.display = 'flex';
@@ -133,34 +171,40 @@ function showEventModal(mode, info) {
 
 // 날짜 + 시간 합치기 함수
 function buildDateTime(date, timeStr) {
-  const [h, m] = timeStr.split(':').map(Number);
-  const dt = new Date(date);
-  dt.setHours(h, m, 0, 0);
-  return dt.toISOString();
+    const [h, m] = timeStr.split(':').map(String);
+//   const dt = new Date(date);
+//   dt.setHours(h, m, 0, 0);
+//   return dt.toISOString();
+    return date + 'T' + h + ':' + m;
 }
 
 // 이벤트 생성
-function createEvent(eventData) {
-    const newId = Date.now().toString();
-    const newEvent = {
-        title: `(${eventData.courseName}) ${eventData.memberName}-${eventData.petName}`,
-		id: newId,
-        start: eventData.start,
-        end: eventData.end,
-		extendedProps: {
-			courseName: eventData.courseName,
-			memberName: eventData.memberName,
-			petName: eventData.petName,
-		}
-    };
-    
-    // 임시데이터 저장소에 추가
+function createEvent(eventData) { // eventData: 모달 form에서 받아온 데이터
+    // TODO jsp의 모달에 데이터 뿌리고 아래의 기능 구현
+    // 1. 데이터를 서버로 전송
+    $.ajax({
+        url: '/schedule/create',
+        type: 'post',
+        data: {
+            start: fetchInfo.startStr,
+            end: fetchInfo.endStr
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log("성공: ", data);
+            successCallback(data);
+        },
+        error: function (err) {
+            console.log("에러: ", err);
+        }
+    });
+
+    // 2. 임시데이터 저장소에 추가 (굳이 해야되나?)
     eventDatas.push(newEvent);
     
-    // 추가된 이벤트를 캘린더에 반영
+    // 3. 추가된 이벤트를 캘린더에 반영
     calendar.addEvent(newEvent);
     
-    // TODO 서버로 데이터 전송
     console.log('이벤트 생성:', newEvent);
     
     return newEvent;
@@ -215,6 +259,51 @@ function deleteEvent(eventId) {
         console.log('이벤트 삭제:', eventId);
     }
 }
+
+// 교육과정, 회원, 반려견 input 검증
+const baseSelect = document.getElementById('course-title'); // 기준 select
+const targetSelect1 = document.getElementById('account-name');
+const targetSelect2 = document.getElementById('pet-name');
+
+baseSelect.addEventListener('change', function() {
+	const courseNo = this.value;
+	console.log("courseNo: " + courseNo);
+	
+	if (this.value) { // 기준 select에 값이 선택되었는지 확인
+        targetSelect1.disabled = false;
+		
+		
+		// TODO 비동기통신하여 option에 데이터 뿌리기
+		$.ajax({
+			url: '/schedule',
+			type: 'get',
+			data: {
+				valueType: "courseNo",
+				value: courseNo
+			},
+			dataType: 'json',
+			success: function (data) {
+			    console.log("성공: ", data);
+			    // option에 데이터 뿌리기
+			},
+			error: function (err) {
+			    console.log("에러: ", err);
+			}
+		});
+    } else {
+        targetSelect1.disabled = true;
+        targetSelect1.value = ''; // 값 초기화
+    }
+});
+
+targetSelect1.addEventListener('change', function() {
+    if (this.value) { // 기준 select에 값이 선택되었는지 확인
+        targetSelect2.disabled = false;
+    } else {
+        targetSelect2.disabled = true;
+        targetSelect2.value = ''; // 값 초기화
+    }
+});
 
 // 모달 이벤트 리스너
 $(document).on('click', '#btn-cancel-event', function() {
