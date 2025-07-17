@@ -7,6 +7,7 @@
 	<resultMap id="eventResultMap" type="com.goodee.semi.dto.Event">
 		<result property="accountNo" column="account_no" />
 		<result property="accountName" column="account_name" />
+		<result property="accountPhone" column="account_phone" />
 		
 		<result property="petNo" column="pet_no" />
 		<result property="petName" column="pet_name" />
@@ -57,4 +58,5 @@
 		JOIN account a ON (p.account_no = a.account_no)
 		WHERE co.course_no = #{courseNo};
 	</select>
+	
 </mapper>
