@@ -12,41 +12,25 @@ import java.util.List;
 
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Course;
-import com.goodee.semi.dto.Pet;
-import com.goodee.semi.service.AccountService;
 import com.goodee.semi.service.CourseService;
-import com.goodee.semi.service.PetService;
 
-@WebServlet("/course/detail")
-public class CourseDetailServlet extends HttpServlet {
+@WebServlet("/myCourse/certEnroll")
+public class MyCourseCertEnrollServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private AccountService accountService = new AccountService();
 	private CourseService courseService = new CourseService();
-	private PetService petService = new PetService();
        
-  public CourseDetailServlet() {
+  public MyCourseCertEnrollServlet() {
     super();
   }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String courseNo = request.getParameter("no");
 		HttpSession session = request.getSession(false);
 		AccountDetail account = (AccountDetail) session.getAttribute("loginAccount");
 		
-		Course course = courseService.selectCourseOne(courseNo);
-		course.setObject(course.getObject().replaceAll("\n", "<br>"));
-		course.setProfileAttach(accountService.selectAttachByAccountNo(course.getAccountNo()));
+		List<Course> courseList = courseService.selectMyCourse(account);
 		
-		if (account != null) {
-			Pet pet = new Pet();
-			pet.setAccountNo(account.getAccountNo());
-			List<Pet> myPetList = petService.selectPetList(pet);
-			
-			request.setAttribute("myPetList", myPetList);
-		}
-		
-		request.setAttribute("course", course);
-		request.getRequestDispatcher("/WEB-INF/views/course/detail.jsp").forward(request, response);
+		request.setAttribute("courseList", courseList);
+		request.getRequestDispatcher("/WEB-INF/views/myCourse/certEnroll.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

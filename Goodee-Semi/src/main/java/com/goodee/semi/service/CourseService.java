@@ -123,10 +123,7 @@ public class CourseService {
 			
 			if (result > 0) {
 				result = courseDao.deleteCourseTag(session, course);
-				
-				if (result > 0) {
-					result = courseDao.insertTag(session, course);
-				}
+				result = courseDao.insertTag(session, course);
 			}
 			
 			if (result > 0 && thumbAttach != null) {
