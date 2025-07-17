@@ -13,6 +13,7 @@ import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
+import com.goodee.semi.dto.Pet;
 import com.goodee.semi.dto.PetClass;
 
 public class CourseService {
@@ -108,6 +109,13 @@ public class CourseService {
 				courseList.get(i).setThumbAttach(attachList.get(i));
 			}
 		}
+		
+		for(Course c : courseList) {
+			String courseNo = String.valueOf(c.getCourseNo());
+			List<Pet> petList = petDao.selectAllPetByCourseNo(courseNo); 
+			c.setPetList(petList);
+		}
+		
 		return courseList;
   }
 	
