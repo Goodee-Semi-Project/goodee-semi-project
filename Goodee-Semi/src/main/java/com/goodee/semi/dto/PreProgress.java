@@ -15,4 +15,5 @@ public class PreProgress {
 	private String preProg;
 	
 	private int accountNo;
+	private int petNo;
 }

@@ -15,6 +15,7 @@
 		<result property="thumb" column="thumb" />
 		<result property="name" column="account_name" />
 		<result property="currentEnrollment" column="current_enrollment" />
+		<result property="petNo" column="pet_no" />
 	</resultMap>
 	
 	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
@@ -236,7 +237,7 @@
 	</insert>
 	
 	<select id="selectListByPetAccount" parameterType="_int" resultMap="courseResultMap">
-		SELECT co.* ,p.pet_name AS account_name
+		SELECT co.* ,p.pet_no ,p.pet_name AS account_name
 		FROM course AS co
 		JOIN (
 			SELECT course_no ,pet_no

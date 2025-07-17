@@ -15,6 +15,9 @@
 	<main>
 		<h1>사전학습 세부 정보</h1>
 		<input type="text" id="preNo" value="${ preCourse.preNo }" hidden>
+		<c:if test="${ petNo ne -1 }">
+			<input type="text" id="petNo" value="${ petNo }" hidden>
+		</c:if>
 		<div>
 			<span>[교육과정]</span>
 			<span>${ preCourse.courseTitle }</span>
@@ -74,37 +77,32 @@
 	
 	// TODO: beforeunload, popstate 이벤트로 시청 시간 보내기
 $(function() {
-	let saveState = true;
-	function sendWatchLen() {
+	onbeforeunload = function(event) {
+		// event.preventDefault();
+		
 		const preNo = $('#preNo').val();
 		const videoLen = $('#videoLen').text();
+		const petNo = $('#petNo').val();
 		$.ajax({
 			url : '/preCourse/detail',
 			type : 'post',
 			data : {
 				preNo : preNo,
 				videoLen : videoLen,
-				watchLen : lastTime
+				watchLen : lastTime,
+				petNo : petNo
 			},
 			dataType : 'json',
 			success : function(data) {
 				if (data.res_code != 200) {
-					saveState = false;
-					alert(daga.res_msg);
+					event.returnValue = '진행 상황이 저장되지 않았습니다.';
+					alert(data.res_msg);
 				}
 			},
 			error : function() {
 				saveState = false;
 			}
 		});
-	}
-	onbeforeunload = function(event) {
-		event.preventDefault();
-		saveState = true;
-		sendWatchLen();
-		if (saveState === false) {
-			event.returnValue = '진행 상황이 저장되지 않았습니다.';
-		}
 	};
 })
 </script>
