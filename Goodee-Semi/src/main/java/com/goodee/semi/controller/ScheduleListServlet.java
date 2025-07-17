@@ -112,11 +112,13 @@ public class ScheduleListServlet extends HttpServlet {
 		}
 		
 		// 응답으로 넘길 jsonObject
-		JSONObject json = new JSONObject();
-		json.put("jsonArr", jsonArr);
+//		JSONObject json = new JSONObject();
+//		json.put("jsonArr", jsonArr);
 		
 		response.setContentType("application/json; charset=utf-8");
-		response.getWriter().print(jsonArr.toJSONString());
+		response.getWriter().print(jsonArr);
+		// fulcalendar의 successCallback() 함수에 데이터를 넘겨줄 때는 jsonArray 형식 등 배열의 형식을 넘겨줘야 함
+		// (ajax에서 json 으로 받아서 json.jsonArr를 successCallback()에 넘겨주려 하면 `'e' is not iterable` 이라는 이상한 에러 발생)
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
