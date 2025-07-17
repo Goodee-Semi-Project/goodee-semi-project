@@ -3,10 +3,10 @@ package com.goodee.semi.controller;
 import java.io.IOException;
 import java.util.List;
 
-import com.goodee.semi.dto.Account;
+import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Course;
-import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.CourseService;
+import com.goodee.semi.service.PetService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 public class AttendServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	CourseService courseService = new CourseService();
+	PetService petService = new PetService();
 	
 	public AttendServlet() {
         super();
@@ -27,23 +28,23 @@ public class AttendServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
-		Account account = (Account)session.getAttribute("loginAccount");
-		int accountNo = 0;
-		int author = 0;
-		
-		if(account != null) {
-			 accountNo = account.getAccountNo();
-			 author = account.getAuthor();
-		}
+		AccountDetail account = (AccountDetail)session.getAttribute("loginAccount");
+
+		int accountNo = account.getAccountNo();
+		int author = account.getAuthor();
 		
 		List<Course> courseList = null;
 		
-		switch (author) {
-		case 1: courseList = courseService.selectAllCourseByAccountNo(accountNo); break;
-		case 2: courseList = null;
-			break;
+		if (author == 1) {
+			courseList = courseService.selectAllCourseByAccountNo(accountNo);
 		}
-		
+		if (author == 2) {
+			courseList = courseService.selectMyCourse(account);
+			for (Course cs : courseList) {
+				cs.setPetList(petService.selectMyPetInCourse(cs, account));
+			}
+		}
+	
 		request.setAttribute("courseList", courseList);
 		request.getRequestDispatcher("/WEB-INF/views/attend/attend.jsp").forward(request, response);
 	}
