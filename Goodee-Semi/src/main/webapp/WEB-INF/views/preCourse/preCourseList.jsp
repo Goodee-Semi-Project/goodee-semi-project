@@ -24,18 +24,22 @@
 	<section>
 		<div>
 			<c:forEach var="c" items="${ courseList }" >
-				<p>반려견: ${ c.name }</p>
-				<p>코스명: ${ c.title }</p>
-				<ul>
-					<c:forEach var="p" items="${ preCourseMap.get(c.courseNo) }">
-						<!-- 회원이 조회하는 페이지에서 수정 삭제 버튼만 if로 표시 -->
-						<a href="/preCourse/detail?preNo=${ p.preNo }">
-							사전학습명: ${ p.preTitle }
-						</a>
-						<br>
-					</c:forEach>
-				</ul>
-				<br>
+				<c:if test="${ not empty preCourseMap.get(c.courseNo) }">
+					<c:if test="${ not empty c.petNo }">
+						<input type="text" value="${ c.petNo }" hidden>
+					</c:if>
+					<p><c:if test="${ not empty c.name }">${ c.name } - </c:if>${ c.title }</p>
+					<ul>
+						<c:forEach var="p" items="${ preCourseMap.get(c.courseNo) }">
+							<!-- 회원이 조회하는 페이지에서 수정 삭제 버튼만 if로 표시 -->
+							<a href="/preCourse/detail?preNo=${ p.preNo }&petNo=${ c.petNo }">
+								사전학습명: ${ p.preTitle }
+							</a>
+							<br>
+						</c:forEach>
+					</ul>
+					<br>
+				</c:if>
 			</c:forEach>
 		</div>
 	</section>

@@ -9,8 +9,21 @@ public class PreProgressDao {
 
 	public int insertOneWithAccountNo(PreProgress preProgress) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		System.out.println(preProgress);
 		int result = session.insert("com.goodee.semi.mapper.PreProgressMapper.insertOneWithAccountNo", preProgress);
+		session.close();
+		return result;
+	}
+
+	public int selectOne(PreProgress preProgress) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.selectOne("com.goodee.semi.mapper.PreProgressMapper.selectOne", preProgress);
+		session.close();
+		return result;
+	}
+
+	public int update(PreProgress preProgress) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.PreProgressMapper.update", preProgress);
 		session.close();
 		return result;
 	}
