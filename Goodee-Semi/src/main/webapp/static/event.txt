@@ -1,0 +1,36 @@
+{
+  "title": "(courseName) memberName-petName",
+  "start": "start",
+  "end": "end",
+  "extendedProps": {
+    "courseName": "courseName",
+    "accountName": "accountName",
+    "petName": "petName",
+  }
+
+}
+
+{
+  extendedProps: {
+    accountNo: ,
+    accountName: ,
+
+    petNo: ,
+    petName: ,
+
+    classNo: ,
+
+    schedStep: ,
+    schedDate: ,
+    schedAttend: ,
+    courseNo: ,
+    courseTitle: ,
+    courseTotalStep: 
+  }
+  id: schedNo,
+
+  start: schedStart,
+  end: schedEnd,
+
+  title: (courseTitle) accountName-petName
+}
