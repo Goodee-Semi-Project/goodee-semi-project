@@ -45,7 +45,18 @@
 										</c:if>
 										
 										<c:if test="${ sessionScope.loginAccount.author eq 2 }">
-		    						
+											<div>
+												<img class="rounded-circle" style="width: 40px; display: inline-block; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.myPetInCourse.attachNo }' />" alt="img">
+		    								<span style="font-size: 15px;">${ course.myPetInCourse.petName }</span>
+											</div>
+											<div>
+												<p class="my-1" style="font-size: 15px;">현재 진도: 40%</p>
+												<ul class="progress_bar_wrap" style="list-style: none; display: table; width: 100%; height: 20px; background-color: #bcbaba; border-radius: 3px; margin-bottom: 5px; padding: 0;">
+													<c:set var="percent" value="40" />
+													<li style="width: ${ percent }%; display: table-cell; background-color: lime; border: 1px solid lime; border-radius: 3px;"></li>
+													<li style="background-color: #bcbaba; border: 0; border-left: 0; border-radius: 0 3px 3px 0;"></li>
+												</ul>
+											</div>
 										</c:if>
 									</div>
 								</div>

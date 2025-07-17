@@ -67,11 +67,11 @@
 						<div class="tab-content" id="pills-tabContent">
 							<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 								<h3 class="tab-title" style="font-size: 32px;">${ course.subTitle }</h3>
-								<p style="font-size: 20px;">${ course.object }</p>
+								<p style="font-size: 16px;">${ course.object }</p>
 								<img class="card-img-top img-fluid" style="width: 800px; height: 400px; object-fit: cover; border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.inputAttach.attachNo }' />" alt="img">
 								<div class="container" style="display: flex; align-items: center; margin: 40px auto;">
 									<div class="col-4">
-										<img class="rounded-circle img-fluid" style="border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+										<img class="rounded-circle img-fluid" style="border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.profileAttach.attachNo }' />" alt="profile">
 									</div>
 									<div class="col-8">
 										<h3 class="tab-title" style="font-size: 32px;">훈련사 ${ course.name }</h3>

@@ -8,10 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.CourseService;
 import com.goodee.semi.service.PetService;
 
@@ -35,9 +37,27 @@ public class MyCourseListServlet extends HttpServlet {
 			for (Course course : courseList) {
 				course.setPetInCourseCount(petService.selectAllPetByCourseNo(String.valueOf(course.getCourseNo())).size());
 			}
+			
+			request.setAttribute("courseList", courseList);
 		}
 		
-		request.setAttribute("courseList", courseList);
+		if (account.getAuthor() == 2) {
+			List<Course> myCourseList = new ArrayList<Course>();
+			
+			for (Course course : courseList) {
+				List<Pet> myPetInCourse = petService.selectMyPetInCourse(course, account);
+				
+				for (Pet pet : myPetInCourse) {
+					Course courseByPet = courseService.selectCourseOne(String.valueOf(course.getCourseNo()));
+					courseByPet.setMyPetInCourse(pet);
+					
+					myCourseList.add(courseByPet);
+				}
+			}
+			
+			request.setAttribute("courseList", myCourseList);
+		}
+		
 		request.getRequestDispatcher("/WEB-INF/views/myCourse/list.jsp").forward(request, response);
 	}
 
