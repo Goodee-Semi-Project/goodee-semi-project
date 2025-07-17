@@ -57,7 +57,7 @@
 		</div>
 	</section>
 
-	<section class="section">
+	<section class="section" style="padding : 50px 100px 0 100px">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -75,12 +75,12 @@
 			<div class="row">
 				<div class="col-lg-6 pt-5 pt-lg-0" style="display : flex; align-items : center;">
 					<div class="about-content">
-						<h2 class="font-weight-bold">찾아오시는 길</h2>
+						<h2 class="font-weight-bold" style="font-size : 35px">찾아오시는 길</h2>
 						<p>
 							<span class="font-weight-bold text-dark">주소 : </span> 
 							<span>서울 금천구	가산디지털2로 95</span>
 						</p>
-						<h2 class="font-weight-bold">교통편</h2>
+						<h2 class="font-weight-bold" style="font-size : 35x">교통편</h2>
 						<p>
 							<span class="font-weight-bold text-dark">지하철 : </span>
 							<span>1,7호선 가산디지털단지역 8번 출구 도보 499m</span> 
