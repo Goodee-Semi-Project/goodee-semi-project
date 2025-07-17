@@ -237,4 +237,40 @@ from course
 where account_no = 2;
 -- 어떤 훈련사의 강의를 수강 중인 사용자의 모든 수강 중인 반려견이 듣는 교육과정
 
+use goodee_semi_db;
+
+-- 어떤 교육과정을 수강하는 반려견의 보호자인 회원
+SELECT a.account_no, a.account_name
+FROM course co
+JOIN class c ON (co.course_no = c.course_no)
+JOIN pet p ON (p.pet_no = c.pet_no)
+JOIN account a ON (p.account_no = a.account_no)
+WHERE co.course_no = 1;
+
+-- 어떤 교육과정을 수강하는 반려견의 보호자인 회원
+SELECT p.pet_no, p.pet_name
+FROM course co
+JOIN class c ON (co.course_no = c.course_no)
+JOIN pet p ON (p.pet_no = c.pet_no)
+JOIN account a ON (p.account_no = a.account_no)
+WHERE co.course_no = 1 AND a.account_no = 9;
+
+-- 어떤 교육과정을 수강하는 반려견의 수강 번호
+SELECT co.course_no
+FROM course co
+JOIN class c ON (co.course_no = c.course_no)
+WHERE c.pet_no = 8;
+
+desc schedule;
+
+INSERT INTO schedule (class_no, sched_step, sched_date, sched_start, sched_end)
+VALUES ();
+
+-- 어떤 교육과정을 수강하는 반려견에 해당하는 수강 번호
+SELECT c.class_no
+FROM course co
+JOIN class c ON (co.course_no = c.course_no)
+JOIN Pet p ON (c.pet_no = p.pet_no)
+WHERE p.pet_no = 8 AND co.course_no = 1;
+
 

@@ -1,7 +1,9 @@
 package com.goodee.semi.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,36 +29,42 @@ public class ScheduleInputServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String valueType = request.getParameter("valueType");
 		List<Event> list = null;
+		JSONArray jsonArr = new JSONArray();
 		
-		// TODO 마저 구현
 		switch (valueType) {
 			case "courseNo" -> {
 				int courseNo = Integer.parseInt(request.getParameter("courseNo"));
-				System.out.println("courseNo: " + courseNo);
 				list = service.selectAccountList(courseNo);
+				
+				
+				for(Event event : list) {
+					JSONObject prop = new JSONObject();
+					prop.put("accountNo", event.getAccountNo());
+					prop.put("accountName", event.getAccountName());
+					
+					jsonArr.add(prop);
+				}
 			}
 			case "accountNo" -> {
-				String accountNo = request.getParameter("accountNo");
-//				list = service.selectPetList(accountNo);
-				System.out.println("accountNo: " + accountNo);
+				int courseNo = Integer.parseInt(request.getParameter("courseNo"));
+				int accountNo = Integer.parseInt(request.getParameter("accountNo"));
+				Map<String, Integer> map = new HashMap<String, Integer>();
+				map.put("courseNo", courseNo);
+				map.put("accountNo", accountNo);
+				list = service.selectPetList(map);
+				
+				for(Event event : list) {
+					JSONObject prop = new JSONObject();
+					prop.put("petNo", event.getPetNo());
+					prop.put("petName", event.getPetName());
+					
+					jsonArr.add(prop);
+				}
 			}
-		}
-		
-		System.out.println("list: " + list);
-		
-		JSONArray jsonArr = new JSONArray();
-		
-		for(Event event : list) {
-			JSONObject prop = new JSONObject();
-			prop.put("accountNo", event.getAccountNo());
-			prop.put("accountName", event.getAccountName());
-			
-			jsonArr.add(prop);
 		}
 		
 		JSONObject json = new JSONObject();
 		json.put("jsonArr", jsonArr);
-		System.out.println(json.toJSONString());
 		
 		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().print(json);
