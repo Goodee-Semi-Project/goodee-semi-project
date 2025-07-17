@@ -22,4 +22,7 @@ public class Schedule {
 	private LocalDateTime schedStart;
 	private LocalDateTime schedEnd;
 	private char schedAttend;
+	
+	Course course;
+	Pet pet;
 }

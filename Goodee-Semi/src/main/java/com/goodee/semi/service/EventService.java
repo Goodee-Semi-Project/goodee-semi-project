@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.goodee.semi.dao.EventDao;
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Event;
 
 public class EventService {
@@ -20,5 +21,5 @@ public class EventService {
 	public List<Event> selectAccountList(int courseNo) {
 		return dao.selectAccountList(courseNo);
 	}
-
+	
 }
