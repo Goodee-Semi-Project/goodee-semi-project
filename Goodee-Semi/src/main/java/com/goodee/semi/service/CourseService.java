@@ -184,7 +184,10 @@ public class CourseService {
 		
 		if (enrollList.size() > 0) {
 			for (Enroll enroll : enrollList) {
-				enroll.setCourseData(courseDao.selectCourseOne(String.valueOf(enroll.getCourseNo())));
+				Course course = courseDao.selectCourseOne(String.valueOf(enroll.getCourseNo()));
+				course.setPetInCourseCount(petDao.selectAllPetByCourseNo(String.valueOf(course.getCourseNo())).size());
+				
+				enroll.setCourseData(course);
 				enroll.setPetData(petDao.selectPetOne(enroll.getPetNo()));
 				enroll.setAccountData(accountDao.selectAccountByPetNo(enroll.getPetNo()));
 			}
