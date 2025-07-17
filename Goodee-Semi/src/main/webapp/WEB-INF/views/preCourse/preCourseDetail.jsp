@@ -24,11 +24,11 @@
 		</div>
 		<div>
 			<span>[학습영상]</span>
-			<video width="400" preload="auto" controls  id="preVideo">
-				<source src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+			<video width="400" id="preVideo" controls preload="metadata">
+				<source src="<c:url value='/fileStream?no=${ attach.attachNo }'/>">
 			</video>
-			<button onclick="back10s()">10초 뒤로</button>
-			<span>${ preCourse.videoLen }</span>
+			<p>${ preCourse.videoLen }</p>
+			<button onclick="button()">버튼</button>
 		</div>
 		<c:if test="${ loginAccount.author eq 1 }">
 			<div>
@@ -42,7 +42,13 @@
 <script type="text/javascript">
 	const vid = document.querySelector('#preVideo');
 	vid.ontimeupdate = function() {
-		console.log(vid.currentTime);
+		// console.log(vid.currentTime);
+	}
+	
+	
+	function button() {
+		console.log(vid.readyState);
+		vid.currentTime += 10;
 	}
 </script>
 </body>
