@@ -50,12 +50,12 @@ public class PreCourseListServlet extends HttpServlet {
 			courseList = courseService.selectList(account.getAccountNo());
 			// courseList 넘기기
 			session.setAttribute("courseList", courseList);
-			session.setMaxInactiveInterval(60 * 30);
 		} else {
 			courseList = courseService.selectListByPetAccount(account.getAccountNo());
 		}
 		
 		Map<Integer, List<PreCourse>> preCourseMap = preCourseService.selectMap(courseList);
+				
 		request.setAttribute("courseList", courseList);
 		request.setAttribute("preCourseMap", preCourseMap);
 		
