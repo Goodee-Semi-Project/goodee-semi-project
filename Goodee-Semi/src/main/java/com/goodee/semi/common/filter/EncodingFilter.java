@@ -12,8 +12,9 @@ import java.io.IOException;
 
 @WebFilter("/*")
 public class EncodingFilter extends HttpFilter implements Filter {
-       
-    public EncodingFilter() {
+	private static final long serialVersionUID = 1L;
+
+	public EncodingFilter() {
         super();
     }
 

@@ -273,4 +273,7 @@ JOIN class c ON (co.course_no = c.course_no)
 JOIN Pet p ON (c.pet_no = p.pet_no)
 WHERE p.pet_no = 8 AND co.course_no = 1;
 
+insert into schedule
+values();
+
 
