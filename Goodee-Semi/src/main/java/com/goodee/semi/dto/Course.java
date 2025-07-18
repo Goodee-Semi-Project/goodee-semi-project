@@ -32,9 +32,11 @@ public class Course {
 	private Attach profileAttach;
 	
 	private Pet myPetInCourse;
+	private PetClass classData;
 	
 	private int currentEnrollment;
 	private List<Pet> petList;
 	private int petInCourseCount;
+	private int petNo;
 
 }

@@ -2,12 +2,16 @@ package com.goodee.semi.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Attach;
+import com.goodee.semi.dto.PetClass;
 import com.goodee.semi.dto.Review;
 import com.goodee.semi.service.AttachService;
+import com.goodee.semi.service.ClassService;
 import com.goodee.semi.service.ReviewService;
 
 import jakarta.servlet.ServletException;
@@ -16,12 +20,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 /**
  * Servlet implementation class ReviewWriteServlet
  */
-// SJ: 첨부 파일 사이즈
 @MultipartConfig (
 		fileSizeThreshold = 1024 * 1024,
 		maxFileSize = 1024 * 1024 * 5,
@@ -32,6 +36,7 @@ public class ReviewWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ReviewService reviewService = new ReviewService();
 	AttachService attachService = new AttachService();
+	ClassService classService = new ClassService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -44,7 +49,17 @@ public class ReviewWriteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
+		HttpSession session = request.getSession(false);
+		
+		Account account = null;
+		if (session != null && session.getAttribute("loginAccount") != null) {
+			account = (Account) session.getAttribute("loginAccount");
+		}
+		
+		// SJ: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
+		List<PetClass> list = classService.selectListByAccountNo(account.getAccountNo());
+		
+		request.setAttribute("list", list);
 		
 		request.getRequestDispatcher("/WEB-INF/views/review/reviewWrite.jsp").forward(request, response);
 	}
@@ -57,9 +72,9 @@ public class ReviewWriteServlet extends HttpServlet {
 		
 		String title = request.getParameter("title").trim();
 		String content = request.getParameter("content").trim();
-		// SJ: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
-		// FIXME: 임시 수강 번호
-		int classNo = 1;
+		
+		String classNoStr = request.getParameter("classNo");
+		int classNo = Integer.parseInt(classNoStr);
 		
 		Review review = new Review();
 		review.setReviewTitle(title);

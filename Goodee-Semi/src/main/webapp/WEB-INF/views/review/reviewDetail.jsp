@@ -19,10 +19,10 @@
 		<span id="title" name="title">[후기] ${ review.reviewTitle }</span>
 		<c:choose>
 			<c:when test="${ review.regDate eq review.modDate }">
-				<span id="date">작성일: ${ review.regDate }</span>
+				<span id="date">[작성일] ${ review.regDate }</span>
 			</c:when>
 			<c:otherwise>
-				<span id="date">수정일: ${ review.modDate }</span>
+				<span id="date">[수정일] ${ review.modDate }</span>
 			</c:otherwise>
 		</c:choose>
 	</div>
