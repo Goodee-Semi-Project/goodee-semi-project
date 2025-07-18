@@ -15,4 +15,5 @@ public interface ScheduleMapper {
 	int insert(Schedule sched);
 	Schedule selectSchedule(int schedNo);
 	int update(Schedule sched);
+	int delete(int schedNo);
 }

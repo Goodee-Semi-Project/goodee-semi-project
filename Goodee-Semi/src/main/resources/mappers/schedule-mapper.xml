@@ -103,7 +103,7 @@
 		</where>
 	</select>
 	
-	<update id="update" >
+	<update id="update" parameterType="com.goodee.semi.dto.Schedule">
 		update schedule
 		set class_no = #{classNo},
 			sched_date = #{schedDate},
@@ -113,4 +113,11 @@
 			sched_no = #{schedNo}
 		</where>
 	</update>
+	
+	<delete id="delete" parameterType="_int">
+		DELETE FROM schedule
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</delete>
 </mapper>
