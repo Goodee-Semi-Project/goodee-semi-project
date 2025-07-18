@@ -127,4 +127,8 @@ public class PetService {
 		return petList;
 	}
 	
+	public int countTotalPetNo() {
+		return dao.countTotalPetNo();
+	}
+	
 }

@@ -27,7 +27,6 @@ public class AttachDao {
 		return session.insert("com.goodee.semi.mapper.AttachMapper.insertAttach", inputAttach);
 	}
 
-
 	public Attach selectAttachOne(Attach param) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		Attach attach = session.selectOne("com.goodee.semi.mapper.AttachMapper.selectAttachOne", param);
