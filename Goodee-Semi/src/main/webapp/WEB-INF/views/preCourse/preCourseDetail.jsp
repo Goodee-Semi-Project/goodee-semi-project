@@ -16,6 +16,7 @@
 		<h1>사전학습 세부 정보</h1>
 		<input type="text" id="author" value="${ loginAccount.author }" hidden>
 		<input type="text" id="preNo" value="${ preCourse.preNo }" hidden>
+		<input type="text" id="lastTime" value="${ watchLen }" hidden>
 		<c:if test="${ petNo ne -1 }">
 			<input type="text" id="petNo" value="${ petNo }" hidden>
 		</c:if>
@@ -49,8 +50,20 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 
+$(function() {
 	const vid = document.querySelector('#preVideo');
 	let lastTime = 0;
+	console.log($('#lastTime').val());
+	if ($('#lastTime').val()) {
+		lastTime = $('#lastTime').val();
+	}
+	
+	vid.onloadeddata  = function() {
+		if (lastTime > 0 && confirm('이어보기')){
+			vid.play();
+			vid.currentTime = lastTime - 0.1;
+		}
+	}
 	
 	vid.onseeked = function() {
 		if (vid.currentTime > lastTime) {
@@ -77,13 +90,15 @@
 	}
 	
 	// TODO: beforeunload, popstate 이벤트로 시청 시간 보내기
-$(function() {
-	onbeforeunload = function(event) {
-		// event.preventDefault();
-		if ($('#author').val() != 1) {
+	if ($('#author').val() != 1) {
+		onbeforeunload = function(event) {
+			if (lastTime < 1) {
+				lastTime = $('#lastTime').val();
+			}
 			const preNo = $('#preNo').val();
 			const videoLen = $('#videoLen').text();
 			const petNo = $('#petNo').val();
+			
 			$.ajax({
 				url : '/preCourse/detail',
 				type : 'post',
@@ -95,8 +110,8 @@ $(function() {
 				},
 				dataType : 'json',
 				success : function(data) {
-					if (data.res_code != 200) {
-						event.returnValue = '진행 상황이 저장되지 않았습니다.';
+					if (data.res_code == 500) {
+						event.preventDefault();
 						alert(data.res_msg);
 					}
 				},
@@ -104,9 +119,8 @@ $(function() {
 					saveState = false;
 				}
 			});
-		}
-		
-	};
+		};
+	}
 })
 </script>
 </body>

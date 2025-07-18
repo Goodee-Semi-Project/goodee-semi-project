@@ -9,7 +9,7 @@ public class PreProgressService {
 	public int insertOneWithAccountNo(PreProgress preProgress) {
 		int result = -1;
 		
-		result = dao.selectOne(preProgress);
+		result = dao.countOne(preProgress);
 		
 		if (result > 0) {
 			result = -1;
@@ -20,6 +20,10 @@ public class PreProgressService {
 		}
 		
 		return result;
+	}
+
+	public PreProgress selectOne(PreProgress param) {
+		return dao.selectOne(param);
 	}
 
 }
