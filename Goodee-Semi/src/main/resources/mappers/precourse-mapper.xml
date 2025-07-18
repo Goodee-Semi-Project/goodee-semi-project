@@ -10,6 +10,7 @@
 		<result property="videoLen" column="video_len"/>
 		
 		<result property="courseTitle" column="course_title"/>
+		<result property="accountNo" column="account_no"/>
 	</resultMap>
 	
 	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
@@ -41,7 +42,7 @@
 	</insert>
 	
 	<select id="selectPreCourse" parameterType="_int" resultMap="preCourseResultMap">
-		SELECT pc.* ,co.title AS course_title ,account_no
+		SELECT pc.* ,co.title AS course_title ,co.account_no
 		FROM pre_course as pc
 		JOIN (
 			SELECT course_no ,title ,account_no
