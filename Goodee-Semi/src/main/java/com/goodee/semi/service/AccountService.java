@@ -1,5 +1,7 @@
 package com.goodee.semi.service;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
@@ -139,5 +141,20 @@ public class AccountService {
 		attach.setTypeNo(Attach.ACCOUNT);
 		attach.setPkNo(accountNo);
 		return accountDao.deleteAttach(attach);
+	}
+	
+	public List<Account> selectAccountTrainer4() {
+		List<Account> accountList = accountDao.selectAccountTrainer4();
+		
+		for (Account ac : accountList) {
+			Attach profileAttach = accountDao.selectAttachByAccountNo(ac.getAccountNo());
+			
+			ac.setProfileAttach(profileAttach);
+		}
+		return accountList;
+	}
+	
+	public int countTotalAccountNo() {
+		return accountDao.countTotalAccountNo();
 	}
 }

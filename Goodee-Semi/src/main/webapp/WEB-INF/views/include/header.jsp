@@ -49,7 +49,7 @@
 							</li>
 							
 							<li class="nav-item active">
-								<a class="nav-link" href="">고객센터</a>
+								<a class="nav-link" href="<c:url value='/serviceCenter'/>">고객센터</a>
 							</li>
 						</ul>
 						

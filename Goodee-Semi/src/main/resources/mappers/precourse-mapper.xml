@@ -8,6 +8,9 @@
 		<result property="courseNo" column="course_no"/>
 		<result property="preTitle" column="pre_title"/>
 		<result property="videoLen" column="video_len"/>
+		
+		<result property="courseTitle" column="course_title"/>
+		<result property="accountNo" column="account_no"/>
 	</resultMap>
 	
 	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
@@ -39,8 +42,12 @@
 	</insert>
 	
 	<select id="selectPreCourse" parameterType="_int" resultMap="preCourseResultMap">
-		SELECT *
-		FROM pre_course
+		SELECT pc.* ,co.title AS course_title ,co.account_no
+		FROM pre_course as pc
+		JOIN (
+			SELECT course_no ,title ,account_no
+			FROM course
+		) AS co ON pc.course_no = co.course_no
 		WHERE pre_no = #{ preNo }
 	</select>
 	
@@ -49,4 +56,15 @@
 		FROM attachment
 		WHERE type_no = 4 AND pk_no = #{ preNo }
 	</select>
+	
+	<update id="updatePreCourse" parameterType="com.goodee.semi.dto.PreCourse">
+		UPDATE pre_course
+		SET course_no = #{ courseNo } ,pre_title = #{ preTitle } ,video_len = #{ videoLen }
+		WHERE pre_no = #{ preNo }
+	</update>
+	
+	<delete id="deleteAttach" parameterType="com.goodee.semi.dto.Attach">
+		DELETE FROM attachment
+		WHERE type_no = 4 AND pk_no = #{ pkNo }
+	</delete>
 </mapper>
