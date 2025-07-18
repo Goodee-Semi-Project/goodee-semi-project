@@ -1,5 +1,12 @@
 package com.goodee.semi.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class PreTest {
 	private String testNo;
 	private String preNo;
