@@ -101,4 +101,15 @@
 			s.sched_no = #{schedNo}		
 		</where>
 	</select>
+	
+	<update id="update" >
+		update schedule
+		set class_no = #{classNo},
+			sched_date = #{schedDate},
+		    sched_start = #{schedStart},
+		    sched_end = #{schedEnd}
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</update>
 </mapper>
