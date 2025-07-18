@@ -50,7 +50,9 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 
+if ($('#author').val() != 1) {
 $(function() {
+	
 	const vid = document.querySelector('#preVideo');
 	let lastTime = 0;
 	console.log($('#lastTime').val());
@@ -90,38 +92,38 @@ $(function() {
 	}
 	
 	// TODO: beforeunload, popstate 이벤트로 시청 시간 보내기
-	if ($('#author').val() != 1) {
-		onbeforeunload = function(event) {
-			if (lastTime < 1) {
-				lastTime = $('#lastTime').val();
-			}
-			const preNo = $('#preNo').val();
-			const videoLen = $('#videoLen').text();
-			const petNo = $('#petNo').val();
-			
-			$.ajax({
-				url : '/preCourse/detail',
-				type : 'post',
-				data : {
-					preNo : preNo,
-					videoLen : videoLen,
-					watchLen : lastTime,
-					petNo : petNo
-				},
-				dataType : 'json',
-				success : function(data) {
-					if (data.res_code == 500) {
-						event.preventDefault();
-						alert(data.res_msg);
-					}
-				},
-				error : function() {
-					saveState = false;
+	onbeforeunload = function(event) {
+		if (lastTime < 1) {
+			lastTime = $('#lastTime').val();
+		}
+		const preNo = $('#preNo').val();
+		const videoLen = $('#videoLen').text();
+		const petNo = $('#petNo').val();
+		
+		$.ajax({
+			url : '/preCourse/detail',
+			type : 'post',
+			data : {
+				preNo : preNo,
+				videoLen : videoLen,
+				watchLen : lastTime,
+				petNo : petNo
+			},
+			dataType : 'json',
+			success : function(data) {
+				if (data.res_code == 500) {
+					event.preventDefault();
+					alert(data.res_msg);
 				}
-			});
-		};
-	}
+			},
+			error : function() {
+				saveState = false;
+			}
+		});
+	};
+		
 })
+}
 </script>
 </body>
 </html>
