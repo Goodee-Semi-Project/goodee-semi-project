@@ -25,6 +25,7 @@ public interface CourseMapper {
 	List<Course> selectAllCourseByAccountNo(int accountNo);
 	List<Attach> selectAllAttachByAccountNo(int accountNo);
 	List<Like> selectMyLikeByAccountNo(int accountNo);
+	Like selectLike(Like like);
 	int insertLike(Like like);
 	int deleteLike(Like like);
 	Enroll selectEnrollOne(int enrollNo);
