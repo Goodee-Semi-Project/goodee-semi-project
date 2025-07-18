@@ -37,8 +37,16 @@ public class MyCourseLikeServlet extends HttpServlet {
 			like.setAccountNo(Integer.parseInt(request.getParameter("accountNo")));
 			like.setCourseNo(Integer.parseInt(request.getParameter("courseNo")));
 			
-			result = courseService.insertLike(like);
-		} else {
+			Like selectLike = courseService.selectLike(like);
+			
+			if (selectLike == null) {
+				result = courseService.insertLike(like);
+			} else {
+				result = -510;
+			}
+		}
+		
+		if ("DELETE".equals(likeFlag)) {
 			Like like = new Like();
 			like.setPickNo(Integer.parseInt(request.getParameter("pickNo")));
 			
@@ -52,6 +60,9 @@ public class MyCourseLikeServlet extends HttpServlet {
 		if (result > 0) {
 			jsonObj.put("resultCode", "200");
 			jsonObj.put("resultMsg", "정상적으로 처리되었습니다.");
+		} else if (result == -510) {
+			jsonObj.put("resultCode", "510");
+			jsonObj.put("resultMsg", "이미 찜 목록에 등록한 과정입니다.");
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");

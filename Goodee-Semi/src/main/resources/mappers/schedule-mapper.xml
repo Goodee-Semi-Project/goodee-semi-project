@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.goodee.semi.mapper.EventMapper">
+<mapper namespace="com.goodee.semi.mapper.ScheduleMapper">
 
-	<resultMap id="eventResultMap" type="com.goodee.semi.dto.Event">
+	<resultMap id="scheduleResultMap" type="com.goodee.semi.dto.Schedule">
 		<result property="accountNo" column="account_no" />
 		<result property="accountName" column="account_name" />
 		<result property="accountPhone" column="account_phone" />
@@ -26,7 +26,7 @@
 		<result property="courseTotalStep" column="total_step" />
 	</resultMap>
 	
-	<select id="selectEventList" parameterType="hashmap" resultMap="eventResultMap">
+	<select id="selectScheduleList" parameterType="hashmap" resultMap="scheduleResultMap">
 		SELECT a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
 		FROM account a
 		JOIN pet p ON (a.account_no = p.account_no)
@@ -44,7 +44,7 @@
 		</where>
 	</select>
 	
-	<select id="selectCourseList" parameterType="_int" resultMap="eventResultMap">
+	<select id="selectCourseList" parameterType="_int" resultMap="scheduleResultMap">
 		SELECT course_no, title
 		FROM course
 		<where>
@@ -52,7 +52,7 @@
 		</where>
 	</select>
 	
-	<select id="selectAccountList" parameterType="_int" resultMap="eventResultMap">
+	<select id="selectAccountList" parameterType="_int" resultMap="scheduleResultMap">
 		SELECT a.account_no, a.account_name
 		FROM course co
 		JOIN class c ON (co.course_no = c.course_no)
@@ -63,7 +63,7 @@
 		</where>
 	</select>
 	
-	<select id="selectPetList" parameterType="hashmap" resultMap="eventResultMap">
+	<select id="selectPetList" parameterType="hashmap" resultMap="scheduleResultMap">
 		SELECT p.pet_no, p.pet_name
 		FROM course co
 		JOIN class c ON (co.course_no = c.course_no)
@@ -75,7 +75,7 @@
 		</where>
 	</select>
 	
-	<select id="selectClassNo" parameterType="com.goodee.semi.dto.Event" resultType="_int">
+	<select id="selectClassNo" parameterType="com.goodee.semi.dto.Schedule" resultType="_int">
 		SELECT c.class_no
 		FROM course co
 		JOIN class c ON (co.course_no = c.course_no)
@@ -86,12 +86,12 @@
 		</where>
 	</select>
 	
-	<insert id="insert" parameterType="com.goodee.semi.dto.Event" useGeneratedKeys="true" keyProperty="schedNo">
+	<insert id="insert" parameterType="com.goodee.semi.dto.Schedule" useGeneratedKeys="true" keyProperty="schedNo">
 		INSERT INTO schedule (class_no, sched_step, sched_date, sched_start, sched_end)
 		VALUES (#{classNo}, #{schedStep}, #{schedDate}, #{schedStart}, #{schedEnd});
 	</insert>
 	
-	<select id="selectEvent" parameterType="_int" resultMap="eventResultMap">
+	<select id="selectSchedule" parameterType="_int" resultMap="scheduleResultMap">
 		SELECT a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
 		FROM account a
 		JOIN pet p ON (a.account_no = p.account_no)
@@ -103,6 +103,7 @@
 		</where>
 	</select>
 	
+
 	<select id="selectScheduleListAttend" parameterType="com.goodee.semi.dto.Event" resultMap="eventResultMap">
 		SELECT sc.* ,cl.class_no ,cl.course_no ,co.title ,p.pet_no ,p.pet_name, account_name
 		FROM schedule sc
@@ -113,4 +114,14 @@
 		WHERE cl.pet_no = #{petNo} AND cl.course_no = #{courseNo}
 	</select>
 	
+	<update id="update" >
+		update schedule
+		set class_no = #{classNo},
+			sched_date = #{schedDate},
+		    sched_start = #{schedStart},
+		    sched_end = #{schedEnd}
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</update>
 </mapper>

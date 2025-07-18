@@ -30,10 +30,13 @@
 					<div class="col-4" style="display: inline-block; max-width: 32%;">
 						<div class="product-item bg-light">
 								<div class="card">
-									<div class="thumb-content">
+									<div class="thumb-content" style="position: relative;">
 										<a href="/course/detail?no=${ course.courseNo }">
 											<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
 										</a>
+										<c:if test="${ course.classData.classProg eq 100 }">
+											<button type="button" class="btn btn-warning disabled" style="position: absolute; padding: 2px 5px; top: 5%; right: 5%; border: 1px solid white; border-radius: 20px; opacity: 1;"><span style="color: white; font-size: 12px; font-weight: 700; margin: 0;">수료</span></button>
+										</c:if>
 									</div>
 									<div class="card-body" style="padding: 10px;">
 		    						<h4 class="card-title"><a href="/course/detail?no=${ course.courseNo }">${ course.title }</a></h4>
@@ -50,9 +53,9 @@
 		    								<span style="font-size: 15px;">${ course.myPetInCourse.petName }</span>
 											</div>
 											<div>
-												<p class="my-1" style="font-size: 15px;">현재 진도: 40%</p>
+												<p class="my-1" style="font-size: 15px;">현재 진도: ${ course.classData.classProg }%</p>
 												<ul class="progress_bar_wrap" style="list-style: none; display: table; width: 100%; height: 20px; background-color: #bcbaba; border-radius: 3px; margin-bottom: 5px; padding: 0;">
-													<c:set var="percent" value="40" />
+													<c:set var="percent" value="${ course.classData.classProg }" />
 													<li style="width: ${ percent }%; display: table-cell; background-color: lime; border: 1px solid lime; border-radius: 3px;"></li>
 													<li style="background-color: #bcbaba; border: 0; border-left: 0; border-radius: 0 3px 3px 0;"></li>
 												</ul>

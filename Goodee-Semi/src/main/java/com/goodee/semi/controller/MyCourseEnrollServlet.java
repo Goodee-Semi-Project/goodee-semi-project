@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.PetClass;
 import com.goodee.semi.service.CourseService;
@@ -33,13 +34,24 @@ public class MyCourseEnrollServlet extends HttpServlet {
 		String enrollFlag = request.getParameter("enrollFlag");
 		int result = 0;
 		
-		if ("ADD".equals(enrollFlag)) { 
+		if ("ADD".equals(enrollFlag)) {
 			Enroll enroll = new Enroll();
 			enroll.setCourseNo(Integer.parseInt(request.getParameter("courseNo")));
 			enroll.setPetNo(Integer.parseInt(request.getParameter("petNo")));
 			
-			result = courseService.insertEnroll(enroll);
-		} else if (("UPDATE").equals(enrollFlag)) {
+			Course course = courseService.selectCourseOne(request.getParameter("courseNo"));
+			Enroll selectEnroll = courseService.selectEnrollByCourseNoAndPetNo(enroll);
+			
+			if (course.getPetInCourseCount() >= course.getCapacity()) {
+				result = -510;
+			} else if (selectEnroll != null) {
+				result = -511;
+			} else {
+				result = courseService.insertEnroll(enroll);
+			}
+		} 
+		
+		if (("UPDATE").equals(enrollFlag)) {
 			Enroll enroll = new Enroll();
 			enroll.setEnrollNo(Integer.parseInt(request.getParameter("enrollNo")));
 			enroll.setEnrollStatus(request.getParameter("status").charAt(0));
@@ -55,7 +67,9 @@ public class MyCourseEnrollServlet extends HttpServlet {
 				
 				result = courseService.insertPetClass(petClass);
 			}
-		} else {
+		}
+		
+		if (("DELETE").equals(enrollFlag)) {
 			Enroll enroll = new Enroll();
 			enroll.setEnrollNo(Integer.parseInt(request.getParameter("enrollNo")));
 			
@@ -69,6 +83,12 @@ public class MyCourseEnrollServlet extends HttpServlet {
 		if (result > 0) {
 			jsonObj.put("resultCode", "200");
 			jsonObj.put("resultMsg", "정상적으로 처리되었습니다.");
+		} else if (result == -510) {
+			jsonObj.put("resultCode", "510");
+			jsonObj.put("resultMsg", "해당 교육과정의 정원이 가득 찼습니다.");
+		} else if (result == -511) {
+			jsonObj.put("resultCode", "511");
+			jsonObj.put("resultMsg", "이미 수강 신청한 과정입니다.");
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");

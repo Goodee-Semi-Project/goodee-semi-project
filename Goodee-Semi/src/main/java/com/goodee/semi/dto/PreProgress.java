@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class PreCourse {
-	private int preNo;
-	private int courseNo;
-	private String preTitle;
-	private String videoLen;
+public class PreProgress {
+	private String progNo;
+	private String preNo;
+	private String classNo;
+	private String watchLen;
+	private String preProg;
 	
-	private String courseTitle;
 	private int accountNo;
+	private int petNo;
 }
