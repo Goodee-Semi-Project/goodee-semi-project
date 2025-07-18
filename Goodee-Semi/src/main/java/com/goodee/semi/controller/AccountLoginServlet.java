@@ -47,7 +47,7 @@ public class AccountLoginServlet extends HttpServlet {
 		    session.setMaxInactiveInterval(60 * 30);
 
 		    obj.put("res_code", "200");
-		    obj.put("res_msg", "로그인 성공");
+		    obj.put("res_msg", account.getName() + "님 환영합니다!");
 		} else {
 		    // 존재하는 아이디인지 다시 조회
 		    AccountDetail foundAccount = service.selectAccountById(accountId);
