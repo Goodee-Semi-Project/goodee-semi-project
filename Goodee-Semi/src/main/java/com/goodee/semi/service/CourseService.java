@@ -178,6 +178,10 @@ public class CourseService {
 		
 		return likeList;
 	}
+	
+	public Like selectLike(Like like) {
+		return courseDao.selectLike(like);
+	}
 
 	public int insertLike(Like like) {
 		return courseDao.insertLike(like);
@@ -206,6 +210,10 @@ public class CourseService {
 
 	public Enroll selectEnrollOne(int enrollNo) {
 		return courseDao.selectEnrollOne(enrollNo);
+	}
+	
+	public Enroll selectEnrollByCourseNoAndPetNo(Enroll enroll) {
+		return courseDao.selectEnrollByCourseNoAndPetNo(enroll);
 	}
 
 	public int insertEnroll(Enroll enroll) {

@@ -25,10 +25,12 @@ public interface CourseMapper {
 	List<Course> selectAllCourseByAccountNo(int accountNo);
 	List<Attach> selectAllAttachByAccountNo(int accountNo);
 	List<Like> selectMyLikeByAccountNo(int accountNo);
+	Like selectLike(Like like);
 	int insertLike(Like like);
 	int deleteLike(Like like);
 	Enroll selectEnrollOne(int enrollNo);
 	List<Enroll> selectMyEnroll(AccountDetail account);
+	Enroll selectEnrollByCourseNoAndPetNo(Enroll enroll);
 	int insertEnroll(Enroll enroll);
 	int updateEnroll(Enroll enroll);
 	int deleteEnroll(Enroll enroll);
