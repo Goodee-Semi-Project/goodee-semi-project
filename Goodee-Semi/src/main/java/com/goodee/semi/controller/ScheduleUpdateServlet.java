@@ -7,8 +7,8 @@ import java.time.LocalTime;
 
 import org.json.simple.JSONObject;
 
-import com.goodee.semi.dto.Event;
-import com.goodee.semi.service.EventService;
+import com.goodee.semi.dto.Schedule;
+import com.goodee.semi.service.ScheduleService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/schedule/update")
 public class ScheduleUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private EventService service = new EventService();
+	private ScheduleService service = new ScheduleService();
        
     public ScheduleUpdateServlet() {
         super();
@@ -55,18 +55,18 @@ public class ScheduleUpdateServlet extends HttpServlet {
 													Integer.parseInt(schedEndStr[1].split(":")[0]),
 													Integer.parseInt(schedEndStr[1].split(":")[1]));
 		
-		Event event = new Event();
-		event.setSchedNo(schedNo);
+		Schedule sched = new Schedule();
+		sched.setSchedNo(schedNo);
 
-		event.setPetNo(petNo);
+		sched.setPetNo(petNo);
 
-		event.setSchedDate(schedDate);
-		event.setCourseNo(courseNo);
-		event.setSchedStart(schedStart);
-		event.setSchedEnd(schedEnd);
+		sched.setSchedDate(schedDate);
+		sched.setCourseNo(courseNo);
+		sched.setSchedStart(schedStart);
+		sched.setSchedEnd(schedEnd);
 		
 		// service 호출
-		int result = service.update(event);
+		int result = service.update(sched);
 		
 		// json에 바인딩
 		JSONObject json = new JSONObject();

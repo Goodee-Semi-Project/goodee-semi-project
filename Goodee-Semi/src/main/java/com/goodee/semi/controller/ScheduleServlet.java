@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import com.goodee.semi.dto.AccountDetail;
-import com.goodee.semi.dto.Event;
-import com.goodee.semi.service.EventService;
+import com.goodee.semi.dto.Schedule;
+import com.goodee.semi.service.ScheduleService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/schedule")
 public class ScheduleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private EventService service = new EventService();
+	private ScheduleService service = new ScheduleService();
 
     public ScheduleServlet() {
         super();
@@ -42,7 +42,7 @@ public class ScheduleServlet extends HttpServlet {
 		// 훈련사와 회원은 서로 다른 페이지로 이동
 		if(authorNo == 1) {
 			// 3. 모달에 표시할 정보 service로부터 받아와 바인딩
-			List<Event> courseList = service.selectCourseList(accountNo);
+			List<Schedule> courseList = service.selectCourseList(accountNo);
 			request.setAttribute("courseList", courseList);
 			
 			request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_trainer.jsp").forward(request, response);
