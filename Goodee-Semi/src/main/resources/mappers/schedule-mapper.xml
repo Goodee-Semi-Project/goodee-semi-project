@@ -5,20 +5,112 @@
 <mapper namespace="com.goodee.semi.mapper.ScheduleMapper">
 
 	<resultMap id="scheduleResultMap" type="com.goodee.semi.dto.Schedule">
-		<result property="schedNo" column="sched_no" />
+		<result property="accountNo" column="account_no" />
+		<result property="accountName" column="account_name" />
+		<result property="accountPhone" column="account_phone" />
+		
+		<result property="petNo" column="pet_no" />
+		<result property="petName" column="pet_name" />
+		
 		<result property="classNo" column="class_no" />
+		
+		<result property="schedNo" column="sched_no" />
 		<result property="schedStep" column="sched_step" />
 		<result property="schedDate" column="sched_date" />
 		<result property="schedStart" column="sched_start" />
 		<result property="schedEnd" column="sched_end" />
 		<result property="schedAttend" column="sched_attend" />
+
+		<result property="courseNo" column="course_no" />
+		<result property="courseTitle" column="title" />
+		<result property="courseTotalStep" column="total_step" />
 	</resultMap>
 	
 	<select id="selectScheduleList" parameterType="hashmap" resultMap="scheduleResultMap">
-		SELECT sched_no, class_no, sched_step, sched_date, sched_start, sched_end, sched_attend
-		FROM schedule
+		SELECT a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
+		FROM account a
+		JOIN pet p ON (a.account_no = p.account_no)
+		JOIN class c ON (p.pet_no = c.pet_no)
+		JOIN schedule s ON (c.class_no = s.class_no)
+		JOIN course co ON (c.course_no = co.course_no)
 		<where>
-			sched_date BETWEEN #{start} AND #{end}
+			<if test='memberAccountNo != null and memberAccountNo != ""'>
+				AND a.account_no = #{memberAccountNo}
+			</if>
+			<if test='trainerAccountNo != null and trainerAccountNo != ""'>
+				AND co.account_no = #{trainerAccountNo}
+			</if>
+			AND s.sched_date BETWEEN #{start} AND #{end}		
 		</where>
 	</select>
+	
+	<select id="selectCourseList" parameterType="_int" resultMap="scheduleResultMap">
+		SELECT course_no, title
+		FROM course
+		<where>
+			account_no = #{accountNo}
+		</where>
+	</select>
+	
+	<select id="selectAccountList" parameterType="_int" resultMap="scheduleResultMap">
+		SELECT a.account_no, a.account_name
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN pet p ON (p.pet_no = c.pet_no)
+		JOIN account a ON (p.account_no = a.account_no)
+		<where>
+			co.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<select id="selectPetList" parameterType="hashmap" resultMap="scheduleResultMap">
+		SELECT p.pet_no, p.pet_name
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN pet p ON (p.pet_no = c.pet_no)
+		JOIN account a ON (p.account_no = a.account_no)
+		<where>
+			co.course_no = #{courseNo}
+			AND a.account_no = #{accountNo}
+		</where>
+	</select>
+	
+	<select id="selectClassNo" parameterType="com.goodee.semi.dto.Schedule" resultType="_int">
+		SELECT c.class_no
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN Pet p ON (c.pet_no = p.pet_no)
+		<where>
+			p.pet_no = #{petNo}
+			AND co.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.goodee.semi.dto.Schedule" useGeneratedKeys="true" keyProperty="schedNo">
+		INSERT INTO schedule (class_no, sched_step, sched_date, sched_start, sched_end)
+		VALUES (#{classNo}, #{schedStep}, #{schedDate}, #{schedStart}, #{schedEnd});
+	</insert>
+	
+	<select id="selectSchedule" parameterType="_int" resultMap="scheduleResultMap">
+		SELECT a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
+		FROM account a
+		JOIN pet p ON (a.account_no = p.account_no)
+		JOIN class c ON (p.pet_no = c.pet_no)
+		JOIN schedule s ON (c.class_no = s.class_no)
+		JOIN course co ON (c.course_no = co.course_no)
+		<where>
+			s.sched_no = #{schedNo}		
+		</where>
+	</select>
+	
+	<update id="update" >
+		update schedule
+		set class_no = #{classNo},
+			sched_date = #{schedDate},
+		    sched_start = #{schedStart},
+		    sched_end = #{schedEnd}
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</update>
 </mapper>
