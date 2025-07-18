@@ -88,6 +88,12 @@ public class PetDao implements PetMapper {
 		session.close();
 
 		return petList;
-
+	}
+	
+	public Attach selectAttachByPetNo(int petNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Attach petAttach = session.selectOne("com.goodee.semi.mapper.PetMapper.selectAttachByPetNo", petNo);
+		session.close();
+		return petAttach;
 	}
 }

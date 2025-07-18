@@ -15,4 +15,5 @@ public interface EventMapper {
 	int insert(Event event);
 	Event selectEvent(int schedNo);
 	int selectClassNo(Event event);
+	List<Event> selectScheduleListAttend(Event event);
 }
