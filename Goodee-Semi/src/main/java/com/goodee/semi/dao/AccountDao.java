@@ -1,5 +1,7 @@
 package com.goodee.semi.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
@@ -121,6 +123,18 @@ public class AccountDao {
 		int result = session.insert("com.goodee.semi.mapper.AccountMapper.insertAttach", attach);
 		return result;
 	}
-
 	
+	public List<Account> selectAccountTrainer4() {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Account> list = session.selectList("com.goodee.semi.mapper.AccountMapper.selectAccountTrainer4");
+		session.close();
+		return list;
+	}
+
+	public int countTotalAccountNo() {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int count = session.selectOne("com.goodee.semi.mapper.AccountMapper.countTotalAccountNo");
+		session.close();
+		return count;
+	}
 }

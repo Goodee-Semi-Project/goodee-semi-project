@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Event;
 import com.goodee.semi.mapper.EventMapper;
 
@@ -74,5 +75,5 @@ public class EventDao implements EventMapper {
 		session.close();
 		return result;
 	}
-
+  
 }

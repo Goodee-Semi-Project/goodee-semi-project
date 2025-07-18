@@ -1,8 +1,8 @@
 package com.goodee.semi.dto;
 
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -16,4 +16,8 @@ public class PetClass {
 	private int courseNo;
 	private int petNo;
 	private int classProg;
+	
+	private String courseTitle;
+	private int accountNo;
+	private String petName;
 }

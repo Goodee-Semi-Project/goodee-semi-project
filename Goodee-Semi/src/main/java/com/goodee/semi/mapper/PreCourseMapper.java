@@ -13,4 +13,6 @@ public interface PreCourseMapper {
 	int insertAttach(SqlSession session, Attach attach);
 	PreCourse selectPreCourse(int preNo);
 	Attach selectAttach(int preNo);
+	int updatePreCourse(SqlSession session, PreCourse preCourse);
+	int deleteAttach(Attach attach);
 }
