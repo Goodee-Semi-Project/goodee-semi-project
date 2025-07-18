@@ -54,10 +54,14 @@ public class PreCourseEditServlet extends HttpServlet {
 			account = (Account) session.getAttribute("loginAccount");
 		}
 		
-		int preNo = Integer.parseInt(request.getParameter("no"));
+		int preNo = -1;
+		PreCourse preCourse = null;
+		if (request.getParameter("no") != null) {
+			preNo = Integer.parseInt(request.getParameter("no"));
+			preCourse = preCourseService.selectPreCourse(preNo);
+		}
 		
-		PreCourse preCourse = preCourseService.selectPreCourse(preNo);
-		if (preCourse.getAccountNo() != account.getAccountNo()) {
+		if (preCourse != null && preCourse.getAccountNo() != account.getAccountNo()) {
 			
 			request.getRequestDispatcher("/preCourse/list").forward(request, response);
 			return;
