@@ -203,6 +203,10 @@ public class CourseService {
 	public Enroll selectEnrollOne(int enrollNo) {
 		return courseDao.selectEnrollOne(enrollNo);
 	}
+	
+	public Enroll selectEnrollByCourseNoAndPetNo(Enroll enroll) {
+		return courseDao.selectEnrollByCourseNoAndPetNo(enroll);
+	}
 
 	public int insertEnroll(Enroll enroll) {
 		return courseDao.insertEnroll(enroll);
