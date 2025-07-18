@@ -58,6 +58,7 @@ public class PreCourseEditServlet extends HttpServlet {
 		
 		PreCourse preCourse = preCourseService.selectPreCourse(preNo);
 		if (preCourse.getAccountNo() != account.getAccountNo()) {
+			
 			request.getRequestDispatcher("/preCourse/list").forward(request, response);
 			return;
 		}
