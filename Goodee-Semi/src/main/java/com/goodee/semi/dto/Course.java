@@ -1,5 +1,7 @@
 package com.goodee.semi.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +35,7 @@ public class Course {
 	private PetClass classData;
 	
 	private int currentEnrollment;
+	private List<Pet> petList;
 	private int petInCourseCount;
 	private int petNo;
 

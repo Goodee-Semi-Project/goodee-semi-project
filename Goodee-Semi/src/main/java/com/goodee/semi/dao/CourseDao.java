@@ -92,6 +92,14 @@ public class CourseDao {
 		
 		return likeList;
 	}
+	
+	public Like selectLike(Like like) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Like result = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectLike", like);
+		session.close();
+		
+		return result;
+	}
 
 	public int insertLike(Like like) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
@@ -123,6 +131,14 @@ public class CourseDao {
 		session.close();
 		
 		return enroll;
+	}
+	
+	public Enroll selectEnrollByCourseNoAndPetNo(Enroll enroll) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Enroll result = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectEnrollByCourseNoAndPetNo", enroll);
+		session.close();
+		
+		return result;
 	}
 
 	public int insertEnroll(Enroll enroll) {
@@ -177,7 +193,14 @@ public class CourseDao {
 		session.close();
 		return result;
 	}
-	
+
+	public int countTotalClassNo() {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int count = session.selectOne("com.goodee.semi.mapper.CourseMapper.countTotalClassNo");
+		session.close();
+		return count;
+	}
+
 	public int insertTag(SqlSession session, Course course) {
 		String[] tags = course.getTag().split(" ");
 		int result = 0;
@@ -233,7 +256,6 @@ public class CourseDao {
 		return courseNoList;
 	}
 	
-
 	public List<Course> selectListByPetAccount(int accountNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		List<Course> list = session.selectList("com.goodee.semi.mapper.CourseMapper.selectListByPetAccount", accountNo);

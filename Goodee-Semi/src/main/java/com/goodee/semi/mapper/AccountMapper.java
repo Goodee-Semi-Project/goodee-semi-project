@@ -1,5 +1,7 @@
 package com.goodee.semi.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.dto.Account;
@@ -23,4 +25,6 @@ public interface AccountMapper {
 	int deleteAttach(SqlSession session, Attach attach);
 	int insertAttach(SqlSession session, Attach attach);
 	Account selectAccountByPetNo(int petNo);
+	List<Account> selectAccountTrainer4();
+	int countTotalAccountNo();
 }
