@@ -238,6 +238,13 @@
 		</if>
 	</select>
 	
+	<select id="selectEnrollByCourseNoAndPetNo" parameterType="com.goodee.semi.dto.Enroll" resultMap="enrollResultMap">
+		SELECT * FROM enroll
+		<where>
+			course_no = #{courseNo} AND pet_no = #{petNo} AND enroll_status IS NULL
+		</where>
+	</select>
+	
 	<insert id="insertEnroll" parameterType="com.goodee.semi.dto.Enroll">
 		INSERT INTO enroll (course_no, pet_no)
 		VALUE (#{courseNo}, #{petNo})
