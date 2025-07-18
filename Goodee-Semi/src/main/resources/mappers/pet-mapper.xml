@@ -52,6 +52,16 @@
 		</where>
 	</select>
 	
+	<select id="selectMyPetInCourse" parameterType="com.goodee.semi.dto.Course" resultMap="petResultMap">
+		SELECT * FROM pet P
+		INNER JOIN account A ON P.account_no = A.account_no
+		INNER JOIN class C ON P.pet_no = C.pet_no
+		INNER JOIN attachment AT ON P.pet_no = AT.pk_no
+		<where>
+			C.course_no = #{courseNo} AND A.account_no = #{accountNo} AND AT.type_no = 2
+		</where>
+	</select>
+	
 	<update id="updatePet" parameterType="com.goodee.semi.dto.Pet">
 		UPDATE pet
 		SET pet_name = #{petName}

@@ -37,7 +37,15 @@
 					<td>${ enroll.accountData.name }</td>
 					<td>
 						<c:if test="${ sessionScope.loginAccount.author eq 1 }">
-							<button type="button" onclick="enrollYes(${ enroll.enrollNo })" class="btn btn-success" style="padding: 5px 10px;">승인</button>
+							<c:choose>
+								<c:when test="${ enroll.courseData.petInCourseCount ge enroll.courseData.capacity }">
+									<button type="button" class="btn btn-success disabled" onclick="alert('정원이 초과되었습니다.')" style="padding: 5px 10px;">승인</button>
+								</c:when>
+								
+								<c:otherwise>
+									<button type="button" onclick="enrollYes(${ enroll.enrollNo })" class="btn btn-success" style="padding: 5px 10px;">승인</button>								
+								</c:otherwise>
+							</c:choose>
 							<button type="button" onclick="enrollSorry(${ enroll.enrollNo })" class="btn btn-danger" style="padding: 5px 10px;">취소</button>
 						</c:if>
 						
