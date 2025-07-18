@@ -18,61 +18,71 @@
   	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
   </h3>
   
-  <form id="updateCourseForm">
-		<label>과정명: </label>
-		<input type="text" name="title" value="${ course.title }">
-		
-		<input type="hidden" name="courseNo" value="${ course.courseNo }">
-		<input type="hidden" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
-		
-		<label>태그: </label>
-		<input type="text" name="tag" value="${ course.tag }">
-		<br>
-		
-		<label>소주제: </label>
-		<input type="text" name="subTitle" value="${ course.subTitle }">
-		<br>
-		
-		<label>훈련 횟수: </label>
-		<input type="number" name="totalStep" value="${ course.totalStep }">
-		
-		<label>최대 수강 인원: </label>
-		<input type="text" name="capacity" value="${ course.capacity }">
-		<br>
-		
-		<label>훈련 내용 및 목표</label><br>
-		<textarea name="object" rows="5" cols="30">${ course.object }</textarea>
-		<br>
-		
-		<div class="container">
-			<div class="row">
-				<div class="col-3 text-center">
-					<p style="margin-bottom: 5px;">현재 대표 이미지</p>
-					<img style="border: 2px solid gray; padding: 0;" height="130" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="thumbImage">		
-				</div>
+  <input type="hidden" id="validAuthor" value="${ sessionScope.loginAccount.author }">
+	<c:if test="${ sessionScope.loginAccount.author eq 1 }">
+		<form id="updateCourseForm">
+			<label>과정명: </label>
+			<input type="text" name="title" value="${ course.title }">
 			
-				<div class="col-4 text-center">
-					<p style="margin-bottom: 5px;">현재 내부 이미지</p>
-					<img style="border: 2px solid gray; padding: 0;" height="130" src="<c:url value='/filePath?no=${ course.inputAttach.attachNo }' />" alt="thumbImage">		
+			<input type="hidden" name="courseNo" value="${ course.courseNo }">
+			<input type="hidden" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
+			
+			<label>태그: </label>
+			<input type="text" name="tag" value="${ course.tag }">
+			<br>
+			
+			<label>소주제: </label>
+			<input type="text" name="subTitle" value="${ course.subTitle }">
+			<br>
+			
+			<label>훈련 횟수: </label>
+			<input type="number" name="totalStep" value="${ course.totalStep }">
+			
+			<label>최대 수강 인원: </label>
+			<input type="text" name="capacity" value="${ course.capacity }">
+			<br>
+			
+			<label>훈련 내용 및 목표</label><br>
+			<textarea name="object" rows="5" cols="30">${ course.object }</textarea>
+			<br>
+			
+			<div class="container">
+				<div class="row">
+					<div class="col-3 text-center">
+						<p style="margin-bottom: 5px;">현재 대표 이미지</p>
+						<img style="border: 2px solid gray; padding: 0;" height="130" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="thumbImage">		
+					</div>
+				
+					<div class="col-4 text-center">
+						<p style="margin-bottom: 5px;">현재 내부 이미지</p>
+						<img style="border: 2px solid gray; padding: 0;" height="130" src="<c:url value='/filePath?no=${ course.inputAttach.attachNo }' />" alt="thumbImage">		
+					</div>
 				</div>
 			</div>
-		</div>
-		<br>
-		
-		<label>대표 이미지: </label>
-		<input type="file" name="thumbImage">
-		<br>
-		
-		<label>내부 이미지: </label>
-		<input type="file" name="inputImage">
-		<br>
-		
-		<input type="submit" value="등록">
-	</form>
+			<br>
+			
+			<label>대표 이미지: </label>
+			<input type="file" name="thumbImage">
+			<br>
+			
+			<label>내부 이미지: </label>
+			<input type="file" name="inputImage">
+			<br>
+			
+			<input type="submit" value="등록">
+		</form>
+	</c:if>
 
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
+		const myAuthor = $("#validAuthor").val();
+		
+		if (myAuthor == 2) {
+			alert("잘못된 접근입니다.");
+			location.href = "<%= request.getContextPath() %>/";
+		}
+	
 		$("#updateCourseForm").submit((event) => {
 			event.preventDefault();
 			
