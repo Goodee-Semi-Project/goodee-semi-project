@@ -44,4 +44,19 @@ public class EventService {
 		
 		return insertedEvent;
 	}
+
+	public int update(Event event) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Integer ClassNo = dao.selectClassNo(event);
+		int result = 0;
+		
+		if(ClassNo != null) {
+			System.out.println("[Event] ClassNo 조회 성공");
+			event.setClassNo(ClassNo);
+			result = dao.update(event);
+		}
+		
+		return result;
+	}
+
 }
