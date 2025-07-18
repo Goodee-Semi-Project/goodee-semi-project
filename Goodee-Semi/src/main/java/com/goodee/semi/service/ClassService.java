@@ -17,4 +17,11 @@ public class ClassService {
 		return list;
 	}
 	
+	public PetClass selectClassByCourseNoAndPetNo(int courseNo, int petNo) {
+		PetClass keyObj = new PetClass();
+		keyObj.setCourseNo(courseNo);
+		keyObj.setPetNo(petNo);
+		
+		return classDao.selectClassByCourseNoAndPetNo(keyObj);
+	}
 }

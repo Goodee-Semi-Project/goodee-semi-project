@@ -8,10 +8,18 @@
 		<result property="courseNo" column="course_no"/>
 		<result property="petNo" column="pet_no"/>
 		<result property="classProg" column="class_prog"/>
+		
 		<result property="courseTitle" column="title"/>
 		<result property="accountNo" column="account_no"/>
 		<result property="petName" column="pet_name"/>
 	</resultMap>
+	
+	<select id="selectClassByCourseNoAndPetNo" parameterType="com.goodee.semi.dto.PetClass" resultMap="classResultMap">
+		SELECT * FROM class
+		<where>
+			course_no = #{courseNo} AND pet_no = #{petNo}
+		</where>
+	</select>
 
 	<delete id="deleteClass" parameterType="_int">
 		DELETE FROM class
@@ -33,5 +41,4 @@
 		) AS p ON c.pet_no = p.pet_no
 		WHERE p.account_no = #{ accountNo }
 	</select>
-
 </mapper>

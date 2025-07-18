@@ -23,4 +23,12 @@ public class ClassDao {
 		return list;
 	}
 	
+	public PetClass selectClassByCourseNoAndPetNo(PetClass keyObj) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		PetClass petClass = session.selectOne("com.goodee.semi.mapper.ClassMapper.selectClassByCourseNoAndPetNo", keyObj);
+		session.close();
+		
+		return petClass;
+	}
+	
 }

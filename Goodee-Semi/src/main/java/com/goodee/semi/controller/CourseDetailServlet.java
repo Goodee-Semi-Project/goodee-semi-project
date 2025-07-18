@@ -13,12 +13,14 @@ import java.util.List;
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Pet;
+import com.goodee.semi.service.AccountService;
 import com.goodee.semi.service.CourseService;
 import com.goodee.semi.service.PetService;
 
 @WebServlet("/course/detail")
 public class CourseDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private AccountService accountService = new AccountService();
 	private CourseService courseService = new CourseService();
 	private PetService petService = new PetService();
        
@@ -33,13 +35,17 @@ public class CourseDetailServlet extends HttpServlet {
 		
 		Course course = courseService.selectCourseOne(courseNo);
 		course.setObject(course.getObject().replaceAll("\n", "<br>"));
+		course.setProfileAttach(accountService.selectAttachByAccountNo(course.getAccountNo()));
 		
-		Pet pet = new Pet();
-		pet.setAccountNo(account.getAccountNo());
-		List<Pet> myPetList = petService.selectPetList(pet);
+		if (account != null && account.getAuthor() == 2) {
+			Pet pet = new Pet();
+			pet.setAccountNo(account.getAccountNo());
+			List<Pet> myPetList = petService.selectPetList(pet);
+			
+			request.setAttribute("myPetList", myPetList);
+		}
 		
 		request.setAttribute("course", course);
-		request.setAttribute("myPetList", myPetList);
 		request.getRequestDispatcher("/WEB-INF/views/course/detail.jsp").forward(request, response);
 	}
 
