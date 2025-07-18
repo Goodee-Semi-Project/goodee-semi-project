@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<header>
+<div style="min-height: 100vh; position: relative;">
+<header style="position: fixed; width: 100%; height: 88px; z-index: 100; background-color: white;">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<nav class="navbar navbar-expand-lg navbar-light navigation">
+				<nav class="navbar navbar-expand-lg navbar-light navigation" style="height: 100%;">
 					<a class="navbar-brand" href="<c:url value='/' />">
 						<img src="/static/images/logo.png" alt="">
 					</a>
@@ -76,13 +77,4 @@
 		</div>
 	</div>
 </header>
-
-<script>
-	function logout(e){
-		e.preventDefault();
-		
-		if(confirm("로그아웃 하시겠습니까?")){
-			location.href = "<c:url value='/account/logout' />";
-		}
-	}
-</script>
+<div style="height: 88px;"></div>
