@@ -42,7 +42,8 @@
 		<c:if test="${ loginAccount.author eq 1 }">
 			<div>
 				<a href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
-				<a href="/preCourse/delete?preNo=${ preCourse.preNo }&petNo=${ petNo }">삭제하기</a>
+				<%-- <a href="/preCourse/delete?preNo=${ preCourse.preNo }&petNo=${ petNo }">삭제하기</a> --%>
+				<button onclick="deletePre()">삭제하기</button>
 			</div>
 		</c:if>
 	</main>
@@ -52,78 +53,103 @@
 <script type="text/javascript">
 
 if ($('#author').val() != 1) {
-$(function() {
-	
-	const vid = document.querySelector('#preVideo');
-	let lastTime = 0;
-	console.log($('#lastTime').val());
-	if ($('#lastTime').val()) {
-		lastTime = $('#lastTime').val();
-	}
-	
-	vid.onloadeddata  = function() {
-		if (lastTime > 0 && confirm('이어보기')){
-			vid.play();
-			vid.currentTime = lastTime - 0.1;
-		}
-	}
-	
-	vid.onseeked = function() {
-		if (vid.currentTime > lastTime) {
-			vid.currentTime = lastTime;
-		}
-	}
-	
-	vid.onseeking = function() {
-		if (vid.currentTime > lastTime) {
-			vid.currentTime = lastTime;
-		}
-	}
-	
-	vid.ontimeupdate = function() {
-		if (vid.currentTime > lastTime + 1) {
-			vid.currentTime = lastTime;
-		} else if (vid.currentTime > lastTime) {
-			lastTime = vid.currentTime;
-		}
-	}
-	
-	vid.onended = function() {
-		$('#test').removeAttr('disabled');
-	}
-	
-	// TODO: beforeunload, popstate 이벤트로 시청 시간 보내기
-	onbeforeunload = function(event) {
-		if (lastTime < 1) {
+	$(function() {
+		
+		const vid = document.querySelector('#preVideo');
+		let lastTime = 0;
+		console.log($('#lastTime').val());
+		if ($('#lastTime').val()) {
 			lastTime = $('#lastTime').val();
 		}
-		const preNo = $('#preNo').val();
-		const videoLen = $('#videoLen').text();
-		const petNo = $('#petNo').val();
 		
-		$.ajax({
-			url : '/preCourse/detail',
-			type : 'post',
-			data : {
-				preNo : preNo,
-				videoLen : videoLen,
-				watchLen : lastTime,
-				petNo : petNo
-			},
-			dataType : 'json',
-			success : function(data) {
-				if (data.res_code == 500) {
-					event.preventDefault();
-					alert(data.res_msg);
-				}
-			},
-			error : function() {
-				saveState = false;
+		vid.onloadeddata  = function() {
+			if (lastTime > 0 && confirm('이어보기')){
+				vid.play();
+				vid.currentTime = lastTime - 0.1;
 			}
-		});
-	};
+		}
 		
-})
+		vid.onseeked = function() {
+			if (vid.currentTime > lastTime) {
+				vid.currentTime = lastTime;
+			}
+		}
+		
+		vid.onseeking = function() {
+			if (vid.currentTime > lastTime) {
+				vid.currentTime = lastTime;
+			}
+		}
+		
+		vid.ontimeupdate = function() {
+			if (vid.currentTime > lastTime + 1) {
+				vid.currentTime = lastTime;
+			} else if (vid.currentTime > lastTime) {
+				lastTime = vid.currentTime;
+			}
+		}
+		
+		vid.onended = function() {
+			$('#test').removeAttr('disabled');
+		}
+		
+		// TODO: beforeunload, popstate 이벤트로 시청 시간 보내기
+		onbeforeunload = function(event) {
+			if (lastTime < 1) {
+				lastTime = $('#lastTime').val();
+			}
+			const preNo = $('#preNo').val();
+			const videoLen = $('#videoLen').text();
+			const petNo = $('#petNo').val();
+			
+			$.ajax({
+				url : '/preCourse/detail',
+				type : 'post',
+				data : {
+					preNo : preNo,
+					videoLen : videoLen,
+					watchLen : lastTime,
+					petNo : petNo
+				},
+				dataType : 'json',
+				success : function(data) {
+					if (data.res_code == 500) {
+						event.preventDefault();
+						alert(data.res_msg);
+					}
+				},
+				error : function() {
+					saveState = false;
+				}
+			});
+		};
+			
+	})
+} else {
+	function deletePre() {
+		if (confirm('정말 삭제하시겠습니까?')) {
+			const preNo = $('#preNo').val();
+			const attachNo = $('#attachNo').val();
+			
+			$.ajax({
+				url : '/preCourse/delete',
+				type : 'post',
+				data : {
+					preNo : preNo
+				},
+				dataType : 'json',
+				success : function(data){
+					alert(data.res_msg);
+					if (data.res_code == 200) {
+						location.href="<%= request.getContextPath() %>/preCourse/list";
+					}
+				},
+				error : function(data) {
+					alert('요청 실패');
+				},
+			});
+		}
+	}
 }
 </script>
 </body>

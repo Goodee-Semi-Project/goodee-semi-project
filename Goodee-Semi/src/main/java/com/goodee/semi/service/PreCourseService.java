@@ -73,7 +73,7 @@ public class PreCourseService {
 				attach.setPkNo(preCourse.getPreNo());
 				if (result > 0) {
 					result = -1;
-					result = preCourseDao.deleteAttach(attach);
+					result = preCourseDao.deleteAttach(session, attach);
 				}
 				if (result > 0) {
 					result = -1;
@@ -81,6 +81,33 @@ public class PreCourseService {
 				}
 			}
 
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
+	}
+
+	public int deleteOne(int preNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = -1;
+		
+		try {
+			result = preCourseDao.deleteOne(session, preNo);
+			if (result > 0) {
+				Attach attach = new Attach();
+				attach.setPkNo(preNo);
+				preCourseDao.deleteAttach(session, attach);
+			}
+			
 			if (result > 0) {
 				session.commit();
 			} else {
