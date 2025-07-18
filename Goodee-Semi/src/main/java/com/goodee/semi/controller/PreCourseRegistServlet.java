@@ -136,9 +136,7 @@ public class PreCourseRegistServlet extends HttpServlet {
 				}
 			}
 			
-			System.out.println(testList);
-			
-			result = preCourseService.insertPreCourse(preCourse, attach);
+			result = preCourseService.insertPreCourse(preCourse, attach, testList);
 		}
 
 		JSONObject obj = new JSONObject();

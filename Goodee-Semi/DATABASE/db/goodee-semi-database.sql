@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `pre_test` (
 	`test_no` INT AUTO_INCREMENT NOT NULL,
 	`pre_no` INT NOT NULL,
 	`test_content` TEXT NOT NULL,
-	`test_answer` INT NOT NULL,
+	`test_answer` CHAR(5) NOT NULL,
     `one` TEXT NOT NULL,
     `two` TEXT NOT NULL,
     `three` TEXT NOT NULL,

@@ -8,12 +8,15 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.PreCourseDao;
+import com.goodee.semi.dao.PreTestDao;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.PreCourse;
+import com.goodee.semi.dto.PreTest;
 
 public class PreCourseService {
 	PreCourseDao preCourseDao = new PreCourseDao();
+	PreTestDao preTestDao = new PreTestDao();
 
 	public Map<Integer, List<PreCourse>> selectMap(List<Course> courseList) {
 		Map<Integer, List<PreCourse>> map = new HashMap<Integer, List<PreCourse>>();
@@ -25,7 +28,7 @@ public class PreCourseService {
 		return map;
 	}
 
-	public int insertPreCourse(PreCourse preCourse, Attach attach) {
+	public int insertPreCourse(PreCourse preCourse, Attach attach, List<PreTest> testList) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
 		int result = -1;
 		
@@ -37,6 +40,16 @@ public class PreCourseService {
 				attach.setPkNo(preCourse.getPreNo());
 				result = preCourseDao.insertAttach(session, attach);
 			}
+			
+			if (result > 0) {
+				for (PreTest pt : testList) {
+					result = -1;
+					pt.setPreNo(preCourse.getPreNo());
+					System.out.println(pt);
+					result = preTestDao.insertPreTest(session, pt);
+				}
+			}
+			
 
 			if (result > 0) {
 				session.commit();
