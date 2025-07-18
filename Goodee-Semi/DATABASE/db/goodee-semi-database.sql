@@ -127,7 +127,11 @@ CREATE TABLE IF NOT EXISTS `pre_test` (
 	`test_no` INT AUTO_INCREMENT NOT NULL,
 	`pre_no` INT NOT NULL,
 	`test_content` TEXT NOT NULL,
-	`test_answer` VARCHAR(255) NOT NULL,
+	`test_answer` INT NOT NULL,
+    `one` TEXT NOT NULL,
+    `two` TEXT NOT NULL,
+    `three` TEXT NOT NULL,
+    `four` TEXT NOT NULL,
 	PRIMARY KEY (`test_no`),
 	FOREIGN KEY (`pre_no`) REFERENCES `pre_course`(`pre_no`)
 );
@@ -232,12 +236,4 @@ CREATE TABLE IF NOT EXISTS `attachment` (
 	`save_name` VARCHAR(40) NOT NULL,
 	PRIMARY KEY (`attach_no`),
 	FOREIGN KEY (`type_no`) REFERENCES `attach_type`(`type_no`)
-);
-
-CREATE TABLE IF NOT EXISTS `test_select` (
-	`select_no` INT AUTO_INCREMENT NOT NULL,
-	`test_no` INT NOT NULL,
-	`select_content` VARCHAR(255) NOT NULL,
-	PRIMARY KEY (`select_no`),
-	FOREIGN KEY (`test_no`) REFERENCES `pre_test`(`test_no`)
 );
