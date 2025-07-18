@@ -42,7 +42,6 @@
 		<c:if test="${ loginAccount.author eq 1 }">
 			<div>
 				<a href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
-				<%-- <a href="/preCourse/delete?preNo=${ preCourse.preNo }&petNo=${ petNo }">삭제하기</a> --%>
 				<button onclick="deletePre()">삭제하기</button>
 			</div>
 		</c:if>
