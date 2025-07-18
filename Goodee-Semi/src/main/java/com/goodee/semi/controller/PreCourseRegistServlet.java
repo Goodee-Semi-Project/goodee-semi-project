@@ -113,14 +113,30 @@ public class PreCourseRegistServlet extends HttpServlet {
 			List<PreTest> testList = new ArrayList<PreTest>();
 			if (count != -1) {
 				for (int i = 1; i <= count; i++) {
-					PreTest preTest = new PreTest();
 					
+					String testContent = request.getParameter("quiz" + i);
+					String testAnswer = request.getParameter("answer" + i);
+					String one = request.getParameter("one" + i);
+					String two = request.getParameter("two" + i);
+					String three = request.getParameter("three" + i);
+					String four = request.getParameter("four" + i);
 					
-					
-					
+					if (testContent != null && testAnswer != null && one != null && 
+							two != null && three != null && four != null) {
+						PreTest preTest = new PreTest();
+						preTest.setTestContent(testContent);
+						preTest.setTestAnswer(testAnswer);
+						preTest.setOne(one);
+						preTest.setTwo(two);
+						preTest.setThree(three);
+						preTest.setFour(four);
+						
+						testList.add(preTest);
+					}
 				}
 			}
 			
+			System.out.println(testList);
 			
 			result = preCourseService.insertPreCourse(preCourse, attach);
 		}
