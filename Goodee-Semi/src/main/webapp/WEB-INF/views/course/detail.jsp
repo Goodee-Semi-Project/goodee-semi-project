@@ -180,13 +180,15 @@
 							<c:when test="${ sessionScope.loginAccount.author eq 1 }">
 								<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
 								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
-								<div class="d-grid gap-2">
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">회원 관리</a>
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">수강신청 관리</a>
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">사전학습 관리</a>
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">일정 관리</a>
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">과제 관리</a>
-								</div>
+								<c:if test="${ sessionScope.loginAccount.accountNo eq course.accountNo }">
+									<div class="d-grid gap-2">
+										<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">회원 관리</a>
+										<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">수강신청 관리</a>
+										<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">사전학습 관리</a>
+										<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">일정 관리</a>
+										<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">과제 관리</a>
+									</div>
+								</c:if>
 							</c:when>
 							
 							<c:when test="${ sessionScope.loginAccount.author eq 2 }">
@@ -194,7 +196,15 @@
 								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
 								<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
 								<div class="d-grid gap-2">
-									<a id="enrollOpen" class="btn btn-primary col-12 px-5 my-1">수강신청</a>
+									<c:choose>
+										<c:when test="${ course.petInCourseCount ge course.capacity }">
+											<button type="button" id="enrollOpen" class="btn btn-danger col-12 px-5 my-1" disabled>신청 불가</button>
+										</c:when>
+										
+										<c:otherwise>
+											<a id="enrollOpen" class="btn btn-primary col-12 px-5 my-1">수강신청</a>
+										</c:otherwise>
+									</c:choose>
 									<div id="enrollDiv" style="display: none;">
 										<label for="selectPetForEnroll">수강을 신청할 반려견을 선택해주세요.</label>
 										<select id="selectPetForEnroll" class="col-8 px-5 mr-5 my-1">

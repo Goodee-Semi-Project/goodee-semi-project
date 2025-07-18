@@ -10,6 +10,11 @@ import jakarta.servlet.http.Part;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.json.simple.JSONObject;
 
@@ -39,6 +44,7 @@ public class MyCourseCreateServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		int result = 0;
 		
 		int accountNo = Integer.parseInt(request.getParameter("trainer"));
 		String title = request.getParameter("title");
@@ -48,38 +54,48 @@ public class MyCourseCreateServlet extends HttpServlet {
 		int capacity = Integer.parseInt(request.getParameter("capacity"));
 		String tag = request.getParameter("tag");
 		
-		Part thumbPart = null;
-		Part inputPart = null;
+		List<String> tagList = Arrays.asList(tag.split(" "));
+		Set<String> tagSet = new HashSet<String>(tagList);
+		List<String> tagListAfterSet = new ArrayList<String>(tagSet);
 		
-		Course course = new Course();
-		course.setAccountNo(accountNo);
-		course.setTitle(title);
-		course.setSubTitle(subTitle);
-		course.setObject(object);
-		course.setTotalStep(totalStep);
-		course.setCapacity(capacity);
-		course.setTag(tag);
-		
-		try {
-			thumbPart = request.getPart("thumbImage");
-			inputPart = request.getPart("inputImage");
-		} catch (IOException | ServletException e) { e.printStackTrace(); }
-		
-		File uploadDir = AttachService.getUploadDirectory(Attach.COURSE);
-		
-		Attach thumbAttach = AttachService.handleUploadFile(thumbPart, uploadDir);
-		Attach inputAttach = AttachService.handleUploadFile(inputPart, uploadDir);
-		
-		int result = courseService.insertCourse(course, thumbAttach, inputAttach);
+		if (tagList.size() == tagListAfterSet.size()) {
+			Part thumbPart = null;
+			Part inputPart = null;
+			
+			Course course = new Course();
+			course.setAccountNo(accountNo);
+			course.setTitle(title);
+			course.setSubTitle(subTitle);
+			course.setObject(object);
+			course.setTotalStep(totalStep);
+			course.setCapacity(capacity);
+			course.setTag(tag);
+			
+			try {
+				thumbPart = request.getPart("thumbImage");
+				inputPart = request.getPart("inputImage");
+			} catch (IOException | ServletException e) { e.printStackTrace(); }
+			
+			File uploadDir = AttachService.getUploadDirectory(Attach.COURSE);
+			
+			Attach thumbAttach = AttachService.handleUploadFile(thumbPart, uploadDir);
+			Attach inputAttach = AttachService.handleUploadFile(inputPart, uploadDir);
+			
+			result = courseService.insertCourse(course, thumbAttach, inputAttach);
+		} else {
+			result = -510;
+		}
 		
 		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("resultCode", "500");
+		jsonObj.put("resultMsg", "교육과정 등록 중 오류가 발생했습니다.");
 		
 		if (result > 0) {
 			jsonObj.put("resultCode", "200");
 			jsonObj.put("resultMsg", "교육과정이 등록되었습니다.");
-		} else {
-			jsonObj.put("resultCode", "500");
-			jsonObj.put("resultMsg", "교육과정 등록 중 오류가 발생했습니다.");
+		} else if (result == -510) {
+			jsonObj.put("resultCode", "510");
+			jsonObj.put("resultMsg", "중복된 태그는 입력할 수 없습니다.");
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");

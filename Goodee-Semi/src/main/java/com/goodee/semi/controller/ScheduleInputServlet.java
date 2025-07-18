@@ -8,8 +8,8 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.goodee.semi.dto.Event;
-import com.goodee.semi.service.EventService;
+import com.goodee.semi.dto.Schedule;
+import com.goodee.semi.service.ScheduleService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/schedule/input")
 public class ScheduleInputServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private EventService service = new EventService();
+	private ScheduleService service = new ScheduleService();
        
     public ScheduleInputServlet() {
         super();
@@ -28,7 +28,7 @@ public class ScheduleInputServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String valueType = request.getParameter("valueType");
-		List<Event> list = null;
+		List<Schedule> list = null;
 		JSONArray jsonArr = new JSONArray();
 		
 		switch (valueType) {
@@ -37,10 +37,10 @@ public class ScheduleInputServlet extends HttpServlet {
 				list = service.selectAccountList(courseNo);
 				
 				
-				for(Event event : list) {
+				for(Schedule sched : list) {
 					JSONObject prop = new JSONObject();
-					prop.put("accountNo", event.getAccountNo());
-					prop.put("accountName", event.getAccountName());
+					prop.put("accountNo", sched.getAccountNo());
+					prop.put("accountName", sched.getAccountName());
 					
 					jsonArr.add(prop);
 				}
@@ -53,10 +53,10 @@ public class ScheduleInputServlet extends HttpServlet {
 				map.put("accountNo", accountNo);
 				list = service.selectPetList(map);
 				
-				for(Event event : list) {
+				for(Schedule sched : list) {
 					JSONObject prop = new JSONObject();
-					prop.put("petNo", event.getPetNo());
-					prop.put("petName", event.getPetName());
+					prop.put("petNo", sched.getPetNo());
+					prop.put("petName", sched.getPetName());
 					
 					jsonArr.add(prop);
 				}
