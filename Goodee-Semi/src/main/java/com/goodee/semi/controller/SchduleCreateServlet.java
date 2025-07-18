@@ -1,15 +1,14 @@
 package com.goodee.semi.controller;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.json.simple.JSONObject;
 
-import com.goodee.semi.dto.Event;
-import com.goodee.semi.service.EventService;
+import com.goodee.semi.dto.Schedule;
+import com.goodee.semi.service.ScheduleService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/schedule/create")
 public class SchduleCreateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private EventService service = new EventService();
+    private ScheduleService service = new ScheduleService();
 	
     public SchduleCreateServlet() {
         super();
@@ -52,50 +51,50 @@ public class SchduleCreateServlet extends HttpServlet {
 		 System.out.println(accountNo + " " + courseNo + " " + petNo + " " + start + " " + end);
 		 
 		 // petNo, courseNo로 classNo를 찾아옴
-		 Event event = new Event();
-		 event.setPetNo(petNo);
-		 event.setCourseNo(courseNo);
+		 Schedule sched = new Schedule();
+		 sched.setPetNo(petNo);
+		 sched.setCourseNo(courseNo);
 		 
-		 int classNo = service.selectClassNo(event);
+		 int classNo = service.selectClassNo(sched);
 		 
 		 // TODO 일정표의 모든 기능에 차수 관련 기능 덧붙이기
-		 // class_no, sched_step, sched_date, sched_start, sched_end 를 Event에 바인딩하여 insert함
+		 // class_no, sched_step, sched_date, sched_start, sched_end 를 Schedule에 바인딩하여 insert함
 
-		 event.setClassNo(classNo);
-		 event.setSchedStep(0);
-		 event.setSchedDate(date);
-		 event.setSchedStart(start);
-		 event.setSchedEnd(end);
+		 sched.setClassNo(classNo);
+		 sched.setSchedStep(0);
+		 sched.setSchedDate(date);
+		 sched.setSchedStart(start);
+		 sched.setSchedEnd(end);
 		 
-		 Event insertedEvent = service.insert(event);
+		 Schedule insertedSched = service.insert(sched);
 		 
 		 JSONObject json = new JSONObject();
 		 DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		 DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-		 if (insertedEvent != null) {
+		 if (insertedSched != null) {
 			JSONObject extenedProp = new JSONObject();
 
-			extenedProp.put("accountNo", insertedEvent.getAccountNo());
-			extenedProp.put("accountName", insertedEvent.getAccountName());
-			extenedProp.put("petNo", insertedEvent.getPetNo());
-			extenedProp.put("petName", insertedEvent.getPetName());
-			extenedProp.put("classNo", insertedEvent.getClassNo());
-			extenedProp.put("schedStep", insertedEvent.getSchedStep());
-			extenedProp.put("schedDate", insertedEvent.getSchedDate().format(formatDate));
-			extenedProp.put("schedAttend", String.valueOf(insertedEvent.getSchedAttend())); // char타입은 String으로 변환해서 보내야 화면에서 parserror가 발생하지 않음
-			extenedProp.put("courseNo", insertedEvent.getCourseNo());
-			extenedProp.put("courseTitle", insertedEvent.getCourseTitle());
-			extenedProp.put("courseTotalStep", insertedEvent.getCourseTotalStep());
+			extenedProp.put("accountNo", insertedSched.getAccountNo());
+			extenedProp.put("accountName", insertedSched.getAccountName());
+			extenedProp.put("petNo", insertedSched.getPetNo());
+			extenedProp.put("petName", insertedSched.getPetName());
+			extenedProp.put("classNo", insertedSched.getClassNo());
+			extenedProp.put("schedStep", insertedSched.getSchedStep());
+			extenedProp.put("schedDate", insertedSched.getSchedDate().format(formatDate));
+			extenedProp.put("schedAttend", String.valueOf(insertedSched.getSchedAttend())); // char타입은 String으로 변환해서 보내야 화면에서 parserror가 발생하지 않음
+			extenedProp.put("courseNo", insertedSched.getCourseNo());
+			extenedProp.put("courseTitle", insertedSched.getCourseTitle());
+			extenedProp.put("courseTotalStep", insertedSched.getCourseTotalStep());
 			
 			
 			json.put("extendedProps", extenedProp);
 			
-			json.put("id", insertedEvent.getSchedNo());
+			json.put("id", insertedSched.getSchedNo());
 			
-			json.put("start", insertedEvent.getSchedStart().format(formatDateTime));
-			json.put("end", insertedEvent.getSchedEnd().format(formatDateTime));
+			json.put("start", insertedSched.getSchedStart().format(formatDateTime));
+			json.put("end", insertedSched.getSchedEnd().format(formatDateTime));
 			
-			json.put("title", "(" + insertedEvent.getCourseTitle() + ") " + insertedEvent.getAccountName() + "-" + insertedEvent.getPetName());
+			json.put("title", "(" + insertedSched.getCourseTitle() + ") " + insertedSched.getAccountName() + "-" + insertedSched.getPetName());
 		 } else {
 			 json.put("status", "일정 등록 중 문제 발샐");
 			 json.put("statusCode", "500");			 
