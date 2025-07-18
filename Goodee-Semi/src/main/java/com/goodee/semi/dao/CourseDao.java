@@ -92,6 +92,14 @@ public class CourseDao {
 		
 		return likeList;
 	}
+	
+	public Like selectLike(Like like) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Like result = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectLike", like);
+		session.close();
+		
+		return result;
+	}
 
 	public int insertLike(Like like) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
