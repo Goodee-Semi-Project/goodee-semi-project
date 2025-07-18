@@ -64,7 +64,11 @@
 	
 	<update id="updatePet" parameterType="com.goodee.semi.dto.Pet">
 		UPDATE pet
-		SET pet_name = #{petName}
+		SET
+		pet_name = #{petName}
+		,pet_gender = #{petGender}
+		,pet_age = #{petAge}
+		,pet_breed = #{petBreed}
 		<where>
 			account_no = #{accountNo}
 			AND pet_no = #{petNo}

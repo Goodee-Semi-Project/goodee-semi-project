@@ -36,21 +36,33 @@ public class PetService {
 		try {
 			// 1. 반려견 수정
 			result = dao.updatePet(session, pet);
+			System.out.println("반려견 정보 수정 결과: " + result);
 			
 			// 2. 파일 정보 등록
-			if(attach != null && result > 0) {
-				result = dao.updateAttach(session, attach);
+			if(result != 0) {
+				if (attach != null) {
+					System.out.println("attach 있음");
+					result = dao.updateAttach(session, attach);
+					System.out.println("반려견 이미지 수정 결과: " + result);
+				} else {
+					System.out.println("attach 없음");
+					result = 1;
+				}
 			}
+			System.out.println("반려견 정보&이미지 수정 결과: " + result);
 			
 			// 3. commit 또는 rollback 처리
 			if(result > 0) {
 				session.commit();
+				System.out.println("반려견 정보&이미지 수정 사항 DB에 반영됨");
 			} else {
 				session.rollback();
+				System.out.println("반려견 정보&이미지 수정 사항 DB에 반영되지 않음");
 			}			
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.rollback();
+			System.out.println("반려견 정보&이미지 수정 사항 DB에 반영되지 않음");
 		} finally {
 			session.close();
 		}

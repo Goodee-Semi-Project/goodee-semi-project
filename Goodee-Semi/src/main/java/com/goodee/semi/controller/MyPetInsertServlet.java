@@ -38,7 +38,7 @@ public class MyPetInsertServlet extends HttpServlet {
 		// 텍스트 데이터 받기
 		String petName = request.getParameter("petName");
 		int petAge = Integer.parseInt(request.getParameter("petAge"));
-		char petGender = (request.getParameter("petGender").equals("남")) ? 'M' : 'F';
+		char petGender = request.getParameter("petGender").charAt(0);
 		String petBreed = request.getParameter("petBreed");
 		int accountNo = Integer.parseInt(request.getParameter("accountNo"));
 		

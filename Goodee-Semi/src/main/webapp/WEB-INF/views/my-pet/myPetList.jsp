@@ -31,19 +31,31 @@
 						<input type="file" class="pet-img-input" name="petImg" style="display: none;">
 						<img src="<c:url value='/upload/pet/${pet.imgFileSaveName }'/>" class="pet-img" alt="반려견 이미지">
 						<div class="pet-detail">
-							<input type="text" class="pet-name" name="petName" value="${pet.petName }" disabled>
+							<input type="text" class="pet-name" name="petName" value="${pet.petName }" disabled required>
 							<div>
-								<input type="text" class="pet-age" name="petAge" value="${pet.petAge }" disabled>
-								<p>살 / <p>
-								<input type="text" class="pet-gender" name="petGender" value="${pet.petGender }" disabled>
+								<input type="number" class="pet-age" name="petAge" value="${pet.petAge }" disabled required>
+								<p>살 / </p>
+ 								<select class="pet-gender" name="petGender" disabled required>
+									<option value="" disabled>성별</option>
+									<c:choose>
+										<c:when test="${pet.petGender == 77}">
+											<option value="M" selected>남</option>
+											<option value="F">여</option>
+										</c:when>
+										<c:otherwise>
+											<option value="M">남</option>
+											<option value="F" selected>여</option>
+										</c:otherwise>
+									</c:choose>
+								</select>
 							</div>
-							<input type="text" class="pet-breed" name="petBreed" value="${pet.petBreed }" disabled>
+							<input type="text" class="pet-breed" name="petBreed" value="${pet.petBreed }" disabled required>
 							<input type="hidden" class="pet-no" name="petNo" value="${pet.petNo }">
 							<input type="hidden" class="account-no" name="accountNo" value="${pet.accountNo }">
 						</div>
 						<div class="pet-btn">
-							<button class="pet-btn-up">수정</button>
-							<button class="pet-btn-del">삭제</button>
+							<button type="button" class="pet-btn-up">수정</button>
+							<button type="button" class="pet-btn-del">삭제</button>
 						</div>
 						<hr>
 					</li>
