@@ -18,8 +18,9 @@
   	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
   </h3>
   
-  <input type="hidden" id="validAuthor" value="${ sessionScope.loginAccount.author }">
-	<c:if test="${ sessionScope.loginAccount.author eq 1 }">
+  <input type="hidden" id="validAuthor" value="${ sessionScope.loginAccount.author }" />
+  <input type="hidden" id="isSameTrainer" value="${ course.accountNo eq sessionScope.loginAccount.accountNo }" />
+	<c:if test="${ (sessionScope.loginAccount.author eq 1) and (course.accountNo eq sessionScope.loginAccount.accountNo) }">
 		<form id="updateCourseForm">
 			<label>과정명: </label>
 			<input type="text" name="title" value="${ course.title }">
@@ -77,8 +78,9 @@
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
 		const myAuthor = $("#validAuthor").val();
+		const isSameTrainer = $("#isSameTrainer").val();
 		
-		if (myAuthor == 2) {
+		if (myAuthor == 2 || isSameTrainer == "false") {
 			alert("잘못된 접근입니다.");
 			location.href = "<%= request.getContextPath() %>/";
 		}
