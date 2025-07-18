@@ -161,4 +161,17 @@
 		DELETE FROM attachment
 		WHERE type_no = #{ typeNo } AND  pk_no = #{ pkNo }
 	</delete>
+	
+	<select id="selectAccountTrainer4" resultMap="accountResultMap">
+		SELECT *
+		FROM account
+		WHERE auth_no = 1
+		LIMIT 4
+	</select>
+	
+	<select id="countTotalAccountNo" resultType="_int">
+		SELECT COUNT(*)
+		FROM account
+		WHERE auth_no != 1
+	</select>
 </mapper>

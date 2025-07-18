@@ -7,6 +7,7 @@
 	<resultMap id="scheduleResultMap" type="com.goodee.semi.dto.Schedule">
 		<result property="accountNo" column="account_no" />
 		<result property="accountName" column="account_name" />
+		<result property="accountPhone" column="account_phone" />
 		
 		<result property="petNo" column="pet_no" />
 		<result property="petName" column="pet_name" />
