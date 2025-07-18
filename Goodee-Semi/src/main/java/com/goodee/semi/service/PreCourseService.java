@@ -61,6 +61,40 @@ public class PreCourseService {
 		Attach attach = preCourseDao.selectAttach(preNo);
 		return attach;
 	}
+
+	public int updatePreCourse(PreCourse preCourse, Attach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = -1;
+		
+		try {
+			result = preCourseDao.updatePreCourse(session, preCourse);
+			if (attach != null && result > 0) {
+				attach.setTypeNo(Attach.PRE_COURSE);
+				attach.setPkNo(preCourse.getPreNo());
+				if (result > 0) {
+					result = -1;
+					result = preCourseDao.deleteAttach(attach);
+				}
+				if (result > 0) {
+					result = -1;
+					result = preCourseDao.insertAttach(session, attach);
+				}
+			}
+
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
+	}
 	
 
 }

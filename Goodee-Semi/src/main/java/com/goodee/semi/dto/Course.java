@@ -34,5 +34,6 @@ public class Course {
 	
 	private int currentEnrollment;
 	private int petInCourseCount;
+	private int petNo;
 
 }

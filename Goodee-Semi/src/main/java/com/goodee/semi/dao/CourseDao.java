@@ -177,7 +177,7 @@ public class CourseDao {
 		session.close();
 		return result;
 	}
-
+	
 	public int insertTag(SqlSession session, Course course) {
 		String[] tags = course.getTag().split(" ");
 		int result = 0;
@@ -231,6 +231,14 @@ public class CourseDao {
 		session.close();
 		
 		return courseNoList;
+	}
+	
+
+	public List<Course> selectListByPetAccount(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Course> list = session.selectList("com.goodee.semi.mapper.CourseMapper.selectListByPetAccount", accountNo);
+		session.close();
+		return list;
 	}
 
 }
