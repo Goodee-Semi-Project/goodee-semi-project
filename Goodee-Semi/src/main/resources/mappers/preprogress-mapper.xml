@@ -38,7 +38,7 @@
 		)
 	</insert>
 	
-	<select id="selectOne" parameterType="com.goodee.semi.dto.PreProgress" resultType="_int">
+	<select id="countOne" parameterType="com.goodee.semi.dto.PreProgress" resultType="_int">
 		SELECT COUNT(*)
 		FROM pre_progress AS pp
 		WHERE pre_no = #{ preNo } AND class_no = (
@@ -57,7 +57,7 @@
 		)
 	</select>
 	
-	<update id="update">
+	<update id="update" parameterType="com.goodee.semi.dto.PreProgress">
 		UPDATE pre_progress
 		SET watch_len = #{ watchLen }, pre_prog = #{ preProg }
 		WHERE pre_no = #{ preNo } AND class_no = (
@@ -75,5 +75,25 @@
 			) AS p ON c.pet_no = p.pet_no
 		)
 	</update>
+	
+	<select id="selectOne" parameterType="com.goodee.semi.dto.PreProgress" resultMap="preProgResultMap">
+		SELECT *
+		FROM pre_progress
+		WHERE pre_no = #{ preNo } AND class_no = (
+			SELECT c.class_no
+			FROM class AS c
+			JOIN (
+				SELECT course_no ,pre_no
+				FROM pre_course
+				WHERE pre_no = #{ preNo }
+			) AS co ON c.course_no = co.course_no
+			JOIN (
+				SELECT pet_no ,account_no
+				FROM pet
+				WHERE pet_no = #{ petNo }
+			) AS p ON c.pet_no = p.pet_no
+		) 
+		
+	</select>
 
 </mapper>
