@@ -18,10 +18,6 @@
   	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
   </h3>
 	
-	<c:if test="${ sessionScope.loginAccount.author eq 1 }">
-		<a href="<c:url value='/myCourse/create' />" class="btn btn-success btn-sm" style="padding: 5px 10px; margin-bottom: 20px;">새 교육과정 생성</a><br>
-	</c:if>
-	
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
@@ -71,6 +67,11 @@
 		</div>
 	</div>
 	
+	<c:if test="${ sessionScope.loginAccount.author eq 1 }">
+		<div style="display: flex; justify-content: center;">
+			<a href="<c:url value='/myCourse/create' />" class="btn btn-success btn-sm" style="padding: 5px 10px;">새 교육과정 생성</a><br>		
+		</div>
+	</c:if>
 	
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>

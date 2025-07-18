@@ -8,19 +8,20 @@
       <div class="col-lg-4">
         <div class="sidebar">
           <div class="widget user-dashboard-profile">
-				<c:choose>
-					<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
-			            <div class="profile-thumb">
-			              <img src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="" class="rounded-circle"/>
-			            </div>
-					</c:when>
-					<c:otherwise>
-						<!-- NOTE: 공통 사용 이미지로 -->
-			            <div class="profile-thumb">
-							<img alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"  alt="" class="rounded-circle"/>
-			            </div>
-					</c:otherwise>
-				</c:choose>
+						<c:choose>
+							<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
+					    	<div class="profile-thumb">
+					      	<img src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="" class="rounded-circle" style="box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
+					    	</div>
+							</c:when>
+							
+							<c:otherwise>
+								<!-- NOTE: 공통 사용 이미지로 -->
+					    	<div class="profile-thumb">
+									<img alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"  alt="" class="rounded-circle" style="box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
+					    	</div>
+							</c:otherwise>
+						</c:choose>
             
             <h5 class="text-center" style="margin-top: 10px;">${ sessionScope.loginAccount.name } 님</h5>
             <p>회원 | 가입일: ${ sessionScope.loginAccount.reg_date }</p>
