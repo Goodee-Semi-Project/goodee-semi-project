@@ -33,7 +33,7 @@ public interface CourseMapper {
 	int updateEnroll(Enroll enroll);
 	int deleteEnroll(Enroll enroll);
 	int insertPetClass(PetClass petClass);
-	
+	int countTotalClassNo();
 	Tag selectTagByText(Tag tag);
 	List<Tag> selectCourseTag(Course course);
 	int insertTag(Tag tag);

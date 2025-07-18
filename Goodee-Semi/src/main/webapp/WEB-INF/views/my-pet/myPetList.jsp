@@ -13,20 +13,11 @@
 	<!-- header -->
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	
+	<!-- sideBar start -->
+	<%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
+	
 	<!-- 중앙정렬용 container -->
 	<div id="container">
-		<aside>
-			<div id="profile">
-				<img src="https://picsum.photos/150" alt="프로필 이미지">
-				<h4>${loginAccount.name } 님</h4>
-				<div>
-					<p>${authurName }</p>
-					<p>${regDate } 가입</p>
-				</div>
-			</div>
-			<%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
-		</aside>
-		
 		<section>
 			<div id="title">
 				<h3>등록된 반려견</h3>
@@ -75,6 +66,9 @@
 
 		</section>
 	</div>
+	
+	<!-- sideBar end -->
+	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	
 	<!-- footer -->
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>

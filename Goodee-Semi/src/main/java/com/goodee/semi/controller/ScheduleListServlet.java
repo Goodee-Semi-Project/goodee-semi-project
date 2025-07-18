@@ -10,19 +10,21 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.goodee.semi.dto.Schedule;
-import com.goodee.semi.service.ScheduleService;
+import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Event;
+import com.goodee.semi.service.EventService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/schedule/list")
 public class ScheduleListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ScheduleService service = new ScheduleService();
+	private EventService service = new EventService();
        
     public ScheduleListServlet() {
         super();
@@ -32,7 +34,12 @@ public class ScheduleListServlet extends HttpServlet {
 		// 1. 응답 인코딩
 		request.setCharacterEncoding("UTF-8");
 		
-		// 2. 바인딩 된 값 받아오기
+		// 2-1. session에서 accountNo 가져오기
+		HttpSession session = request.getSession(false);
+		AccountDetail accountDetail = (AccountDetail) session.getAttribute("loginAccount");
+
+		
+		// 2-2. 바인딩 된 값 받아오기
 		String start = request.getParameter("start");
 		String end = request.getParameter("end");
 		System.out.println("[start]: " + start + ", [end]: " + end);
@@ -48,14 +55,19 @@ public class ScheduleListServlet extends HttpServlet {
 										 Integer.parseInt(endDateStr[1]), 
 										 Integer.parseInt(endDateStr[2]));
 		
-		Map<String, LocalDate> map = new HashMap<String, LocalDate>();
-		map.put("start", startDate);
-		map.put("end", endDate);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("start", startDate.toString());
+		map.put("end", endDate.toString());
+		
+		// 회원/훈련사 조회 데이터 분기
+		if(accountDetail.getAuthor() == 1) map.put("trainerAccountNo", String.valueOf(accountDetail.getAccountNo()));
+		else map.put("memberAccountNo", String.valueOf(accountDetail.getAccountNo()));
+		
 		System.out.println("map: " + map);
 		
 		// 4. service에서 일정 리스트 데이터 받아오기
-		List<Schedule> list = service.selectScheduleList(map);
-		System.out.println(list);
+		List<Event> list = service.selectEventList(map);
+		System.out.println("list: " + list);
 				
 		// 7. 응답 보내기
 		// json-simple 라이브러리를 이용하여 List 타입을 응답하고싶다면 
@@ -64,23 +76,49 @@ public class ScheduleListServlet extends HttpServlet {
 		// (GSon은 List -> Json 자동 파싱을 지원함)
 		JSONArray jsonArr = new JSONArray();
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		// format() 결과에 그대로 문자열 "T"로 넣고 싶을 때는 'T'처럼 작은따옴표로 감싸야 함
+		DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 		
-		for (Schedule s : list) {
-			JSONObject j = new JSONObject();
-			j.put("classNo", s.getClassNo());
-			j.put("schedNo", s.getSchedNo());
-			j.put("SchedDate", s.getSchedDate().format(formatter));
+		for (Event event : list) {
+
 			
-			jsonArr.add(j);
+			JSONObject extenedProp = new JSONObject();
+
+			extenedProp.put("accountNo", event.getAccountNo());
+			extenedProp.put("accountName", event.getAccountName());
+			extenedProp.put("petNo", event.getPetNo());
+			extenedProp.put("petName", event.getPetName());
+			extenedProp.put("classNo", event.getClassNo());
+			extenedProp.put("schedStep", event.getSchedStep());
+			extenedProp.put("schedDate", event.getSchedDate().format(formatDate));
+			extenedProp.put("schedAttend", String.valueOf(event.getSchedAttend())); // char타입은 String으로 변환해서 보내야 화면에서 parserror가 발생하지 않음
+			extenedProp.put("courseNo", event.getCourseNo());
+			extenedProp.put("courseTitle", event.getCourseTitle());
+			extenedProp.put("courseTotalStep", event.getCourseTotalStep());
+			
+			JSONObject prop = new JSONObject();
+			
+			prop.put("extendedProps", extenedProp);
+			
+			prop.put("id", event.getSchedNo());
+			
+			prop.put("start", event.getSchedStart().format(formatDateTime));
+			prop.put("end", event.getSchedEnd().format(formatDateTime));
+			
+			prop.put("title", "(" + event.getCourseTitle() + ") " + event.getAccountName() + "-" + event.getPetName());
+			
+			jsonArr.add(prop);
 		}
 		
 		// 응답으로 넘길 jsonObject
-		JSONObject json = new JSONObject();
-		json.put("jsonArr", jsonArr);
+//		JSONObject json = new JSONObject();
+//		json.put("jsonArr", jsonArr);
 		
 		response.setContentType("application/json; charset=utf-8");
-		response.getWriter().print(json);
+		response.getWriter().print(jsonArr);
+		// fulcalendar의 successCallback() 함수에 데이터를 넘겨줄 때는 jsonArray 형식 등 배열의 형식을 넘겨줘야 함
+		// (ajax에서 json 으로 받아서 json.jsonArr를 successCallback()에 넘겨주려 하면 `'e' is not iterable` 이라는 이상한 에러 발생)
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
