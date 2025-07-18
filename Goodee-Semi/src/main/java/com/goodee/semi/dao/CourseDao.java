@@ -11,6 +11,7 @@ import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
 import com.goodee.semi.dto.PetClass;
+import com.goodee.semi.dto.Tag;
 
 public class CourseDao {
 	
@@ -38,6 +39,12 @@ public class CourseDao {
 		return list;
 	}
 	
+	public int updateCourse(SqlSession session, Course course) {
+		int result = session.update("com.goodee.semi.mapper.CourseMapper.updateCourse", course);
+		
+		return result;
+	}
+	
 	public Attach selectThumbAttach(Course course) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		Attach attach = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectThumbAttach", course);
@@ -59,11 +66,15 @@ public class CourseDao {
 		
 		return result;
 	}
-
-	public int insertAttach(SqlSession session, Attach thumbAttach, Attach inputAttach) {
+	
+	public int insertThumbAttach(SqlSession session, Attach thumbAttach) {
 		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertAttach", thumbAttach);
 		
-		if (result > 0) result = session.insert("com.goodee.semi.mapper.CourseMapper.insertAttach", inputAttach);
+		return result;
+	}
+	
+	public int insertInputAttach(SqlSession session, Attach inputAttach) {
+		int result = session.insert("com.goodee.semi.mapper.CourseMapper.insertAttach", inputAttach);
 		
 		return result;
 	}
@@ -165,6 +176,61 @@ public class CourseDao {
 		List<Attach> result = session.selectList("com.goodee.semi.mapper.CourseMapper.selectAllAttachByAccountNo", accountNo);
 		session.close();
 		return result;
+	}
+
+	public int insertTag(SqlSession session, Course course) {
+		String[] tags = course.getTag().split(" ");
+		int result = 0;
+		
+		for (String tag : tags) {
+			result = 0;
+			
+			Tag myTag = new Tag();
+			myTag.setTagText(tag);
+			
+			result = session.insert("com.goodee.semi.mapper.CourseMapper.insertTag", myTag);
+			
+			if (result == 0) {
+				myTag = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectTagByText", myTag);
+				if (myTag != null) result = 1;
+			}
+			
+			if (result > 0) {
+				myTag.setCourseNo(course.getCourseNo());
+				result = session.insert("com.goodee.semi.mapper.CourseMapper.insertCourseTag", myTag);
+			}
+			
+			if (result <= 0) break;
+		}
+		
+		return result;
+	}
+
+	public String selectCourseTag(Course course) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Tag> tags = session.selectList("com.goodee.semi.mapper.CourseMapper.selectCourseTag", course);
+		session.close();
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		for (Tag tag : tags) {
+			stringBuilder.append(tag.getTagText() + " ");
+		}
+		
+		return stringBuilder.toString().trim();
+	}
+
+	public int deleteCourseTag(SqlSession session, Course course) {
+		int result = session.delete("com.goodee.semi.mapper.CourseMapper.deleteCourseTag", course);
+		
+		return result;
+	}
+
+	public List<String> selectCourseNoByKey(Tag tag) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<String> courseNoList = session.selectList("com.goodee.semi.mapper.CourseMapper.selectCourseNoByKey", tag);
+		session.close();
+		
+		return courseNoList;
 	}
 
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dto.Attach;
+import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Pet;
 import com.goodee.semi.mapper.PetMapper;
 
@@ -71,5 +72,13 @@ public class PetDao implements PetMapper {
 		List<Pet> list = session.selectList("com.goodee.semi.mapper.PetMapper.selectAllPetByCourseNo", selectAllPetByCourseNo);
 		session.close();
 		return list;
+	}
+
+	public List<Pet> selectMyPetInCourse(Course key) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Pet> petList = session.selectList("com.goodee.semi.mapper.PetMapper.selectMyPetInCourse", key);
+		session.close();
+
+		return petList;
 	}
 }

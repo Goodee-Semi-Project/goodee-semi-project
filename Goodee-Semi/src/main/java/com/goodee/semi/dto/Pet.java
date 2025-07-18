@@ -27,4 +27,5 @@ public class Pet extends Paging {
 
 	private String imgFilePath;
 	private String imgFileSaveName;
+	private Attach petAttach;
 }
