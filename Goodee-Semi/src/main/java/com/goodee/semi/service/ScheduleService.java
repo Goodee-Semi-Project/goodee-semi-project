@@ -58,4 +58,8 @@ public class ScheduleService {
 		return result;
 	}
 
+	public int delete(int schedNo) {
+		return dao.delete(schedNo);
+	}
+
 }

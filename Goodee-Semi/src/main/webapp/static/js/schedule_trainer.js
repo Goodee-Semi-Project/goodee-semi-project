@@ -195,9 +195,6 @@ function showEventModal(mode, info) {
 // 날짜 + 시간 합치기 함수
 function buildDateTime(date, timeStr) {
     const [h, m] = timeStr.split(':').map(String);
-//   const dt = new Date(date);
-//   dt.setHours(h, m, 0, 0);
-//   return dt.toISOString();
     return date + 'T' + h + ':' + m;
 }
 
@@ -269,8 +266,6 @@ function deleteEvent(eventId) {
 		    success: function(data) {
 				console.log("성공: ", data);
 				
-/*	            location.reload();
-				
 				const event = calendar.getEventById(eventId);
 			    if (event) {
 			        event.remove();
@@ -280,7 +275,7 @@ function deleteEvent(eventId) {
 			        if (dataIndex !== -1) {
 			            eventDatas.splice(dataIndex, 1);
 			        }
-			    }*/
+			    }
 		    },
 		    error: function(err) {
 		        console.log("에러: ", err);
