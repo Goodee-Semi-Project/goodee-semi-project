@@ -15,6 +15,7 @@
 		<result property="thumb" column="thumb" />
 		<result property="name" column="account_name" />
 		<result property="currentEnrollment" column="current_enrollment" />
+		<result property="petNo" column="pet_no" />
 	</resultMap>
 	
 	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
@@ -255,7 +256,7 @@
 		INSERT INTO class (course_no, pet_no)
 		VALUE (#{courseNo}, #{petNo})
 	</insert>
-	
+
 	<select id="selectTagByText" parameterType="com.goodee.semi.dto.Tag" resultMap="tagResultMap">
 		SELECT * FROM hashtag
 		<where>
@@ -299,4 +300,18 @@
 			course_no = #{courseNo}
 		</where>
 	</delete>
+	
+	<select id="selectListByPetAccount" parameterType="_int" resultMap="courseResultMap">
+		SELECT co.* ,p.pet_no ,p.pet_name AS account_name
+		FROM course AS co
+		JOIN (
+			SELECT course_no ,pet_no
+			FROM class
+		) as c ON co.course_no = c.course_no
+		JOIN (
+			SELECT pet_no ,account_no ,pet_name
+			FROM pet
+		) AS p ON c.pet_no = p.pet_no
+		WHERE p.account_no = #{ accountNo }
+	</select>
 </mapper>
