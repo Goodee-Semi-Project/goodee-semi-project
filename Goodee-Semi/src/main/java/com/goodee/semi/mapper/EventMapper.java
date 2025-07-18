@@ -14,4 +14,5 @@ public interface EventMapper {
 	int insert(Event event);
 	Event selectEvent(int schedNo);
 	int selectClassNo(Event event);
+	int update(Event event);
 }

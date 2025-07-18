@@ -66,5 +66,13 @@ public class EventDao implements EventMapper {
 		session.close();
 		return event;
 	}
+	
+	@Override
+	public int update(Event event) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.EventMapper.update", event);
+		session.close();
+		return result;
+	}
 
 }
