@@ -15,14 +15,22 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Schedule {
-	private int schedNo;
-	private int classNo;
-	private int schedStep;
-	private LocalDate schedDate;
-	private LocalDateTime schedStart;
-	private LocalDateTime schedEnd;
-	private char schedAttend;
-	
-	Course course;
-	Pet pet;
+    private int accountNo;
+    private String accountName;
+
+    private int petNo;
+    private String petName;
+
+    private int classNo;
+
+    private int schedNo;
+    private int schedStep;
+    private LocalDate schedDate;
+    private LocalDateTime schedStart;
+    private LocalDateTime schedEnd;
+    private char schedAttend;
+    
+    private int courseNo;
+    private String courseTitle;
+    private int courseTotalStep;
 }
