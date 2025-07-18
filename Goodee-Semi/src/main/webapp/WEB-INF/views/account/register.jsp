@@ -15,32 +15,63 @@
 
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
-
-	<form id="registerForm">
-		<input type="text" id="accountId" name="accountId" placeholder="아이디"><br>
-		<input type="password" id="accountPw" name="accountPw" placeholder="비밀번호"><br>
-		<input type="password" id="accountPwChk" placeholder="비밀번호 확인"><br><br>
-		
-		<label>프로필 사진: </label>
-		<input type="file" name="profileImage"><br>
-		<input type="text" id="accountName" name="accountName" placeholder="이름">
-		<select id="accountGender" name="accountGender">
-			<option value="0">선택</option>
-			<option value="1">남</option>
-			<option value="2">여</option>
-		</select><br>
-		<input type="text" id="accountBirth" name="accountBirth" placeholder="생년월일"><br>
-		<input type="text" id="accountPhone" name="accountPhone" placeholder="전화번호"><br>
-		<input type="text" id="accountEmail" name="accountEmail" placeholder="이메일"><br><br>
-		
-		<input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
-		<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-		<input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
-		<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"><br><br>
-		
-		<input type="submit" value="회원가입">
-	</form>
 	
+	<section class="login py-5 border-top-1">
+	  <div class="container">
+	    <div class="row justify-content-center">
+	      <div class="col-lg-5 col-md-8 align-item-center">
+	        <div class="border border">
+	          <h3 class="bg-gray p-4">REGISTER</h3>
+	          <form id="registerForm">
+	            <fieldset class="p-4">
+	              <input class="form-control mb-2" type="text" id="accountId" name="accountId" placeholder="아이디" required>
+	              <input class="form-control mb-2" type="password" id="accountPw" name="accountPw" placeholder="비밀번호" required>
+	              <input class="form-control mb-5" type="password" id="accountPwChk" placeholder="비밀번호 확인" required>
+	              
+	              <div style="display: flex; align-items: center; width: 100%;">
+	             		<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da;" id="preview" />
+	             		<label for="profileImage" class="btn btn-outline-secondary" style="padding: 2px 5px;">
+	             			<span style="width: 100px; font-size: 12px;">프로필 사진 선택</span>
+	             		</label>
+									<input type="file" id="profileImage" name="profileImage" onchange="readURL(this)" style="opacity: 0; width: 0%;">
+	              </div>
+	              
+	              <div class="mb-2" style="display: flex; justify-content: space-between; align-items: center;">
+	              	<input class="form-control" style="width: 40%;" type="text" id="accountName" name="accountName" placeholder="이름" required>
+	              	<div style="margin-right: 50px;">
+	              		<label for="accountGender" style="margin: 0 20px 0 0;">성별</label>
+		              	<select id="accountGender" name="accountGender">
+											<option value="0">선택</option>
+											<option value="1">남</option>
+											<option value="2">여</option>
+										</select>
+	              	</div>             
+	              </div>
+	              <input class="form-control mb-2" type="email" id="accountEmail" name="accountEmail" placeholder="이메일" required>
+	              <div class="mb-5" style="display: flex; justify-content: space-between; align-items: center;">
+	              	<input class="form-control" style="width: 48%;" type="text" id="accountBirth" name="accountBirth" placeholder="생년월일" required>
+	              	<input class="form-control" style="width: 48%;" type="text" id="accountPhone" name="accountPhone" placeholder="전화번호" required>
+	              </div>
+	              
+	              <div class="mb-2" style="display: flex; align-items: center;">
+	              	<input class="form-control" style="width: 40%;" type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
+	              	<button type="button" class="btn btn-outline-secondary" style="padding: 2px 5px; font-size: 12px; margin-left: 20px;" onclick="execDaumPostcode()">우편번호 찾기</button>
+	              </div>
+	              <input class="form-control mb-2" type="text" id="roadAddress" name="roadAddress" placeholder="주소" readonly>
+	              <input class="form-control mb-2" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
+	              <div class="loggedin-forgot my-3" style="align-items: center;">
+	                <input type="checkbox" id="registering" style="vertical-align: -2px;">
+	                <label for="registering"><a class="text-primary" href="terms-condition.html">개인정보 수집 및 이용약관</a>에 동의합니다.</label>
+	              </div>
+	              <button type="submit" class="btn btn-primary font-weight-bold mt-3" style="width: 100%;">회원가입</button>
+	            </fieldset>
+	          </form>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</section>
+
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
     function execDaumPostcode() {
@@ -51,6 +82,22 @@
         }
       }).open();
     }
+	</script>
+	
+	<script>
+		function readURL(input) {
+		  if (input.files && input.files[0]) {
+		    const reader = new FileReader();
+		    
+		    reader.onload = function(event) {
+		      document.getElementById('preview').src = event.target.result;
+		    };
+		    
+		    reader.readAsDataURL(input.files[0]);
+		  } else {
+		    document.getElementById('preview').src = "";
+		  }
+		}
 	</script>
 	
 	<script>
