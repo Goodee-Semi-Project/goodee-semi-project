@@ -30,6 +30,7 @@ public interface CourseMapper {
 	int deleteLike(Like like);
 	Enroll selectEnrollOne(int enrollNo);
 	List<Enroll> selectMyEnroll(AccountDetail account);
+	Enroll selectEnrollByCourseNoAndPetNo(Enroll enroll);
 	int insertEnroll(Enroll enroll);
 	int updateEnroll(Enroll enroll);
 	int deleteEnroll(Enroll enroll);

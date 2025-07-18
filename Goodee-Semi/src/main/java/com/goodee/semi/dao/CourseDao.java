@@ -132,6 +132,14 @@ public class CourseDao {
 		
 		return enroll;
 	}
+	
+	public Enroll selectEnrollByCourseNoAndPetNo(Enroll enroll) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Enroll result = session.selectOne("com.goodee.semi.mapper.CourseMapper.selectEnrollByCourseNoAndPetNo", enroll);
+		session.close();
+		
+		return result;
+	}
 
 	public int insertEnroll(Enroll enroll) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
