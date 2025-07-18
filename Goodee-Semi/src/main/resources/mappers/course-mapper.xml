@@ -256,6 +256,11 @@
 		INSERT INTO class (course_no, pet_no)
 		VALUE (#{courseNo}, #{petNo})
 	</insert>
+	
+	<select id="countTotalClassNo" resultType="_int">
+		SELECT COUNT(course_no)
+		FROM course
+	</select>
 
 	<select id="selectTagByText" parameterType="com.goodee.semi.dto.Tag" resultMap="tagResultMap">
 		SELECT * FROM hashtag

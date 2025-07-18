@@ -20,4 +20,5 @@ public interface PetMapper {
 	 int deleteAttach(SqlSession session, int petNo);
 	 int insertPet(SqlSession session, Pet param);
 	 int insertAttach(SqlSession session, Attach param);
+	 int countTotalPetNo();
 }
