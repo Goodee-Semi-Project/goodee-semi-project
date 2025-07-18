@@ -33,9 +33,9 @@
 		<input type="text" id="accountPhone" name="accountPhone" placeholder="전화번호"><br>
 		<input type="text" id="accountEmail" name="accountEmail" placeholder="이메일"><br><br>
 		
-		<input type="text" id="postcode" name="postcode" placeholder="우편번호">
+		<input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
 		<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-		<input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소">
+		<input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
 		<input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소"><br><br>
 		
 		<input type="submit" value="회원가입">
