@@ -37,7 +37,7 @@
 		</div>
 		<div>
 			<a href="/preCourse/list">목록</a>
-			<button id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'" disabled>학습 완료</button>
+			<button id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'" <c:if test="${ preProgress.preProg ne 100 }"> disabled </c:if> >학습 완료</button>
 		</div>
 		<c:if test="${ loginAccount.author eq 1 }">
 			<div>

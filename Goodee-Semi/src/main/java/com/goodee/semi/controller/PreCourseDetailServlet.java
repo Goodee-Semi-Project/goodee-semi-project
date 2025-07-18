@@ -72,6 +72,8 @@ public class PreCourseDetailServlet extends HttpServlet {
 				request.setAttribute("preCourse", preCourse);
 				request.setAttribute("attach", attach);
 				if (preProgress != null) {
+					request.setAttribute("preProgress", preProgress);
+					
 					String watchLen = preProgress.getWatchLen();
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 					LocalTime time = LocalTime.parse(watchLen, formatter);
