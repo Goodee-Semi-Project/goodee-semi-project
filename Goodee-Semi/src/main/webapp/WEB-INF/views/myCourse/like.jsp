@@ -46,7 +46,7 @@
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
 		function deleteLike(pickNo) {
-			if (confirm("승인하시겠습니까?")) {
+			if (confirm("찜 목록에서 제거하시겠습니까?")) {
 				const likeFlag = "DELETE";
 				
 				$.ajax({

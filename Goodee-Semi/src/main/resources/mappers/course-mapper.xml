@@ -195,6 +195,13 @@
 		</where>
 	</select>
 	
+	<select id="selectLike" parameterType="com.goodee.semi.dto.Like" resultMap="likeResultMap">
+		SELECT * FROM picked_course
+		<where>
+			course_no = #{courseNo} AND account_no = #{accountNo}
+		</where>
+	</select>
+	
 	<insert id="insertLike" parameterType="com.goodee.semi.dto.Like">
 		INSERT INTO picked_course (course_no, account_no)
 		VALUE (#{courseNo}, #{accountNo})
