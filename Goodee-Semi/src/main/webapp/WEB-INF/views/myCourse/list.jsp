@@ -50,9 +50,9 @@
 		    								<span style="font-size: 15px;">${ course.myPetInCourse.petName }</span>
 											</div>
 											<div>
-												<p class="my-1" style="font-size: 15px;">현재 진도: 40%</p>
+												<p class="my-1" style="font-size: 15px;">현재 진도: ${ course.classData.classProg }%</p>
 												<ul class="progress_bar_wrap" style="list-style: none; display: table; width: 100%; height: 20px; background-color: #bcbaba; border-radius: 3px; margin-bottom: 5px; padding: 0;">
-													<c:set var="percent" value="40" />
+													<c:set var="percent" value="${ course.classData.classProg }" />
 													<li style="width: ${ percent }%; display: table-cell; background-color: lime; border: 1px solid lime; border-radius: 3px;"></li>
 													<li style="background-color: #bcbaba; border: 0; border-left: 0; border-radius: 0 3px 3px 0;"></li>
 												</ul>

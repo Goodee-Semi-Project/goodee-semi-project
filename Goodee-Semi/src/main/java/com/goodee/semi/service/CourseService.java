@@ -30,6 +30,7 @@ public class CourseService {
 		course.setThumbAttach(courseDao.selectThumbAttach(course));
 		course.setInputAttach(courseDao.selectInputAttach(course));
 		course.setTag(courseDao.selectCourseTag(course));
+		course.setPetInCourseCount(petDao.selectAllPetByCourseNo(String.valueOf(course.getCourseNo())).size());
 		
 		return course;
 	}
@@ -191,7 +192,10 @@ public class CourseService {
 		
 		if (enrollList.size() > 0) {
 			for (Enroll enroll : enrollList) {
-				enroll.setCourseData(courseDao.selectCourseOne(String.valueOf(enroll.getCourseNo())));
+				Course course = courseDao.selectCourseOne(String.valueOf(enroll.getCourseNo()));
+				course.setPetInCourseCount(petDao.selectAllPetByCourseNo(String.valueOf(course.getCourseNo())).size());
+				
+				enroll.setCourseData(course);
 				enroll.setPetData(petDao.selectPetOne(enroll.getPetNo()));
 				enroll.setAccountData(accountDao.selectAccountByPetNo(enroll.getPetNo()));
 			}
@@ -248,6 +252,10 @@ public class CourseService {
 		}
 		
 		return courseList;
+	}
+
+	public List<Course> selectListByPetAccount(int accountNo) {
+		return courseDao.selectListByPetAccount(accountNo);
 	}
 
 }

@@ -14,32 +14,100 @@
 
 	<main>
 		<h1>사전학습 세부 정보</h1>
+		<input type="text" id="author" value="${ loginAccount.author }" hidden>
+		<input type="text" id="preNo" value="${ preCourse.preNo }" hidden>
+		<c:if test="${ petNo ne -1 }">
+			<input type="text" id="petNo" value="${ petNo }" hidden>
+		</c:if>
 		<div>
-			<span>교육과정</span>
-			<span>${ preCourse.courseNo }</span>
+			<span>[교육과정]</span>
+			<span>${ preCourse.courseTitle }</span>
 		</div>
 		<div>
-			<span>제목</span>
+			<span>[제목]</span>
 			<span>${ preCourse.preTitle }</span>
 		</div>
 		<div>
-			<span>학습영상</span>
-			<video width="400" preload="auto" controls  id="preVideo">
-				<source src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+			<span>[학습영상]</span>
+			<video width="400" id="preVideo" controls preload="metadata">
+				<source src="<c:url value='/fileStream?no=${ attach.attachNo }'/>">
 			</video>
-			<button onclick="back10s()">10초 뒤로</button>
-			<span>${ preCourse.videoLen }</span>
+			<p id="videoLen">${ preCourse.videoLen }</p>
 		</div>
-	
+		<div>
+			<a href="/preCourse/list">목록</a>
+			<button id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'" disabled>학습 완료</button>
+		</div>
+		<c:if test="${ loginAccount.author eq 1 }">
+			<div>
+				<a href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
+			</div>
+		</c:if>
 	</main>
 
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+
 	const vid = document.querySelector('#preVideo');
-	vid.ontimeupdate = function() {
-		console.log(vid.currentTime);
+	let lastTime = 0;
+	
+	vid.onseeked = function() {
+		if (vid.currentTime > lastTime) {
+			vid.currentTime = lastTime;
+		}
 	}
+	
+	vid.onseeking = function() {
+		if (vid.currentTime > lastTime) {
+			vid.currentTime = lastTime;
+		}
+	}
+	
+	vid.ontimeupdate = function() {
+		if (vid.currentTime > lastTime + 1) {
+			vid.currentTime = lastTime;
+		} else if (vid.currentTime > lastTime) {
+			lastTime = vid.currentTime;
+		}
+	}
+	
+	vid.onended = function() {
+		$('#test').removeAttr('disabled');
+	}
+	
+	// TODO: beforeunload, popstate 이벤트로 시청 시간 보내기
+$(function() {
+	onbeforeunload = function(event) {
+		// event.preventDefault();
+		if ($('#author').val() != 1) {
+			const preNo = $('#preNo').val();
+			const videoLen = $('#videoLen').text();
+			const petNo = $('#petNo').val();
+			$.ajax({
+				url : '/preCourse/detail',
+				type : 'post',
+				data : {
+					preNo : preNo,
+					videoLen : videoLen,
+					watchLen : lastTime,
+					petNo : petNo
+				},
+				dataType : 'json',
+				success : function(data) {
+					if (data.res_code != 200) {
+						event.returnValue = '진행 상황이 저장되지 않았습니다.';
+						alert(data.res_msg);
+					}
+				},
+				error : function() {
+					saveState = false;
+				}
+			});
+		}
+		
+	};
+})
 </script>
 </body>
 </html>
