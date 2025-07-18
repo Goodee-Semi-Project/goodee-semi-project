@@ -67,4 +67,12 @@ public class EventDao implements EventMapper {
 		session.close();
 		return event;
 	}
+	
+	@Override
+	public List<Event> selectScheduleListAttend(Event event) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Event> list = session.selectList("com.goodee.semi.mapper.EventMapper.selectScheduleListAttend", event);
+		session.close();
+		return list;
+	}
 }

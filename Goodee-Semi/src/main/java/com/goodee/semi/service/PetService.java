@@ -130,5 +130,9 @@ public class PetService {
 	public int countTotalPetNo() {
 		return dao.countTotalPetNo();
 	}
-	
+
+	public Attach selectAttachByPetNo(int petNo) {
+		return dao.selectAttachByPetNo(petNo);
+		
+	}
 }
