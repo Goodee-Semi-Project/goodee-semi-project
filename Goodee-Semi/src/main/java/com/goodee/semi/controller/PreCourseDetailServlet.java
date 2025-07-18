@@ -136,7 +136,9 @@ public class PreCourseDetailServlet extends HttpServlet {
 		
 		// TODO: 진행 상황 계산이 잘못됨
 //		long progress = (watch.getTime() / video.getTime()) * 100;
-		long progress = 0;
+		long numerator = watch.getHour() * 3600 + watch.getMinute() * 60 + watch.getSecond();
+		long denominator = video.getHour() * 3600 + video.getMinute() * 60 + video.getSecond();
+		int progress = (int) ((double) numerator / denominator * 100);
 		
 		preProg = String.valueOf(progress);
 		
