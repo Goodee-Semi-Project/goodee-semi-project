@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class PreTest {
 	private String testNo;
-	private String preNo;
+	private int preNo;
 	private String testContent;
 	private String testAnswer;
 	private String one;
