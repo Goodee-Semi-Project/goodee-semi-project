@@ -104,7 +104,7 @@
 	</select>
 	
 
-	<select id="selectScheduleListAttend" parameterType="com.goodee.semi.dto.Event" resultMap="eventResultMap">
+	<select id="selectScheduleListAttend" parameterType="com.goodee.semi.dto.Schedule" resultMap="scheduleResultMap">
 		SELECT sc.* ,cl.class_no ,cl.course_no ,co.title ,p.pet_no ,p.pet_name, account_name
 		FROM schedule sc
 		JOIN class cl ON sc.class_NO = cl.class_no
@@ -120,6 +120,19 @@
 			sched_date = #{schedDate},
 		    sched_start = #{schedStart},
 		    sched_end = #{schedEnd}
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</update>
+	
+	<delete id="deleteScheduleBySchedNo" parameterType="_int">
+		DELETE FROM schedule
+		WHERE sched_no = #{schedNo}
+	</delete>
+	
+	<update id="updateScheduleAttend" parameterType="com.goodee.semi.dto.Schedule">
+		UPDATE schedule
+		SET sched_attend = #{schedAttend}
 		<where>
 			sched_no = #{schedNo}
 		</where>
