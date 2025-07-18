@@ -37,7 +37,7 @@ public class CourseDetailServlet extends HttpServlet {
 		course.setObject(course.getObject().replaceAll("\n", "<br>"));
 		course.setProfileAttach(accountService.selectAttachByAccountNo(course.getAccountNo()));
 		
-		if (account != null) {
+		if (account != null && account.getAuthor() == 2) {
 			Pet pet = new Pet();
 			pet.setAccountNo(account.getAccountNo());
 			List<Pet> myPetList = petService.selectPetList(pet);

@@ -73,7 +73,7 @@ public class FilePathServlet extends HttpServlet {
 		
 		try (FileInputStream fis = new FileInputStream(file);
 				OutputStream os = response.getOutputStream()) {
-			byte[] buffer = new byte[1024];
+			byte[] buffer = new byte[1024 * 1024];
 			int byteRead;
 			while ((byteRead = fis.read(buffer)) != -1) {
 				os.write(buffer, 0, byteRead);

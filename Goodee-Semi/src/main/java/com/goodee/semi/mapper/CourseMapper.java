@@ -39,4 +39,5 @@ public interface CourseMapper {
 	int insertTag(Tag tag);
 	int insertCourseTag(Tag tag);
 	int deleteCourseTag(Course course);
+	List<Course> selectListByPetAccount(int accountNo);
 }
