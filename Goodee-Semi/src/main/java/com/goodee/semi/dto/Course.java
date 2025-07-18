@@ -25,7 +25,14 @@ public class Course {
 	
 	private Attach thumbAttach;
 	private Attach inputAttach;
+	
 	private String name;
+	private Attach profileAttach;
+	
+	private Pet myPetInCourse;
+	private PetClass classData;
+	
 	private int currentEnrollment;
+	private int petInCourseCount;
 
 }

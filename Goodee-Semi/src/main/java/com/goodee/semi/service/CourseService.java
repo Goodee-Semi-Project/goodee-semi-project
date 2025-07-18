@@ -1,5 +1,7 @@
 package com.goodee.semi.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -14,6 +16,7 @@ import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
 import com.goodee.semi.dto.PetClass;
+import com.goodee.semi.dto.Tag;
 
 public class CourseService {
 	private CourseDao courseDao = new CourseDao();
@@ -23,11 +26,10 @@ public class CourseService {
 	public Course selectCourseOne(String courseNo) {
 		Course course = courseDao.selectCourseOne(courseNo);
 		
-		Attach thumbAttach = courseDao.selectThumbAttach(course);
-		Attach inputAttach = courseDao.selectInputAttach(course);
-		
-		course.setThumbAttach(thumbAttach);
-		course.setInputAttach(inputAttach);
+		course.setThumbAttach(courseDao.selectThumbAttach(course));
+		course.setInputAttach(courseDao.selectInputAttach(course));
+		course.setTag(courseDao.selectCourseTag(course));
+		course.setPetInCourseCount(petDao.selectAllPetByCourseNo(String.valueOf(course.getCourseNo())).size());
 		
 		return course;
 	}
@@ -36,11 +38,10 @@ public class CourseService {
 		List<Course> courseList = courseDao.selectCourse(course);
 		
 		for (Course cs : courseList) {
-			Attach thumbAttach = courseDao.selectThumbAttach(cs);
-			Attach inputAttach = courseDao.selectInputAttach(cs);
-			
-			cs.setThumbAttach(thumbAttach);
-			cs.setInputAttach(inputAttach);
+			cs.setThumbAttach(courseDao.selectThumbAttach(cs));
+			cs.setInputAttach(courseDao.selectInputAttach(cs));
+			cs.setTag(courseDao.selectCourseTag(cs));
+			cs.setPetInCourseCount(petDao.selectAllPetByCourseNo(String.valueOf(cs.getCourseNo())).size());
 		}
 		
 		return courseList;
@@ -50,11 +51,9 @@ public class CourseService {
 		List<Course> courseList = courseDao.selectMyCourse(account);
 		
 		for (Course cs : courseList) {
-			Attach thumbAttach = courseDao.selectThumbAttach(cs);
-			Attach inputAttach = courseDao.selectInputAttach(cs);
-			
-			cs.setThumbAttach(thumbAttach);
-			cs.setInputAttach(inputAttach);
+			cs.setThumbAttach(courseDao.selectThumbAttach(cs));
+			cs.setInputAttach(courseDao.selectInputAttach(cs));
+			cs.setTag(courseDao.selectCourseTag(cs));
 		}
 		
 		return courseList;
@@ -67,6 +66,8 @@ public class CourseService {
 		try {
 			result = courseDao.insertCourse(session, course);
 			
+			if (result > 0) result = courseDao.insertTag(session, course);
+			
 			if (result > 0) {
 				thumbAttach.setTypeNo(Attach.COURSE);
 				inputAttach.setTypeNo(Attach.COURSE);
@@ -74,7 +75,9 @@ public class CourseService {
 				thumbAttach.setPkNo(course.getCourseNo());
 				inputAttach.setPkNo(course.getCourseNo());
 				
-				result = courseDao.insertAttach(session, thumbAttach, inputAttach);
+				result = courseDao.insertThumbAttach(session, thumbAttach);
+				
+				if (result > 0) result = courseDao.insertInputAttach(session, inputAttach);
 			}
 			
 			if (result > 0) {
@@ -110,6 +113,51 @@ public class CourseService {
 		}
 		return courseList;
   }
+  
+  public int updateCourse(Course course, Attach thumbAttach, Attach inputAttach) {
+  	SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			
+			result = courseDao.updateCourse(session, course);
+			
+			if (result > 0) {
+				result = courseDao.deleteCourseTag(session, course);
+				result = courseDao.insertTag(session, course);
+			}
+			
+			if (result > 0 && thumbAttach != null) {
+				thumbAttach.setTypeNo(Attach.COURSE);
+				thumbAttach.setPkNo(course.getCourseNo());
+				
+				result = courseDao.insertThumbAttach(session, thumbAttach);
+				
+				if (result > 0) {
+					course.setThumb(thumbAttach.getAttachNo());
+					result = courseDao.updateCourseThumb(session, course);
+				}
+			}
+			
+			if (result > 0 && inputAttach != null) {
+				inputAttach.setTypeNo(Attach.COURSE);
+				inputAttach.setPkNo(course.getCourseNo());
+				
+				result = courseDao.insertInputAttach(session, inputAttach);
+			}
+			
+			if (result > 0) session.commit();
+			else session.rollback();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
+	}
 	
 	public List<Like> selectMyLikeByAccountNo(int accountNo) {
 		List<Like> likeList = courseDao.selectMyLikeByAccountNo(accountNo);
@@ -136,7 +184,10 @@ public class CourseService {
 		
 		if (enrollList.size() > 0) {
 			for (Enroll enroll : enrollList) {
-				enroll.setCourseData(courseDao.selectCourseOne(String.valueOf(enroll.getCourseNo())));
+				Course course = courseDao.selectCourseOne(String.valueOf(enroll.getCourseNo()));
+				course.setPetInCourseCount(petDao.selectAllPetByCourseNo(String.valueOf(course.getCourseNo())).size());
+				
+				enroll.setCourseData(course);
 				enroll.setPetData(petDao.selectPetOne(enroll.getPetNo()));
 				enroll.setAccountData(accountDao.selectAccountByPetNo(enroll.getPetNo()));
 			}
@@ -164,4 +215,31 @@ public class CourseService {
 	public int insertPetClass(PetClass petClass) {
 		return courseDao.insertPetClass(petClass);
 	}
+
+	public List<Course> selectCourseByTag(String keyTag) {
+		List<String> keyTags = Arrays.asList(keyTag.split(" "));
+		
+		Tag tag = new Tag();
+		tag.setKeyTag(keyTags);
+		tag.setTotalTags(keyTags.size());
+		
+		List<String> courseNoList = courseDao.selectCourseNoByKey(tag);
+		
+		List<Course> courseList = new ArrayList<Course>();
+		if (courseNoList.size() > 0) {
+			for (String courseNo : courseNoList) {
+				courseList.add(courseDao.selectCourseOne(courseNo));
+			}
+			
+			for (Course cs : courseList) {
+				cs.setThumbAttach(courseDao.selectThumbAttach(cs));
+				cs.setInputAttach(courseDao.selectInputAttach(cs));
+				cs.setTag(courseDao.selectCourseTag(cs));
+				cs.setPetInCourseCount(petDao.selectAllPetByCourseNo(String.valueOf(cs.getCourseNo())).size());
+			}
+		}
+		
+		return courseList;
+	}
+	
 }
