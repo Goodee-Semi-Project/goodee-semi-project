@@ -241,5 +241,8 @@ public class CourseService {
 		
 		return courseList;
 	}
-	
+
+	public List<Course> selectListByPetAccount(int accountNo) {
+		return courseDao.selectListByPetAccount(accountNo);
+	}
 }
