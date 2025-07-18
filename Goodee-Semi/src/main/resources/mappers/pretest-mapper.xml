@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.PreTestMapper">
+	
+	<insert id="insertPreTest" parameterType="com.goodee.semi.dto.PreTest">
+		INSERT INTO pre_test (pre_no ,test_content ,test_answer ,one ,two ,three ,four)
+		VALUE (#{ preNo } ,#{ testContent },#{ testAnswer },#{ one },#{ two },#{ three },#{ four })
+	</insert>
+</mapper>
