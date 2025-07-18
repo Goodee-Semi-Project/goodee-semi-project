@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.EventDao;
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Event;
 
 public class EventService {

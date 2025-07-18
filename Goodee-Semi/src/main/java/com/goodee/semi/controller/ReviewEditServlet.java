@@ -2,13 +2,16 @@ package com.goodee.semi.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Attach;
+import com.goodee.semi.dto.PetClass;
 import com.goodee.semi.dto.Review;
 import com.goodee.semi.service.AttachService;
+import com.goodee.semi.service.ClassService;
 import com.goodee.semi.service.ReviewService;
 
 import jakarta.servlet.ServletException;
@@ -23,7 +26,6 @@ import jakarta.servlet.http.Part;
 /**
  * Servlet implementation class ReviewEditServlet
  */
-// SJ: 첨부 파일 사이즈
 @MultipartConfig (
 		fileSizeThreshold = 1024 * 1024,
 		maxFileSize = 1024 * 1024 * 5,
@@ -34,6 +36,7 @@ public class ReviewEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ReviewService reviewService = new ReviewService();
 	AttachService attachService = new AttachService();
+	ClassService classService = new ClassService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -63,6 +66,9 @@ public class ReviewEditServlet extends HttpServlet {
 			accountId = account.getAccountId();
 		}
 		
+		// SJ: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
+		List<PetClass> list = classService.selectListByAccountNo(account.getAccountNo());
+		
 		Review review = null;
 		Attach attach = null;
 		
@@ -71,6 +77,7 @@ public class ReviewEditServlet extends HttpServlet {
 			attach = reviewService.selectAttachByReviewNo(reviewNo);
 			
 			if (review.getAccountId().equals(accountId)) {
+				request.setAttribute("list", list);
 				request.setAttribute("review", review);
 				request.setAttribute("attach", attach);
 			}
@@ -93,6 +100,9 @@ public class ReviewEditServlet extends HttpServlet {
 			reviewNo = Integer.parseInt(reviewNoStr);
 		}
 		
+		String classNoStr = request.getParameter("classNo");
+		int classNo = Integer.parseInt(classNoStr);
+		
 		Attach attach = null;
 		Part file = null;
 		if ((file = request.getPart("attach")) != null) {
@@ -100,19 +110,11 @@ public class ReviewEditServlet extends HttpServlet {
 			attach = attachService.handleUploadFile(file, uploadDir);
 		}
 		
-		// SJ: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
-//		String classNoStr = null;
-//		int classNo = -1;
-//		if ((classNoStr = request.getParameter("classNo")) != null) {
-//			classNo = Integer.parseInt(request.getParameter("classNo"));
-//		}
-		
 		Review review = new Review();
 		review.setReviewNo(reviewNo);
 		review.setReviewTitle(title);
 		review.setReviewContent(content);
-		// FIXME: 임시 수강 번호
-//		review.setClassNo(11);
+		review.setClassNo(classNo);
 		
 		
 		// 데이터베이스에 추가

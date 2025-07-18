@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Pet;
-import com.goodee.semi.service.ClassService;
 import com.goodee.semi.service.CourseService;
 import com.goodee.semi.service.PetService;
 
