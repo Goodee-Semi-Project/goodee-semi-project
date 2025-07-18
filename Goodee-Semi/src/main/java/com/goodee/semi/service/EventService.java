@@ -44,4 +44,8 @@ public class EventService {
 		
 		return insertedEvent;
 	}
+	
+	public List<Event> selectScheduleListAttend(Event event) {
+		return dao.selectScheduleListAttend(event);
+	}
 }
