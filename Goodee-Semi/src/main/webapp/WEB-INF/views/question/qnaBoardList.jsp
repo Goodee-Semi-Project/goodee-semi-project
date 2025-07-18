@@ -8,32 +8,73 @@
 <title>QnA질문 게시판</title>
 
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
+
+<style>
+	.btn_question_add {
+		padding: 5px 10px;
+    	border-radius: 4px;
+    	background-color: #5672f9;
+    	color: white;
+    	text-align: center;
+    	text-decoration: none;
+    	display: inline-block;
+    	margin-top: 10px;
+	}
+	
+	.btn_question_add:hover {
+		color: white;
+	}
+	
+</style>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	
 	<div>
-		<h1>QnA 게시판</h1>
+		<h1 class="text-center">질문 게시판</h1>
 	</div>
-	<hr>
-	<a href="<c:url value='/qnaBoard/questionAdd'/>">질문 등록</a>
-	<div>
-		<form action="<c:url value='/qnaBoard/list'/>" method="get">
-			<select name="searchBy">
-				<option value="1" ${question.searchBy == 1 ? 'selected' : ''}>제목</option>
-				<option value="2" ${question.searchBy == 2 ? 'selected' : ''}>제목+내용</option>
-				<option value="3" ${question.searchBy == 3 ? 'selected' : ''}>작성자</option>
-			</select>
-			<label for="keyword"></label>
-			<input type="text" name="keyword" id="keyword" value="${question.keyword}">
-			<input type="submit" value="검색">
-			<select name="orderBy">
-				<option value="0" ${question.orderBy == 0 ? 'selected' : ''}>정렬</option>
-				<option value="1" ${question.orderBy == 1 ? 'selected' : ''}>최근 날짜순</option>
-				<option value="2" ${question.orderBy == 2 ? 'selected' : ''}>오래된 날짜순</option>
-			</select>
-		</form>
+	
+	<section class="page-search">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="advance-search nice-select-white">
+						<form action="<c:url value='/qnaBoard/list'/>" method="get">
+							<div class="form-row align-items-center">
+								<div class="form-group col-lg-2 col-md-6">
+									<select class="w-100 form-control my-2 my-lg-0" name="searchBy" >
+										<option value="1" ${question.searchBy == 1 ? 'selected' : ''}>제목</option>
+										<option value="2" ${question.searchBy == 2 ? 'selected' : ''}>제목+내용</option>
+										<option value="3" ${question.searchBy == 3 ? 'selected' : ''}>작성자</option>
+									</select>
+								</div>
+								<div class="form-group col-xl-6 col-lg-3 col-md-6">
+									<input type="text" class="form-control my-2 my-lg-0" name="keyword" 
+									placeholder="검색어를 입력하세요." value="${question.keyword}">
+								</div>
+								<div class="form-group col-xl-2 col-lg-3 col-md-6">
+									<button type="submit" class="btn btn-primary active w-100">검색</button>
+								</div>
+								<div class="form-group col-lg-2 col-md-6">
+									<select class="w-100 form-control my-2 my-lg-0" name="orderBy">
+										<option value="0" ${question.orderBy == 0 ? 'selected' : ''}>정렬</option>
+										<option value="1" ${question.orderBy == 1 ? 'selected' : ''}>최근 날짜</option>
+										<option value="2" ${question.orderBy == 2 ? 'selected' : ''}>오래된 날짜</option>
+									</select>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<div style="display : flex; justify-content : end">
+		<a href="<c:url value='/qnaBoard/questionAdd'/>" class="btn_question_add">
+		   질문 등록
+		</a>
 	</div>
 	
 	<table class="text-center" style="width: 100%">
@@ -56,7 +97,7 @@
 	</table>
 	
 	<c:if test="${not empty questionList}">
-		<div>
+		<div class="text-center" style="margin-top : 20px;">
 			<c:if test="${question.prev}">
 				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarStart - 1}&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">
 				&laquo;

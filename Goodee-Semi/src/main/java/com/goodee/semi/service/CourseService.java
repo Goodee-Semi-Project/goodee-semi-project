@@ -15,6 +15,7 @@ import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
+import com.goodee.semi.dto.Pet;
 import com.goodee.semi.dto.PetClass;
 import com.goodee.semi.dto.Tag;
 
@@ -111,6 +112,13 @@ public class CourseService {
 				courseList.get(i).setThumbAttach(attachList.get(i));
 			}
 		}
+		
+		for(Course c : courseList) {
+			String courseNo = String.valueOf(c.getCourseNo());
+			List<Pet> petList = petDao.selectAllPetByCourseNo(courseNo); 
+			c.setPetList(petList);
+		}
+		
 		return courseList;
   }
   
@@ -170,6 +178,10 @@ public class CourseService {
 		
 		return likeList;
 	}
+	
+	public Like selectLike(Like like) {
+		return courseDao.selectLike(like);
+	}
 
 	public int insertLike(Like like) {
 		return courseDao.insertLike(like);
@@ -199,6 +211,10 @@ public class CourseService {
 	public Enroll selectEnrollOne(int enrollNo) {
 		return courseDao.selectEnrollOne(enrollNo);
 	}
+	
+	public Enroll selectEnrollByCourseNoAndPetNo(Enroll enroll) {
+		return courseDao.selectEnrollByCourseNoAndPetNo(enroll);
+	}
 
 	public int insertEnroll(Enroll enroll) {
 		return courseDao.insertEnroll(enroll);
@@ -214,6 +230,10 @@ public class CourseService {
 
 	public int insertPetClass(PetClass petClass) {
 		return courseDao.insertPetClass(petClass);
+	}
+
+	public int countTotalClassNo() {
+		return courseDao.countTotalClassNo();
 	}
 
 	public List<Course> selectCourseByTag(String keyTag) {
@@ -245,4 +265,5 @@ public class CourseService {
 	public List<Course> selectListByPetAccount(int accountNo) {
 		return courseDao.selectListByPetAccount(accountNo);
 	}
+
 }
