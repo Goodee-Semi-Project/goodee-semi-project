@@ -1,3 +1,4 @@
+// TODO 차수 관련 기능 추가
 const calendarEl = document.querySelector('#calendar');
 
 // 선택된 날짜 저장 변수
@@ -202,7 +203,6 @@ function buildDateTime(date, timeStr) {
 
 // 이벤트 생성
 function createEvent(eventData) { // eventData: 모달 form에서 받아온 데이터
-    // TODO jsp의 모달에 데이터 뿌리고 아래의 기능 구현
 	// 1. 데이터를 서버로 전송
 	$.ajax({
         url: '/schedule/create',
@@ -231,182 +231,30 @@ function createEvent(eventData) { // eventData: 모달 form에서 받아온 데�
 }
 
 // 이벤트 수정
-// TODO 차수까지 고려해서 코드 수정한 이후에 구현
 function updateEvent(eventId, eventData) {
-	/*
 	$.ajax({
 	    url: '/schedule/update',
 	    type: 'post',
 	    data: {
 	        schedNo: eventId,
 			
-	        accountNo: eventData.accountNo,
-	        accountName: eventData.accountName,
-			
 	        petNo: eventData.petNo,
-	        petName: eventData.petName,
 			
-	        accountNo: eventData.accountNo,
-	        accountNo: eventData.accountNo,
+	        schedDate: eventData.schedDate,
+	        courseNo: eventData.courseNo,
+	        schedStart: eventData.start,
+	        schedEnd: eventData.end,
 	    },
+		dataType: 'json',
 	    success: function(data) {
-            location.reload(); // 또는 window.location.reload();
+			console.log("성공: ", data);
+			
+            location.reload();
 	    },
 	    error: function(err) {
 	        console.log("에러: ", err);
 	    }
 	});
-	*/
-	
-	/*
-	accountNo: accountValue,
-	accountName: accountText,
-
-	petNo: petValue,
-	petName: petText,
-
-	classNo: null,
-
-	schedStep: null,
-	schedDate: selectedDate,
-	schedAttend: null,
-	courseNo: courseValue,
-	courseTitle: courseText,
-	courseTotalStep: null,
-
-	id: null,
-
-	start: buildDateTime(selectedDate, startTime),
-	end: buildDateTime(selectedDate, endTime),
-
-	title: `(${courseTitle}) ${accountName}-${petName}`
-	*/
-	
-	/*
-	const event = calendar.getEventById(eventId);
-	console.log("[일정 수정] event: ", event);
-	
-	// 이벤트 요소에 받아온 이벤트 데이터 덮어씌우기
-	if (event) {
-        event.setExtendedProp('accountNo', eventData.accountNo);
-        event.setExtendedProp('accountName', eventData.accountName);
-		
-        event.setExtendedProp('petNo', eventData.petNo);
-        event.setExtendedProp('petName', eventData.petName);
-        
-		event.setExtendedProp('schedDate', eventData.schedDate);
-		event.setExtendedProp('courseNo', eventData.courseNo);
-		event.setExtendedProp('courseTitle', eventData.courseTitle);
-		
-        event.setStart(eventData.start);
-        event.setEnd(eventData.end);
-
-		event.setProp('title', eventData.title)
-        
-		// fullcalendar의 임시 데이터 저장소 업데이트
-		const dataIndex = eventDatas.findIndex(e => e.id === eventId); // 조건에 맞는 첫 번째 요소의 인덱스를 반환 (못찾으면 -1 반환)
-	    if (dataIndex !== -1) {
-			eventDatas[dataIndex] = {
-	            ...eventDatas[dataIndex], // 기존 객체의 모든 속성을 복사
-				
-				// 값 덮어씌우기
-				// id: eventId,
-	            extendedProps: {
-					accountNo: eventData.accountNo,
-	                accountName: eventData.accountName,
-					
-					petNo: eventData.petNo,
-					petName: eventData.petName,
-					
-					schedDate: eventData.schedDate,
-					courseNo: eventData.courseNo,
-					courseTitle: eventData.courseTitle,
-	            },
-
-				start: eventData.start,
-	            end: eventData.end,
-	            
-				title: eventData.title
-        	}
-	    }
-        
-	    // TODO 서버로 데이터 전송
-	    console.log('이벤트 수정:', event);
-
-		// 이벤트 요소를 직접 업데이트
-		updateEventDisplay(event);
-    }
-	*/
-	
-	// 
-}
-
-// 이벤트 표시 업데이트 함수
-function updateEventDisplay(event) {
-    const eventEl = document.querySelector(`[data-event-id="${event.id}"]`);
-    if (!eventEl) return;
-    
-    // 기존 시간 표시 요소 삭제
-    const oriTimeDiv = eventEl.querySelector('.fc-event-time');
-    if (oriTimeDiv) {
-        oriTimeDiv.remove();
-    }
-    
-    let tooltipText = '';
-    let displayText = '';
-    
-    // 시간 정보 생성 (timezone 고려)
-    if (event.start && !event.allDay) {
-        // 한국 시간으로 변환
-        const startTime = new Date(event.startStr).toLocaleTimeString('ko-KR', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-            timeZone: 'Asia/Seoul'
-        });
-        
-        if (event.end) {
-            const endTime = new Date(event.endStr).toLocaleTimeString('ko-KR', {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false,
-                timeZone: 'Asia/Seoul'
-            });
-            displayText = `${startTime} - ${endTime}`;
-        } else {
-            displayText = startTime;
-        }
-    }
-    
-    // 캘린더 표시용 HTML 생성
-    const eventTitle = event.title;
-    let htmlContent = '';
-    
-    if (displayText) {
-        htmlContent = `<div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div><div style="font-size: 12px; line-height: 1.2;">${eventTitle}</div>`;
-        tooltipText = displayText + '\n' + eventTitle;
-    } else {
-        htmlContent = `<div style="font-size: 12px;">${eventTitle}</div>`;
-        tooltipText = eventTitle;
-    }
-    
-    // 기존 title 속성 제거 (중복 방지)
-    eventEl.removeAttribute('title');
-    
-    // 이벤트 요소의 내용 수정
-    const titleElement = eventEl.querySelector('.fc-event-title');
-    if (titleElement) {
-        titleElement.innerHTML = htmlContent;
-    }
-    
-    // 전체 이벤트 요소의 내용을 직접 수정 (더 확실한 방법)
-    const eventMain = eventEl.querySelector('.fc-event-main');
-    if (eventMain) {
-        eventMain.innerHTML = htmlContent;
-    }
-    
-    // 새로운 툴팁용 title 속성 추가
-    eventEl.setAttribute('title', tooltipText);
 }
 
 // 이벤트 삭제
@@ -532,19 +380,7 @@ $(document).on('click', '#btn-add-event', function() {
 	
 	// value 값 가져오기
 	const courseValue = formData.get('courseTitle');
-	const accountValue = formData.get('accountName');
 	const petValue = formData.get('petName');
-
-	// text 값 가져오기
-	const courseText = $('#course-title option:selected').text();
-	const accountText = $('#account-name option:selected').text();
-	const petText = $('#pet-name option:selected').text();
-	
-	console.log('선택된 값들:');
-	console.log('코스 - value:', courseValue, 'text:', courseText);
-	console.log('회원 - value:', accountValue, 'text:', accountText);
-	console.log('펫 - value:', petValue, 'text:', petText);
-	
 	
     if (!form.checkValidity()) {
         form.reportValidity();
@@ -566,33 +402,18 @@ $(document).on('click', '#btn-add-event', function() {
     }
 	
 	const eventData = {
-		accountNo: accountValue,
-		accountName: accountText,
-
 		petNo: petValue,
-		petName: petText,
-
-		classNo: null,
-
-		schedStep: null,
 		schedDate: selectedDate,
-		schedAttend: null,
 		courseNo: courseValue,
-		courseTitle: courseText,
-		courseTotalStep: null,
-		
-		id: null,
-
 		start: buildDateTime(selectedDate, startTime),
 		end: buildDateTime(selectedDate, endTime),
-
-		title: `(${courseText}) ${accountText}-${petText}`
 	};
     
 	console.log('eventData 받아오기 완료: ', eventData);
 	
     if (eventId) {
         // 수정
+		console.log('updateEvent() 실행 시작');
         updateEvent(eventId, eventData);
     } else {
         // 생성
