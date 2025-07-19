@@ -6,8 +6,10 @@ import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.common.constant.HttpConstants;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Pet;
+import com.goodee.semi.service.AttachService;
 import com.goodee.semi.service.PetService;
 
 import jakarta.servlet.ServletException;
@@ -22,26 +24,50 @@ import jakarta.servlet.http.Part;
 @MultipartConfig
 public class MyPetUpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private PetService service = new PetService();
+    private PetService petService = new PetService();
 
     public MyPetUpdateServlet() {
         super();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 1. 요청값 인코딩
-        request.setCharacterEncoding("UTF-8");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String resMsg = "반려견 정보 수정에 실패했습니다";
+        String resCode = "500";
+        JSONObject json = new JSONObject();
+    	
+    	// 1. request에 바인딩된 값 받아오기
+        String petName = null;
+        Integer petAge = null;
+        Character petGender = null;
+        String petBreed = null;
+        Integer petNo = null;
+        Integer accountNo = null;
+        Part petImgPart = null;
+        
+        try {
+    		// NullPointerException, NumberFormatException, StringIndexOutOfBoundsExceiption 발생 가능 코드
+    		petName = request.getParameter("petName");
+    		petAge = Integer.parseInt(request.getParameter("petAge"));
+    		petGender = request.getParameter("petGender").charAt(0);
+    		petBreed = request.getParameter("petBreed");
+    		petNo = Integer.parseInt(request.getParameter("petNo"));
+    		accountNo = Integer.parseInt(request.getParameter("accountNo"));
+    		petImgPart = request.getPart("petImg");
+    		// request.getPart() == null 인 경우: 키값에 해당하는 데이터 자체가 전송되지 않은 경우 (ex. input 태그가 없거나, 있어도 disabled 상태라 전송이 안되거나 등)
+    	} catch (Exception e) {
+    		resMsg = "잘못된 입력 데이터입니다: " + e.getMessage();
+            resCode = "400";
+            json.put("resMsg", resMsg);
+            json.put("resCode", resCode);
+            e.printStackTrace();
+            
+            response.setContentType(HttpConstants.CONTENT_TYPE_JSON);
+            response.getWriter().print(json);
+            
+            return;
+		}
 
-        // 2. 바인딩된 값 받아와서 Pet, Attachment 객체에 바인딩
-        // 텍스트 데이터 받기
-        String petName = request.getParameter("petName");
-        int petAge = Integer.parseInt(request.getParameter("petAge"));
-        char petGender = request.getParameter("petGender").charAt(0);
-        String petBreed = request.getParameter("petBreed");
-        int petNo = Integer.parseInt(request.getParameter("petNo"));
-        int accountNo = Integer.parseInt(request.getParameter("accountNo"));
-
-        // Pet 객체에 바인딩
+        // 2. dto에 바인딩 및 반려견 이미지가 수정된 경우 기존 이미지파일 삭제 후 수정된 이미지파일 저장
         Pet pet = new Pet();
         pet.setPetName(petName);
         pet.setPetAge(petAge);
@@ -49,88 +75,38 @@ public class MyPetUpdateServlet extends HttpServlet {
         pet.setPetBreed(petBreed);
         pet.setPetNo(petNo);
         pet.setAccountNo(accountNo);
-
-        // 이미지 파일 받기 - NULL 체크 추가
-        Part petImgPart = request.getPart("petImg");
-        System.out.println("petImgPart: " + petImgPart);
-
-        String uploadPath = "C:/goodee/upload/pet";
-        String oriFileName = null;
-        String fileExtension;
-        String uuid;
-        String saveFileName;
-
-        Attach attach = new Attach();
-
-        // NULL 체크 및 파일명 체크 추가
+        
+        // Part를 받아왔고, Part에 실제 파일이 있는 경우
+        Attach attach = null;
         if (petImgPart != null && petImgPart.getSize() > 0) {
-            oriFileName = petImgPart.getSubmittedFileName();
-            System.out.println("oriFileName: " + oriFileName);
+        	attach = AttachService.handleUploadFile(petImgPart, AttachService.getUploadDirectory(Attach.PET));
+        	// 파일이 업로드되지 않았다면 attach == null | 업로드됐다면 oriName, sevedName이 바인딩되어 있음
+        	attach.setTypeNo(Attach.PET);
+        	attach.setPkNo(pet.getPetNo());        	
+        }
+        
+        // 3. service 호출
+        int result = petService.updatePet(pet, attach);
+        if (result != 0) {
+        	// 4. json에 바인딩하여 응답
+        	resMsg = "반려견 정보 수정에 성공했습니다";
+        	resCode = "200";
+        	
+        	json.put("resCode", resCode);
+        	json.put("resMsg", resMsg);
+        	
+        	json.put("petName", petName);
+        	json.put("petAge", petAge);
+        	json.put("petGender", String.valueOf(petGender));
+        	// char 타입 값을 그대로 바인딩하면 값이 ''나 ""로 묶여서 바인딩되지 않아 AJAX에서 parserror를 발생시킴
+        	// => String 타입으로 값 전달
+        	json.put("petBreed", petBreed);
+        	json.put("petNo", petNo);
+        	json.put("accountNo", accountNo);
         }
 
-        // 이미지 파일이 업로드된 경우에만 이미지 정보 수정
-        if (oriFileName != null && !oriFileName.equals("")) {
-            // 업로드된 경우
-            // 1. 파일 경로, 이름 지정
-            fileExtension = oriFileName.substring(oriFileName.lastIndexOf("."));
-            uuid = UUID.randomUUID().toString().replace("-", "");
-            saveFileName = uuid + fileExtension;
-
-            // 2. 로컬에 파일 저장
-            // 1) 폴더 없으면 생성
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs(); // 폴더 없으면 생성
-            }
-
-            // 2) 파일 저장
-            petImgPart.write(uploadPath + "/" + saveFileName);
-
-            // Attach 객체에 바인딩
-            attach.setOriginName(oriFileName);
-            attach.setSavedName(saveFileName);
-            attach.setPkNo(petNo);
-            attach.setTypeNo(2);
-        } else {
-            // 이미지가 업로드되지 않은 경우 - attach를 null로 설정
-            attach = null;
-            System.out.println("이미지 파일이 업로드되지 않았습니다.");
-        }
-
-        // 4. service의 수정 로직 호출 -> 실패: 상태 코드 전달 | 성공: 상태 코드와 수정한 값 전달
-        int result = service.updatePet(pet, attach);
-
-        // 6. json에 정보 바인딩
-        String resCode = "";
-        String resMsg = "";
-        if (result == 0) {
-            resCode = "500";
-            resMsg = "반려견 정보 수정 중 오류 발생";
-        } else {
-            resCode = "200";
-            resMsg = "반려견 정보 수정 성공";
-        }
-
-        JSONObject json = new JSONObject();
-
-        json.put("resCode", resCode);
-        json.put("resMsg", resMsg);
-
-        json.put("petName", petName);
-        json.put("petAge", petAge);
-        json.put("petGender", String.valueOf(petGender));
-        // char 타입 값을 그대로 바인딩하면 값이 ''나 ""로 묶여서 바인딩되지 않아 AJAX에서 parserror를 발생시킴
-        // => String 타입으로 값 전달
-        json.put("petBreed", petBreed);
-        json.put("petNo", petNo);
-        json.put("accountNo", accountNo);
-
-        // 7. 응답 인코딩하고 보내기
-        response.setContentType("application/json; charset=utf-8");
+        // 4. 응답 인코딩하고 보내기
+        response.setContentType(HttpConstants.CONTENT_TYPE_JSON);
         response.getWriter().print(json);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
     }
 }
