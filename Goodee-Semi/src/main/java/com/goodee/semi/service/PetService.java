@@ -14,7 +14,6 @@ import com.goodee.semi.dto.Pet;
 
 public class PetService {
 	private PetDao dao = new PetDao();
-	private AttachDao attachDao = new AttachDao();
 	
 	public List<Pet> selectPetList(Pet param) {
 		return dao.selectPetList(param);
@@ -29,42 +28,44 @@ public class PetService {
 	}
 
 	public int updatePet(Pet pet, Attach attach) {
-		System.out.println("updatePetWithAttach() Pet:" + pet);
-		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		SqlSession session = null;
 		int result = 0;
 		
 		try {
-			// 1. 반려견 수정
-			result = dao.updatePet(session, pet);
-			System.out.println("반려견 정보 수정 결과: " + result);
+			session = SqlSessionTemplate.getSqlSession(false);
 			
-			// 2. 파일 정보 등록
-			if(result != 0) {
-				if (attach != null) {
-					System.out.println("attach 있음");
-					result = dao.updateAttach(session, attach);
-					System.out.println("반려견 이미지 수정 결과: " + result);
+			// 1. 반려견 정보 수정
+			int petResult = dao.updatePet(session, pet);
+			
+			// 2. 반려견 이미지 수정
+			int attachResult = 1; // 기본값: 성공
+			if(petResult != 0 && attach != null) {
+				if (dao.selectAttach(session, attach) != null) {
+					// 기존에 반려견 이미지가 있었다면 -> attachment 테이블의 정보 수정
+					attachResult = dao.updateAttach(session, attach);
 				} else {
-					System.out.println("attach 없음");
-					result = 1;
+					// 기존에 반려견 이미지가 없었다면 -> attachment 테이블에 정보 추가
+					attachResult = dao.insertAttach(session, attach);
 				}
 			}
-			System.out.println("반려견 정보&이미지 수정 결과: " + result);
 			
 			// 3. commit 또는 rollback 처리
-			if(result > 0) {
+			if(petResult != 0 && attachResult != 0) {
 				session.commit();
-				System.out.println("반려견 정보&이미지 수정 사항 DB에 반영됨");
+				result = 1;
+				System.out.println("[PetService] 반려견 정보 수정 성공 - petNo: " + pet.getPetNo()
+									+ ", 이미지 포함: " + (attach == null ? "N" : "Y"));
 			} else {
 				session.rollback();
-				System.out.println("반려견 정보&이미지 수정 사항 DB에 반영되지 않음");
+				System.out.println("[PetService] 반려견 정보 수정 실패 - petNo: " + pet.getPetNo()
+									+ ", petResult: " + petResult + ",  attachResult: " + attachResult);
 			}			
 		} catch (Exception e) {
+			if (session != null) session.rollback();
+			System.out.println("[PetService] 반려견 정보 수정 중 예기치못한 문제 발생: " + e.getMessage());
 			e.printStackTrace();
-			session.rollback();
-			System.out.println("반려견 정보&이미지 수정 사항 DB에 반영되지 않음");
 		} finally {
-			session.close();
+			if (session != null) session.close();
 		}
 		
 		return result;

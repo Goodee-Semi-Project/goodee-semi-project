@@ -18,7 +18,7 @@
 		<result property="imgFileSaveName" column="save_name" />
 	</resultMap>
 	
-	<resultMap id="AttachResultMap" type="com.goodee.semi.dto.Attach">
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
 		<result property="attachNo" column="attach_no" />
 		<result property="typeNo" column="type_no" />
 		<result property="pkNo" column="pk_no" />
@@ -125,6 +125,15 @@
 			) b
 			ON a.attach_no = b.attach_no;
 	</delete>
+	
+	<select id="selectAttach" parameterType="com.goodee.semi.dto.Attach" resultMap="attachResultMap">
+		SELECT *
+		FROM attachment
+		<where>
+		type_no = #{typeNo}
+		AND pk_no = #{pkNo}
+		</where>
+	</select>
 	
 	<insert id="insertPet" parameterType="com.goodee.semi.dto.Pet" useGeneratedKeys="true" keyProperty="petNo">
 		INSERT INTO pet (account_no, pet_name, pet_gender, pet_age, pet_breed)
