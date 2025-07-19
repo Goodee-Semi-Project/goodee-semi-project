@@ -17,43 +17,55 @@
   	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
   </h3>
   
-  <input type="hidden" id="validAuthor" value="${ sessionScope.loginAccount.author }">
-  <c:if test="${ sessionScope.loginAccount.author eq 1 }">
-  	<form id="createCourseForm">
-			<label>과정명: </label>
-			<input type="text" id="title" name="title">
-			
-			<input type="hidden" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
-			
-			<label>태그: </label>
-			<input type="text" id="tag" name="tag">
-			<br>
-			
-			<label>소주제: </label>
-			<input type="text" id="subTitle" name="subTitle">
-			<br>
-			
-			<label>훈련 횟수: </label>
-			<input type="number" id="totalStep" name="totalStep">
-			
-			<label>최대 수강 인원: </label>
-			<input type="text" id="capacity" name="capacity">
-			<br>
-			
-			<label>훈련 내용 및 목표</label><br>
-			<textarea id="object" name="object" rows="5" cols="30"></textarea>
-			<br>
-			
-			<label>대표 이미지: </label>
-			<input type="file" id="thumbImage" name="thumbImage">
-			<br>
-			
-			<label>내부 이미지: </label>
-			<input type="file" id="inputImage" name="inputImage">
-			
-			<input type="submit" value="등록">
-		</form>
-  </c:if>
+	<div class="container">
+	  <div class="row justify-content-center">
+	    <div class="align-item-center" style="width: 100%;">
+	      <h3 class="tab-title" style="text-align: center; font-size: 32px;">교육과정 생성</h3>
+	      <form id="createCourseForm">
+	      	<c:if test="${ sessionScope.loginAccount.author eq 1 }">
+	      		<input type="hidden" id="validAuthor" value="${ sessionScope.loginAccount.author }">
+	      		<input type="hidden" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
+	      		
+	      		<fieldset class="p-4">
+	      			<div class="mb-2" style="display: flex; justify-content: space-between;">
+	      				<input class="form-control" type="text" id="title" name="title" placeholder="과정명" style="width: 40%; height: 30px; margin: 0 5%;" required>
+	      				<input class="form-control" type="text" id="tag" name="tag" placeholder="#태그 (3개까지 입력 가능)" style="width: 40%; height: 30px; margin: 0 5%;" required>
+	      			</div>
+	      			<div class="mb-4" style="display: flex; justify-content: space-between;">
+	      				<input class="form-control" type="text" id="totalStep" name="totalStep" placeholder="훈련 횟수" style="width: 40%; height: 30px; margin: 0 5%;" required>
+	      				<input class="form-control" type="text" id="capacity" name="capacity" placeholder="최대 수강 인원" style="width: 40%; height: 30px; margin: 0 5%;" required>
+	      			</div>
+	      			<input class="form-control mb-3" type="text" id="subTitle" name="subTitle" placeholder="소주제" style="width: 90%; height: 30px; margin: 0 auto;" required>
+	      			<textarea class="form-control" id="object" name="object" placeholder="내용을 입력하세요." style="width: 90%; height: 400px; margin: 0 auto;"></textarea>
+	      			
+	      			<div class="mt-3 mb-3" style="display: flex; justify-content: center; align-items: center;">
+	      				<div style="width: 45%;">
+	             		<img width="150" height="150" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" id="thumbPreview" />
+	             		<label for="thumbImage" class="btn btn-outline-secondary" style="padding: 2px 5px;">
+	             			<span style="width: 100px; font-size: 12px;">대표 이미지 선택</span>
+	             		</label>
+									<input type="file" id="thumbImage" name="thumbImage" onchange="readThumbURL(this)" style="opacity: 0; width: 0%;">
+	            	</div>
+	            	
+	            	<div style="width: 45%;">
+	             		<img width="150" height="150" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" id="inputPreview" />
+	             		<label for="inputImage" class="btn btn-outline-secondary" style="padding: 2px 5px;">
+	             			<span style="width: 100px; font-size: 12px;">내부 이미지 선택</span>
+	             		</label>
+									<input type="file" id="inputImage" name="inputImage" onchange="readInputURL(this)" style="opacity: 0; width: 0%;">
+	            	</div>
+	      			</div>
+
+	          	<div class="mt-5" style="display: flex; justify-content: center;">
+	          		<button type="submit" class="btn btn-primary font-weight-bold" style="padding: 10px 20px; margin-right: 20px;">등록</button>
+	          		<button type="button" class="btn btn-outline-secondary font-weight-bold" style="padding: 10px 20px;" onclick="history.back()">취소</button>
+	          	</div>
+	        	</fieldset>
+	      	</c:if>
+	      </form>
+	    </div>
+	  </div>
+	</div>
 	
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
@@ -63,6 +75,34 @@
 		if (myAuthor == 2) {
 			alert("잘못된 접근입니다.");
 			location.href = "<%= request.getContextPath() %>/";
+		}
+		
+		function readThumbURL(input) {
+			if (input.files && input.files[0]) {
+			  const reader = new FileReader();
+			    
+			  reader.onload = function(event) {
+			    document.getElementById('thumbPreview').src = event.target.result;
+			  };
+			    
+			  reader.readAsDataURL(input.files[0]);
+			} else {
+			  document.getElementById('thumbPreview').src = "";
+			}
+		}
+		
+		function readInputURL(input) {
+			if (input.files && input.files[0]) {
+			  const reader = new FileReader();
+			    
+			  reader.onload = function(event) {
+			    document.getElementById('inputPreview').src = event.target.result;
+			  };
+			    
+			  reader.readAsDataURL(input.files[0]);
+			} else {
+			  document.getElementById('inputPreview').src = "";
+			}
 		}
 	
 		$("#createCourseForm").submit((event) => {

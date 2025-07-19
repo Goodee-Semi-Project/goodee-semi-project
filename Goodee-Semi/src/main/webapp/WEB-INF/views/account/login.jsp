@@ -13,31 +13,35 @@ pageEncoding="UTF-8"%>
 <body class="login-page">
   <%@ include file="/WEB-INF/views/include/header.jsp" %>
   
-  <div class="login-wrap container">
-    <div class="login-box">
-      <h2>LOG IN</h2>
-      <form id="accountLoginFrm">
-        <div class="form-group">
-          <input type="text" id="accountId" name="accountId" placeholder="아이디">
-        </div>
-        <div class="form-group">
-          <input type="password" id="accountPw" name="accountPw" placeholder="비밀번호">
-        </div>
-        <div class="form-options">
-          <label><input type="checkbox" name="remember"> 아이디 기억하기</label>
-          <a href="<c:url value='/account/findId'/>">아이디 찾기</a> | <a href="<c:url value='/account/findPw'/>">비밀번호 찾기</a>
-        </div>
-        <button type="submit" class="btn btn-block">로그인</button>
-        <button type="button" class="btn btn-block btn-outline"
-                onclick="location.href='<c:url value='/account/register'/>'">
-          회원가입
-        </button>
-      </form>
-    </div>
-    <div class="login-image">
-      <%-- <img src="<c:url value='/resources/images/pug.png'/>" alt="강아지"> --%>
-    </div>
-  </div>
+  <section class="login py-5 border-top-1">
+	  <div class="container">
+	    <div class="row justify-content-center">
+	      <div class="col-lg-5 col-md-8 align-item-center">
+	        <div class="border">
+	          <h3 class="bg-gray p-4">LOG IN</h3>
+	          <form id="accountLoginFrm">
+	            <fieldset class="p-4">
+	              <input class="form-control mb-3" type="text" id="accountId" name="accountId" placeholder="아이디" required>
+	              <input class="form-control mb-3" type="password" id="accountPw" name="accountPw" placeholder="비밀번호" required>
+	              <div class="loggedin-forgot" style="display: flex; justify-content: space-between; align-items: center; height: 30px;">
+	              	<div>
+		              	<label for="remember" class="pt-3 pb-2"><input type="checkbox" id="remember" name="remember" style="vertical-align: -1px;"> 아이디 기억하기</label>	              	
+	              	</div>
+	              	<div>
+	              		<a href="<c:url value='/account/findId'/>" style="font-size: 14px; color: #848484;">아이디 찾기</a>
+	              		<span style="font-size: 14px; color: #848484;"> | </span>
+	              		<a href="<c:url value='/account/findPw'/>" style="font-size: 14px; color: #848484;">비밀번호 찾기</a>
+	              	</div>
+	              </div>
+	              <button type="submit" class="btn btn-primary font-weight-bold col-12 mt-4" style="font-size: 16px;">로그인</button>
+	              <button type="button" class="btn btn-outline-secondary font-weight-bold col-12 mt-1" style="font-size: 16px;" onclick="location.href='<c:url value='/account/register'/>'">회원가입</button>
+	            </fieldset>
+	          </form>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</section>
 
   <%@ include file="/WEB-INF/views/include/footer.jsp" %>
   <!-- ✅ jQuery 코드 실행은 페이지 맨 아래 -->
