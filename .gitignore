@@ -174,3 +174,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,eclipse,java,maven
+
+# personal sql file
+goodee-semi-sample-passing7by.sql
