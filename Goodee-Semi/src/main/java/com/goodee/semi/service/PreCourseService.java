@@ -45,7 +45,6 @@ public class PreCourseService {
 				for (PreTest pt : testList) {
 					result = -1;
 					pt.setPreNo(preCourse.getPreNo());
-					System.out.println(pt);
 					result = preTestDao.insertPreTest(session, pt);
 				}
 			}
