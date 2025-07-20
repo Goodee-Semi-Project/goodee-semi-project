@@ -12,15 +12,40 @@
 
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
-
-	<form id="findIdSubmit">
-		<input type="text" id="name" placeholder="이름">
-		<input type="text" id="email" placeholder="이메일">
-		<input type="submit" value="아이디 찾기">
-	</form>
 	
-	<a href="<c:url value='/account/findPw' />">또는 비밀번호 찾기</a>
-	<a href="<c:url value='/account/login' />">로그인하기</a>
+	<section class="login py-5 border-top-1">
+	  <div class="container">
+	    <div class="row justify-content-center">
+	      <div class="col-lg-5 col-md-8 align-item-center">
+	        <div class="border border">
+	          <h3 class="bg-gray p-4">FIND MY ID</h3>
+	          <div id="beforeFindId">
+	          	<form id="findIdSubmit">
+			          <fieldset class="p-4">
+			            <input class="form-control mb-2" type="text" id="name" placeholder="이름" required>
+			            <input class="form-control mb-2" type="email" id="email" placeholder="이메일" required>
+			            <div style="display: flex; justify-content: flex-end;"><a href="<c:url value='/account/findPw' />"><span style="font-size: 14px; color: #848484;">또는 비밀번호 찾기</span></a></div>
+			              
+			            <div style="width: 100%; text-align: center;">
+				            <button type="submit" class="btn btn-primary font-weight-bold mt-5 mb-3" style="display: block; width: 100%;">아이디 찾기</button>
+				            <a href="<c:url value='/account/login' />"><span style="font-size: 14px; color: #848484;">로그인하기</span></a>	              
+			            </div>
+			          </fieldset>
+			        </form>
+	         	</div>
+	         	
+	         	<div id="afterFindId" style="display: none;">
+	         		<fieldset class="p-4">
+	         			<p style="width: 100%; font-size: 18px; text-align: center;">회원님이 가입 시 등록한 아이디는<br><span id="foundMyId" style="font-size: 20px; font-weight: 700; color: black;">test</span> 입니다.</p>
+	         			<a href="<c:url value='/account/login' />" class="btn btn-primary font-weight-bold mt-5 mb-2" style="display: block; width: 100%;">로그인하기</a>
+	         			<a href="<c:url value='/account/findPw' />" class="btn btn-outline-secondary font-weight-bold mb-3" style="display: block; width: 100%;">비밀번호 찾기</a>
+	         		</fieldset>
+	         	</div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</section>
 	
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
@@ -44,7 +69,9 @@
 						dataType : "JSON",
 						success : function(data) {
 							if (data.resultCode == 200) {
-								alert(data.accountId); // TODO 결과를 화면에 출력하기
+								$("#foundMyId").text(data.accountId);
+								$("#beforeFindId").css("display", "none");
+								$("#afterFindId").css("display", "block");
 							}
 						},
 						error : function() {
