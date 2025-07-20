@@ -13,8 +13,8 @@
 <%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
 
 <main>
-	<c:forEach var="i" begin="1" end="${ list.size() + 1 }">
-		<input type="text" id="answer" value="${ list[i].testAnswer }" hidden>
+	<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
+		<input type="text" id="answer${ i }" value="${ list[i].testAnswer }" hidden>
 		<p>${ list[i].testContent }</p>
 		<label>
 			<input type="radio" name="quiz${ i }" value="one">
@@ -42,7 +42,7 @@
 <script type="text/javascript">
 	function check(num) {
 		const submit = document.querySelector('input[type=radio][name=quiz' + num + ']:checked').value;
-		if (submit == $('#answer').val()) {
+		if (submit == $('#answer' + num).val()) {
 			alert('정답입니다!');
 		} else {
 			alert('오답입니다!');
