@@ -23,11 +23,11 @@
 				<span class="h2" style="font-size: 18px;">${question.questTitle}</span>
 			</div>
 			<div>
-				<div style="color: #888;">${question.questReg}</div>
+				<div>${question.questReg}</div>
 			</div>
 		</div>
-		<div class="px-2 py-2">
-		    <div class="p-3" style="min-height: 500px;">
+		<div class="p-2">
+		    <div class="p-3">
 		      ${question.questContent}
 		    </div>
   		</div>
@@ -35,32 +35,50 @@
 
 
 	<!-- 훈련사답변 -->
-	<c:if test="${not empty answer}">
-		<div>
-		<div>${answer.accountId}</div>
-		<div>${answer.answerReg}</div>		
+	<div class="container">
+		<div class="p-2">
+			<c:if test="${not empty answer}">
+				<div class="d-flex justify-content-between p-2">
+					<div class="d-flex p-1" style="align-items : center">
+						<img src="<c:url value='/filePath?no=${answer.profileAttach.attachNo}'/>" alt="프로필사진" 
+						style="width : 40px; height : 40px; border-radius : 20px; margin : 1px">
+						<div class="mx-2">${answer.accountId}</div>
+					</div>
+					<div>${answer.answerReg}</div>		
+				</div>
+				<div>
+					<div style="padding : 0 16px 16px 16px">${answer.answerContent}</div>
+				</div>
+			</c:if>
 		</div>
-		<div>${answer.answerContent}</div>
-	</c:if>
+	</div>
 	
-	<input type="button" onclick='location.href="<c:url value='/qnaBoard/list'/>"' value="목록">
-	<c:if test="${not empty loginAccount}">
-		<c:if test="${loginAccount.accountNo eq question.accountNo}">
-			<input type="button" value="수정" id="btn_update_answer" onclick="update()">
-			<input type="button" onclick="openDeleteQuestionModal()" value="삭제">				
-		</c:if>
-		<c:if test="${loginAccount.author eq 1}">
-			<c:choose>
-				<c:when test="${empty answer}">
-					<button type="button" onclick="location.href='${request.contextPath()}/qnaBoard/answerAdd?no=${question.questNo}'">답변등록</button>
-				</c:when>
-				<c:otherwise>
-					<button type="button" onclick="location.href='${request.contextPath()}/qnaBoard/answerUpdate?no=${question.questNo}'">답변수정</button>
-					<button type="button" onclick="openDeleteAnswerModal()">답변삭제</button>
-				</c:otherwise>
-			</c:choose>
-		</c:if>
-	</c:if>
+	<div class="container">
+		<div class="d-flex justify-content-between p-3">
+			<div>
+				<input type="button" onclick='location.href="<c:url value='/qnaBoard/list'/>"' value="목록">
+			</div>
+			<c:if test="${not empty loginAccount}">
+				<div>
+					<c:if test="${loginAccount.accountNo eq question.accountNo}">
+						<input type="button" onclick="update()" value="수정" >
+						<input type="button" onclick="openDeleteQuestionModal()" value="삭제">
+					</c:if>
+					<c:if test="${loginAccount.author eq 1}">
+						<c:choose>
+							<c:when test="${empty answer}">
+								<button type="button" onclick="location.href='${request.contextPath()}/qnaBoard/answerAdd?no=${question.questNo}'">답변등록</button>
+							</c:when>
+							<c:otherwise>
+								<button type="button" onclick="location.href='${request.contextPath()}/qnaBoard/answerUpdate?no=${question.questNo}'">답변수정</button>
+								<button type="button" onclick="openDeleteAnswerModal()">답변삭제</button>
+							</c:otherwise>
+						</c:choose>
+					</c:if>
+				</div>
+			</c:if>
+		</div>
+	</div>
 
     <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
