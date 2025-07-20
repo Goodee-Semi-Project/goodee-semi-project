@@ -17,7 +17,7 @@
 	<div style="display:flex; justify-content: between">
 		<span>[QnA]</span>
 		<h2>${question.questTitle}</h2>
-		<span>${question.questMod}</span>
+		<span>${question.questReg}</span>
 	</div>	
 	<div>${question.questContent}</div>
 	
@@ -25,7 +25,7 @@
 	<c:if test="${not empty answer}">
 		<div>
 		<div>${answer.accountId}</div>
-		<div>${answer.answerMod}</div>		
+		<div>${answer.answerReg}</div>		
 		</div>
 		<div>${answer.answerContent}</div>
 	</c:if>
@@ -33,8 +33,8 @@
 	<input type="button" onclick='location.href="<c:url value='/qnaBoard/list'/>"' value="목록">
 	<c:if test="${not empty loginAccount}">
 		<c:if test="${loginAccount.accountNo eq question.accountNo}">
-			<input type="button" onclick='location.href="${request.contextPath()}/qnaBoard/questionUpdate?no=${question.questNo}"'
-       			value="수정">
+			<input type="button" value="수정" 
+			onclick='location.href="${request.contextPath()}/qnaBoard/questionUpdate?no=${question.questNo}&accountNo=${question.accountNo}"'>
 			<input type="button" id="btn_delete_question" value="삭제">				
 		</c:if>
 		<c:if test="${loginAccount.author eq 1}">
