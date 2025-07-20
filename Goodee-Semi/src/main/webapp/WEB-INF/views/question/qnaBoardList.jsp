@@ -90,7 +90,7 @@
 					<td>${q.questNo}</td>
 					<td><a href="<c:url value='/qnaBoard/detail?no=${q.questNo}'/>">${q.questTitle}</a></td>
 					<td>${q.accountId}</td>
-					<td>${q.questReg}</td>
+					<td>${q.questMod}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
