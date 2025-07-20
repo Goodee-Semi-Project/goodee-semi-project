@@ -14,13 +14,26 @@
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	
 	<!-- 회원글 -->
-	<div style="display:flex; justify-content: between">
-		<span>[QnA]</span>
-		<h2>${question.questTitle}</h2>
-		<span>${question.questReg}</span>
+	<div class="container">
+		<div style="border-bottom: 1px solid #ccc; padding: 15px; display: flex; justify-content: space-between;">
+			<div>
+				<span style="font-weight: bold;">[QnA]</span>
+			</div>
+			<div>
+				<span class="h2" style="font-size: 18px;">${question.questTitle}</span>
+			</div>
+			<div>
+				<div style="color: #888;">${question.questReg}</div>
+			</div>
+		</div>
+		<div class="px-2 py-2">
+		    <div class="p-3" style="min-height: 500px;">
+		      ${question.questContent}
+		    </div>
+  		</div>
 	</div>	
-	<div>${question.questContent}</div>
-	
+
+
 	<!-- 훈련사답변 -->
 	<c:if test="${not empty answer}">
 		<div>
@@ -96,8 +109,8 @@
 	
 	function openDeleteQuestionModal() {
 		$("#deleteQuestionModal").modal("show");
-		
 	}
+	
 	function openDeleteAnswerModal() {
 		$("#deleteAnswerModal").modal("show");
 	}
@@ -115,6 +128,9 @@
 					if(data == 1) {
 						alert("삭제되었습니다");
 						location.href = "<%=request.getContextPath() %>/qnaBoard/list";
+					} else {
+						alert("답변이 있는 게시물은 삭제할 수 없습니다");
+						$("#deleteQuestionModal").modal("hide");
 					}
 				}
 			})
