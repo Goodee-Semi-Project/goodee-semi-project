@@ -18,61 +18,58 @@
   	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
   </h3>
   
-  <input type="hidden" id="validAuthor" value="${ sessionScope.loginAccount.author }" />
-  <input type="hidden" id="isSameTrainer" value="${ course.accountNo eq sessionScope.loginAccount.accountNo }" />
-	<c:if test="${ (sessionScope.loginAccount.author eq 1) and (course.accountNo eq sessionScope.loginAccount.accountNo) }">
-		<form id="updateCourseForm">
-			<label>과정명: </label>
-			<input type="text" id="title" name="title" value="${ course.title }">
-			
-			<input type="hidden" name="courseNo" value="${ course.courseNo }">
-			<input type="hidden" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
-			
-			<label>태그: </label>
-			<input type="text" id="tag" name="tag" value="${ course.tag }">
-			<br>
-			
-			<label>소주제: </label>
-			<input type="text" id="subTitle" name="subTitle" value="${ course.subTitle }">
-			<br>
-			
-			<label>훈련 횟수: </label>
-			<input type="number" id="totalStep" name="totalStep" value="${ course.totalStep }">
-			
-			<label>최대 수강 인원: </label>
-			<input type="text" id="capacity" name="capacity" value="${ course.capacity }">
-			<br>
-			
-			<label>훈련 내용 및 목표</label><br>
-			<textarea id="object" name="object" rows="5" cols="30">${ course.object }</textarea>
-			<br>
-			
-			<div class="container">
-				<div class="row">
-					<div class="col-3 text-center">
-						<p style="margin-bottom: 5px;">현재 대표 이미지</p>
-						<img style="border: 2px solid gray; padding: 0;" height="130" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="thumbImage">		
-					</div>
-				
-					<div class="col-4 text-center">
-						<p style="margin-bottom: 5px;">현재 내부 이미지</p>
-						<img style="border: 2px solid gray; padding: 0;" height="130" src="<c:url value='/filePath?no=${ course.inputAttach.attachNo }' />" alt="thumbImage">		
-					</div>
-				</div>
-			</div>
-			<br>
-			
-			<label>대표 이미지: </label>
-			<input type="file" name="thumbImage">
-			<br>
-			
-			<label>내부 이미지: </label>
-			<input type="file" name="inputImage">
-			<br>
-			
-			<input type="submit" value="등록">
-		</form>
-	</c:if>
+  <div class="container">
+	  <div class="row justify-content-center">
+	    <div class="align-item-center" style="width: 100%;">
+	      <h3 class="tab-title" style="text-align: center; font-size: 32px;">교육과정 생성</h3>
+	      <form id="updateCourseForm">
+	     		<input type="hidden" id="validAuthor" value="${ sessionScope.loginAccount.author }" />
+  				<input type="hidden" id="isSameTrainer" value="${ course.accountNo eq sessionScope.loginAccount.accountNo }" />
+  				
+	      	<c:if test="${ (sessionScope.loginAccount.author eq 1) and (course.accountNo eq sessionScope.loginAccount.accountNo) }">
+  					<input type="hidden" name="courseNo" value="${ course.courseNo }">
+						<input type="hidden" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
+	      		
+	      		<fieldset class="p-4">
+	      			<div class="mb-2" style="display: flex; justify-content: space-between;">
+	      				<input class="form-control" type="text" id="title" name="title" placeholder="과정명" value="${ course.title }" style="width: 40%; height: 30px; margin: 0 5%;" required>
+	      				<input class="form-control" type="text" id="tag" name="tag" placeholder="#태그 (3개까지 입력 가능)" value="${ course.tag }" style="width: 40%; height: 30px; margin: 0 5%;" required>
+	      			</div>
+	      			<div class="mb-4" style="display: flex; justify-content: space-between;">
+	      				<input class="form-control" type="text" id="totalStep" name="totalStep" placeholder="훈련 횟수" value="${ course.totalStep }" style="width: 40%; height: 30px; margin: 0 5%;" required>
+	      				<input class="form-control" type="text" id="capacity" name="capacity" placeholder="최대 수강 인원" value="${ course.capacity }" style="width: 40%; height: 30px; margin: 0 5%;" required>
+	      			</div>
+	      			<input class="form-control mb-3" type="text" id="subTitle" name="subTitle" placeholder="소주제" value="${ course.subTitle }" style="width: 90%; height: 30px; margin: 0 auto;" required>
+	      			<textarea class="form-control" id="object" name="object" placeholder="내용을 입력하세요." style="width: 90%; height: 400px; margin: 0 auto;">${ course.object }</textarea>
+	      			
+	      			<div class="mt-3 mb-3" style="display: flex; justify-content: center; align-items: center;">
+	      				<div style="width: 45%;">
+	             		<img width="150" height="150" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" id="thumbPreview" />
+	             		<label for="thumbImage" class="btn btn-outline-secondary" style="padding: 2px 5px;">
+	             			<span style="width: 100px; font-size: 12px;">대표 이미지 선택</span>
+	             		</label>
+									<input type="file" id="thumbImage" name="thumbImage" onchange="readThumbURL(this)" style="opacity: 0; width: 0%;">
+	            	</div>
+	            	
+	            	<div style="width: 45%;">
+	             		<img width="150" height="150" src="<c:url value='/filePath?no=${ course.inputAttach.attachNo }' />" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" id="inputPreview" />
+	             		<label for="inputImage" class="btn btn-outline-secondary" style="padding: 2px 5px;">
+	             			<span style="width: 100px; font-size: 12px;">내부 이미지 선택</span>
+	             		</label>
+									<input type="file" id="inputImage" name="inputImage" onchange="readInputURL(this)" style="opacity: 0; width: 0%;">
+	            	</div>
+	      			</div>
+
+	          	<div class="mt-5" style="display: flex; justify-content: center;">
+	          		<button type="submit" class="btn btn-primary font-weight-bold" style="padding: 10px 20px; margin-right: 20px;">등록</button>
+	          		<button type="button" class="btn btn-outline-secondary font-weight-bold" style="padding: 10px 20px;" onclick="history.back()">취소</button>
+	          	</div>
+	        	</fieldset>
+	      	</c:if>
+	      </form>
+	    </div>
+	  </div>
+	</div>
 
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
@@ -83,6 +80,34 @@
 		if (myAuthor == 2 || isSameTrainer == "false") {
 			alert("잘못된 접근입니다.");
 			location.href = "<%= request.getContextPath() %>/";
+		}
+		
+		function readThumbURL(input) {
+			if (input.files && input.files[0]) {
+			  const reader = new FileReader();
+			    
+			  reader.onload = function(event) {
+			    document.getElementById('thumbPreview').src = event.target.result;
+			  };
+			    
+			  reader.readAsDataURL(input.files[0]);
+			} else {
+			  document.getElementById('thumbPreview').src = "";
+			}
+		}
+		
+		function readInputURL(input) {
+			if (input.files && input.files[0]) {
+			  const reader = new FileReader();
+			    
+			  reader.onload = function(event) {
+			    document.getElementById('inputPreview').src = event.target.result;
+			  };
+			    
+			  reader.readAsDataURL(input.files[0]);
+			} else {
+			  document.getElementById('inputPreview').src = "";
+			}
 		}
 	
 		$("#updateCourseForm").submit((event) => {
