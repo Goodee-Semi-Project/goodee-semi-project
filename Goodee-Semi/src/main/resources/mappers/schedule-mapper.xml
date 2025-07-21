@@ -63,7 +63,7 @@
 		</where>
 	</select>
 	
-	<select id="selectPetList" parameterType="hashmap" resultMap="scheduleResultMap">
+	<select id="selectPetList" parameterType="com.goodee.semi.dto.Schedule" resultMap="scheduleResultMap">
 		SELECT p.pet_no, p.pet_name
 		FROM course co
 		JOIN class c ON (co.course_no = c.course_no)
@@ -86,6 +86,18 @@
 		</where>
 	</select>
 	
+	<select id="selectSchedStep" parameterType="com.goodee.semi.dto.Schedule" resultType="_int">
+		SELECT MAX(s.sched_step)
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN Pet p ON (c.pet_no = p.pet_no)
+		JOIN schedule s ON (c.class_no = s.class_no)
+		<where>
+			p.pet_no = #{petNo}
+			AND co.course_no = #{courseNo}			
+		</where>
+	</select>
+	
 	<insert id="insert" parameterType="com.goodee.semi.dto.Schedule" useGeneratedKeys="true" keyProperty="schedNo">
 		INSERT INTO schedule (class_no, sched_step, sched_date, sched_start, sched_end)
 		VALUES (#{classNo}, #{schedStep}, #{schedDate}, #{schedStart}, #{schedEnd});
@@ -105,10 +117,11 @@
 	
 	<update id="update" parameterType="com.goodee.semi.dto.Schedule">
 		update schedule
-		set class_no = #{classNo},
-			sched_date = #{schedDate},
-		    sched_start = #{schedStart},
-		    sched_end = #{schedEnd}
+		set class_no = #{classNo}
+			,sched_date = #{schedDate}
+		    ,sched_start = #{schedStart}
+		    ,sched_end = #{schedEnd}
+		    ,sched_step = #{schedStep}
 		<where>
 			sched_no = #{schedNo}
 		</where>

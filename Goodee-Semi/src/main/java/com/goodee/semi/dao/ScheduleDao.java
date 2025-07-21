@@ -36,9 +36,9 @@ public class ScheduleDao implements ScheduleMapper {
 	}
 
 	@Override
-	public List<Schedule> selectPetList(Map<String, Integer> map) {
+	public List<Schedule> selectPetList(Schedule sched) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		List<Schedule> list = session.selectList("com.goodee.semi.mapper.ScheduleMapper.selectPetList", map);
+		List<Schedule> list = session.selectList("com.goodee.semi.mapper.ScheduleMapper.selectPetList", sched);
 		session.close();
 		return list;
 	}
@@ -80,6 +80,14 @@ public class ScheduleDao implements ScheduleMapper {
 	public int delete(int schedNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.update("com.goodee.semi.mapper.ScheduleMapper.delete", schedNo);
+		session.close();
+		return result;
+	}
+	
+	@Override
+	public int selectSchedStep(Schedule sched) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectSchedStep", sched);
 		session.close();
 		return result;
 	}
