@@ -142,12 +142,7 @@ function showDeleteModal(petLi) {
 	// petNo를 data 속성에 저장해 둠
 	confirmBtn.setAttribute('data-pet-no', petNo);
 	document.querySelector('#delete-input').value = ''; // 입력창 초기화
-	document.querySelector('#delete-modal-box').style.display = 'flex';
-}
-
-// 삭제 모달을 숨기는 함수
-function closeDeleteModal() {
-	document.querySelector('#delete-modal-box').style.display = 'none';
+	$('#delete-modal-box').modal("show");
 }
 
 // 삭제 버튼 클릭 시 이벤트
@@ -166,7 +161,7 @@ function deletePetEvent() {
 			dataType: 'json',
 			success: function (data) {
 				alert('삭제되었습니다.');
-				closeDeleteModal();
+				$('#delete-modal-box').modal("hide");
 				
 			    console.log('응답:', data);
 				
@@ -192,7 +187,6 @@ document.querySelectorAll('.pet-btn-del').forEach(btn => {
 
 // 모달 내부 확인, 취소 버튼에 이벤트 연결
 document.querySelector('#delete-confirm-btn').addEventListener('click', deletePetEvent);
-document.querySelector('#delete-close-btn').addEventListener('click', closeDeleteModal);
 
 /////////////////////////////// 등록 /////////////////////////////// 
 // 추가 등록 버튼 클릭 시 input form 생성
@@ -203,23 +197,34 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
 	console.log(accountNo);
 
     newLi.innerHTML = `
-        <input type="file" class="pet-img-input" name="petImg" style="display: none;">
-        <img src="/static/images/default-pet.png" class="pet-img" alt="반려견 이미지">
-        <div class="pet-detail">
-            <input type="text" class="pet-name" placeholder="이름">
-            <div>
-                <input type="text" class="pet-age" placeholder="나이">
-                <p>살 / <p>
-                <input type="text" class="pet-gender" placeholder="성별">
-            </div>
-            <input type="text" class="pet-breed" placeholder="견종">
-            <input type="hidden" class="account-no" value="${accountNo}">
-        </div>
-        <div class="pet-btn">
-            <button class="pet-btn-up">등록</button>
-            <button class="pet-btn-del">삭제</button>
-        </div>
-        <hr>
+								<div class="container mb-3" style="display: flex; align-items: center; padding: 5px; border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">
+									<div class="col-3">
+										<input type="file" class="pet-img-input" name="petImg" style="display: none;">
+										<img width="150" height="150" src="/static/images/default-pet.png" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">						
+									</div>
+									<div class="pet-detail col-7" style="display: flex; align-items: center;">
+										<div style="width: 60%; text-align: center;">
+											<label>이름: </label>
+											<input type="text" class="form-control pet-name mb-3" style="width: 80%; display: inline-block;" placeholder="이름">
+											<br>
+											<label>견종: </label>
+											<input type="text" class="form-control pet-breed" style="width: 80%; display: inline-block;" placeholder="견종">							
+										</div>
+										
+										<div style="width: 40%; text-align: center;">
+											<label>나이: </label>
+											<input type="text" class="form-control pet-age mb-3" style="width: 40%; display: inline-block;" placeholder="나이">
+											<br>
+											<label>성별: </label>
+											<input type="text" class="form-control pet-gender" style="width: 40%; display: inline-block;" placeholder="성별">
+										</div>
+										<input type="hidden" class="account-no" value="${accountNo }">
+									</div>
+									<div class="pet-btn col-2" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+										<button class="pet-btn-up btn btn-success mb-3" style="padding: 5px 10px;">등록</button>
+										<button class="pet-btn-del btn btn-danger" style="padding: 5px 10px;">삭제</button>
+									</div>
+								</div>
     `;
 
     petList.appendChild(newLi);
