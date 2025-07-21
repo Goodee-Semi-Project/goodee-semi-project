@@ -25,7 +25,7 @@ public class AccountService {
 		param.setAccountPw(accountPw);
 		
 		AccountDetail result = accountDao.loginInfo(param);
-		result.setProfileAttach(accountDao.selectAttachByAccountNo(result.getAccountNo()));
+		if (result != null) result.setProfileAttach(accountDao.selectAttachByAccountNo(result.getAccountNo()));
 		
 		return result;
 	}

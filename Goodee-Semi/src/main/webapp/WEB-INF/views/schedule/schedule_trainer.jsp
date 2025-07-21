@@ -103,6 +103,12 @@
 						</select>
 					</div>
 					<div class="form-group">
+						<label for="schedStep">차시 <span>*</span></label>
+						<select id="sched-step" name="schedStep" required disabled>
+							<option value="" disabled selected>차시 선택</option>
+						</select>
+					</div>
+					<div class="form-group">
 						<label for="start">시작 시간 <span>*</span></label>
 						<input type="time" id="start" name="start" required>
 					</div>

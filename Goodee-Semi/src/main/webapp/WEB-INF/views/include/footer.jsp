@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<footer class="footer-bottom">
+<div style="height: 180px;"></div>
+<footer class="footer-bottom" style="position: absolute; width: 100%; height: 180px; bottom: 0%;">
   <!-- Container Start -->
   <div class="container">
     <div class="row">
@@ -34,6 +35,7 @@
     <i class="fa fa-angle-up"></i>
   </div>
 </footer>
+</div>
 
 <!-- Plugins -->
 <script src="/static/plugins/jquery/jquery.min.js"></script>
@@ -47,7 +49,16 @@
 
 <script src="/static/js/script.js"></script>
 <script>
+	function logout(e){
+		e.preventDefault();
+		
+		if(confirm("로그아웃 하시겠습니까?")){
+			location.href = "<c:url value='/account/logout' />";
+		}
+	}
+
 	$(() => {
+		
 		$("#searchCourseForm").submit((event) => {
 			event.preventDefault();
 			
