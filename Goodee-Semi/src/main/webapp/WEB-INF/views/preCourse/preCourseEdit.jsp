@@ -34,13 +34,16 @@
 			<input type="text" name="videoLen" value="${ preCourse.videoLen }" readonly>
 		</div>
 	
-		<!-- SJ: 퀴즈 추가 -->
+		<!-- SJ: 퀴즈 추가 --><div>
+		<span>퀴즈 추가</span>
+			<button type="button" onclick="addTest()">+</button>
+		</div>
+		<input type="text" id="count" name="size" value="${ list.size() }" hidden>
 		<c:if test="${ not empty list }">
-			<input type="text" name="size" value="${ list.size() }" hidden>
 			<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
 				<input type="text" name="test${ i }No" value="${ list[i].testNo }" hidden>
 				<input type="text" name="answer${ i }" value="${ list[i].testAnswer }" hidden>
-				<input type="text" name="content${ i }" value="${ list[i].testContent }">
+				<textarea rows="30" cols="100" name="content${ i }" spellcheck="false" style="resize: none;">${ list[i].testContent }</textarea>
 				<br>
 				<label>
 					<input type="radio" name="quiz${ i }" value="one" <c:if test="${ list[i].testAnswer eq 'one' }">checked</c:if> >
@@ -61,6 +64,7 @@
 				<br>
 			</c:forEach>
 		</c:if>
+		<div id="testPart"></div>
 		
 		<button>수정</button>
 	</form>
@@ -70,6 +74,14 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+	let i = document.querySelector('#count').value;
+	function addTest() {
+		html =`<%@ include file="/WEB-INF/views/preCourse/preTest.jsp" %>`;
+		document.querySelector('#testPart').innerHTML += html;
+		document.querySelector('#count').value = ++i;
+		console.log(i);
+	}
+
 	$('#edit').submit(function(e) {
 		e.preventDefault();
 		

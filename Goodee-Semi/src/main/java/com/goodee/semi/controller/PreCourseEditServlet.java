@@ -151,22 +151,24 @@ public class PreCourseEditServlet extends HttpServlet {
 					size = Integer.parseInt(request.getParameter("size"));
 				}
 				
+				System.out.println(size);
+				
 				if (size != -1) {
 					List<PreTest> list = new ArrayList<PreTest>();
 					
 					for (int i = 0; i < size; i++) {
-						if (request.getParameter("test" + i + "No") != null) {
-							PreTest preTest = null;
-							preTest = new PreTest();
-							preTest.setTestNo(request.getParameter("test" + i + "No"));
-							preTest.setTestContent(request.getParameter("content" + i));
-							preTest.setTestAnswer(request.getParameter("quiz" + i));
-							preTest.setOne(request.getParameter("one" + i));
-							preTest.setTwo(request.getParameter("two" + i));
-							preTest.setThree(request.getParameter("three" + i));
-							preTest.setFour(request.getParameter("four" + i));
-							list.add(preTest);
-						}
+						PreTest preTest = new PreTest();
+						String testNo = request.getParameter("test" + i + "No");
+						if (testNo == null) testNo = "-1";
+						preTest.setTestNo(testNo);
+						preTest.setTestContent(request.getParameter("content" + i));
+						preTest.setTestAnswer(request.getParameter("quiz" + i));
+						preTest.setOne(request.getParameter("one" + i));
+						preTest.setTwo(request.getParameter("two" + i));
+						preTest.setThree(request.getParameter("three" + i));
+						preTest.setFour(request.getParameter("four" + i));
+						
+						list.add(preTest);
 					}
 					
 					result = preTestService.updateList(list);

@@ -32,4 +32,10 @@
 			,one = #{ one } ,two = #{ two } ,three = #{ three } ,four = #{ four }
 		WHERE test_no = #{ testNo }
 	</update>
+	
+	<select id="countOne" parameterType="com.goodee.semi.dto.PreTest" resultType="_int">
+		SELECT COUNT(*)
+		FROM pre_test
+		WHERE test_no = #{ testNo }
+	</select>
 </mapper>
