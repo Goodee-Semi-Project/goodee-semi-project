@@ -32,6 +32,7 @@ public class SchduleCreateServlet extends HttpServlet {
 		 int accountNo = Integer.parseInt(request.getParameter("accountNo"));
 		 int courseNo = Integer.parseInt(request.getParameter("courseNo"));
 		 int petNo = Integer.parseInt(request.getParameter("petNo"));
+		 int schedStep = Integer.parseInt(request.getParameter("schedStep"));
 		 String[] startDateTime = request.getParameter("start").split("T");
 		 LocalDateTime start = LocalDateTime.of(Integer.parseInt(startDateTime[0].split("-")[0]), 
 				 								Integer.parseInt(startDateTime[0].split("-")[1]), 
@@ -61,7 +62,7 @@ public class SchduleCreateServlet extends HttpServlet {
 		 // class_no, sched_step, sched_date, sched_start, sched_end 를 Schedule에 바인딩하여 insert함
 
 		 sched.setClassNo(classNo);
-		 sched.setSchedStep(0);
+		 sched.setSchedStep(schedStep);
 		 sched.setSchedDate(date);
 		 sched.setSchedStart(start);
 		 sched.setSchedEnd(end);
@@ -94,7 +95,9 @@ public class SchduleCreateServlet extends HttpServlet {
 			json.put("start", insertedSched.getSchedStart().format(formatDateTime));
 			json.put("end", insertedSched.getSchedEnd().format(formatDateTime));
 			
-			json.put("title", "(" + insertedSched.getCourseTitle() + ") " + insertedSched.getAccountName() + "-" + insertedSched.getPetName());
+			json.put("title", "(" + insertedSched.getCourseTitle() + ") " 
+					+ insertedSched.getAccountName() + "-" + insertedSched.getPetName()
+					+ " " + insertedSched.getSchedStep() + "차시");
 		 } else {
 			 json.put("status", "일정 등록 중 문제 발샐");
 			 json.put("statusCode", "500");			 
