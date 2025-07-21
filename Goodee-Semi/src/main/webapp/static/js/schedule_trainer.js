@@ -151,45 +151,47 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 // 모달 표시 함수
 function showEventModal(mode, info) {
 	// 1. 모달의 요소 가져오기
-    const modal = document.querySelector('#event-modal-box');
-    const modalTitle = document.querySelector('#modal-title');
-    const form = document.querySelector('#modal-form');
-    const deleteBtn = document.querySelector('#btn-delete-event');
+	const modal = document.querySelector('#event-modal-box');
+	const modalTitle = document.querySelector('#modal-title');
+	const form = document.querySelector('#modal-form');
+	const deleteBtn = document.querySelector('#btn-delete-event');
     
-    // 2. 폼 초기화
-    form.reset(); // reset(): 요소의 기본값 복원
+	// 2. 폼 초기화
+	form.reset(); // reset(): 요소의 기본값 복원
+	form.querySelector('#sched-step').innerHTML = '<option value="" disabled selected>차시 선택</option>';
 	form.querySelector('#account-name').disabled = true;
 	form.querySelector('#pet-name').disabled = true;
 
 	// 3. 일정 등록 / 수정
-    switch (mode) {
-        case 'create': // 일정 등록
-            modalTitle.textContent = '일정 등록';
-            deleteBtn.style.display = 'none';
-            modal.removeAttribute('data-event-id');
-            break;
-    
-        case 'edit': // 일정 수정
-            modalTitle.textContent = '일정 수정';
-            deleteBtn.style.display = 'inline-block';
-            
-            // 기존의 일정 정보 가져옴
-            console.log("[일정 정보] info: ", info);
-            console.log("[일정 정보] info.event: ", info.event);
-            const event = info.event;
-            
-            // 기존의 일정에 담긴 데이터를 표시
-            document.querySelector('#course-title').value = event.extendedProps.courseTitle;
-            document.querySelector('#account-name').value = event.extendedProps.accountName;
-            document.querySelector('#pet-name').value = event.extendedProps.petName;
-            document.querySelector('#start').value = event.startStr? event.startStr.split('T')[1] : "";
-            document.querySelector('#end').value = event.endStr? event.endStr.split('T')[1] : "";
+	switch (mode) {
+		case 'create': // 일정 등록
+			modalTitle.textContent = '일정 등록';
+			deleteBtn.style.display = 'none';
+			modal.removeAttribute('data-event-id');
+			break;
 
-            // 현재 편집 중인 이벤트 ID 저장
-            modal.setAttribute('data-event-id', event.id);
-    }
-    
-    modal.style.display = 'flex';
+		case 'edit': // 일정 수정
+			modalTitle.textContent = '일정 수정';
+			deleteBtn.style.display = 'inline-block';
+			
+			// 기존의 일정 정보 가져옴
+			console.log("[일정 정보] info: ", info);
+			console.log("[일정 정보] info.event: ", info.event);
+			const event = info.event;
+			
+			// 기존의 일정에 담긴 데이터를 표시
+			document.querySelector('#course-title').value = event.extendedProps.courseTitle;
+			document.querySelector('#account-name').value = event.extendedProps.accountName;
+			document.querySelector('#pet-name').value = event.extendedProps.petName;
+			document.querySelector('#sched-step').value = event.extendedProps.schedStep;
+			document.querySelector('#start').value = event.startStr? event.startStr.split('T')[1] : "";
+			document.querySelector('#end').value = event.endStr? event.endStr.split('T')[1] : "";
+
+			// 현재 편집 중인 이벤트 ID 저장
+			modal.setAttribute('data-event-id', event.id);
+	}
+	
+	modal.style.display = 'flex';
 }
 
 // 날짜 + 시간 합치기 함수
@@ -288,8 +290,11 @@ function deleteEvent(eventId) {
 const baseSelect = document.getElementById('course-title'); // 기준 select
 const targetSelect1 = document.getElementById('account-name');
 const targetSelect2 = document.getElementById('pet-name');
+const targetSelect3 = document.getElementById('sched-step');
 
 let courseNo;
+let accountNo;
+let petNo;
 
 baseSelect.addEventListener('change', function() {
 	const form = document.querySelector('#modal-form');
@@ -315,7 +320,7 @@ baseSelect.addEventListener('change', function() {
 			success: function (data) {
 			    console.log("성공: ", data);
                 
-                html = '<option value="" disabled selected>회원명 선택</option>';
+                let html = '<option value="" disabled selected>회원명 선택</option>';
 				data.jsonArr.forEach(json => {
                     html += `<option value="${json.accountNo}">${json.accountName}</option>`;
                 });
@@ -333,7 +338,7 @@ baseSelect.addEventListener('change', function() {
 });
 
 targetSelect1.addEventListener('change', function() {
-	const accountNo = this.value;
+	accountNo = this.value;
 	console.log("accountNo: " + accountNo);
 	
 	if (this.value) { // 기준 select에 값이 선택되었는지 확인
@@ -354,7 +359,7 @@ targetSelect1.addEventListener('change', function() {
 			success: function (data) {
 			    console.log("성공: ", data);
 		        
-		        html = '<option value="" disabled selected>반려견명 선택</option>';
+		        let html = '<option value="" disabled selected>반려견명 선택</option>';
 				data.jsonArr.forEach(json => {
 		            html += `<option value="${json.petNo}">${json.petName}</option>`;
 		        });
@@ -371,27 +376,64 @@ targetSelect1.addEventListener('change', function() {
     }
 });
 
+targetSelect2.addEventListener('change', function() {
+	petNo = this.value;
+	console.log("petNo: " + petNo);
+	
+	if (this.value) { // 기준 select에 값이 선택되었는지 확인
+    const schedStep = document.getElementById('sched-step');
+		
+		// 비동기통신하여 option에 데이터 뿌리기
+		$.ajax({
+			url: '/schedule/input',
+			type: 'get',
+			data: {
+				valueType: "petNo",
+				courseNo: courseNo,
+				petNo: petNo
+			},
+			dataType: 'json',
+			success: function (data) {
+				console.log("성공: ", data);
+
+				let html = '';
+				data.jsonArr.forEach(json => {
+					html += `<option value="${json.schedStep}" selected>${json.schedStep}</option>`;
+				});
+				
+				schedStep.innerHTML = html;
+			},
+			error: function (err) {
+			    console.log("에러: ", err);
+			}
+		});
+    } else {
+        targetSelect2.disabled = true;
+        targetSelect2.value = ''; // 값 초기화
+    }
+});
 // 모달 이벤트 리스너
 $(document).on('click', '#btn-cancel-event', function() {
     document.getElementById('event-modal-box').style.display = 'none';
 });
 
 $(document).on('click', '#btn-add-event', function() {
-    const form = document.getElementById('modal-form');
-    const formData = new FormData(form);
+	const form = document.getElementById('modal-form');
+	const formData = new FormData(form);
 	console.log('[저장 클릭] formData: ');
 	for (const x of formData.entries()) {
-	 console.log(x);
+		console.log(x);
 	};
 	
-    const modal = document.getElementById('event-modal-box');
-    const eventId = modal.getAttribute('data-event-id');
-  	console.log('eventId: ', eventId);
+	const modal = document.getElementById('event-modal-box');
+	const eventId = modal.getAttribute('data-event-id');
+	console.log('eventId: ', eventId);
 	
 	// value 값 가져오기
 	const courseValue = formData.get('courseTitle');
 	const accountValue = formData.get('accountName');
 	const petValue = formData.get('petName');
+	const schedStepValue = formData.get('schedStep');
 	
 	// text 값 가져오기
 	const courseText = $('#course-title option:selected').text();
@@ -402,6 +444,7 @@ $(document).on('click', '#btn-add-event', function() {
 	console.log('코스 - value:', courseValue, 'text:', courseText);
 	console.log('회원 - value:', accountValue, 'text:', accountText);
 	console.log('펫 - value:', petValue, 'text:', petText);
+	console.log('차수 - value:', schedStepValue);
 	
     if (!form.checkValidity()) {
         form.reportValidity();
@@ -431,7 +474,7 @@ $(document).on('click', '#btn-add-event', function() {
 
 		classNo: null,
 
-		schedStep: null,
+		schedStep: schedStepValue,
 		schedDate: selectedDate,
 		schedAttend: null,
 		courseNo: courseValue,
@@ -443,7 +486,7 @@ $(document).on('click', '#btn-add-event', function() {
 		start: buildDateTime(selectedDate, startTime),
 		end: buildDateTime(selectedDate, endTime),
 
-		title: `(${courseText}) ${accountText}-${petText}`
+		title: `(${courseText}) ${accountText}-${petText} ${schedStepValue}차시`
 	};
     
 	console.log('eventData 받아오기 완료: ', eventData);
