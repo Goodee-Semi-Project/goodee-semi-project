@@ -14,25 +14,36 @@
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	<h3 class="widget-header">
   	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
-  	</h3>
+  </h3>
 	
+	
+	<div class="container my-2" style="width: 80%; height: 50px; border: 1px solid black; border-radius: 10px; overflow: hidden; padding: 0; display: flex;">
+		<div class="col-4" style="padding: 0;">
+			<img style="width: 100%; object-fit: cover;" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }'/>" alt="img">
+		</div>
+		<div class="col-8" style="display: flex; justify-content: center; align-items: center;">
+			<span style="font-size: 20px; font-weight: 700;">${ course.title }</span>
+		</div>
+	</div>
 	<table class="text-center" style="width: 100%">
 		<thead>
-			<tr style="height: 70px;">
-				<th style="width: 100%; font-size: 40px;" colspan="5">${course.title}</th>
+			<tr style="height: 50px;">
+				<th>프로필 이미지</th>
+				<th>반려견</th>
+				<th>회원</th>
+				<th>관리</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="pet" items="${petList}">
-				<tr style="height: 50px;">
+				<tr style="height: 80px;">
 					<td style="width: 25%">
 						<c:if test="${not empty pet.attachNo }">
-							<img src="<c:url value='/filePath?no=${pet.attachNo}'/>" alt="${c.title}" 
-							style="width : 80px; height : 80px; border-radius : 50%">
+							<img src="<c:url value='/filePath?no=${pet.attachNo}'/>" class="rounded-circle" alt="${course.title}" style="width : 70px; height : 70px; border-radius : 50% border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);" >
 						</c:if>
 					</td>
 					<td style="width: 25%">${ pet.petName } (${ pet.petBreed })<br>${ pet.petAge }세 / ${ pet.petGender }</td>
-					<td style="width: 20%">${ pet.accountName }</td>
+					<td style="width: 20%">${ pet.accountName } 님</td>
 					<td style="width: 30%">
 						<button type="button" onclick="" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
 						<button type="button" onclick="" style="padding: 5px 10px;" class="btn btn-outline-secondary">과제</button>
