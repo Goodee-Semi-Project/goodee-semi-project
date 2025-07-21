@@ -16,30 +16,23 @@
   	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
   </h3>
 
-	<div>
-		<h1>수강 인원 관리</h2>
-	</div>
-
-	<c:forEach var="c" items="${courseList}">
-		<div style="padding : 30px">
-			<div style="display : flex; justify-content : space-between;">
-				<div style="display : flex; align-items : center;">
-					<c:if test="${c.thumbAttach ne null}">
-						<img src="<c:url value='/filePath?no=${c.thumbAttach.attachNo}'/>" alt="${c.title}" 
-						style="width : 200px; height : 150px">
-					</c:if>
-					<h2>${c.title}</h2>
-				</div>
-				<div>
-					<div style="margin-top : 45px;">
-						<a href="<c:url value='/myCourse/memberDetail?courseNo=${c.courseNo }'/>">상세보기</a>
-						<div>수강 인원</div>
-						<span>${c.currentEnrollment}</span>/<span>${c.capacity}</span>
-					</div>
-				</div>
+	<c:forEach var="c" items="${ courseList }">
+		<div class="container my-2" style="height: 100px; border-radius: 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2); overflow: hidden; padding: 0; display: flex;">
+			<div class="col-3" style="padding: 0;">
+			 <img style="width: 150px; height: 100px; object-fit: cover;" src="<c:url value='/filePath?no=${ c.thumbAttach.attachNo }'/>" alt="img">
+			</div>
+			<div class="col-4" style="display: flex; align-items: center;">
+				<span style="font-size: 20px; font-weight: 700;">${ c.title }</span>
+			</div>
+			<div class="col-3" style="text-align: center; margin: auto;">
+				<span style="font-size: 15px; font-weight: 700;">수강 인원</span>
+				<br>
+		   	<span style="font-size: 15px;">${c.currentEnrollment} / ${c.capacity}</span>
+			</div>
+			<div class="col-2" style="display: flex; justify-content: center; align-items: center;">
+				<a href="<c:url value='/myCourse/memberDetail?courseNo=${c.courseNo }'/>" class="btn btn-outline-secondary" style="padding: 2px 5px;">상세보기</a>
 			</div>
 		</div>
-		<hr>
 	</c:forEach>
  
  	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
