@@ -45,8 +45,8 @@
 										<span>[진행도] 0</span>
 									</c:otherwise>
 								</c:choose>
-								<br>
 							</c:if>
+							<br>
 						</c:forEach>
 					</ul>
 					<br>
