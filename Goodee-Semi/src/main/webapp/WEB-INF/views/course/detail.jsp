@@ -182,11 +182,11 @@
 								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
 								<c:if test="${ sessionScope.loginAccount.accountNo eq course.accountNo }">
 									<div class="d-grid gap-2">
-										<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">회원 관리</a>
-										<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">수강신청 관리</a>
-										<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">사전학습 관리</a>
-										<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">일정 관리</a>
-										<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">과제 관리</a>
+										<a href="<c:url value='/myCourse/memberManagement' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">회원 관리</a>
+										<a href="<c:url value='/myCourse/enrollList' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">수강신청 관리</a>
+										<a href="<c:url value='/preCourse/list' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">사전학습 관리</a>
+										<a href="<c:url value='/schedule' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">일정 관리</a>
+										<a href="<c:url value='/assign/list' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">과제 관리</a>
 									</div>
 								</c:if>
 							</c:when>
