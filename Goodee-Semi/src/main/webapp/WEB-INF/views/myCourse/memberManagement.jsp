@@ -32,7 +32,7 @@
 				</div>
 				<div>
 					<div style="margin-top : 45px;">
-						<a href="<c:url value='/myCourse/memberDetail?courseNo=${c.courseNo }'/>">상세보기</a>
+						<a href="<c:url value='/myCourse/memberDetail?courseNo=${c.courseNo}'/>">상세보기</a>
 						<div>수강 인원</div>
 						<span>${c.currentEnrollment}</span>/<span>${c.capacity}</span>
 					</div>

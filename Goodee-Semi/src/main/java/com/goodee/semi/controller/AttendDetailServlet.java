@@ -44,15 +44,17 @@ public class AttendDetailServlet extends HttpServlet {
 		}
 		
 		// 교육진행시간 문자열 리스트로 변환
-		DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
-		List<String> startEndList = new ArrayList<>();
-		for (Schedule s : scheduleList) {
-			String start = s.getSchedStart().format(timeFmt);
-			String end = s.getSchedEnd().format(timeFmt);
-			startEndList.add(start + " ~ <br>" + end);
+		if(scheduleList != null) {
+			List<String> startEndList = new ArrayList<>();
+			DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
+			for (Schedule s : scheduleList) {
+				String start = s.getSchedStart().format(timeFmt);
+				String end = s.getSchedEnd().format(timeFmt);
+				startEndList.add(start + " ~ <br>" + end);
+			}
+			request.setAttribute("startEndList", startEndList);
 		}
 		
-		request.setAttribute("startEndList", startEndList);
 		request.setAttribute("scheduleList", scheduleList);
 		request.setAttribute("petAttach", petAttach);
 		request.getRequestDispatcher("/WEB-INF/views/attend/attendDetail.jsp").forward(request, response);

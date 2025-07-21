@@ -34,8 +34,8 @@ public class QuestionAddServlet extends HttpServlet {
 		
 		
 		int accountNo = Integer.parseInt(request.getParameter("qnaAccountNo"));
-		String questTitle = request.getParameter("qnaTitle");
-		String questContent = request.getParameter("qnaContent");
+		String questTitle = request.getParameter("qnaTitle").trim();
+		String questContent = request.getParameter("qnaContent").trim();
 		
 		int result = service.insertQuestion(accountNo, questTitle, questContent);
 		

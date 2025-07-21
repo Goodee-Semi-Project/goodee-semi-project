@@ -56,7 +56,8 @@
 	<div class="container">
 		<div class="d-flex justify-content-between p-3">
 			<div>
-				<input type="button" onclick='location.href="<c:url value='/qnaBoard/list'/>"' value="목록">
+				<input type="button" class="btn btn-primary" style="padding : 5px 20px; background-color: #5672f9;"
+				onclick='location.href="<c:url value='/qnaBoard/list'/>"' value="목록">
 			</div>
 			<c:if test="${not empty loginAccount}">
 				<div>

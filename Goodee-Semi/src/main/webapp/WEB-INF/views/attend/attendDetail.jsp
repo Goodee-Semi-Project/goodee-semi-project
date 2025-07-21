@@ -86,7 +86,9 @@
 							<c:if test="${loginAccount.author eq 1}">	
 								<td style="width: 20%">
 									<button type="button" onclick="updateAttend('${sc.schedAttend}', ${sc.petNo}, ${sc.courseNo}, ${sc.schedNo})" 
-									style="padding: 5px 10px;" class="btn btn-outline-secondary">출결 수정</button>
+									style="padding: 5px 10px;" class="btn btn-outline-secondary">수정</button>
+									<button type="button" onclick="moveToAttendQr(${sc.schedNo})"class="btn btn-outline-secondary"
+									style="padding: 5px 10px;" ${sc.schedAttend eq 89 ? "disabled" : ""}>QR생성</button>
 								</td>
 							</c:if>
 						</tr>
@@ -108,6 +110,12 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
 
 	<script>
+	
+		function moveToAttendQr(schedNo) {
+			console.log("schedNo: " + schedNo);
+			location.href="<%=request.getContextPath()%>/qr/qrCode?schedNo=" + schedNo
+		}
+	
 		function updateAttend(didAttend, petNo, courseNo, schedNo) {
 			let msg;
 			if(didAttend == 'Y') {
