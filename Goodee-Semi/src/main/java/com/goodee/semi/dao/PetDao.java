@@ -56,6 +56,11 @@ public class PetDao implements PetMapper {
 	public int insertAttach(SqlSession session, Attach param) {
 		return session.update("com.goodee.semi.mapper.PetMapper.insertAttach", param);
 	}
+	
+	@Override
+	public Attach selectAttach(SqlSession session, Attach param) {
+		return session.selectOne("com.goodee.semi.mapper.PetMapper.selectAttach", param);
+	}
 
 	@Override
 	public Pet selectPetOne(int petNo) {

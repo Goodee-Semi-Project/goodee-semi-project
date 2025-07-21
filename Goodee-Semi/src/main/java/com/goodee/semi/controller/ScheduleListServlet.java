@@ -42,7 +42,8 @@ public class ScheduleListServlet extends HttpServlet {
 		// 2-2. 바인딩 된 값 받아오기
 		String start = request.getParameter("start");
 		String end = request.getParameter("end");
-		System.out.println("[start]: " + start + ", [end]: " + end);
+		String petNo = request.getParameter("petNo");
+		System.out.println("[start]: " + start + ", [end]: " + end + "[petNo]: " + petNo);
 		
 		// 3. 받아온 값을 map에 바인딩
 		String[] startDateStr = start.substring(0, start.indexOf('T')).split("-");
@@ -60,8 +61,15 @@ public class ScheduleListServlet extends HttpServlet {
 		map.put("end", endDate.toString());
 		
 		// 회원/훈련사 조회 데이터 분기
-		if(accountDetail.getAuthor() == 1) map.put("trainerAccountNo", String.valueOf(accountDetail.getAccountNo()));
-		else map.put("memberAccountNo", String.valueOf(accountDetail.getAccountNo()));
+		if(accountDetail.getAuthor() == 1) {
+			map.put("trainerAccountNo", String.valueOf(accountDetail.getAccountNo()));
+			if (petNo != null) {
+				map.put("petNo", petNo);
+			}
+		}
+		else {
+			map.put("memberAccountNo", String.valueOf(accountDetail.getAccountNo()));
+		}
 		
 		System.out.println("map: " + map);
 		
@@ -106,7 +114,7 @@ public class ScheduleListServlet extends HttpServlet {
 			prop.put("start", sched.getSchedStart().format(formatDateTime));
 			prop.put("end", sched.getSchedEnd().format(formatDateTime));
 			
-			prop.put("title", "(" + sched.getCourseTitle() + ") " + sched.getAccountName() + "-" + sched.getPetName());
+			prop.put("title", "(" + sched.getCourseTitle() + ") " + sched.getAccountName() + "-" + sched.getPetName() + " " + sched.getSchedStep() + "차시");
 			
 			jsonArr.add(prop);
 		}

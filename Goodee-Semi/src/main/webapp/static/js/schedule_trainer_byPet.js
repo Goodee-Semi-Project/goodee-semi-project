@@ -1,9 +1,13 @@
+// TODO 차수 관련 기능 추가
 const calendarEl = document.querySelector('#calendar');
-
+const petNo = document.querySelector('input[type="hidden"').value;
+	
+console.log("일정 조회 중인 petNo : ", petNo)
+	
 // 선택된 날짜 저장 변수
 let selectedDate = null;
 
-// DB에서 받아온 일정 데이터들을 담는 변수
+// DB에서 받아온 일정 데이터들을 담는 변수 (fullcalendar의 임시 데이터 저장소)
 let eventDatas = [];
 
 const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -15,9 +19,9 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 	},
 	locale: 'ko', // 언어 설정
 	navLinks: true, // 요일과 날짜 클릭 시 일이나 주단위로 보여주는 화면으로 넘어감
- 	editable: false, // 드래그해서 수정 가능한지
+ 	editable: true, // 드래그해서 수정 가능한지
 	selectable: true,
-	selectMirror: false,
+	selectMirror: true,
 	dayMaxEvents: false, // +more 표시 전 최대 이벤트 갯수, default: false | true: 셀 높이에 의해 결정, false: 일정만큼 셀 높이 확장
 	
     // 이벤트 데이터 로드
@@ -30,17 +34,18 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 		console.log(successCallback);
 		console.log(failureCallback);
 		
-        // TODO 아래의 ajax에 응답해주는 서블릿 구현
 		$.ajax({
             url: '/schedule/list',
             type: 'post',
             data: {
                 start: fetchInfo.startStr,
-                end: fetchInfo.endStr
+                end: fetchInfo.endStr,
+				petNo: petNo
             },
             dataType: 'json',
             success: function (data) {
 				console.log("성공: ", data);
+				eventDatas = data;
 				successCallback(data);
             },
             error: function (err) {
@@ -50,7 +55,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 		
 		console.log('이벤트 데이터 로드 완료');
     },
-	
+
 	// 마우스 위치에 툴팁 표시
 	eventDidMount: function(info) {
 	    // 기존 시간 표시 요소 삭제
