@@ -10,7 +10,7 @@
   <meta name="theme-name" content="classimax" />
 
   <!-- favicon -->
-  <link href="/static/images/favicon.png" rel="shortcut icon">
+  <link href="/static/images/favicon.ico" rel="shortcut icon">
 
   <!-- Plugins -->
   <link href="/static/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">

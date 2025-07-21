@@ -208,9 +208,9 @@ function createEvent(eventData) { // eventData: 모달 form에서 받아온 데�
         url: '/schedule/create',
         type: 'post',
         data: {
-            accountNo: eventData.accountName,
-            courseNo: eventData.courseTitle,
-            petNo: eventData.petName,
+            accountNo: eventData.accountNo,
+            courseNo: eventData.courseNo,
+            petNo: eventData.petNo,
             start: eventData.start,
             end: eventData.end,
         },
@@ -218,7 +218,7 @@ function createEvent(eventData) { // eventData: 모달 form에서 받아온 데�
         success: function (data) {
             console.log("성공: ", data);
 
-			// 2. 임시데이터 저장소에 추가 (굳이 해야되나?)
+			// 2. fullcalendar의 임시데이터 저장소에 추가
 			eventDatas.push(data);
 
 			// 3. 추가된 이벤트를 캘린더에 반영
@@ -259,19 +259,34 @@ function updateEvent(eventId, eventData) {
 
 // 이벤트 삭제
 function deleteEvent(eventId) {
-    const event = calendar.getEventById(eventId);
-    if (event) {
-        event.remove();
-        
-        // 데이터 저장소에서 삭제
-        const dataIndex = eventDatas.findIndex(e => e.id === eventId);
-        if (dataIndex !== -1) {
-            eventDatas.splice(dataIndex, 1);
-        }
-        
-        // TODO 서버로 데이터 전송
-        console.log('이벤트 삭제:', eventId);
-    }
+	$.ajax({
+		    url: '/schedule/delete',
+		    type: 'post',
+		    data: {
+		        schedNo: eventId,
+		    },
+			dataType: 'json',
+		    success: function(data) {
+				console.log("성공: ", data);
+				
+/*	            location.reload();
+				
+				const event = calendar.getEventById(eventId);
+			    if (event) {
+			        event.remove();
+			        
+			        // fullcalendar의 임시 데이터 저장소에서 삭제
+			        const dataIndex = eventDatas.findIndex(e => e.id === eventId);
+			        if (dataIndex !== -1) {
+			            eventDatas.splice(dataIndex, 1);
+			        }
+			    }*/
+		    },
+		    error: function(err) {
+		        console.log("에러: ", err);
+		    }
+		});
+	
 }
 
 // 교육과정, 회원, 반려견 input 검증
@@ -380,7 +395,18 @@ $(document).on('click', '#btn-add-event', function() {
 	
 	// value 값 가져오기
 	const courseValue = formData.get('courseTitle');
+	const accountValue = formData.get('accountName');
 	const petValue = formData.get('petName');
+	
+	// text 값 가져오기
+	const courseText = $('#course-title option:selected').text();
+	const accountText = $('#account-name option:selected').text();
+	const petText = $('#pet-name option:selected').text();
+
+	console.log('선택된 값들:');
+	console.log('코스 - value:', courseValue, 'text:', courseText);
+	console.log('회원 - value:', accountValue, 'text:', accountText);
+	console.log('펫 - value:', petValue, 'text:', petText);
 	
     if (!form.checkValidity()) {
         form.reportValidity();
@@ -402,11 +428,27 @@ $(document).on('click', '#btn-add-event', function() {
     }
 	
 	const eventData = {
+		accountNo: accountValue,
+		accountName: accountText,
+		
 		petNo: petValue,
+		petName: petText,
+
+		classNo: null,
+
+		schedStep: null,
 		schedDate: selectedDate,
+		schedAttend: null,
 		courseNo: courseValue,
+		courseTitle: courseText,
+		courseTotalStep: null,
+
+		id: null,
+
 		start: buildDateTime(selectedDate, startTime),
 		end: buildDateTime(selectedDate, endTime),
+
+		title: `(${courseText}) ${accountText}-${petText}`
 	};
     
 	console.log('eventData 받아오기 완료: ', eventData);
