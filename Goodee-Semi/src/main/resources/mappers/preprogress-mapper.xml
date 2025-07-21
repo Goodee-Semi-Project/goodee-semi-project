@@ -93,7 +93,12 @@
 				WHERE pet_no = #{ petNo }
 			) AS p ON c.pet_no = p.pet_no
 		) 
-		
+	</select>
+	
+	<select id="selectProg" parameterType="com.goodee.semi.dto.PreProgress" resultMap="preProgResultMap">
+		SELECT pre_prog
+		FROM pre_progress
+		WHERE class_no = #{ classNo } AND pre_no = #{ preNo } AND pre_prog IS NOT NULL
 	</select>
 
 </mapper>

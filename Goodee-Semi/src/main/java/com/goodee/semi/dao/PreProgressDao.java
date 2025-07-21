@@ -35,4 +35,11 @@ public class PreProgressDao {
 		return preProgress;
 	}
 
+	public PreProgress selectProg(PreProgress param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		PreProgress preProg = session.selectOne("com.goodee.semi.mapper.PreProgressMapper.selectProg", param);
+		session.close();
+		return preProg;
+	}
+
 }

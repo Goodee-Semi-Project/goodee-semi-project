@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.Objects" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +36,17 @@
 							<a href="/preCourse/detail?preNo=${ p.preNo }&petNo=${ c.petNo }">
 								사전학습명: ${ p.preTitle }
 							</a>
-							<br>
+							<c:if test="${ loginAccount.author ne 1 }">
+								<c:choose>
+									<c:when test="${ not empty preProgMap.get(Objects.hash(c.classNo, p.preNo)).preProg }">
+										<span>[진행도] ${ preProgMap.get(Objects.hash(c.classNo, p.preNo)).preProg }</span>
+									</c:when>
+									<c:otherwise>
+										<span>[진행도] 0</span>
+									</c:otherwise>
+								</c:choose>
+								<br>
+							</c:if>
 						</c:forEach>
 					</ul>
 					<br>
