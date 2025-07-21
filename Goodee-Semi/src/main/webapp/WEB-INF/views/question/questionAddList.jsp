@@ -7,20 +7,56 @@
 <meta charset="UTF-8">
 <title>QnA게시글 등록</title>
 
+<style>
+	.d-flex button{
+		padding : 5px 20px !important; 
+		background-color: #5672f9 !important;
+	}
+</style>
+
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	
-	<form id="addListform">
-		<input type="hidden" id="qna_account_no" value="${loginAccount.accountNo}">
-		<label for="qna_title">제목</label>
-		<input type="text" name="qna_title" id="qna_title" placeholder="제목 입력">
-		<textarea rows="40" cols="70" id="qna_content" style="resize: none; display: block"></textarea>
-		<button type="button" onclick="location.href='<c:url value="/qnaBoard/list"/>'">목록</button>
-		<button type="button" onclick="openAddModal()">등록</button>
-	</form>
+	<!-- Title -->
+	<section class="page-title">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 offset-md-2 text-center">
+					<h3>질문등록</h3>
+				</div>
+			</div>
+		</div>
+	</section>	
+	
+	<section class="section" style="padding: 0">
+	    <div class="container">
+	        <div class="row">
+	            <div class="col-md-12">
+                    <form id="addListform">
+                        <fieldset class="p-4">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12 pt-6">
+                                    	<input type="hidden" id="quest_account_no" value="${loginAccount.accountNo}">
+                                        <input type="text" name="quest_title" id="quest_title" placeholder="제목 입력" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <textarea name="message" id="quest_content" class="border w-100 p-3 mt-3 mt-lg-4"
+                            style="resize: none; height: 450px; outline: none;"></textarea>
+                        </fieldset>
+                       	<div class="d-flex justify-content-between p-4">
+                 			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
+							<button type="button" class="btn btn-primary" onclick="openAddModal()">등록</button>
+						</div>
+                    </form>
+	            </div>
+	        </div>
+	    </div>
+	</section>
 	
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>	
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
@@ -45,15 +81,19 @@
 	</div>
 			
 	<script>
+		function toList() {
+			location.href="<%=request.getContextPath()%>/qnaBoard/list"
+		}
+	
 		function openAddModal() {
 			$("#addModal").modal("show");
 		}
 		
 		$(document).ready(function (){
 			$("#btn_modal_confirm").click(function(){
-				const qnaAccountNo = $('#qna_account_no').val();
-				const qnaTitle = $('#qna_title').val();
-				const qnaContent = $('#qna_content').val();
+				const qnaAccountNo = $('#quest_account_no').val();
+				const qnaTitle = $('#quest_title').val();
+				const qnaContent = $('#quest_content').val();
 				
 				if(!qnaTitle || !qnaContent) {
 					$("#addModal").modal("hide");
