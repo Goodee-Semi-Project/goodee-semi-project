@@ -61,9 +61,6 @@ public class MyPetListServlet extends HttpServlet {
 		
 		// 5. pet 데이터를 가져와 바인딩
 		List<Pet> list = service.selectPetList(param);
-		for (Pet pet : list) {
-			pet.setPetGender((pet.getPetGender() == 'M') ? '남' : '여');
-		}
 
 		request.setAttribute("list", list);
 		
