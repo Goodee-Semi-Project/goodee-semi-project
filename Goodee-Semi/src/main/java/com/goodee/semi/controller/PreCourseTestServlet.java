@@ -38,6 +38,11 @@ public class PreCourseTestServlet extends HttpServlet {
 		
 		List<PreTest> list = preTestService.selectList(preNo);
 		
+		if (list.size() == 0) {
+			response.sendRedirect("/preCourse/list");
+			return;
+		}
+		
 		request.setAttribute("list", list);
 		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseTest.jsp").forward(request, response);
 	}
