@@ -9,4 +9,5 @@ import com.goodee.semi.dto.PreTest;
 public interface PreTestMapper {
 	int insertPreTest(SqlSession session, PreTest pt);
 	List<PreTest> selectList(String preNo);
+	int update(PreTest preTest);
 }
