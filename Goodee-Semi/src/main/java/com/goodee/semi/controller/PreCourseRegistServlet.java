@@ -114,7 +114,7 @@ public class PreCourseRegistServlet extends HttpServlet {
 			if (count != -1) {
 				for (int i = 1; i <= count; i++) {
 					
-					String testContent = request.getParameter("quiz" + i);
+					String testContent = request.getParameter("content" + i);
 					String testAnswer = request.getParameter("answer" + i);
 					String one = request.getParameter("one" + i);
 					String two = request.getParameter("two" + i);
