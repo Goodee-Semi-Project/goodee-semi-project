@@ -20,10 +20,13 @@ public class PreTestDao {
 		return list;
 	}
 
-	public int update(PreTest preTest) {
-		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+	public int update(SqlSession session, PreTest preTest) {
 		int result = session.update("com.goodee.semi.mapper.PreTestMapper.update", preTest);
-		session.close();
+		return result;
+	}
+
+	public int countOne(SqlSession session, PreTest preTest) {
+		int result = session.selectOne("com.goodee.semi.mapper.PreTestMapper.countOne", preTest);
 		return result;
 	}
 

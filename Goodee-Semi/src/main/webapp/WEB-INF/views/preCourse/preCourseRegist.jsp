@@ -37,7 +37,7 @@
 			<span>퀴즈 등록</span>
 			<button type="button" onclick="addTest()">+</button>
 		</div>
-		<input type="text" id="count" name="count" value="0">
+		<input type="text" id="count" name="count" value="0" hidden>
 		<div id="testPart"></div>
 		<button>등록</button>
 	</form>
@@ -65,10 +65,10 @@
 		const attachName = formData.get('attach').name;
 		
 		for (let j = 1; j <= i; j++) {
-			if (!formData.get('quiz' + j)) {
+			if (!formData.get('content' + j)) {
 				alert('테스트 내용을 입력해주세요.');
 				return;
-			} else if (!formData.get('answer' + j)) {
+			} else if (!formData.get('quiz' + j)) {
 				alert('정답을 골라주세요');
 				return;
 			} else if (!formData.get('one' + j) || !formData.get('two' + j)
