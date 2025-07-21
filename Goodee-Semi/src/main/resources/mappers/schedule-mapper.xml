@@ -117,10 +117,11 @@
 	
 	<update id="update" parameterType="com.goodee.semi.dto.Schedule">
 		update schedule
-		set class_no = #{classNo},
-			sched_date = #{schedDate},
-		    sched_start = #{schedStart},
-		    sched_end = #{schedEnd}
+		set class_no = #{classNo}
+			,sched_date = #{schedDate}
+		    ,sched_start = #{schedStart}
+		    ,sched_end = #{schedEnd}
+		    ,sched_step = #{schedStep}
 		<where>
 			sched_no = #{schedNo}
 		</where>

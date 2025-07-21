@@ -237,11 +237,11 @@ function updateEvent(eventId, eventData) {
 	    type: 'post',
 	    data: {
 	        schedNo: eventId,
-			
+	        courseNo: eventData.courseNo,			
 	        petNo: eventData.petNo,
+			schedStep: eventData.schedStep,
 			
 	        schedDate: eventData.schedDate,
-	        courseNo: eventData.courseNo,
 	        schedStart: eventData.start,
 	        schedEnd: eventData.end,
 	    },
