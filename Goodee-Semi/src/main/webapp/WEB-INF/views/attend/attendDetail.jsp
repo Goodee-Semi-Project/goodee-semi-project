@@ -80,7 +80,7 @@
 									<td style="width: 10%">결석</td>
 								</c:when>
 								<c:otherwise>
-									<td style="width: 10%">회차 정보 없음</td>
+									<td style="width: 10%">결석</td>
 								</c:otherwise>
 							</c:choose>
 							<c:if test="${loginAccount.author eq 1}">	

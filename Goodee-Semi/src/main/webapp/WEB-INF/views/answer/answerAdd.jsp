@@ -46,21 +46,14 @@
 	        <div class="row">
 	            <div class="col-md-12">
                     <form id="add_answer_form">
-                        <fieldset class="p-4">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-lg-12 pt-6">
-                                    	<input type="hidden" id="answer_account_no" value="${loginAccount.accountNo}">
-                                    	<input type="hidden" id="quest_no" value="${question.questNo}">
-                                    </div>
-                                </div>
-                            </div>
-                            <textarea name="message" id="answer_content" class="border w-100 p-3 mt-3 mt-lg-4"
-                            style="resize: none; height: 200px; outline: none;"></textarea>
-                        </fieldset>
-                       	<div class="d-flex justify-content-between p-4">
-                 			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
-							<button type="button" class="btn btn-primary" onclick="openModalAddAnswer()">답변등록</button>
+						<div class="col-lg-12 pt-6">
+							<input type="hidden" id="answer_account_no"	 value="${loginAccount.accountNo}">
+							<input type="hidden" id="quest_no" value="${question.questNo}">
+                       		<textarea name="message" id="answer_content" class="border w-100 p-3 mx-2 mt-lg-4" style="resize: none; height: 200px; outline: none;"></textarea>
+	                       	<div class="d-flex justify-content-between m-2">
+	                 			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
+								<button type="button" class="btn btn-primary" onclick="openModalAddAnswer()">답변등록</button>
+							</div>
 						</div>
                     </form>
 	            </div>
