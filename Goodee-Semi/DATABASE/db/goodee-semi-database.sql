@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `pre_test` (
     `three` TEXT NOT NULL,
     `four` TEXT NOT NULL,
 	PRIMARY KEY (`test_no`),
-	FOREIGN KEY (`pre_no`) REFERENCES `pre_course`(`pre_no`)
+	FOREIGN KEY (`pre_no`) REFERENCES `pre_course`(`pre_no`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `pre_progress` (

@@ -25,4 +25,11 @@
 		FROM pre_test
 		WHERE pre_no = #{ preNo }
 	</select>
+	
+	<update id="update">
+		UPDATE pre_test
+		SET test_content = #{ testContent } ,test_answer = #{ testAnswer }
+			,one = #{ one } ,two = #{ two } ,three = #{ three } ,four = #{ four }
+		WHERE test_no = #{ testNo }
+	</update>
 </mapper>
