@@ -37,22 +37,7 @@ public class MyInfoInactiveServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session =request.getSession(false);
-		
-		Account account = null;
-		if (session != null && session.getAttribute("loginAccount") instanceof Account) {
-			account = (Account) session.getAttribute("loginAccount");
-		}
-		
-		Pet param = new Pet();
-		param.setAccountNo(account.getAccountNo());
-		param.setNowPage(1);
-		
-		List<Pet> petList = petService.selectPetList(param);
-		
-		request.setAttribute("petList", petList);
-		
-		request.getRequestDispatcher("/WEB-INF/views/myInfo/myInfoInactive.jsp").forward(request, response);
+
 	}
 
 	/**

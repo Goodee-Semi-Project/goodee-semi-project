@@ -54,10 +54,12 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 	// 마우스 위치에 툴팁 표시
 	eventDidMount: function(info) {
 	    // 기존 시간 표시 요소 삭제
-		const oriTimeDiv = document.querySelector('.fc-event-time');
-		oriTimeDiv.remove();
-		
-		let tooltipText = '';
+	    const oriTimeDiv = document.querySelector('.fc-event-time');
+	    if (oriTimeDiv) {
+	        oriTimeDiv.remove();
+	    }
+	    
+	    let tooltipText = '';
 	    let displayText = '';
 	    
 	    // 시간 정보 생성 (timezone 고려)
@@ -88,8 +90,25 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 	    let htmlContent = '';
 	    
 	    if (displayText) {
-	        htmlContent = `<div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div><div style="font-size: 12px; line-height: 1.2;">${eventTitle}</div>`;
-	        tooltipText = displayText + '\n' + eventTitle;
+	        // 교육과정명과 회원명-반려견명을 분리
+	        const titleMatch = eventTitle.match(/\(([^)]+)\)\s*(.+)/);
+	        if (titleMatch) {
+	            const courseTitle = titleMatch[1];  // 교육과정명
+	            const memberInfo = titleMatch[2];   // 회원명-반려견명
+	            
+	            htmlContent = `
+	                <div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div>
+	                <div style="font-size: 12px; line-height: 1.2; margin-bottom: 2px;">${courseTitle}</div>
+	                <div style="font-size: 11px; line-height: 1.2; color: #555;">${memberInfo}</div>
+	            `;
+	            tooltipText = displayText + '\n' + courseTitle + '\n' + memberInfo;
+	        } else {
+	            htmlContent = `
+	                <div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div>
+	                <div style="font-size: 12px; line-height: 1.2;">${eventTitle}</div>
+	            `;
+	            tooltipText = displayText + '\n' + eventTitle;
+	        }
 	    } else {
 	        htmlContent = `<div style="font-size: 12px;">${eventTitle}</div>`;
 	        tooltipText = eventTitle;
