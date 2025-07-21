@@ -11,8 +11,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.AccountDetail;
-import com.goodee.semi.dto.Event;
-import com.goodee.semi.service.EventService;
+import com.goodee.semi.dto.Schedule;
+import com.goodee.semi.service.ScheduleService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/schedule/list")
 public class ScheduleListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private EventService service = new EventService();
+	private ScheduleService service = new ScheduleService();
        
     public ScheduleListServlet() {
         super();
@@ -66,7 +66,7 @@ public class ScheduleListServlet extends HttpServlet {
 		System.out.println("map: " + map);
 		
 		// 4. service에서 일정 리스트 데이터 받아오기
-		List<Event> list = service.selectEventList(map);
+		List<Schedule> list = service.selectScheduleList(map);
 		System.out.println("list: " + list);
 				
 		// 7. 응답 보내기
@@ -80,33 +80,33 @@ public class ScheduleListServlet extends HttpServlet {
 		// format() 결과에 그대로 문자열 "T"로 넣고 싶을 때는 'T'처럼 작은따옴표로 감싸야 함
 		DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 		
-		for (Event event : list) {
+		for (Schedule sched : list) {
 
 			
 			JSONObject extenedProp = new JSONObject();
 
-			extenedProp.put("accountNo", event.getAccountNo());
-			extenedProp.put("accountName", event.getAccountName());
-			extenedProp.put("petNo", event.getPetNo());
-			extenedProp.put("petName", event.getPetName());
-			extenedProp.put("classNo", event.getClassNo());
-			extenedProp.put("schedStep", event.getSchedStep());
-			extenedProp.put("schedDate", event.getSchedDate().format(formatDate));
-			extenedProp.put("schedAttend", String.valueOf(event.getSchedAttend())); // char타입은 String으로 변환해서 보내야 화면에서 parserror가 발생하지 않음
-			extenedProp.put("courseNo", event.getCourseNo());
-			extenedProp.put("courseTitle", event.getCourseTitle());
-			extenedProp.put("courseTotalStep", event.getCourseTotalStep());
+			extenedProp.put("accountNo", sched.getAccountNo());
+			extenedProp.put("accountName", sched.getAccountName());
+			extenedProp.put("petNo", sched.getPetNo());
+			extenedProp.put("petName", sched.getPetName());
+			extenedProp.put("classNo", sched.getClassNo());
+			extenedProp.put("schedStep", sched.getSchedStep());
+			extenedProp.put("schedDate", sched.getSchedDate().format(formatDate));
+			extenedProp.put("schedAttend", String.valueOf(sched.getSchedAttend())); // char타입은 String으로 변환해서 보내야 화면에서 parserror가 발생하지 않음
+			extenedProp.put("courseNo", sched.getCourseNo());
+			extenedProp.put("courseTitle", sched.getCourseTitle());
+			extenedProp.put("courseTotalStep", sched.getCourseTotalStep());
 			
 			JSONObject prop = new JSONObject();
 			
 			prop.put("extendedProps", extenedProp);
 			
-			prop.put("id", event.getSchedNo());
+			prop.put("id", sched.getSchedNo());
 			
-			prop.put("start", event.getSchedStart().format(formatDateTime));
-			prop.put("end", event.getSchedEnd().format(formatDateTime));
+			prop.put("start", sched.getSchedStart().format(formatDateTime));
+			prop.put("end", sched.getSchedEnd().format(formatDateTime));
 			
-			prop.put("title", "(" + event.getCourseTitle() + ") " + event.getAccountName() + "-" + event.getPetName());
+			prop.put("title", "(" + sched.getCourseTitle() + ") " + sched.getAccountName() + "-" + sched.getPetName());
 			
 			jsonArr.add(prop);
 		}
