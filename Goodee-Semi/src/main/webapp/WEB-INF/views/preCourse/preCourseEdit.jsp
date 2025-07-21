@@ -35,30 +35,32 @@
 		</div>
 	
 		<!-- SJ: 퀴즈 추가 -->
-		<input type="text" name="size" value="${ list.size() }" hidden>
-		<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
-			<input type="text" name="test${ i }No" value="${ list[i].testNo }" hidden>
-			<input type="text" name="answer${ i }" value="${ list[i].testAnswer }" hidden>
-			<input type="text" name="content${ i }" value="${ list[i].testContent }">
-			<br>
-			<label>
-				<input type="radio" name="quiz${ i }" value="one" <c:if test="${ list[i].testAnswer eq 'one' }">checked</c:if> >
-				<input type="text" name="one${ i }" value="${ list[i].one }">
-			</label>
-			<label>
-				<input type="radio" name="quiz${ i }" value="two" <c:if test="${ list[i].testAnswer eq 'two' }">checked</c:if> >
-				<input type="text" name="two${ i }" value="${ list[i].two }">
-			</label>
-			<label>
-				<input type="radio" name="quiz${ i }" value="three" <c:if test="${ list[i].testAnswer eq 'three' }">checked</c:if> >
-				<input type="text" name="three${ i }" value="${ list[i].three }">
-			</label>
-			<label>
-				<input type="radio" name="quiz${ i }" value="four" <c:if test="${ list[i].testAnswer eq 'four' }">checked</c:if> >
-				<input type="text" name="four${ i }" value="${ list[i].four }">
-			</label>
-			<br>
-		</c:forEach>
+		<c:if test="${ not empty list }">
+			<input type="text" name="size" value="${ list.size() }" hidden>
+			<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
+				<input type="text" name="test${ i }No" value="${ list[i].testNo }" hidden>
+				<input type="text" name="answer${ i }" value="${ list[i].testAnswer }" hidden>
+				<input type="text" name="content${ i }" value="${ list[i].testContent }">
+				<br>
+				<label>
+					<input type="radio" name="quiz${ i }" value="one" <c:if test="${ list[i].testAnswer eq 'one' }">checked</c:if> >
+					<input type="text" name="one${ i }" value="${ list[i].one }">
+				</label>
+				<label>
+					<input type="radio" name="quiz${ i }" value="two" <c:if test="${ list[i].testAnswer eq 'two' }">checked</c:if> >
+					<input type="text" name="two${ i }" value="${ list[i].two }">
+				</label>
+				<label>
+					<input type="radio" name="quiz${ i }" value="three" <c:if test="${ list[i].testAnswer eq 'three' }">checked</c:if> >
+					<input type="text" name="three${ i }" value="${ list[i].three }">
+				</label>
+				<label>
+					<input type="radio" name="quiz${ i }" value="four" <c:if test="${ list[i].testAnswer eq 'four' }">checked</c:if> >
+					<input type="text" name="four${ i }" value="${ list[i].four }">
+				</label>
+				<br>
+			</c:forEach>
+		</c:if>
 		
 		<button>수정</button>
 	</form>
