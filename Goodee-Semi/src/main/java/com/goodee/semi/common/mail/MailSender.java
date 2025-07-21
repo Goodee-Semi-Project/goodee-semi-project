@@ -12,7 +12,7 @@ import jakarta.mail.internet.MimeMessage;
 
 public class MailSender {
 	private static String senderMail = "goodeesemi@gmail.com";
-	private static String senderAppPw = "bmlltodlgdiycmhr"; // 테스트 시에만 입력
+	private static String senderAppPw = ""; // 테스트 시에만 입력
 	
 	public static int sendEmail(String toEmail, String authCode) {
 		Properties props = getProperties();

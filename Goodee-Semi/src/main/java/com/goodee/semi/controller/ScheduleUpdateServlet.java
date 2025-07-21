@@ -32,14 +32,14 @@ public class ScheduleUpdateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 데이터 받아오기
 		int schedNo = Integer.parseInt(request.getParameter("schedNo"));
-				
+		int courseNo = Integer.parseInt(request.getParameter("courseNo"));
 		int petNo = Integer.parseInt(request.getParameter("petNo"));
+		int schedStep = Integer.parseInt(request.getParameter("schedStep"));
 
 		String[] schedDateStr = request.getParameter("schedDate").split("-");
 		LocalDate schedDate = LocalDate.of(Integer.parseInt(schedDateStr[0]), 
 										Integer.parseInt(schedDateStr[1]), 
 										Integer.parseInt(schedDateStr[2]));
-		int courseNo = Integer.parseInt(request.getParameter("courseNo"));
 		
 		String[] schedStartStr = request.getParameter("schedStart").split("T");
 		LocalDateTime schedStart = LocalDateTime.of(Integer.parseInt(schedStartStr[0].split("-")[0]),
@@ -57,11 +57,11 @@ public class ScheduleUpdateServlet extends HttpServlet {
 		
 		Schedule sched = new Schedule();
 		sched.setSchedNo(schedNo);
-
+		sched.setCourseNo(courseNo);
 		sched.setPetNo(petNo);
+		sched.setSchedStep(schedStep);
 
 		sched.setSchedDate(schedDate);
-		sched.setCourseNo(courseNo);
 		sched.setSchedStart(schedStart);
 		sched.setSchedEnd(schedEnd);
 		
