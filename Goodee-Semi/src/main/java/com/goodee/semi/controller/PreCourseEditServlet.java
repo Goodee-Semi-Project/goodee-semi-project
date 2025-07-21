@@ -151,8 +151,6 @@ public class PreCourseEditServlet extends HttpServlet {
 					size = Integer.parseInt(request.getParameter("size"));
 				}
 				
-				System.out.println(size);
-				
 				if (size != -1) {
 					List<PreTest> list = new ArrayList<PreTest>();
 					
@@ -171,7 +169,6 @@ public class PreCourseEditServlet extends HttpServlet {
 						
 						list.add(preTest);
 					}
-					System.out.println(list);
 					
 					result = preTestService.updateList(list);
 				}

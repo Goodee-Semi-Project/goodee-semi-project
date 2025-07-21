@@ -48,4 +48,8 @@ public class PreTestService {
 		return result;
 	}
 
+	public int delete(String testNo) {
+		return dao.delete(testNo);
+	}
+
 }

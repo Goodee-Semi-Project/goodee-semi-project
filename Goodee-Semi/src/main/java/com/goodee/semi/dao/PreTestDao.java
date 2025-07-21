@@ -30,4 +30,11 @@ public class PreTestDao {
 		return result;
 	}
 
+	public int delete(String testNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.PreTestMapper.delete", testNo);
+		session.close();
+		return result;
+	}
+
 }
