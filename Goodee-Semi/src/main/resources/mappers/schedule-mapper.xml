@@ -40,6 +40,9 @@
 			<if test='trainerAccountNo != null and trainerAccountNo != ""'>
 				AND co.account_no = #{trainerAccountNo}
 			</if>
+			<if test='petNo != null and petNo != ""'>
+				AND p.pet_no = #{petNo}
+			</if>
 			AND s.sched_date BETWEEN #{start} AND #{end}		
 		</where>
 	</select>
