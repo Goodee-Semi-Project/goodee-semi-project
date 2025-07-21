@@ -26,26 +26,26 @@
 	<section>
 		<table>
 			<tbody>
-				<tr>
-					<th>이미지</th>				
-					<th>과정명</th>				
+				<tr class="text-center bg-gray" style="height : 50px;">
+					<th class="h4">이미지</th>				
+					<th class="h4" colspan="3">교육과정</th>				
 				</tr>
 				<c:forEach var="c" items="${courseList}">
-					<tr>
+					<tr class="text-center" >
 						<c:if test="${c.thumbAttach ne null}">
 							<td>
 								<img src="<c:url value='/filePath?no=${c.thumbAttach.attachNo}'/>" alt="${c.title}" 
-								style="width : 200px; height : 150px">
+								style="width : 200px; height : 150px; border-radius : 20px;">
 							</td>
 						</c:if>
-						<td>${c.title}</td>
+						<td class="h1" colspan="3">${c.title}</td>
 					</tr>
 					<c:forEach var="p" items="${c.petList }">
 						<tr style="height: 50px;" class="text-center">
 							<td style="width: 25%">
 								<c:if test="${not empty p.attachNo }">
 									<img src="<c:url value='/filePath?no=${p.attachNo}'/>" alt="${c.title}" 
-									style="width : 80px; height : 80px; border-radius : 50%">
+									style="width : 80px; height : 80px; border-radius : 50%;">
 								</c:if>
 							</td>
 							<td style="width: 25%">${ p.petName } (${ p.petBreed })<br>${ p.petAge }세 / ${ p.petGender }</td>
