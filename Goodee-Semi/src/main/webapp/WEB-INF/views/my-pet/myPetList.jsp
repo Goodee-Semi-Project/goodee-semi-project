@@ -41,9 +41,9 @@
 									<input type="text" class="form-control pet-breed" style="width: 80%; display: inline-block;" name="petBreed" value="${pet.petBreed }" disabled>							
 								</div>
 								
-								<div style="width: 40%; text-align: center;">
+								<div style="width: 40%; margin-left: 20px; text-align: left;">
 									<label>나이: </label>
-									<input type="text" class="form-control pet-age mb-3" style="width: 40%; display: inline-block;" name="petAge" value="${pet.petAge }" disabled>
+									<input type="text" class="form-control pet-age mb-3" style="width: 60%; display: inline-block;" name="petAge" value="${pet.petAge }" disabled>
 									<br>
 									<label>성별: </label>
 									<select class="pet-gender" name="petGender" disabled required>
@@ -98,7 +98,7 @@
 	<!-- delete modal -->
 	<!-- 모달 창 -->
 	<div class="modal fade" id="delete-modal-box" tabindex="-1" role="dialog" aria-labelledby="delete-modal-box" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 700px;">
+	  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
 	    <div class="modal-content">
 	      <div class="modal-header border-bottom-0">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -108,7 +108,7 @@
 	      <div class="modal-body text-center">
 	        <h3 class="tab-title mb-2">반려견 정보를 삭제하시겠습니까?</h3>
 	        <p>삭제한 반려견 정보는 되돌릴 수 없습니다.</p>
-	        <input type="text" id="delete-input" placeholder="정보를 삭제하려면 '삭제' 입력">
+	        <input class="form-control mt-4" style="width: 60%; margin: 0 auto;" type="text" id="delete-input" placeholder="정보를 삭제하려면 '삭제' 입력">
 	      </div>
 	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
 	        <button type="button" id="delete-confirm-btn" class="btn btn-danger" style="padding: 5px 10px;">삭제</button>

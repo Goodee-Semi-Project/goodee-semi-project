@@ -97,10 +97,11 @@ function editPetEvent(petLi) {
 	// NiceSelect 업데이트 (jQuery 사용)
 	$(petGenderSelect).attr('disabled', false);
 	$(petGenderSelect).niceSelect('update');
+	$(".pet-gender.nice-select").css('width', '60%');
     
     // 3. 버튼 바꾸기
     const oriPetBtnHtml = petBtn.innerHTML;
-    const btnSaveHtml = '<button type="button" class="pet-btn-save">수정 완료</button>';
+    const btnSaveHtml = '<button type="button" class="pet-btn-save btn btn-success" style="padding: 5px 10px;">적용</button>';
     petBtn.innerHTML = btnSaveHtml;
 
     // TODO 반려견 이미지 삭제 기능 추가
@@ -265,18 +266,22 @@ function createNewPetItemHTML(accountNo) {
 												<input type="text" class="form-control pet-breed" style="width: 80%; display: inline-block;" placeholder="견종">							
 											</div>
 											
-											<div style="width: 40%; text-align: center;">
+											<div style="width: 40%; margin-left: 20px; text-align: left;">
 												<label>나이: </label>
-												<input type="text" class="form-control pet-age mb-3" style="width: 40%; display: inline-block;" placeholder="나이">
+												<input type="text" class="form-control pet-age mb-3" style="width: 60%; display: inline-block;" placeholder="나이">
 												<br>
 												<label>성별: </label>
-												<input type="text" class="form-control pet-gender" style="width: 40%; display: inline-block;" placeholder="성별">
+												<select class="pet-gender" name="petGender" required>
+													<option value="" selected>성별</option>
+													<option value="M">남</option>
+													<option value="F">여</option>
+												</select>
 											</div>
 											<input type="hidden" class="account-no" value="${accountNo }">
 										</div>
 										<div class="pet-btn col-2" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
 											<button class="pet-btn-up btn btn-success mb-3" style="padding: 5px 10px;">등록</button>
-											<button class="pet-btn-del btn btn-danger" style="padding: 5px 10px;">삭제</button>
+											<button class="pet-btn-del btn btn-outline-secondary" style="padding: 5px 10px;">취소</button>
 										</div>
 									</div>
     `;
@@ -360,9 +365,13 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
 	// *** 중요: NiceSelect 초기화 ***
 	const newSelect = newLi.querySelector('.pet-gender');
 	$(newSelect).niceSelect();
+	$(".pet-gender.nice-select").css('width', '60%');
 
 	// 새로 추가된 항목에 이벤트 연결
 	setupNewPetRegisterEvent(newLi);  // 등록 버튼 이벤트
 	setupNewPetDeleteEvent(newLi);    // 삭제 버튼 이벤트
 	setupNewPetImageUpload(newLi);    // 이미지 업로드 이벤트
 });
+
+// 성별 선택 창 크기 조절
+$(".pet-gender.nice-select").css('width', '60%');
