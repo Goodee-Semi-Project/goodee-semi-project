@@ -106,9 +106,7 @@
 				</a>
 			</c:if>
 			<c:forEach var="i" begin="${question.pageBarStart}" end="${question.pageBarEnd}">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${i}&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">
-					${i}
-				</a>			
+				<a href="<c:url value='/qnaBoard/list?nowPage=${i}&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">${i}</a>			
 			</c:forEach>
 			<c:if test="${question.next}">
 				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarEnd + 1 }&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>  
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,7 +51,9 @@
 						style="width : 40px; height : 40px; border-radius : 20px; margin : 1px">
 						<div class="mx-2">${answer.accountId}</div>
 					</div>
-					<div>${answer.answerReg}</div>		
+					<div class="d-flex" style="align-items: center; padding-right: 16px">
+						<div>${answer.answerReg}</div>
+					</div>		
 				</div>
 				<div>
 					<div style="padding : 0 16px 16px 16px">${answer.answerContent}</div>
