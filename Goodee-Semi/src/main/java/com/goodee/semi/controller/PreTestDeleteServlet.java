@@ -40,7 +40,6 @@ public class PreTestDeleteServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String testNo = request.getParameter("testNo");
-		System.out.println(testNo);
 		int result = preTestService.delete(testNo);
 		
 		
