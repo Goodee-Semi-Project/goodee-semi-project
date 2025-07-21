@@ -41,14 +41,13 @@
                                 <div class="row">
                                     <div class="col-lg-12 pt-6">
                                     	<input type="hidden" id="quest_account_no" value="${loginAccount.accountNo}">
-                                        <input type="text" name="quest_title" id="quest_title" placeholder="제목 입력" class="form-control" required>
+                                        <input type="text" name="quest_title" id="quest_title" placeholder="제목" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
-                            <textarea name="message" id="quest_content" class="border w-100 p-3 mt-3 mt-lg-4"
-                            style="resize: none; height: 450px; outline: none;"></textarea>
+                            <textarea id="quest_content" class="border w-100 p-3 mt-3 mt-lg-2" style="resize: none; height: 450px; outline: none;"></textarea>
                         </fieldset>
-                       	<div class="d-flex justify-content-between p-4">
+                       	<div class="d-flex justify-content-between px-4">
                  			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
 							<button type="button" class="btn btn-primary" onclick="openAddModal()">등록</button>
 						</div>
