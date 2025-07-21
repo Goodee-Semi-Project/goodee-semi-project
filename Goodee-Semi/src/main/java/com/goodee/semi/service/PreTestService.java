@@ -12,4 +12,14 @@ public class PreTestService {
 		return dao.selectList(preNo);
 	}
 
+	public int updateList(List<PreTest> list) {
+		int result = -1;
+		for (PreTest preTest : list) {
+			result = -1;
+			result = dao.update(preTest);
+		}
+		
+		return result;
+	}
+
 }

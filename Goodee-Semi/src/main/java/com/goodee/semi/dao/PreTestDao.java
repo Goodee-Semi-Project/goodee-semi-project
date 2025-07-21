@@ -20,4 +20,11 @@ public class PreTestDao {
 		return list;
 	}
 
+	public int update(PreTest preTest) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.PreTestMapper.update", preTest);
+		session.close();
+		return result;
+	}
+
 }
