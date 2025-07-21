@@ -7,4 +7,6 @@ public class HttpConstants {
     public static final String CONTENT_TYPE_HTML = "text/html; charset=UTF-8";
     public static final String CONTENT_TYPE_XML = "application/xml; charset=UTF-8";
     public static final String CONTENT_TYPE_PLAIN = "text/plain; charset=UTF-8";
+    public static final String CONTENT_TYPE_JPEG = "image/jpeg";
+    public static final String CONTENT_TYPE_PNG = "image/png";
 }
