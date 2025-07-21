@@ -209,6 +209,7 @@ function createEvent(eventData) { // eventData: 모달 form에서 받아온 데�
         data: {
             accountNo: eventData.accountNo,
             courseNo: eventData.courseNo,
+            schedStep: eventData.schedStep,
             petNo: eventData.petNo,
             start: eventData.start,
             end: eventData.end,
@@ -381,8 +382,10 @@ targetSelect2.addEventListener('change', function() {
 	console.log("petNo: " + petNo);
 	
 	if (this.value) { // 기준 select에 값이 선택되었는지 확인
-    const schedStep = document.getElementById('sched-step');
-		
+		targetSelect3.disabled = false;
+    
+		const schedStep = document.getElementById('sched-step');
+
 		// 비동기통신하여 option에 데이터 뿌리기
 		$.ajax({
 			url: '/schedule/input',
@@ -396,10 +399,8 @@ targetSelect2.addEventListener('change', function() {
 			success: function (data) {
 				console.log("성공: ", data);
 
-				let html = '';
-				data.jsonArr.forEach(json => {
-					html += `<option value="${json.schedStep}" selected>${json.schedStep}</option>`;
-				});
+				let html = '<option value="" disabled selected>차시 선택</option>'
+				html += `<option value="${data.jsonArr[0].schedStep}" selected>${data.jsonArr[0].schedStep}</option>`;
 				
 				schedStep.innerHTML = html;
 			},
