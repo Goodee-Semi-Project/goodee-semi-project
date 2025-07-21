@@ -27,7 +27,7 @@ public class AnswerAddServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		
 		// 권한 유효성 검사
 		Account account = null;

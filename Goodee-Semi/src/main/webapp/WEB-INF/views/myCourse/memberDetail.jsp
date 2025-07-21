@@ -34,7 +34,7 @@
 					<td style="width: 25%">${pet.petName} (${pet.petBreed})<br>${pet.petAge}세 / ${pet.petGender}</td>
 					<td style="width: 20%">${pet.accountName}</td>
 					<td style="width: 30%">
-						<button type="button" onclick="" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
+						<button type="button" onclick="moveToSchedList(${p.petNo})" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
 						<button type="button" onclick="" style="padding: 5px 10px;" class="btn btn-outline-secondary">과제</button>
 						<button type="button" onclick="openKickoutModal('${pet.accountName}',${pet.classNo},'${pet.petName}')" class="btn_kickout btn btn-danger" style="padding: 5px 10px;">추방</button>
 					</td>
@@ -67,6 +67,10 @@
 	
 	
 	<script>
+	
+	function moveToSchedList(petNo) {
+		location.href="<%=request.getContextPath()%>/schedule?no=" + petNo;
+	}
 	
 	function openKickoutModal(accountName, classNo, petName) {
 		console.log($("#modal_class_no"));

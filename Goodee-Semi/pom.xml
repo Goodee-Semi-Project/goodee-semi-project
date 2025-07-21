@@ -86,6 +86,19 @@
 		    <artifactId>ffmpeg</artifactId>
 		    <version>0.8.0</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>core</artifactId>
+		    <version>3.5.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>javase</artifactId>
+		    <version>3.5.3</version>
+		</dependency>
+		
   </dependencies>
   <build>
     <plugins>
