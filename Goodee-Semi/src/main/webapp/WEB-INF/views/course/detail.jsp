@@ -214,19 +214,27 @@
 										</select>
 										<button id="enrollBtn" type="button" class="btn btn-success col-4 my-1">신청</button>
 									</div>
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">수강신청 취소</a>
-									<a id="addLikeBtn" class="btn btn-danger col-12 px-5 my-1">찜하기</a>
-									<a id="removeLikeBtn" class="btn btn-light btn-outline-dark col-12 px-5 my-1">찜하기 취소</a>
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">사전학습</a>
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">일정표</a>
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">과제</a>
+									
+									<c:choose>
+										<c:when test="${ isLike eq 'Y' }">
+											<a id="removeLikeBtn" class="btn btn-light btn-outline-dark col-12 px-5 my-1">찜 해제</a>
+										</c:when>
+										
+										<c:otherwise>
+											<a id="addLikeBtn" class="btn btn-danger col-12 px-5 my-1">찜하기</a>
+										</c:otherwise>
+									</c:choose>
+									
+									<a href="<c:url value='/preCourse/list' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">사전학습</a>
+									<a href="<c:url value='/schedule' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">일정표</a>
+									<a href="<c:url value='/assign/list' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">과제</a>
 								</div>
 							</c:when>
 							
 							<c:otherwise>
 								<div class="d-grid gap-2">
-									<a href="#" class="btn btn-light btn-outline-dark col-12 px-5 my-1">로그인</a>
-									<a href="#" class="btn btn-success col-12 px-5 my-1">회원가입</a>
+									<a href="<c:url value='/account/login' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">로그인</a>
+									<a href="<c:url value='/account/register' />" class="btn btn-success col-12 px-5 my-1">회원가입</a>
 								</div>
 							</c:otherwise>
 						</c:choose>
