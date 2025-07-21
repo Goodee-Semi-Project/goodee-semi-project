@@ -38,4 +38,9 @@
 		FROM pre_test
 		WHERE test_no = #{ testNo }
 	</select>
+	
+	<delete id="delete" parameterType="string">
+		DELETE FROM pre_test
+		WHERE test_no = #{ testNo };
+	</delete>
 </mapper>

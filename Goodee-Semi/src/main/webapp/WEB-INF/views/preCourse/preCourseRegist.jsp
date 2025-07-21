@@ -68,12 +68,12 @@
 			if (!formData.get('content' + j)) {
 				alert('테스트 내용을 입력해주세요.');
 				return;
-			} else if (!formData.get('quiz' + j)) {
-				alert('정답을 골라주세요');
-				return;
 			} else if (!formData.get('one' + j) || !formData.get('two' + j)
 					|| !formData.get('three' + j) || !formData.get('four' + j)) {
 				alert('선택지 내용을 입력해주세요.');
+				return;
+			} else if (!formData.get('quiz' + j)) {
+				alert('정답을 골라주세요');
 				return;
 			}
 		}
