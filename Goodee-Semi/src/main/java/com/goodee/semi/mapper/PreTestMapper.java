@@ -12,4 +12,5 @@ public interface PreTestMapper {
 	int update(SqlSession session, PreTest preTest);
 	int countOne(SqlSession session, PreTest preTest);
 	int insertOne(SqlSession session, PreTest preTest);
+	int delete(String testNo);
 }
