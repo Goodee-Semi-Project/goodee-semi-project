@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Question;
 import com.goodee.semi.service.AnswerService;
+import com.goodee.semi.service.QuestionService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,7 +19,8 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/qnaBoard/answerAdd")
 public class AnswerAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       AnswerService service = new AnswerService();
+       AnswerService answerService = new AnswerService();
+       QuestionService questionService = new QuestionService();
 	
     public AnswerAddServlet() {
         super();
@@ -39,7 +41,7 @@ public class AnswerAddServlet extends HttpServlet {
 		
 		// 답변을 작성할 해당 질문글을 번호로 조회
 		int questNo = Integer.parseInt(request.getParameter("no"));
-		Question question = service.selectOneQuest(questNo);
+		Question question = questionService.selectOneQuest(questNo);
 		
 		request.setAttribute("question", question);
 		request.setAttribute("answer", null);
@@ -53,7 +55,7 @@ public class AnswerAddServlet extends HttpServlet {
 		int questNo = Integer.parseInt(request.getParameter("questNo"));
 		String answerContent = request.getParameter("answerContent");
 		
-		int result = service.insertAnswer(accountNo, questNo, answerContent);
+		int result = answerService.insertAnswer(accountNo, questNo, answerContent);
 		
 		JSONObject obj = new JSONObject();
 		if(result > 0) {

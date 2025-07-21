@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Question;
 import com.goodee.semi.service.QuestionService;
 
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/qnaBoard/questionUpdate")
 public class QuestionUpdateServlet extends HttpServlet {
@@ -23,8 +25,15 @@ public class QuestionUpdateServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		Account account = (Account)session.getAttribute("loginAccount");
 		
 		int questNo = Integer.parseInt(request.getParameter("no"));
+		int accountNo = Integer.parseInt(request.getParameter("accountNo"));
+		
+		if(accountNo != account.getAccountNo()) {
+			response.sendRedirect(request.getContextPath() + "/qnaBoard/list");
+		}
 		
 		Question question = service.selectOneQuest(questNo);
 		request.setAttribute("question", question);

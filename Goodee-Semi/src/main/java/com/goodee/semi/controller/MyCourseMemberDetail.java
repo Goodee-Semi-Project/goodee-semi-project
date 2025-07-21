@@ -26,7 +26,7 @@ public class MyCourseMemberDetail extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String courseNo = request.getParameter("courseNo");
-
+		
 		Course course = courseService.selectCourseOne(courseNo);
 		List<Pet> petList = petService.selectAllPetByCourseNo(courseNo);
 		
