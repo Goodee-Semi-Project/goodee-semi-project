@@ -15,54 +15,72 @@
 
 <main>
 	<h1>참여 후기</h1>
-
-	<form action="<c:url value='/review/list'/>" id="search" method="get">
-		<div>
+	
+	<section class="page-search">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="advance-search nice-select-white">
+						<form action="<c:url value='/review/list'/>" id="search" method="get">
+							<div class="form-row align-items-center">
+								<div class="form-group col-lg-2 col-md-6">
+									<select class="w-100 form-control my-2 my-lg-0" name="category">
+										<option value="reviewTitle">선택</option>
+										<option value="reviewTitle" <c:if test="${ paging.category eq 'reviewTitle' }">selected</c:if> >제목</option>
+										<option value="courseTitle" <c:if test="${ paging.category eq 'courseTitle' }">selected</c:if> >훈련 코스</option>
+										<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
+									</select>
+								</div>
+								<div class="form-group col-xl-6 col-lg-3 col-md-6">
+									<input type="text" class="form-control my-2 my-lg-0" id="keyword" name="keyword" placeholder="검색" value="${ paging.keyword }">
+								</div>
+								<div class="form-group col-xl-2 col-lg-3 col-md-6">
+									<button class="btn btn-primary active w-100">검색</button>
+								</div>
+								<!-- 정렬 방법 -->
+								<div class="form-group col-lg-2 col-md-6">
+									<select class="w-100 form-control my-2 my-lg-0" name="order">
+										<option value="dsc">정렬</option>
+										<option value="dsc" <c:if test="${ paging.order eq 'dsc' }">selected</c:if> >최신순</option>
+										<option value="asc" <c:if test="${ paging.order eq 'asc' }">selected</c:if> >오래된순</option>
+									</select>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
-		<select name="category">
-			<option value="reviewTitle">선택</option>
-			<option value="reviewTitle" <c:if test="${ paging.category eq 'reviewTitle' }">selected</c:if> >제목</option>
-			<option value="courseTitle" <c:if test="${ paging.category eq 'courseTitle' }">selected</c:if> >훈련 코스</option>
-			<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
-		</select>
-		<input type="text" id="keyword" name="keyword" placeholder="검색" value="${ paging.keyword }">
-		<button>검색</button>
-		<!-- 정렬 방법 -->
-		<select name="order">
-			<option value="dsc">정렬</option>
-			<option value="dsc" <c:if test="${ paging.order eq 'dsc' }">selected</c:if> >최신순</option>
-			<option value="asc" <c:if test="${ paging.order eq 'asc' }">selected</c:if> >오래된순</option>
-		</select>
-	</form>
+	</section>
 
 	<section>
-		<div>
-			<a href="/review/write">후기 작성</a>
+		<div class="my-1 w-100 text-right">
+			<a href="/review/write" class="btn btn-main-sm" >후기 작성</a>
 		</div>
 		<div>
-			<table>
-				<thead>
-					<tr>
-						<th>글번호</th>
-						<th>제목</th>
-						<th>작성자</th>
-						<th>작성일</th>
+			<table class="table table-hover text-center">
+				<thead class="w-100">
+					<tr class="w-100">
+						<th class="w-5">글번호</th>
+						<th class="w-50">제목</th>
+						<th class="w-20">작성자</th>
+						<th class="w-20">작성일</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="r" items="${ reviewList }">
 						<tr>
 							<td>${ r.reviewNo }</td>
-							<td onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
+							<td class="btn w-100" onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
 							<td>${ r.accountId }</td>
-							<td>${ r.regDate }</td>
+							<td>${ r.regDate.substring(0, 10) }</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 		<c:if test="${ not empty reviewList }">
-			<div>
+			<div class="pagination justify-content-center">
 				<c:if test="${ paging.prev }">
 					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarStart - 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
 						&laquo;
