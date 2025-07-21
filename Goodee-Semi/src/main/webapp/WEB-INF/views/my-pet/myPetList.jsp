@@ -28,14 +28,14 @@
 			<ul id="pet-list">
 				<c:forEach var="pet" items="${list }" varStatus="status">
 					<li>
-						<input type="file" class="pet-img-input" name="petImg" style="display: none;">
+						<input type="file" class="pet-img-input" name="petImg" accept="image/png,image/jpeg,.png,.jpg,.jpeg" style="display: none;">
 						<img src="<c:url value='/upload/pet/${pet.imgFileSaveName }'/>" class="pet-img" alt="반려견 이미지">
 						<div class="pet-detail">
 							<input type="text" class="pet-name" name="petName" value="${pet.petName }" disabled required>
 							<div>
 								<input type="number" class="pet-age" name="petAge" value="${pet.petAge }" disabled required>
 								<p>살 / </p>
- 								<select class="pet-gender" name="petGender" disabled required>
+								<select class="pet-gender" name="petGender" disabled required>
 									<option value="" disabled>성별</option>
 									<c:choose>
 										<c:when test="${pet.petGender == 77}">
