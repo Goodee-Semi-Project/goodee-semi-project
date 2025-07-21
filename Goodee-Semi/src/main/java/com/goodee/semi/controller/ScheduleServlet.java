@@ -50,7 +50,7 @@ public class ScheduleServlet extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_trainer.jsp").forward(request, response);
 			} else { // 특정 반려견의 일정을 조회하는 페이지로 이동
 				request.setAttribute("petNo", petNo);
-				request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_schedule_trainer_byPet.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_trainer_byPet.jsp").forward(request, response);
 			}
 			
 		}
