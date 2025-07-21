@@ -1,5 +1,6 @@
 package com.goodee.semi.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,8 +85,18 @@ public class PreCourseService {
 				attach.setTypeNo(Attach.PRE_COURSE);
 				attach.setPkNo(preCourse.getPreNo());
 				if (result > 0) {
-					result = -1;
-					result = preCourseDao.deleteAttach(session, attach);
+					Attach preAttach = preCourseDao.selectAttach(preCourse.getPreNo());
+
+					if (preAttach != null) {
+						result = -1;
+						result = preCourseDao.deleteAttach(session, attach);
+						
+						if (result > 0) {
+							String filePath = "C://goodee/upload/preCourse/" + preAttach.getSavedName();
+							File preFile = new File(filePath);
+							preFile.delete();
+						}
+					}
 				}
 				if (result > 0) {
 					result = -1;
@@ -117,7 +128,18 @@ public class PreCourseService {
 			if (result > 0) {
 				Attach attach = new Attach();
 				attach.setPkNo(preNo);
-				preCourseDao.deleteAttach(session, attach);
+				
+				Attach preAttach = preCourseDao.selectAttach(preNo);
+				if (preAttach != null) {
+					result = -1;
+					result = preCourseDao.deleteAttach(session, attach);
+					
+					if (result > 0) {
+						String filePath = "C://goodee/upload/preCourse/" + preAttach.getSavedName();
+						File preFile = new File(filePath);
+						preFile.delete();
+					}
+				}
 			}
 			
 			if (result > 0) {

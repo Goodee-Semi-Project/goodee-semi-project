@@ -151,7 +151,7 @@ public class PreCourseEditServlet extends HttpServlet {
 					size = Integer.parseInt(request.getParameter("size"));
 				}
 				
-				if (size != -1) {
+				if (size > 0) {
 					List<PreTest> list = new ArrayList<PreTest>();
 					
 					for (int i = 0; i < size; i++) {
