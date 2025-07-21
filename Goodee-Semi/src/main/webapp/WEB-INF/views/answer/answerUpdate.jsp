@@ -6,26 +6,66 @@
 <meta charset="UTF-8">
 <title>QnA 답변작성</title>
 
+<style>
+	.d-flex button{
+		padding : 5px 20px !important; 
+		background-color: #5672f9 !important;
+	}
+</style>
+
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	
-	<div style="display:flex; justify-content: between">
-		<span>[QnA]</span>
-		<h2>${question.questTitle}</h2>
-		<span>${question.questMod}</span>
+	<!-- 회원글 -->
+	<div class="container">
+		<div style="border-bottom: 1px solid #ccc; padding: 15px; display: flex; justify-content: space-between;">
+			<div>
+				<span style="font-weight: bold;">[QnA]</span>
+			</div>
+			<div>
+				<span class="h2" style="font-size: 18px;">${question.questTitle}</span>
+			</div>
+			<div>
+				<div>${question.questReg}</div>
+			</div>
+		</div>
+		<div class="p-2">
+		    <div class="p-3">
+		      ${question.questContent}
+		    </div>
+  		</div>
 	</div>	
-	<div>${question.questContent}</div>
 	
-	<form id="update_list_form">
-		<input type="hidden" id="answer_account_no" value="${loginAccount.accountNo}">
-		<input type="hidden" id="quest_no" value="${question.questNo}">
-		<textarea rows="40" cols="70" id="answer_content" style="resize: none; display: block">${answer.answerContent}</textarea>
-		<button type="button" onclick="location.href='<c:url value="/qnaBoard/list"/>'">목록</button>
-		<button type="button" onclick="openUpdateModal()">수정완료</button>
-	</form>
+	
+	<section class="section" style="padding: 0">
+	    <div class="container">
+	        <div class="row">
+	            <div class="col-md-12">
+                    <form id="update_list_form">
+                        <fieldset class="p-4">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12 pt-6">
+                                    	<input type="hidden" id="answer_account_no" value="${loginAccount.accountNo}">
+                                    	<input type="hidden" id="quest_no" value="${question.questNo}">
+                                    </div>
+                                </div>
+                            </div>
+                            <textarea name="message" id="answer_content" class="border w-100 p-3 mt-3 mt-lg-4"
+                            style="resize: none; height: 200px; outline: none;">${answer.answerContent}</textarea>
+                        </fieldset>
+                       	<div class="d-flex justify-content-between p-4">
+                 			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
+							<button type="button" class="btn btn-primary" onclick="openUpdateModal()">수정완료</button>
+						</div>
+                    </form>
+	            </div>
+	        </div>
+	    </div>
+	</section>
 	
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
@@ -50,6 +90,9 @@
 	</div>
 	
 	<script>
+	function toList() {
+		location.href="<%=request.getContextPath()%>/qnaBoard/list";
+	}	
 	
 	function openUpdateModal() {
 		$("#modal_update_answer").modal("show");

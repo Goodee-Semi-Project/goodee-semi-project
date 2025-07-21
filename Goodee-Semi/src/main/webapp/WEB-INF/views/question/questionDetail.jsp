@@ -7,6 +7,13 @@
 <meta charset="UTF-8">
 <title>QnA게시글 조회</title>
 
+<style>
+	.container button {
+		padding : 5px 20px !important; 
+		background-color: #5672f9 !important;
+	}
+</style>
+
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
@@ -56,23 +63,22 @@
 	<div class="container">
 		<div class="d-flex justify-content-between p-3">
 			<div>
-				<input type="button" class="btn btn-primary" style="padding : 5px 20px; background-color: #5672f9;"
-				onclick='location.href="<c:url value='/qnaBoard/list'/>"' value="목록">
+				<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
 			</div>
 			<c:if test="${not empty loginAccount}">
-				<div>
+				<div class="btn_design">
 					<c:if test="${loginAccount.accountNo eq question.accountNo}">
-						<input type="button" onclick="update()" value="수정" >
-						<input type="button" onclick="openDeleteQuestionModal()" value="삭제">
+						<button type="button" class="btn btn-primary" onclick="updateQuestion()">수정</button>
+						<button type="button" class="btn btn-primary" onclick="openDeleteQuestionModal()">삭제</button>
 					</c:if>
 					<c:if test="${loginAccount.author eq 1}">
 						<c:choose>
 							<c:when test="${empty answer}">
-								<button type="button" onclick="location.href='${request.contextPath()}/qnaBoard/answerAdd?no=${question.questNo}'">답변등록</button>
+								<button type="button" class="btn btn-primary" onclick="addAnswer()">답변등록</button>
 							</c:when>
 							<c:otherwise>
-								<button type="button" onclick="location.href='${request.contextPath()}/qnaBoard/answerUpdate?no=${question.questNo}'">답변수정</button>
-								<button type="button" onclick="openDeleteAnswerModal()">답변삭제</button>
+								<button type="button" class="btn btn-primary" onclick="updateAnswer()">답변수정</button>
+								<button type="button" class="btn btn-primary" onclick="openDeleteAnswerModal()">답변삭제</button>
 							</c:otherwise>
 						</c:choose>
 					</c:if>
@@ -125,6 +131,17 @@
 	</div>
 	
 	<script>
+	function toList() {
+		location.href="<%=request.getContextPath()%>/qnaBoard/list"
+	}
+	
+	function addAnswer() {
+		location.href='${request.contextPath()}/qnaBoard/answerAdd?no=' + ${question.questNo}
+	}
+	
+	function updateAnswer() {
+		location.href='${request.contextPath()}/qnaBoard/answerUpdate?no=' + ${question.questNo}
+	}
 	
 	function openDeleteQuestionModal() {
 		$("#deleteQuestionModal").modal("show");
@@ -134,7 +151,7 @@
 		$("#deleteAnswerModal").modal("show");
 	}
 
-	function update() {
+	function updateQuestion() {
 		location.href="<%=request.getContextPath()%>/qnaBoard/questionUpdate?no=${question.questNo}&accountNo=${question.accountNo}"
 	}
 	
