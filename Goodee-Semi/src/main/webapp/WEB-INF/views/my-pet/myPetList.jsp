@@ -46,7 +46,19 @@
 									<input type="text" class="form-control pet-age mb-3" style="width: 40%; display: inline-block;" name="petAge" value="${pet.petAge }" disabled>
 									<br>
 									<label>성별: </label>
-									<input type="text" class="form-control pet-gender" style="width: 40%; display: inline-block;" name="petGender" value="${pet.petGender }" disabled>
+									<select class="pet-gender" name="petGender" disabled required>
+										<option value="" disabled>성별</option>
+										<c:choose>
+											<c:when test="${pet.petGender == 77}">
+												<option value="M" selected>남</option>
+												<option value="F">여</option>
+											</c:when>
+											<c:otherwise>
+												<option value="M">남</option>
+												<option value="F" selected>여</option>
+											</c:otherwise>
+										</c:choose>
+									</select>
 								</div>
 								<input type="hidden" class="pet-no" name="petNo" value="${pet.petNo }">
 								<input type="hidden" class="account-no" name="accountNo" value="${pet.accountNo }">

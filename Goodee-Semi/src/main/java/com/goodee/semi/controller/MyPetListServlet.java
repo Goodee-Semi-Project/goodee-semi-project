@@ -64,6 +64,7 @@ public class MyPetListServlet extends HttpServlet {
 		for (Pet pet : list) {
 			pet.setPetGender((pet.getPetGender() == 'M') ? '남' : '여');
 		}
+
 		request.setAttribute("list", list);
 		
 		// 6. 페이지 이동
