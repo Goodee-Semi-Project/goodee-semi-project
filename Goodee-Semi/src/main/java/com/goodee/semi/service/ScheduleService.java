@@ -24,14 +24,18 @@ public class ScheduleService {
 		return dao.selectAccountList(courseNo);
 	}
 
-	public List<Schedule> selectPetList(Map<String, Integer> map) {
-		return dao.selectPetList(map);
+	public List<Schedule> selectPetList(Schedule sched) {
+		return dao.selectPetList(sched);
 	}
 
 	public int selectClassNo(Schedule sched) {
 		return dao.selectClassNo(sched);
 	}
 	
+	public int selectSchedStep(Schedule sched) {
+		return dao.selectSchedStep(sched);
+	}
+
 	public Schedule insert(Schedule sched) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = dao.insert(sched);
@@ -57,5 +61,10 @@ public class ScheduleService {
 		
 		return result;
 	}
+
+	public int delete(int schedNo) {
+		return dao.delete(schedNo);
+	}
+
 
 }
