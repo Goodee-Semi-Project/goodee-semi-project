@@ -161,6 +161,7 @@ public class PreCourseEditServlet extends HttpServlet {
 						String testNo = request.getParameter("test" + i + "No");
 						if (testNo == null) testNo = "-1";
 						preTest.setTestNo(testNo);
+						preTest.setPreNo(preNo);
 						preTest.setTestContent(request.getParameter("content" + i));
 						preTest.setTestAnswer(request.getParameter("quiz" + i));
 						preTest.setOne(request.getParameter("one" + i));
@@ -170,6 +171,7 @@ public class PreCourseEditServlet extends HttpServlet {
 						
 						list.add(preTest);
 					}
+					System.out.println(list);
 					
 					result = preTestService.updateList(list);
 				}
