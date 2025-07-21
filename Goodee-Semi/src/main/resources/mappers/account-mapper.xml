@@ -52,8 +52,8 @@
 	</resultMap>
 	
 	<insert id="insertAccount" parameterType="com.goodee.semi.dto.AccountDetail" useGeneratedKeys="true" keyProperty="accountNo">
-	    INSERT INTO account (auth_no, account_id, account_pw, account_name)
-	    VALUE (#{author}, #{accountId}, #{accountPw}, #{name})
+	  INSERT INTO account (auth_no, account_id, account_pw, account_name)
+	  VALUE (#{author}, #{accountId}, #{accountPw}, #{name})
 	</insert>
 	
 	<insert id="insertAccountInfo" parameterType="com.goodee.semi.dto.AccountDetail">
