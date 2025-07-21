@@ -25,8 +25,6 @@ public class QuestionAddServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session =  request.getSession();
-		
 		
 		request.getRequestDispatcher("/WEB-INF/views/question/questionAddList.jsp").forward(request, response);
 	}
