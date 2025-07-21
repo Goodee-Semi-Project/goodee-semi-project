@@ -1,5 +1,6 @@
 package com.goodee.semi.controller;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
@@ -34,10 +35,10 @@ public class MyPetUpdateServlet extends HttpServlet {
         super();
     }
     
-    private void sendErrorResponse(String resMsg, String resCode, Exception e, ServletResponse res) throws IOException {
+    private void sendErrorResponse(String resCode, String resMsg, Exception e, ServletResponse res) throws IOException {
         JSONObject json = new JSONObject();
-    	json.put("resMsg", resMsg);
         json.put("resCode", resCode);
+        json.put("resMsg", resMsg);
         
         if(e != null) {        	
         	e.printStackTrace();
@@ -47,10 +48,10 @@ public class MyPetUpdateServlet extends HttpServlet {
         res.getWriter().print(json);
     }
     
-    private void sendSuccessResponse(String resMsg, String resCode, Pet pet, ServletResponse res) throws IOException {
+    private void sendSuccessResponse(String resCode, String resMsg, Pet pet, ServletResponse res) throws IOException {
     	JSONObject json = new JSONObject();
-    	json.put("resMsg", resMsg);
     	json.put("resCode", resCode);
+    	json.put("resMsg", resMsg);
     	
     	// Gson을 사용하여 pet 객체 바인딩
     	Gson gson = new Gson();
@@ -82,52 +83,65 @@ public class MyPetUpdateServlet extends HttpServlet {
     		pet.setAccountNo(accountNo);
     		
     		// 2. 반려견 이미지가 수정된 경우 기존 이미지파일 삭제 후 수정된 이미지파일 저장
-    		// TODO 기존 이미지파일 삭제 로직 추가
     		// Part를 받아왔고, Part에 실제 파일이 있는 경우
     		if (petImgPart != null && petImgPart.getSize() > 0) {
-    			try {
-    				// TODO 검증 구현 마저 하기
+    			try { 
     				String fileName = petImgPart.getSubmittedFileName();
+    				String fileExt = fileName.substring(fileName.lastIndexOf('.'));
     				String contentType = petImgPart.getContentType();
-    				
-    				String[] allowedTypes = {"image"};
-    				
+
     				// 파일 MIME 타입 검증
-    				// if (contentType.)
+    				if (!(contentType.equals(HttpConstants.CONTENT_TYPE_PNG) || contentType.equals(HttpConstants.CONTENT_TYPE_JPEG))) {
+    					sendErrorResponse("400", "PNG, JPG, JPEG 파일만 업로드 가능합니다", null, response);
+    			        return;
+    				}
     				
     				// 파일 확장자 검증
+    				if (!(fileExt.equals(".png") || fileExt.equals(".jpg") || fileExt.equals(".jpeg"))) {
+    			        sendErrorResponse("400", "PNG, JPG, JPEG 파일만 업로드 가능합니다", null, response);
+    			        return;
+    				}
     				
-    				// 파일 크기 검증
-
+    				// 파일 저장
     				attach = AttachService.handleUploadFile(petImgPart, AttachService.getUploadDirectory(Attach.PET));
-    				
     				
     				// 파일 업로드 중 예외가 발생할 수 있음
     				// 혹은 파일 업로드 중 문제가 발생해 attach = null이 되면
     				// 아래 코드들은 null을 참조하게 되어 NullPointerException 발생
     				attach.setTypeNo(Attach.PET);
-    				attach.setPkNo(pet.getPetNo());        	
+    				attach.setPkNo(pet.getPetNo());
+    				
+    				// 기존 이미지파일 삭제
+    				// 1. petNo로 기존 이미지파일의 savedName을 가져옴
+    				// 2. savedName에 해당하는 파일을 저장소에서 삭제
+    				String oldSavedName = petService.selectPetImgSavedName(pet.getPetNo());
+    				System.out.println("[MyPetUpdateServlet] 삭제할 파일명: " + oldSavedName);
+    				File oldSavedFile = new File(AttachService.getUploadDirectory(Attach.PET) + "/" + oldSavedName);
+    				System.out.println("[MyPetUpdateServlet] 삭제할 파일경로: " + oldSavedFile.getAbsolutePath());
+    				if (oldSavedFile.delete()) {
+    					System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 삭제 성공");
+    				} else {
+    					System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 삭제 실패");
+    				}
+    				
     			} catch(Exception e) {
-    	            sendErrorResponse("파일 저장 중 문제가 발생했습니다: " + e.getMessage(), "500", e, response);
-    	            
+    	            sendErrorResponse("500", "파일 저장/삭제 중 문제가 발생했습니다: " + e.getMessage(), e, response);
     	            return;
     			}
     		}
     	} catch (Exception e) {
-    		sendErrorResponse("잘못된 입력 데이터입니다: " + e.getMessage(), "400", e, response);
-            
+    		sendErrorResponse("400", "잘못된 입력 데이터입니다: " + e.getMessage(), e, response);
             return;
 		}
         
         // 3. service 호출
         int result = petService.updatePet(pet, attach);
         if (result != 0) {
-        	sendSuccessResponse("반려견 정보 수정에 성공했습니다", "200", pet, response);
-        	
+        	sendSuccessResponse("200", "반려견 정보 수정에 성공했습니다", pet, response);
         	return;
         }
 
         // 4. 응답 인코딩하고 보내기
-        sendErrorResponse("반려견 정보 수정에 실패했습니다", "500", null, response);
+        sendErrorResponse("500", "반려견 정보 수정에 실패했습니다", null, response);
     }
 }

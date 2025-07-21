@@ -149,4 +149,10 @@
 		SELECT COUNT(pet_no)
 		FROM pet
 	</select>
+	
+	<select id="selectPetImgSavedName" resultType="string" parameterType="_int">
+		SELECT save_name
+		FROM attachment
+		WHERE attach_no = #{petNo};
+	</select>
 </mapper>
