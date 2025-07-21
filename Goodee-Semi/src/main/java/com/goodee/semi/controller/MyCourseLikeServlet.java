@@ -48,7 +48,13 @@ public class MyCourseLikeServlet extends HttpServlet {
 		
 		if ("DELETE".equals(likeFlag)) {
 			Like like = new Like();
-			like.setPickNo(Integer.parseInt(request.getParameter("pickNo")));
+			
+			if (request.getParameter("pickNo") != null) {
+				like.setPickNo(Integer.parseInt(request.getParameter("pickNo")));				
+			} else {
+				like.setAccountNo(Integer.parseInt(request.getParameter("accountNo")));
+				like.setCourseNo(Integer.parseInt(request.getParameter("courseNo")));				
+			}
 			
 			result = courseService.deleteLike(like);
 		}

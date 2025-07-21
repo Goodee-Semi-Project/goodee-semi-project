@@ -211,7 +211,7 @@
 	<delete id="deleteLike" parameterType="com.goodee.semi.dto.Like">
 		DELETE FROM picked_course
 		<where>
-			pick_no = #{pickNo}
+			pick_no = #{pickNo} OR (course_no = #{courseNo} AND account_no = #{accountNo})
 		</where>
 	</delete>
 	
