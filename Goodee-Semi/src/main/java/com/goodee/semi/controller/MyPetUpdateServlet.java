@@ -21,7 +21,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
 @WebServlet("/myPet/update")
-@MultipartConfig
+@MultipartConfig(
+	maxFileSize = 5 * 1024 * 1024, // 개별 파일 최대 크기: 5MB
+	maxRequestSize = 10 * 1024 * 1024, // 전체 요청 최대 크기: 10MB
+	fileSizeThreshold = 1024 * 1024 // 메모리에 저장할 임계값: 1MB
+)
 public class MyPetUpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private PetService petService = new PetService();
@@ -82,7 +86,22 @@ public class MyPetUpdateServlet extends HttpServlet {
     		// Part를 받아왔고, Part에 실제 파일이 있는 경우
     		if (petImgPart != null && petImgPart.getSize() > 0) {
     			try {
+    				// TODO 검증 구현 마저 하기
+    				String fileName = petImgPart.getSubmittedFileName();
+    				String contentType = petImgPart.getContentType();
+    				
+    				String[] allowedTypes = {"image"};
+    				
+    				// 파일 MIME 타입 검증
+    				// if (contentType.)
+    				
+    				// 파일 확장자 검증
+    				
+    				// 파일 크기 검증
+
     				attach = AttachService.handleUploadFile(petImgPart, AttachService.getUploadDirectory(Attach.PET));
+    				
+    				
     				// 파일 업로드 중 예외가 발생할 수 있음
     				// 혹은 파일 업로드 중 문제가 발생해 attach = null이 되면
     				// 아래 코드들은 null을 참조하게 되어 NullPointerException 발생
