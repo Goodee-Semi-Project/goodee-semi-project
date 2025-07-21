@@ -88,6 +88,9 @@ public class ScheduleDao implements ScheduleMapper {
 	public int deleteScheduleBySchedNo(int schedNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.delete("com.goodee.semi.mapper.ScheduleMapper.deleteScheduleBySchedNo", schedNo);
+		session.close();
+		return result;
+	}
 
 	public int delete(int schedNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
