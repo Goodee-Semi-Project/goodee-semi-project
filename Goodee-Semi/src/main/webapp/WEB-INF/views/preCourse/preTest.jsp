@@ -11,7 +11,7 @@
 	<input type="text" name="two` + i + `">
 </label>
 <label>
-	<input type="radio" name="answer` + i + `" value="thre">
+	<input type="radio" name="answer` + i + `" value="three">
 	<input type="text" name="three` + i + `">
 </label>
 <label>

@@ -40,6 +40,7 @@
 			<input type="text" name="test${ i }No" value="${ list[i].testNo }" hidden>
 			<input type="text" name="answer${ i }" value="${ list[i].testAnswer }" hidden>
 			<input type="text" name="content${ i }" value="${ list[i].testContent }">
+			<br>
 			<label>
 				<input type="radio" name="quiz${ i }" value="one" <c:if test="${ list[i].testAnswer eq 'one' }">checked</c:if> >
 				<input type="text" name="one${ i }" value="${ list[i].one }">
