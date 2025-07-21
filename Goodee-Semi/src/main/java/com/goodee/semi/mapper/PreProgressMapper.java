@@ -7,4 +7,5 @@ public interface PreProgressMapper {
 	int countOne(PreProgress preProgress);
 	int update(PreProgress preProgress);
 	PreProgress selectOne(PreProgress param);
+	PreProgress selectProg(PreProgress param);
 }
