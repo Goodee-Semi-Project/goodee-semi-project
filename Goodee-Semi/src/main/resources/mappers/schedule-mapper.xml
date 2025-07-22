@@ -159,10 +159,4 @@
 			sched_no = #{schedNo}
 		</where>
 	</update>
-	<delete id="delete" parameterType="_int">
-		DELETE FROM schedule
-		<where>
-			sched_no = #{schedNo}
-		</where>
-	</delete>
 </mapper>
