@@ -25,8 +25,6 @@ public class QuestionAddServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session =  request.getSession();
-		
 		
 		request.getRequestDispatcher("/WEB-INF/views/question/questionAddList.jsp").forward(request, response);
 	}
@@ -36,8 +34,8 @@ public class QuestionAddServlet extends HttpServlet {
 		
 		
 		int accountNo = Integer.parseInt(request.getParameter("qnaAccountNo"));
-		String questTitle = request.getParameter("qnaTitle");
-		String questContent = request.getParameter("qnaContent");
+		String questTitle = request.getParameter("qnaTitle").trim();
+		String questContent = request.getParameter("qnaContent").trim();
 		
 		int result = service.insertQuestion(accountNo, questTitle, questContent);
 		
