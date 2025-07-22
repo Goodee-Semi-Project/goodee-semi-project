@@ -13,12 +13,12 @@
 <%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
 
 <main>
-	<h1>후기 작성</h1>
+	<h2>후기 작성</h2>
 	<form id="write" method="post">
 		<div>
 			<div class="m-1">
 				<label class="mr-2" for="classNo">목록</label>
-				<select class="rounded" name="classNo">
+				<select class="w-50 rounded" name="classNo">
 					<option value="-1">선택</option>
 					<!-- SJ: 수강 진도 확인 하기 -->
 					<c:forEach var="c" items="${ list }">
@@ -32,7 +32,7 @@
 			</div>
 		</div>
 		<div>
-			<textarea class="border w-100 rounded p-3" id="content" name="content" spellcheck="false" style="resize: none;"></textarea>
+			<textarea class="border w-100 rounded p-3 overflow-hidden" id="content" name="content" spellcheck="false" style="resize: none;"></textarea>
 		</div>
 		<div>
 			<div class="d-flex justify-content-end">
@@ -53,15 +53,13 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
-	const DEFAULT_HEIGHT = 30;
-	
 	const $textarea = document.querySelector('#content');
 	
 	$textarea.oninput = (event) => {
 		const $target = event.target;
 	
-		$target.style.height = 0;
-		$target.style.height = DEFAULT_HEIGHT + $target.scrollHeight + 'px';
+		$target.style.height = '202px';
+		$target.style.height = $target.scrollHeight + 'px';
 	};
 
 	$('#write').submit(function(e) {
