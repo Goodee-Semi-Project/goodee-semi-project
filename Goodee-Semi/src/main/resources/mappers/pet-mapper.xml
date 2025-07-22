@@ -157,5 +157,11 @@
 			type_no = #{typeNo}
 			AND pk_no = #{pkNo}
 		</where>
+
+	<select id="selectAttachByPetNo" parameterType="_int" resultMap="AttachResultMap">
+		SELECT *
+		FROM pet p
+		LEFT JOIN attachment at ON p.pet_no = at.pk_no
+		WHERE at.pk_no = #{petNo} AND type_no = 2	
 	</select>
 </mapper>

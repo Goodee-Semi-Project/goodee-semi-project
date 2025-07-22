@@ -148,4 +148,8 @@ public class PetService {
 		return dao.selectPetImgSavedName(attach);
 	}
 	
+	public Attach selectAttachByPetNo(int petNo) {
+		return dao.selectAttachByPetNo(petNo);
+		
+	}
 }
