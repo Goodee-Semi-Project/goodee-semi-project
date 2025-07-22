@@ -35,17 +35,17 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="pet" items="${petList}">
+			<c:forEach var="pet" items="${ petList }">
 				<tr style="height: 80px;">
 					<td style="width: 25%">
-						<c:if test="${not empty pet.attachNo }">
+						<c:if test="${ not empty pet.attachNo }">
 							<img src="<c:url value='/filePath?no=${pet.attachNo}'/>" class="rounded-circle" alt="${course.title}" style="width : 70px; height : 70px; border-radius : 50% border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);" >
 						</c:if>
 					</td>
 					<td style="width: 25%">${ pet.petName } (${ pet.petBreed })<br>${ pet.petAge }세 / ${ pet.petGender }</td>
 					<td style="width: 20%">${ pet.accountName } 님</td>
 					<td style="width: 30%">
-						<button type="button" onclick="moveToSchedList(${pet.petNo})" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
+						<button type="button" onclick="moveToSchedList(${pet.petNo}, ${course.courseNo})" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
 						<button type="button" onclick="" style="padding: 5px 10px;" class="btn btn-outline-secondary">과제</button>
 						<button type="button" onclick="openKickoutModal('${pet.accountName}',${pet.classNo},'${pet.petName}')" class="btn_kickout btn btn-danger" style="padding: 5px 10px;">추방</button>
 					</td>
@@ -79,9 +79,9 @@
 	
 	<script>
 	
-	function moveToSchedList(petNo) {
+	function moveToSchedList(petNo, courseNo) {
 		console.log(petNo)
-		location.href="<%=request.getContextPath()%>/schedule?petNo=" + petNo;
+		location.href="<%=request.getContextPath()%>/schedule?petNo=" + petNo + "/&courseNo=" + courseNo;
 	}
 	
 	function openKickoutModal(accountName, classNo, petName) {
