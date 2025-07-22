@@ -1,4 +1,3 @@
-// TODO 차수 관련 기능 추가
 const calendarEl = document.querySelector('#calendar');
 
 // 선택된 날짜 저장 변수
