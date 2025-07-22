@@ -12,9 +12,9 @@ petImgInputs.forEach(input => validatePetImgData(input));
 
 function validatePetImgData(input) {
     // 1. input 안의 내용이 바뀔때마다 검증해야 함 => input[name="petImg"]에 change 이벤트리스너 추가
-    input.addEventListener('change', (e) => {
+    input.addEventListener('change', () => {
         // 2. target 안의 file[0] 받아오기
-        const file = input.target.files[0];
+        const file = input.files[0];
 
         // 3. 허용되지 않는 파일이 들어가있다면 target 안에 있는 value를 초기화
         const allowedTypes = ['image/png', 'image/jpeg'];
@@ -35,6 +35,8 @@ function validatePetImgData(input) {
 
             return;
         }
+
+        console.log('파일 업로드 검증 통과');
     });
 }
 
