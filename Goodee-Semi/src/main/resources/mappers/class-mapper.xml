@@ -41,4 +41,19 @@
 		) AS p ON c.pet_no = p.pet_no
 		WHERE p.account_no = #{ accountNo } AND c.class_prog = 100
 	</select>
+	
+	<select id="selectClassListByAccountDetail" parameterType="com.goodee.semi.dto.Account" resultMap="classResultMap">
+		SELECT 
+				C.class_no
+			, C.course_no
+			, C.pet_no
+			, P.pet_name
+			, CS.title 
+		FROM class C
+		INNER JOIN pet P ON C.pet_no = P.pet_no
+		INNER JOIN course CS ON C.course_no = CS.course_no
+		<where>
+			P.account_no = #{accountNo}
+		</where>
+	</select>
 </mapper>
