@@ -42,8 +42,8 @@
 			</div>
 		</div>
 		<c:if test="${ loginAccount.author eq 1 }">
-			<div class="mt-1 d-flex">
-				<a class="btn btn-primary px-2 py-1 mr-1" href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
+			<div class="mt-1 d-flex justify-content-end">
+				<a class="btn btn-success px-2 py-1 mr-1" href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
 				<button class="btn btn-danger px-2 py-1" onclick="deletePre()">삭제하기</button>
 			</div>
 		</c:if>
