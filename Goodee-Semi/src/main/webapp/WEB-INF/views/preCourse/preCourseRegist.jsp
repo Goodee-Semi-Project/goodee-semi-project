@@ -16,20 +16,21 @@
 	<h2>사전 학습 등록</h2>
 	
 	<form id="regist" method="post">
-		<div>
-			<select class="w-50 rounded" name="courseNo">
+		<div class="m-1">
+			<label class="mr-2" for="courseNo">[목록] </label>
+			<select class="w-75 rounded" name="courseNo">
 				<c:forEach var="c" items="${ courseList }">
 					<option value="${ c.courseNo }">${ c.title }</option>
 				</c:forEach>
 			</select>
 		</div>
 		<div class="m-1">
-			<label class="mr-2" for="title">제목</label>
+			<label class="mr-2" for="title">[제목] </label>
 			<input type="text" class="w-75 form-control rounded d-inline-block" name="title">
 		</div>
-		<div>
-			<label for="attach">학습영상</label>
-			<input type="file" name="attach">
+		<div class="m-1">
+			<label class="mr-2" for="attach">[영상] </label>
+			<input type="file" class="w-75 border rounded" name="attach">
 		</div>
 	
 		<!-- SJ: 퀴즈 추가 -->

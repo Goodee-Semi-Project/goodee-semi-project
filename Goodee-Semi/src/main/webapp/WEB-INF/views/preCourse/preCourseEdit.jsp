@@ -18,7 +18,8 @@
 	<form id="edit" method="post">
 		<input type="text" id="preNo" name="preNo" value="${ preCourse.preNo }" hidden>
 		<div class="m-1">
-			<select class="w-50 rounded" name="courseNo">
+			<label class="mr-2" for="courseNo">[목록] </label>
+			<select class="w-75	 rounded" name="courseNo">
 				<c:forEach var="c" items="${ courseList }">
 					<option value="${ c.courseNo }" <c:if test="${ c.courseNo eq preCourse.courseNo }">selected</c:if> >${ c.title }</option>
 				</c:forEach>
@@ -29,11 +30,11 @@
 			<input type="text" class="w-75 form-control rounded d-inline-block" name="title" value="${ preCourse.preTitle }">
 		</div>
 		<div class="d-flex justify-content-between">
-			<div>
-				<label for="attach">[학습영상] </label>
-				<input type="file" name="attach">
+			<div class="w-75 m-1">
+				<label class="mr-2" for="attach">[영상] </label>
+				<input type="file" class="border rounded" name="attach">
 			</div>
-			<input type="text" name="videoLen" value="${ preCourse.videoLen }" readonly>
+			<input type="text" class="w-25 rounded" name="videoLen" value="${ preCourse.videoLen }" readonly>
 		</div>
 	
 		<!-- SJ: 퀴즈 추가 -->
