@@ -16,6 +16,7 @@
 		<result property="name" column="account_name" />
 		<result property="currentEnrollment" column="current_enrollment" />
 		<result property="petNo" column="pet_no" />
+		<result property="classNo" column="class_no" />
 	</resultMap>
 	
 	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
@@ -211,7 +212,7 @@
 	<delete id="deleteLike" parameterType="com.goodee.semi.dto.Like">
 		DELETE FROM picked_course
 		<where>
-			pick_no = #{pickNo}
+			pick_no = #{pickNo} OR (course_no = #{courseNo} AND account_no = #{accountNo})
 		</where>
 	</delete>
 	
@@ -321,10 +322,10 @@
 	</delete>
 	
 	<select id="selectListByPetAccount" parameterType="_int" resultMap="courseResultMap">
-		SELECT co.* ,p.pet_no ,p.pet_name AS account_name
+		SELECT co.* ,p.pet_no ,p.pet_name AS account_name ,c.class_no
 		FROM course AS co
 		JOIN (
-			SELECT course_no ,pet_no
+			SELECT course_no ,pet_no ,class_no
 			FROM class
 		) as c ON co.course_no = c.course_no
 		JOIN (

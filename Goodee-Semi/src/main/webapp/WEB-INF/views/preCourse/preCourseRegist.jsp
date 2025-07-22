@@ -33,7 +33,12 @@
 		</div>
 	
 		<!-- SJ: 퀴즈 추가 -->
-		
+		<div>
+			<span>퀴즈 등록</span>
+			<button type="button" onclick="addTest()">+</button>
+		</div>
+		<input type="text" id="count" name="count" value="0" hidden>
+		<div id="testPart"></div>
 		<button>등록</button>
 	</form>
 
@@ -42,6 +47,13 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+	let i = 0;
+	function addTest() {
+		document.querySelector('#count').value = ++i;
+		html =`<%@ include file="/WEB-INF/views/preCourse/preTest.jsp" %>`;
+		document.querySelector('#testPart').innerHTML += html;
+	}
+
 	$('#regist').submit(function(e) {
 		e.preventDefault();
 		
@@ -51,6 +63,20 @@
 		const courseNo = formData.get('courseNo');
 		const title = formData.get('title');
 		const attachName = formData.get('attach').name;
+		
+		for (let j = 1; j <= i; j++) {
+			if (!formData.get('content' + j)) {
+				alert('테스트 내용을 입력해주세요.');
+				return;
+			} else if (!formData.get('one' + j) || !formData.get('two' + j)
+					|| !formData.get('three' + j) || !formData.get('four' + j)) {
+				alert('선택지 내용을 입력해주세요.');
+				return;
+			} else if (!formData.get('quiz' + j)) {
+				alert('정답을 골라주세요');
+				return;
+			}
+		}
 		
 		
 		// TODO: 첨부파일 등록 확인하기
