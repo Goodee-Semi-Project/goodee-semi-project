@@ -157,8 +157,9 @@
 			type_no = #{typeNo}
 			AND pk_no = #{pkNo}
 		</where>
+	</select>
 
-	<select id="selectAttachByPetNo" parameterType="_int" resultMap="AttachResultMap">
+	<select id="selectAttachByPetNo" parameterType="_int" resultMap="attachResultMap">
 		SELECT *
 		FROM pet p
 		LEFT JOIN attachment at ON p.pet_no = at.pk_no
