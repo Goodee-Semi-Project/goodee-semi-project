@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>훈련과정 출석 현황</title>
+<title>출석 현황</title>
 
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
@@ -17,7 +17,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8 offset-md-2 text-center">
-					<h3>훈련과정 출석 관리</h3>
+					<h3>출석 관리</h3>
 				</div>
 			</div>
 		</div>
@@ -41,7 +41,7 @@
 						<td>${c.title}</td>
 					</tr>
 					<c:forEach var="p" items="${c.petList }">
-						<tr style="height: 50px;">
+						<tr style="height: 50px;" class="text-center">
 							<td style="width: 25%">
 								<c:if test="${not empty p.attachNo }">
 									<img src="<c:url value='/filePath?no=${p.attachNo}'/>" alt="${c.title}" 
@@ -51,7 +51,7 @@
 							<td style="width: 25%">${ p.petName } (${ p.petBreed })<br>${ p.petAge }세 / ${ p.petGender }</td>
 							<td style="width: 20%">${ p.accountName }</td>
 							<td style="width: 30%">
-								<button type="button" style="padding: 5px 10px;" onclick="goToDetail(${p.petNo})" class="btn btn-dark">출석 현황</button>
+								<button type="button" style="padding: 5px 10px;" onclick="goToDetail(${p.petNo}, ${c.courseNo})" class="btn btn-dark">출석 현황</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -64,8 +64,8 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
 
 <script>
-	function goToDetail(petNo) {
-		location.href="<%= request.getContextPath()%>/attend/detail?no=" + petNo
+	function goToDetail(petNo, courseNo) {
+		location.href="<%= request.getContextPath()%>/attend/detail?petNo=" + petNo + "&courseNo=" + courseNo
 	}
 </script>
 </body>

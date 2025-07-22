@@ -80,6 +80,18 @@ public class ScheduleDao implements ScheduleMapper {
 	public int delete(int schedNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.update("com.goodee.semi.mapper.ScheduleMapper.delete", schedNo);
+
+	public List<Schedule> selectScheduleListAttend(Schedule schedule) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Schedule> list = session.selectList("com.goodee.semi.mapper.ScheduleMapper.selectScheduleListAttend", schedule);
+		session.close();
+		return list;
+	}
+	
+	@Override
+	public int deleteScheduleBySchedNo(int schedNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.ScheduleMapper.deleteScheduleBySchedNo", schedNo);
 		session.close();
 		return result;
 	}
@@ -91,5 +103,11 @@ public class ScheduleDao implements ScheduleMapper {
 		session.close();
 		return result;
 	}
-	
+
+	public int updateScheduleAttend(Schedule sched) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.ScheduleMapper.updateScheduleAttend", sched);
+		session.close();
+		return result;
+	}
 }
