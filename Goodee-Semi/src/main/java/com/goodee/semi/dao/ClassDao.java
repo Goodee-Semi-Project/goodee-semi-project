@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.PetClass;
 
 public class ClassDao {
@@ -29,6 +30,14 @@ public class ClassDao {
 		session.close();
 		
 		return petClass;
+	}
+
+	public List<PetClass> selectClassListByAccountDetail(AccountDetail account) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<PetClass> result = session.selectList("com.goodee.semi.mapper.ClassMapper.selectClassListByAccountDetail", account);
+		session.close();
+		
+		return result;
 	}
 	
 }
