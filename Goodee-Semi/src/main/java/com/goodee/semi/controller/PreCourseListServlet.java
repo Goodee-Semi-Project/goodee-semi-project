@@ -56,6 +56,8 @@ public class PreCourseListServlet extends HttpServlet {
 		} else {
 			courseList = courseService.selectListByPetAccount(account.getAccountNo());
 		}
+		
+		Map<Integer, Integer> attachMap = courseService.selectAttachMap(courseList);
 
 		Map<Integer, List<PreCourse>> preCourseMap = preCourseService.selectMap(courseList);
 
@@ -66,6 +68,7 @@ public class PreCourseListServlet extends HttpServlet {
 				
 		request.setAttribute("courseList", courseList);
 		request.setAttribute("preCourseMap", preCourseMap);
+		request.setAttribute("attachMap", attachMap);
 		
 		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseList.jsp").forward(request, response);
 	}

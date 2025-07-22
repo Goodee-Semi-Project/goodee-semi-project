@@ -14,25 +14,31 @@
 
 <main>
 	<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
-		<input type="text" id="answer${ i }" value="${ list[i].testAnswer }" hidden>
-		<p>${ list[i].testContent }</p>
-		<label>
-			<input type="radio" name="quiz${ i }" value="one">
-			${ list[i].one }
-		</label>
-		<label>
-			<input type="radio" name="quiz${ i }" value="two">
-			${ list[i].two }
-		</label>
-		<label>
-			<input type="radio" name="quiz${ i }" value="three">
-			${ list[i].three }
-		</label>
-		<label>
-			<input type="radio" name="quiz${ i }" value="four">
-			${ list[i].four }
-		</label>
-		<button type="button" onclick="check(${ i })">정답 확인</button>
+		<div class="border rounded px-2 py-1">
+			<input type="text" id="answer${ i }" value="${ list[i].testAnswer }" hidden>
+			<p style="font-size: 20px;">${ list[i].testContent }</p>
+				<div class="d-flex flex-column">
+					<label>
+						<input type="radio" name="quiz${ i }" value="one">
+						${ list[i].one }
+					</label>
+					<label>
+						<input type="radio" name="quiz${ i }" value="two">
+						${ list[i].two }
+					</label>
+					<label>
+						<input type="radio" name="quiz${ i }" value="three">
+						${ list[i].three }
+					</label>
+					<div class="d-flex justify-content-between">
+						<label>
+							<input type="radio" name="quiz${ i }" value="four">
+							${ list[i].four }
+						</label>
+						<button class="btn btn-primary px-2 py-1" type="button" onclick="check(${ i })">정답 확인</button>
+					</div>
+			</div>
+		</div>
 	</c:forEach>
 	
 </main>
