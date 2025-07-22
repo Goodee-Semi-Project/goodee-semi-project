@@ -55,23 +55,23 @@
 
 	<section>
 		<div class="my-1 w-100 text-right">
-			<a href="/review/write" class="btn btn-main-sm px-3" >후기 작성</a>
+			<a href="/review/write" class="btn btn-primary px-2 py-1" >후기 작성</a>
 		</div>
 		<div>
-			<table class="table table-hover text-center">
+			<table class="table table-hover text-center" style="table-layout:fixed;">
 				<thead class="w-100">
-					<tr class="w-100">
-						<th>글번호</th>
-						<th>제목</th>
-						<th>작성자</th>
-						<th>작성일</th>
+					<tr>
+						<th class="col-2">번호</th>
+						<th class="col-8">제목</th>
+						<th class="col-3">작성자</th>
+						<th class="col-4">작성일</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="r" items="${ reviewList }">
-						<tr class="">
+						<tr>
 							<td>${ r.reviewNo }</td>
-							<td class="w-50" style="cursor: pointer;" onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
+							<td class="text-truncate" style="cursor: pointer;" onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
 							<td>${ r.accountId }</td>
 							<td>${ r.regDate.substring(0, 10) }</td>
 						</tr>
