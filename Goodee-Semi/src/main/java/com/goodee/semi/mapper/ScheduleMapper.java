@@ -3,6 +3,7 @@ package com.goodee.semi.mapper;
 import java.util.List;
 import java.util.Map;
 
+import com.goodee.semi.dto.PetClass;
 import com.goodee.semi.dto.Schedule;
 
 public interface ScheduleMapper {
@@ -11,6 +12,7 @@ public interface ScheduleMapper {
 	List<Schedule> selectCourseList(int accountNo);
 	List<Schedule> selectAccountList(int courseNo);
 	List<Schedule> selectPetList(Schedule sched);
+	List<Schedule> selectScheduleListByClassNo(PetClass petClass);
 	int selectClassNo(Schedule sched);
 	int insert(Schedule sched);
 	Schedule selectSchedule(int schedNo);
