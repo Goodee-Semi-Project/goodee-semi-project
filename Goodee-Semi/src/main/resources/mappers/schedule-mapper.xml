@@ -40,6 +40,9 @@
 			<if test='trainerAccountNo != null and trainerAccountNo != ""'>
 				AND co.account_no = #{trainerAccountNo}
 			</if>
+			<if test='petNo != null and petNo != ""'>
+				AND p.pet_no = #{petNo}
+			</if>
 			AND s.sched_date BETWEEN #{start} AND #{end}		
 		</where>
 	</select>
@@ -122,13 +125,23 @@
 		</where>
 	</select>
 	
+	<select id="selectScheduleListAttend" parameterType="com.goodee.semi.dto.Schedule" resultMap="scheduleResultMap">
+		SELECT sc.* ,cl.class_no ,cl.course_no ,co.title ,p.pet_no ,p.pet_name, account_name
+		FROM schedule sc
+		JOIN class cl ON sc.class_NO = cl.class_no
+		JOIN pet p ON cl.pet_no = p.pet_no
+		JOIN course co ON cl.course_no = co.course_no
+		JOIN account a ON p.account_no = a.account_no
+		WHERE cl.pet_no = #{petNo} AND cl.course_no = #{courseNo}
+	</select>
+	
 	<update id="update" parameterType="com.goodee.semi.dto.Schedule">
 		update schedule
 		set class_no = #{classNo}
 			,sched_date = #{schedDate}
-		    ,sched_start = #{schedStart}
-		    ,sched_end = #{schedEnd}
-		    ,sched_step = #{schedStep}
+			,sched_start = #{schedStart}
+			,sched_end = #{schedEnd}
+			,sched_step = #{schedStep}
 		<where>
 			sched_no = #{schedNo}
 		</where>
@@ -140,4 +153,17 @@
 			sched_no = #{schedNo}
 		</where>
 	</delete>
+	
+	<delete id="deleteScheduleBySchedNo" parameterType="_int">
+		DELETE FROM schedule
+		WHERE sched_no = #{schedNo}
+	</delete>
+	
+	<update id="updateScheduleAttend" parameterType="com.goodee.semi.dto.Schedule">
+		UPDATE schedule
+		SET sched_attend = #{schedAttend}
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</update>
 </mapper>

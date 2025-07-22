@@ -2,7 +2,9 @@ package com.goodee.semi.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -264,6 +266,15 @@ public class CourseService {
 
 	public List<Course> selectListByPetAccount(int accountNo) {
 		return courseDao.selectListByPetAccount(accountNo);
+	}
+
+	public Map<Integer, Integer> selectAttachMap(List<Course> courseList) {
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		for (Course c : courseList) {
+			Attach attach = courseDao.selectThumbAttach(c);
+			map.put(c.getCourseNo(), attach.getAttachNo());
+		}
+		return map;
 	}
 
 }

@@ -26,7 +26,7 @@ public class AttendServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		
 		AccountDetail account = (AccountDetail)session.getAttribute("loginAccount");
 

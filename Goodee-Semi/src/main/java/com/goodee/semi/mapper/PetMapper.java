@@ -22,4 +22,6 @@ public interface PetMapper {
 	 int insertAttach(SqlSession session, Attach param);
 	 int countTotalPetNo();
 	Attach selectAttach(SqlSession session, Attach param);
+	String selectPetImgSavedName(Attach attach);
+	 Attach selectAttachByPetNo(int petNo);
 }

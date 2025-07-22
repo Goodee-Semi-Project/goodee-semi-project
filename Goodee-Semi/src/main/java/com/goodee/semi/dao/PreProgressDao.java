@@ -14,9 +14,9 @@ public class PreProgressDao {
 		return result;
 	}
 
-	public int selectOne(PreProgress preProgress) {
+	public int countOne(PreProgress preProgress) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int result = session.selectOne("com.goodee.semi.mapper.PreProgressMapper.selectOne", preProgress);
+		int result = session.selectOne("com.goodee.semi.mapper.PreProgressMapper.countOne", preProgress);
 		session.close();
 		return result;
 	}
@@ -26,6 +26,20 @@ public class PreProgressDao {
 		int result = session.update("com.goodee.semi.mapper.PreProgressMapper.update", preProgress);
 		session.close();
 		return result;
+	}
+
+	public PreProgress selectOne(PreProgress param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		PreProgress preProgress = session.selectOne("com.goodee.semi.mapper.PreProgressMapper.selectOne", param);
+		session.close();
+		return preProgress;
+	}
+
+	public PreProgress selectProg(PreProgress param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		PreProgress preProg = session.selectOne("com.goodee.semi.mapper.PreProgressMapper.selectProg", param);
+		session.close();
+		return preProg;
 	}
 
 }
