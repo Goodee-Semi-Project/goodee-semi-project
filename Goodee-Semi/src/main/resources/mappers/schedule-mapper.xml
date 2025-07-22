@@ -101,6 +101,13 @@
 		</where>
 	</select>
 	
+	<select id="selectScheduleListByClassNo" parameterType="com.goodee.semi.dto.PetClass" resultMap="scheduleResultMap">
+		SELECT * FROM schedule
+		<where>
+			class_no = #{classNo}
+		</where>
+	</select>
+	
 	<insert id="insert" parameterType="com.goodee.semi.dto.Schedule" useGeneratedKeys="true" keyProperty="schedNo">
 		INSERT INTO schedule (class_no, sched_step, sched_date, sched_start, sched_end)
 		VALUES (#{classNo}, #{schedStep}, #{schedDate}, #{schedStart}, #{schedEnd});
