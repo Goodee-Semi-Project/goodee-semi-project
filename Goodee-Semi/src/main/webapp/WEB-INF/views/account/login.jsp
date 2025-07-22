@@ -21,8 +21,8 @@ pageEncoding="UTF-8"%>
 	          <h3 class="bg-gray p-4">LOG IN</h3>
 	          <form id="accountLoginFrm">
 	            <fieldset class="p-4">
-	              <input class="form-control mb-3" type="text" id="accountId" name="accountId" placeholder="아이디" required>
-	              <input class="form-control mb-3" type="password" id="accountPw" name="accountPw" placeholder="비밀번호" required>
+	              <input class="form-control mb-3" type="text" id="accountId" name="accountId" placeholder="아이디">
+	              <input class="form-control mb-3" type="password" id="accountPw" name="accountPw" placeholder="비밀번호">
 	              <div class="loggedin-forgot" style="display: flex; justify-content: space-between; align-items: center; height: 30px;">
 	              	<div>
 		              	<label for="remember" class="pt-3 pb-2"><input type="checkbox" id="remember" name="remember" style="vertical-align: -1px;"> 아이디 기억하기</label>	              	
