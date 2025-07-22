@@ -72,28 +72,34 @@ public class PetService {
 	}
 
 	public int deletePet(int petNo) {
-		System.out.println("DeletePetWithAttach() petNo:" + petNo);
-		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		SqlSession session = null;
 		int result = 0;
 		
 		try {
+			session = SqlSessionTemplate.getSqlSession(false);
+			
 			// 1. 반려견 삭제
-			result = dao.deletePet(session, petNo);
+			int petResult = dao.deletePet(session, petNo);
 			
 			// 2. 파일 정보 삭제
-			result = dao.deleteAttach(session, petNo);
+			int attachResult = 1; // 기본값: 성공
+			if(petResult != 0) {
+				attachResult = dao.deleteAttach(session, petNo);
+			}
 			
 			// 3. commit 또는 rollback 처리
-			if(result > 0) {
+			if(petResult != 0 && attachResult != 0) {
 				session.commit();
+				result = 1;
 			} else {
 				session.rollback();
 			}			
 		} catch (Exception e) {
+			if(session != null) session.rollback();				
+			System.out.println("[PetService] 반려견 정보 삭제 중 예기치못한 문제 발생: " + e.getMessage());
 			e.printStackTrace();
-			session.rollback();
 		} finally {
-			session.close();
+			if(session != null) session.close();
 		}
 		
 		return result;

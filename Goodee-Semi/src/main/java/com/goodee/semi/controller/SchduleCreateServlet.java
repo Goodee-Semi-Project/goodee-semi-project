@@ -58,9 +58,7 @@ public class SchduleCreateServlet extends HttpServlet {
 		 
 		 int classNo = service.selectClassNo(sched);
 		 
-		 // TODO 일정표의 모든 기능에 차수 관련 기능 덧붙이기
 		 // class_no, sched_step, sched_date, sched_start, sched_end 를 Schedule에 바인딩하여 insert함
-
 		 sched.setClassNo(classNo);
 		 sched.setSchedStep(schedStep);
 		 sched.setSchedDate(date);
