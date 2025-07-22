@@ -39,6 +39,6 @@
 			SELECT pet_no ,pet_name ,account_no
 			FROM pet
 		) AS p ON c.pet_no = p.pet_no
-		WHERE p.account_no = #{ accountNo }
+		WHERE p.account_no = #{ accountNo } AND c.class_prog = 100
 	</select>
 </mapper>

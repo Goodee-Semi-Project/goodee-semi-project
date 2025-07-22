@@ -1,11 +1,14 @@
 package com.goodee.semi.controller;
 
+import java.io.IOException;
+
+import com.goodee.semi.dto.Schedule;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @WebServlet("/qr/qrCode")
 public class QrCodeServlet extends HttpServlet {
@@ -16,9 +19,17 @@ public class QrCodeServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int schedNo = Integer.parseInt(request.getParameter("schedNo"));
 		
-		request.setAttribute("schedNo", schedNo);
+		int schedNo = Integer.parseInt(request.getParameter("schedNo"));
+		int petNo = Integer.parseInt(request.getParameter("petNo"));
+		int courseNo = Integer.parseInt(request.getParameter("courseNo"));
+		
+		Schedule sched = new Schedule();
+		sched.setSchedNo(schedNo);
+		sched.setPetNo(petNo);
+		sched.setCourseNo(courseNo);
+		
+		request.setAttribute("sched", sched);
 		request.getRequestDispatcher("/WEB-INF/views/attend/attendQr.jsp").forward(request, response);
 	}
 

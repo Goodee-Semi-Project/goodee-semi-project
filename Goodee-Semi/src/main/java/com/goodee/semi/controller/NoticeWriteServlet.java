@@ -47,9 +47,9 @@ public class NoticeWriteServlet extends HttpServlet {
 		String noticeTitle = request.getParameter("noticeTitle");
 		String noticeContent = request.getParameter("noticeContent");
 		Account loginAccount = (Account) request.getSession().getAttribute("loginAccount");
-	    int accountNo = loginAccount.getAccountNo();
+	  int accountNo = loginAccount.getAccountNo();
 		
-	    Part inputPart = null;
+	  Part inputPart = null;
 	    
 		Notice notice = new Notice();
 		notice.setNoticeTitle(noticeTitle);
@@ -57,7 +57,7 @@ public class NoticeWriteServlet extends HttpServlet {
 		notice.setAccountNo(accountNo);
 		
 		try {
-			inputPart = request.getPart("upfile");
+			inputPart = request.getPart("noticeFile");
 			
 		} catch (IOException | ServletException e) { e.printStackTrace(); }
 		

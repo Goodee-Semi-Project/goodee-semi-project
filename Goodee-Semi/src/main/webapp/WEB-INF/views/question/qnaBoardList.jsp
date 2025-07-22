@@ -18,7 +18,7 @@
     	text-align: center;
     	text-decoration: none;
     	display: inline-block;
-    	margin-top: 10px;
+    	margin: 5px 0;
 	}
 	
 	.btn_question_add:hover {
@@ -44,23 +44,23 @@
 							<div class="form-row align-items-center">
 								<div class="form-group col-lg-2 col-md-6">
 									<select class="w-100 form-control my-2 my-lg-0" name="searchBy" >
-										<option value="1" ${question.searchBy == 1 ? 'selected' : ''}>제목</option>
-										<option value="2" ${question.searchBy == 2 ? 'selected' : ''}>제목+내용</option>
-										<option value="3" ${question.searchBy == 3 ? 'selected' : ''}>작성자</option>
+										<option value="1" ${ question.searchBy == 1 ? 'selected' : '' }>제목</option>
+										<option value="2" ${ question.searchBy == 2 ? 'selected' : '' }>제목+내용</option>
+										<option value="3" ${ question.searchBy == 3 ? 'selected' : '' }>작성자</option>
 									</select>
 								</div>
 								<div class="form-group col-xl-6 col-lg-3 col-md-6">
 									<input type="text" class="form-control my-2 my-lg-0" name="keyword" 
-									placeholder="검색어를 입력하세요." value="${question.keyword}">
+									placeholder="검색어를 입력하세요." value="${ question.keyword }">
 								</div>
 								<div class="form-group col-xl-2 col-lg-3 col-md-6">
 									<button type="submit" class="btn btn-primary active w-100">검색</button>
 								</div>
 								<div class="form-group col-lg-2 col-md-6">
 									<select class="w-100 form-control my-2 my-lg-0" name="orderBy">
-										<option value="0" ${question.orderBy == 0 ? 'selected' : ''}>정렬</option>
-										<option value="1" ${question.orderBy == 1 ? 'selected' : ''}>최근 날짜</option>
-										<option value="2" ${question.orderBy == 2 ? 'selected' : ''}>오래된 날짜</option>
+										<option value="0" ${ question.orderBy == 0 ? 'selected' : '' }>정렬</option>
+										<option value="1" ${ question.orderBy == 1 ? 'selected' : '' }>최근 날짜</option>
+										<option value="2" ${ question.orderBy == 2 ? 'selected' : '' }>오래된 날짜</option>
 									</select>
 								</div>
 							</div>
@@ -71,45 +71,45 @@
 		</div>
 	</section>
 	
-	<div style="display : flex; justify-content : end">
+	<div style="display : flex; justify-content : end;">
 		<a href="<c:url value='/qnaBoard/questionAdd'/>" class="btn_question_add">
 		   질문 등록
 		</a>
 	</div>
 	
 	<section>
-		<table class="text-center" style="width: 100%">
+		<table class="text-center" style="table-layout: fixed; width: 100%;">
 			<tbody>
-				<tr style="height: 70px;">
+				<tr style="height: 50px;">
 					<th>글번호</th>
-					<th>제목</th>
+					<th style="width: 350px;">제목</th>
 					<th>작성자</th>
 					<th>등록날짜</th>
 				</tr>
-				<c:forEach var="q" items="${questionList}">
-					<tr>
-						<td>${q.questNo}</td>
-						<td><a href="<c:url value='/qnaBoard/detail?no=${q.questNo}'/>">${q.questTitle}</a></td>
-						<td>${q.accountId}</td>
-						<td>${q.questReg}</td>
+				<c:forEach var="q" items="${ questionList }">
+					<tr style="height: 35px;">
+						<td>${ q.questNo }</td>
+						<td><a href="<c:url value='/qnaBoard/detail?no=${ q.questNo }'/>" style="display: block; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${ q.questTitle }</a></td>
+						<td>${ q.accountId }</td>
+						<td>${ q.questReg }</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</section>
 	
-	<c:if test="${not empty questionList}">
+	<c:if test="${ not empty questionList }">
 		<div class="text-center" style="margin-top : 20px;">
-			<c:if test="${question.prev}">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarStart - 1}&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">
+			<c:if test="${ question.prev }">
+				<a href="<c:url value='/qnaBoard/list?nowPage=${ question.pageBarStart - 1 }&keyword=${ question.keyword }&searchBy=${ question.searchBy }&orderBy=${ question.orderBy }'/>">
 				&laquo;
 				</a>
 			</c:if>
-			<c:forEach var="i" begin="${question.pageBarStart}" end="${question.pageBarEnd}">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${i}&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">${i}</a>			
+			<c:forEach var="i" begin="${ question.pageBarStart }" end="${ question.pageBarEnd }">
+				<a href="<c:url value='/qnaBoard/list?nowPage=${ i }&keyword=${ question.keyword }&searchBy=${ question.searchBy }&orderBy=${ question.orderBy }'/>">${i}</a>			
 			</c:forEach>
-			<c:if test="${question.next}">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarEnd + 1 }&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">
+			<c:if test="${ question.next }">
+				<a href="<c:url value='/qnaBoard/list?nowPage=${ question.pageBarEnd + 1 }&keyword=${ question.keyword }&searchBy=${ uestion.searchBy }&orderBy=${ question.orderBy }'/>">
 					&raquo;
 				</a>
 			</c:if>
