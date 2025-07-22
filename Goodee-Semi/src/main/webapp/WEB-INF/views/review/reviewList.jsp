@@ -14,9 +14,9 @@
 <%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
 
 <main>
-	<h1>참여 후기</h1>
+	<h2>참여 후기</h2>
 	
-	<section class="page-search">
+	<section class="page-search rounded">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
@@ -61,17 +61,17 @@
 			<table class="table table-hover text-center">
 				<thead class="w-100">
 					<tr class="w-100">
-						<th class="w-5">글번호</th>
-						<th class="w-50">제목</th>
-						<th class="w-20">작성자</th>
-						<th class="w-20">작성일</th>
+						<th>글번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="r" items="${ reviewList }">
-						<tr>
+						<tr class="">
 							<td>${ r.reviewNo }</td>
-							<td class="btn w-100" onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
+							<td class="w-50" style="cursor: pointer;" onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
 							<td>${ r.accountId }</td>
 							<td>${ r.regDate.substring(0, 10) }</td>
 						</tr>

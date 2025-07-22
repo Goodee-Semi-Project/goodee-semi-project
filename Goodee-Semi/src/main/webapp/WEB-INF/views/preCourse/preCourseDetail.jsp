@@ -13,43 +13,38 @@
 <%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
 
 	<main>
-		<h1>사전학습 세부 정보</h1>
+		<h1>${ preCourse.preTitle }</h1>
 		<input type="text" id="author" value="${ loginAccount.author }" hidden>
 		<input type="text" id="preNo" value="${ preCourse.preNo }" hidden>
 		<input type="text" id="lastTime" value="${ watchLen }" hidden>
 		<c:if test="${ petNo ne -1 }">
 			<input type="text" id="petNo" value="${ petNo }" hidden>
 		</c:if>
+			<p>[교육과정] ${ preCourse.courseTitle }</p>
 		<div>
-			<span>[교육과정]</span>
-			<span>${ preCourse.courseTitle }</span>
-		</div>
-		<div>
-			<span>[제목]</span>
-			<span>${ preCourse.preTitle }</span>
-		</div>
-		<div>
-			<span>[학습영상]</span>
-			<video width="400" id="preVideo" controls preload="metadata">
+			<video class="w-100" id="preVideo" controls preload="metadata">
+				학습 영상
 				<source src="<c:url value='/fileStream?no=${ attach.attachNo }'/>">
 			</video>
-			<p id="videoLen">${ preCourse.videoLen }</p>
+			<p class="text-right" id="videoLen">[영상 길이] ${ preCourse.videoLen }</p>
 		</div>
-		<div>
-			<a href="/preCourse/list">목록</a>
-			<c:choose>
-				<c:when test="${ loginAccount.author eq 1 }">
-					<button id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'">퀴즈 목록</button>
-				</c:when>
-				<c:otherwise>
-					<button id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'" <c:if test="${ preProgress.preProg ne 100 }"> disabled </c:if> >학습 완료</button>
-				</c:otherwise>
-			</c:choose>
+		<div class="w-100 d-flex justify-content-between"">
+			<a class="btn btn-primary px-2 py-1" href="/preCourse/list">목록</a>
+			<div>
+				<c:choose>
+					<c:when test="${ loginAccount.author eq 1 }">
+						<button class="btn btn-primary px-2 py-1" id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'">퀴즈 목록</button>
+					</c:when>
+					<c:otherwise>
+						<button class="btn btn-primary px-2 py-1" id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'" <c:if test="${ preProgress.preProg ne 100 }"> disabled </c:if> >학습 완료</button>
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</div>
 		<c:if test="${ loginAccount.author eq 1 }">
-			<div>
-				<a href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
-				<button onclick="deletePre()">삭제하기</button>
+			<div class="mt-1 d-flex">
+				<a class="btn btn-primary px-2 py-1 mr-1" href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
+				<button class="btn btn-danger px-2 py-1" onclick="deletePre()">삭제하기</button>
 			</div>
 		</c:if>
 	</main>
@@ -71,7 +66,7 @@ if ($('#author').val() != 1) {
 		vid.onloadeddata  = function() {
 			if (lastTime > 0 && confirm('이어보기')){
 				vid.play();
-				vid.currentTime = lastTime - 0.1;
+				vid.currentTime = lastTime - 0.01;
 			}
 		}
 		
