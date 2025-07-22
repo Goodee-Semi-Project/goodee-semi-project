@@ -1,9 +1,8 @@
 package com.goodee.semi.controller;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import org.json.simple.JSONObject;
 
@@ -56,6 +55,15 @@ public class PreCourseDetailServlet extends HttpServlet {
 			preCourse = preCourseService.selectPreCourse(preNo);
 		}
 		
+		PreProgress preProgress = null;
+		if (preCourse != null) {
+			PreProgress param = new PreProgress();
+			param.setPreNo(String.valueOf(preNo));
+			param.setPetNo(petNo);
+			
+			preProgress = preProgressService.selectOne(param);
+		}
+		
 		if (preCourse != null) {
 			Attach attach = preCourseService.selectAttach(preNo);
 			
@@ -63,6 +71,15 @@ public class PreCourseDetailServlet extends HttpServlet {
 				request.setAttribute("petNo", petNo);
 				request.setAttribute("preCourse", preCourse);
 				request.setAttribute("attach", attach);
+				if (preProgress != null) {
+					request.setAttribute("preProgress", preProgress);
+					
+					String watchLen = preProgress.getWatchLen();
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+					LocalTime time = LocalTime.parse(watchLen, formatter);
+					int seconds = time.getHour() * 3600 +time.getMinute() * 60 + time.getSecond();
+					request.setAttribute("watchLen", seconds);
+				}
 			}
 			
 		}
@@ -84,35 +101,48 @@ public class PreCourseDetailServlet extends HttpServlet {
 		}
 		
 		String preNo = request.getParameter("preNo");;
-		String watchLen = request.getParameter("watchLen");
 		String videoLen = request.getParameter("videoLen");
+		String watchLen = request.getParameter("watchLen");
 		int petNo = -1;
 		if (request.getParameter("petNo") != null && request.getParameter("petNo") != "-1") {
 			petNo = Integer.parseInt(request.getParameter("petNo"));
 		}
 		
 		int idx = watchLen.indexOf('.');
-		int watched = 0;
+		int watched = -1;
+		// FIXME: 
 		if (idx > 0) {
 			watched = Integer.parseInt(watchLen.substring(0, idx));
 		}
 		
-		watchLen = "" + watched / 3600 + ":" + watched / 60 % 60 + ":" + watched % 60;
+		if (watched == -1) {
+			
+			JSONObject obj = new JSONObject();
+			
+			obj.put("res_code", "501");
+			obj.put("res_msg", "진행도를 생성하지 않습니다.");
+			
+			response.setContentType("application/json; charset=utf-8");
+			response.getWriter().print(obj);
+			return;
+		}
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		watchLen = "" + watched / 3600 + ":" + watched / 60 % 60 + ":" + watched % 60;
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:m:s");
 		
 		String preProg = "";
 		
-		try {
-			Date watch = sdf.parse(watchLen);
-			Date video = sdf.parse(videoLen);
-			
-			long progress = (watch.getTime() / video.getTime()) * 100;
-			
-			preProg = String.valueOf(progress);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		LocalTime watch = LocalTime.parse(watchLen, formatter);
+		LocalTime video = LocalTime.parse(videoLen, formatter);
+		
+		// TODO: 진행 상황 계산이 잘못됨
+//		long progress = (watch.getTime() / video.getTime()) * 100;
+		long numerator = watch.getHour() * 3600 + watch.getMinute() * 60 + watch.getSecond();
+		long denominator = video.getHour() * 3600 + video.getMinute() * 60 + video.getSecond();
+		int progress = (int) ((double) numerator / denominator * 100);
+		
+		preProg = String.valueOf(progress);
 		
 		
 		PreProgress preProgress = new PreProgress();

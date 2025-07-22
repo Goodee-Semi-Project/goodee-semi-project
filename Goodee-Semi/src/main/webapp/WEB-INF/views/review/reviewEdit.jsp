@@ -19,24 +19,28 @@
 		<!-- 후기 번호 히든으로 -->
 		<input type="text" id="reviewNo" name="reviewNo" value="${ review.reviewNo }" hidden>
 		<div>
-			<label for="classNo">수료 목록</label>
-			<select name="classNo">
-				<option value="-1">선택</option>
-				<c:forEach var="c" items="${ list }">
-					<option value="${ c.classNo }" <c:if test="${ c.classNo eq review.classNo }">selected</c:if> >${ c.petName } - ${ c.courseTitle }</option>
-				</c:forEach>
-			</select>
-			<label for="title">제목</label>
-			<input type="text" id="title" name="title" value="${ review.reviewTitle }">
+			<div class="m-1">
+				<label class="mr-2" for="classNo">목록</label>
+				<select class="rounded" name="classNo">
+					<option value="-1">선택</option>
+					<c:forEach var="c" items="${ list }">
+						<option value="${ c.classNo }" <c:if test="${ c.classNo eq review.classNo }">selected</c:if> >${ c.petName } - ${ c.courseTitle }</option>
+					</c:forEach>
+				</select>
+			</div>
+			<div class="m-1">
+				<label class="mr-2" for="title">제목</label>
+				<input class="w-75 form-control rounded d-inline-block" type="text" id="title" name="title" value="${ review.reviewTitle }">
+			</div>
 		</div>
-		<div>
-			<span>${ review.accountId }</span>
+		<div class="d-flex justify-content-between">
+			<p my-1>[작성자] ${ review.accountId }</p>
 			<c:choose>
 				<c:when test="${ review.regDate eq review.modDate }">
-					<span id="date">작성일: ${ review.regDate }</span>
+					<p my-1 id="date">[작성일] ${ review.regDate }</p>
 				</c:when>
 				<c:otherwise>
-					<span>수정일: ${ review.modDate }</span>
+					<p my-1>[수정일] ${ review.modDate }</p>
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -44,17 +48,16 @@
 			<img src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
 		</c:if>
 		<div>
-			<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;">${ review.reviewContent }</textarea>
+			<textarea class="border w-100 rounded p-3" id="content" name="content" spellcheck="false" style="resize: none;">${ review.reviewContent }</textarea>
 		</div>
-		<div>
+		<div class="d-flex justify-content-end">
 			<!-- 우선은 첨부파일은 1개 -->
-			<label for="attach">첨부 이미지 변경: </label>
-			<input type="file" id="attach" name="attach">
-			
+			<label class="btn btn-info px-2 py-1" for="attach">이미지 변경</label>
+			<input type="file" class="d-none" id="attach" name="attach">
 		</div>
-		<div>
-			<a href="<c:url value='/review/list' />">목록</a>
-			<button>수정하기</button>
+		<div class="d-flex justify-content-between">
+			<a class="btn btn-primary px-2 py-1" href="<c:url value='/review/list' />">목록</a>
+			<button class="btn btn-success px-2 py-1">수정하기</button>
 		</div>
 	</form>
 </main>
@@ -62,6 +65,17 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+	const DEFAULT_HEIGHT = 30;
+	
+	const $textarea = document.querySelector('#content');
+	
+	$textarea.oninput = (event) => {
+		const $target = event.target;
+	
+		$target.style.height = 0;
+		$target.style.height = DEFAULT_HEIGHT + $target.scrollHeight + 'px';
+	};
+	
 	$('#edit').submit(function(e) {
 		e.preventDefault();
 
