@@ -1,4 +1,3 @@
-// TODO 차수 관련 기능 추가
 const calendarEl = document.querySelector('#calendar');
 const petNo = document.querySelector('input[type="hidden"').value;
 	
