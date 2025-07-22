@@ -287,27 +287,23 @@ function deleteEvent(eventId) {
 	
 }
 
-// 교육과정, 회원, 반려견 input 검증
-const baseSelect = document.getElementById('course-title'); // 기준 select
-const targetSelect1 = document.getElementById('account-name');
-const targetSelect2 = document.getElementById('pet-name');
-const targetSelect3 = document.getElementById('sched-step');
+// 교육과정, 회원, 반려견, 차시 input 검증
+const courseSelect = document.getElementById('course-title'); // 기준 select
+const accountSelect = document.getElementById('account-name');
+const petSelect = document.getElementById('pet-name');
+const schedStepSelect = document.getElementById('sched-step');
 
 let courseNo;
 let accountNo;
 let petNo;
 
-baseSelect.addEventListener('change', function() {
-	const form = document.querySelector('#modal-form');
-	form.querySelector('#pet-name').disabled = true;
+courseSelect.addEventListener('change', function() {
+	petSelect.disabled = true;
 	
-	courseNo = this.value;
-	console.log("courseNo: " + courseNo);
+	console.log("선택된 courseNo: " + this.value);
 	
 	if (this.value) { // 기준 select에 값이 선택되었는지 확인
-        targetSelect1.disabled = false;
-		
-		const accountName = document.getElementById('account-name');
+        accountSelect.disabled = false;
 		
 		// 비동기통신하여 option에 데이터 뿌리기
 		$.ajax({
@@ -315,37 +311,34 @@ baseSelect.addEventListener('change', function() {
 			type: 'get',
 			data: {
 				valueType: "courseNo",
-				courseNo: courseNo
+				courseNo: this.value
 			},
 			dataType: 'json',
 			success: function (data) {
 			    console.log("성공: ", data);
-                
-                let html = '<option value="" disabled selected>회원명 선택</option>';
-				data.jsonArr.forEach(json => {
-                    html += `<option value="${json.accountNo}">${json.accountName}</option>`;
+				
+				let html = '<option value="" disabled selected>회원명 선택</option>';
+				data.list.forEach(json => {
+                    html += `<option value="${json.account_no}">${json.account_name}</option>`;
                 });
 				
-				accountName.innerHTML = html;
+				accountSelect.innerHTML = html;
 			},
 			error: function (err) {
 			    console.log("에러: ", err);
 			}
 		});
     } else {
-        targetSelect1.disabled = true;
-        targetSelect1.value = ''; // 값 초기화
+        accountSelect.disabled = true;
+        accountSelect.value = ''; // 값 초기화
     }
 });
 
-targetSelect1.addEventListener('change', function() {
-	accountNo = this.value;
-	console.log("accountNo: " + accountNo);
+accountSelect.addEventListener('change', function() {
+	console.log("선택된 accountNo: " + this.value);
 	
 	if (this.value) { // 기준 select에 값이 선택되었는지 확인
-        targetSelect2.disabled = false;
-		
-		const petName = document.getElementById('pet-name');
+        petSelect.disabled = false;
 		
 		// 비동기통신하여 option에 데이터 뿌리기
 		$.ajax({
@@ -353,38 +346,35 @@ targetSelect1.addEventListener('change', function() {
 			type: 'get',
 			data: {
 				valueType: "accountNo",
-				courseNo: courseNo,
-				accountNo: accountNo
+				courseNo: courseSelect.value,
+				accountNo: this.value
 			},
 			dataType: 'json',
 			success: function (data) {
 			    console.log("성공: ", data);
 		        
 		        let html = '<option value="" disabled selected>반려견명 선택</option>';
-				data.jsonArr.forEach(json => {
-		            html += `<option value="${json.petNo}">${json.petName}</option>`;
+				data.list.forEach(json => {
+		            html += `<option value="${json.pet_no}">${json.pet_name}</option>`;
 		        });
 				
-				petName.innerHTML = html;
+				petSelect.innerHTML = html;
 			},
 			error: function (err) {
 			    console.log("에러: ", err);
 			}
 		});
     } else {
-        targetSelect2.disabled = true;
-        targetSelect2.value = ''; // 값 초기화
+        petSelect.disabled = true;
+        petSelect.value = ''; // 값 초기화
     }
 });
 
-targetSelect2.addEventListener('change', function() {
-	petNo = this.value;
-	console.log("petNo: " + petNo);
+petSelect.addEventListener('change', function() {
+	console.log("petNo: " + this.value);
 	
 	if (this.value) { // 기준 select에 값이 선택되었는지 확인
-		targetSelect3.disabled = false;
-    
-		const schedStep = document.getElementById('sched-step');
+		schedStepSelect.disabled = false;
 
 		// 비동기통신하여 option에 데이터 뿌리기
 		$.ajax({
@@ -392,25 +382,25 @@ targetSelect2.addEventListener('change', function() {
 			type: 'get',
 			data: {
 				valueType: "petNo",
-				courseNo: courseNo,
-				petNo: petNo
+				courseNo: courseSelect.value,
+				petNo: this.value
 			},
 			dataType: 'json',
 			success: function (data) {
 				console.log("성공: ", data);
 
 				let html = '<option value="" disabled selected>차시 선택</option>'
-				html += `<option value="${data.jsonArr[0].schedStep}" selected>${data.jsonArr[0].schedStep}</option>`;
+				html += `<option value="${data.schedStep}" selected>${data.schedStep}</option>`;
 				
-				schedStep.innerHTML = html;
+				schedStepSelect.innerHTML = html;
 			},
 			error: function (err) {
 			    console.log("에러: ", err);
 			}
 		});
     } else {
-        targetSelect2.disabled = true;
-        targetSelect2.value = ''; // 값 초기화
+        petSelect.disabled = true;
+        petSelect.value = ''; // 값 초기화
     }
 });
 // 모달 이벤트 리스너

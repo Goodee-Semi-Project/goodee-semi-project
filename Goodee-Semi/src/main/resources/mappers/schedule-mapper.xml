@@ -101,6 +101,13 @@
 		</where>
 	</select>
 	
+	<select id="selectScheduleListByClassNo" parameterType="com.goodee.semi.dto.PetClass" resultMap="scheduleResultMap">
+		SELECT * FROM schedule
+		<where>
+			class_no = #{classNo}
+		</where>
+	</select>
+	
 	<insert id="insert" parameterType="com.goodee.semi.dto.Schedule" useGeneratedKeys="true" keyProperty="schedNo">
 		INSERT INTO schedule (class_no, sched_step, sched_date, sched_start, sched_end)
 		VALUES (#{classNo}, #{schedStep}, #{schedDate}, #{schedStart}, #{schedEnd});
@@ -117,7 +124,7 @@
 			s.sched_no = #{schedNo}		
 		</where>
 	</select>
-
+	
 	<select id="selectScheduleListAttend" parameterType="com.goodee.semi.dto.Schedule" resultMap="scheduleResultMap">
 		SELECT sc.* ,cl.class_no ,cl.course_no ,co.title ,p.pet_no ,p.pet_name, account_name
 		FROM schedule sc
@@ -140,6 +147,13 @@
 		</where>
 	</update>
 	
+	<delete id="delete" parameterType="_int">
+		DELETE FROM schedule
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</delete>
+	
 	<delete id="deleteScheduleBySchedNo" parameterType="_int">
 		DELETE FROM schedule
 		WHERE sched_no = #{schedNo}
@@ -152,10 +166,4 @@
 			sched_no = #{schedNo}
 		</where>
 	</update>
-	<delete id="delete" parameterType="_int">
-		DELETE FROM schedule
-		<where>
-			sched_no = #{schedNo}
-		</where>
-	</delete>
 </mapper>

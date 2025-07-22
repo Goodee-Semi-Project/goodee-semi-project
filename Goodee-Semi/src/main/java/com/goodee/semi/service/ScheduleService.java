@@ -66,6 +66,10 @@ public class ScheduleService {
 		return dao.selectScheduleListAttend(schedule);
 	}
 
+	public int delete(int schedNo) {
+		return dao.delete(schedNo);
+	}
+
 	public int deleteScheduleBySchedNo(int schedNo) {
 		return dao.deleteScheduleBySchedNo(schedNo);
 	}
@@ -76,9 +80,6 @@ public class ScheduleService {
 	
 	public Schedule selectSchedule(int schedNo) {
 		return dao.selectSchedule(schedNo);
-	}
-	public int delete(int schedNo) {
-		return dao.delete(schedNo);
 	}
 
 }

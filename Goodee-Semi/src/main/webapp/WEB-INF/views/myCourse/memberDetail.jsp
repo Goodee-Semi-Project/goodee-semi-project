@@ -40,6 +40,7 @@
 					<td style="width: 25%">
 						<c:if test="${ not empty pet.attachNo }">
 							<img src="<c:url value='/filePath?no=${pet.attachNo}'/>" class="rounded-circle" alt="${course.title}" style="width : 70px; height : 70px; border-radius : 50% border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);" >
+							<p>${pet.attachNo}</p>
 						</c:if>
 					</td>
 					<td style="width: 25%">${ pet.petName } (${ pet.petBreed })<br>${ pet.petAge }세 / ${ pet.petGender }</td>

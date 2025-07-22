@@ -38,5 +38,5 @@ public class Course {
 	private List<Pet> petList;
 	private int petInCourseCount;
 	private int petNo;
-
+	private int classNo;
 }

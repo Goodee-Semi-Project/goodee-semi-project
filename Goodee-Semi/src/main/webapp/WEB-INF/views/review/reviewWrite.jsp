@@ -16,29 +16,36 @@
 	<h1>후기 작성</h1>
 	<form id="write" method="post">
 		<div>
-			<label for="classNo">수료 목록</label>
-			<select name="classNo">
-				<option value="-1">선택</option>
-				<!-- SJ: 수강 진도 확인 하기 -->
-				<c:forEach var="c" items="${ list }">
-					<option value="${ c.classNo }">${ c.petName } - ${ c.courseTitle }</option>
-				</c:forEach>
-			</select>
-			<label for="title">제목</label>
-			<input type="text" name="title">
-		</div>
-		<div></div>
-		<div>
-			<textarea rows="30" cols="100" name="content" spellcheck="false" style="resize: none;"></textarea>
-		</div>
-		<div>
-			<!-- SJ: 우선은 첨부파일은 1개 -->
-			<input type="file" name="attach">
-			
+			<div class="m-1">
+				<label class="mr-2" for="classNo">목록</label>
+				<select class="rounded" name="classNo">
+					<option value="-1">선택</option>
+					<!-- SJ: 수강 진도 확인 하기 -->
+					<c:forEach var="c" items="${ list }">
+						<option value="${ c.classNo }">${ c.petName } - ${ c.courseTitle }</option>
+					</c:forEach>
+				</select>
+			</div>
+			<div class="m-1">
+				<label class="mr-2" for="title">제목</label>
+				<input class="w-75 form-control rounded d-inline-block" type="text" name="title">
+			</div>
 		</div>
 		<div>
-			<a href="<c:url value='/review/list' />">목록</a>
-			<button>등록하기</button>
+			<textarea class="border w-100 rounded p-3" id="content" name="content" spellcheck="false" style="resize: none;"></textarea>
+		</div>
+		<div>
+			<div class="d-flex justify-content-end">
+				<!-- SJ: 우선은 첨부파일은 1개 -->
+				<label class="btn btn-info px-2 py-1" for="attach">이미지 첨부</label>
+				<input type="file" class="d-none" name="attach">
+			</div>
+		</div>
+		<div>
+			<div class="d-flex justify-content-between">
+				<a class="btn btn-primary px-2 py-1" href="<c:url value='/review/list' />">목록</a>
+				<button class="btn btn-success px-2 py-1">등록하기</button>
+			</div>
 		</div>
 	</form>
 </main>
@@ -46,6 +53,17 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+	const DEFAULT_HEIGHT = 30;
+	
+	const $textarea = document.querySelector('#content');
+	
+	$textarea.oninput = (event) => {
+		const $target = event.target;
+	
+		$target.style.height = 0;
+		$target.style.height = DEFAULT_HEIGHT + $target.scrollHeight + 'px';
+	};
+
 	$('#write').submit(function(e) {
 		e.preventDefault();
 		
