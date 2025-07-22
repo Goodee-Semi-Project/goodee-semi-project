@@ -1,9 +1,9 @@
 package com.goodee.semi.controller;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
-
-import org.checkerframework.checker.units.qual.s;
 
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Schedule;
@@ -38,8 +38,21 @@ public class AttendDetailServlet extends HttpServlet {
 		List<Schedule> scheduleList = scheduleService.selectScheduleListAttend(schedule);
 		Attach petAttach = petService.selectAttachByPetNo(petNo);
 		
+		// 출석 기록이 없을 경우
 		if(scheduleList.size() == 0) {
 			scheduleList = null;
+		}
+		
+		// 교육진행시간 문자열 리스트로 변환
+		if(scheduleList != null) {
+			List<String> startEndList = new ArrayList<>();
+			DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
+			for (Schedule s : scheduleList) {
+				String start = s.getSchedStart().format(timeFmt);
+				String end = s.getSchedEnd().format(timeFmt);
+				startEndList.add(start + " ~ <br>" + end);
+			}
+			request.setAttribute("startEndList", startEndList);
 		}
 		
 		request.setAttribute("scheduleList", scheduleList);
