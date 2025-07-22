@@ -1,11 +1,3 @@
-// '추가 등록' 버튼을 눌렀을 때 리스트에 등록되고 등록된 지점으로 페이지 이동
-// 정보를 수정할 수 있도록 정보가 input 안에 표시됨 & 이미지 테두리선 색깔이 생김 
-// & '수정', '삭제' 버튼이 '수정사항 저장'으로 바뀜
-// 수정사항 저장 시 유효성 검사
-// 유효성 검사 통과시: '수정되었습니다' 라는 메시지 창이 뜨고, '확인'을 누르면 메시지 창 사라짐
-
-// TODO 반려견 이미지 등록하지 않을 시 기본 이미지 띄우기
-
 //============================= 파일 업로드 검증 =============================
 const petImgInputs = document.querySelectorAll('input[name="petImg"]');
 petImgInputs.forEach(input => validatePetImgData(input));
@@ -137,8 +129,6 @@ function editPetEvent(petLi) {
     const btnSaveHtml = '<button type="button" class="pet-btn-save btn btn-success" style="padding: 5px 10px;">적용</button>';
     petBtn.innerHTML = btnSaveHtml;
 
-    // TODO 반려견 이미지 삭제 기능 추가
-
     // 4. 반려견 이미지 img 클릭 시 input:file의 클릭 이벤트(파일 선택창 열기)를 발생시킴
     const imgClickEvent = imageClick(petImg, petImgInput);
 
@@ -168,8 +158,6 @@ function editPetEvent(petLi) {
 		const selectedFile = petImgInput.files && petImgInput.files[0] ? petImgInput.files[0] : null;
 		
         const formData = createFormData(petName, petAge, petGender, petBreed, petNo, accountNo, selectedFile);
-
-        // TODO 정보, 사진 유효성 검사 추가하기
 
         // (2) ajax
         $.ajax({
