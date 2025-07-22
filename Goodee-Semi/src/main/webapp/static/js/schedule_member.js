@@ -30,7 +30,6 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 		console.log(successCallback);
 		console.log(failureCallback);
 		
-        // TODO 아래의 ajax에 응답해주는 서블릿 구현
 		$.ajax({
             url: '/schedule/list',
             type: 'post',
