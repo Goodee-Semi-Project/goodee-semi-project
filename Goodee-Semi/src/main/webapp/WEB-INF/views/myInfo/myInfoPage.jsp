@@ -11,106 +11,141 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/include/header.jsp" %>
-<%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
-
-<main>
-	<section class="">
-		<h1>회원 정보</h1>
-		<h2></h2>
-	</section>
+	<%@ include file="/WEB-INF/views/include/header.jsp" %>
+	<%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
 	
-	<section class="">
-		<form id="editDetail" method="post">
-			<div>
-				<span>${ accountDetail.name }</span>
-			</div>
-			<div>
-				<!-- SJ: 출생년 앞자리 -->
-				<c:if test="${ accountDetail.birth.substring(0, 2) } le "></c:if>
-				<span>${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일</span>
-			</div>
-			<div>
-				<c:choose>
-					<c:when test="${ not empty attach }">
-						<img alt="profile-img" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
-						<br>
-					</c:when>
-					<c:otherwise>
-						<!-- NOTE: 공통 사용 이미지로 -->
-						<img alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"/>
-						<br>
-					</c:otherwise>
-				</c:choose>
-			</div>
-			<div>
-				<label for="attach">프로필 이미지 변경: </label>
-				<input type="file" name="attach">
-			</div>
-			<div>
-				<label for="removeImg">프로필 이미지 삭제: </label>
-				<%-- <input type="button" name="removeImg" onclick="removeImg(${ accountDetail.accountNo })"> --%>
-				<button type="button" type="button" onclick="removeImg(${ accountDetail.accountNo })">
-					삭제
-				</button>
-			</div>
-			<div>
-				<!-- 셀렉트로 입력 받기 -->
-				<select id="gender" name="gender">
-					<c:choose>
-						<c:when test="${ accountDetail.gender eq 'M'.charAt(0) }">
-							<option value="M" selected>남자</option>
-							<option value="F">여자</option>
-						</c:when>
-						<c:otherwise>
-							<option value="M">남자</option>
-							<option value="F" selected>여자</option>
-						</c:otherwise>
-					</c:choose>
-				</select>
-				<%-- <input type="text" placeholder="성별" value="${ accountDetail.gender }" name="gender" id="gender"> --%>
-			</div>
-			<div>
-				<input type="text" placeholder="이메일" value="${ accountDetail.email }" name="email" id="email">
-			</div>
-			<div>
-				<input type="text" placeholder="전화번호" value="${ accountDetail.phone }" name="phone" id="phone">
-			</div>
-			<div>
-				<input type="text" placeholder="우편번호" value="${ accountDetail.postNum }" name="postNum" id="postNum" readonly="readonly">
-				<button id="findPost" type="button">우편번호 찾기</button>
-			</div>
-			<div>
-				<input type="text" placeholder="주소" value="${ accountDetail.address }" name="address" id="address" readonly="readonly">
-			</div>
-			<div>
-				<input type="text" placeholder="상세 주소" value="${ accountDetail.addressDetail }" name="addressDetail" id="addressDetail">
-			</div>
-			<button>변경 저장</button>
-		</form>
+	<!-- 모달 창 -->
+	<div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 700px;">
+	    <div class="modal-content">
+	      <div class="modal-header border-bottom-0">
+	        <button type="button" class="close" data-dismiss="modal">
+	          <span>&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body text-center">
+	        <h3 class="tab-title mb-2">회원 탈퇴</h3>
+	        <p>
+	        	<span>탈퇴 전 확인해주세요</span>
+	        </p>
+	        <ul>
+	        	<li>등록한 반려견의 정보는 모두 삭제됩니다.</li>
+	        	<li>회원 탈퇴 후 같은 아이디로 재가입할 수 없습니다.</li>
+	        	<li>작성한 글은 자동으로 삭제되지 않으며, 탈퇴 이후 수정 및 삭제가 불가능합니다.</li>
+	        	<li>온라인으로 수료증 및 수강확인증 발급이 불가능하며,<br>추가 발급을 원하시는 경우 훈련소로 직접 방문해야 합니다.</li>
+	        </ul>
+	        
+	        <input class="form-control mt-4 mb-2" style="width: 60%; margin: 0 auto;" type="password" id="checkPw" placeholder="탈퇴하시려면 사용중인 비밀번호를 입력해주세요.">
+	      </div>
+	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
+	        <button type="button" id="dropOut" class="btn btn-danger" style="padding: 5px 10px;">탈퇴</button>
+	        <button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;" data-dismiss="modal">취소</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 모달 창 종료 -->
+	
+	
+	<section style="position: relative;">
+		<div>
+			<form id="editDetail" method="post">
+				<fieldset class="p-4">
+				
+					<div style="display: flex; align-items: center; width: 100%;">
+						<c:choose>
+							<c:when test="${ not empty attach }">
+								<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da;" id="preview" alt="profile-img" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+							</c:when>
+							<c:otherwise>
+								<!-- NOTE: 공통 사용 이미지로 -->
+								<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da;" id="preview" alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"/>
+							</c:otherwise>
+						</c:choose>
+				
+						<label for="attach" class="btn btn-outline-secondary" style="padding: 2px 5px; margin: 0 5px 0 0;">
+					  	<span style="width: 100px; font-size: 12px;">수정</span>
+						</label>
+						<button type="button" class="btn btn-outline-secondary" style="padding: 2px 5px;" onclick="removeImg(${ accountDetail.accountNo })"><span style="width: 100px; font-size: 12px;">삭제</span></button>
+						<input type="file" id="attach" name="attach" onchange="readURL(this)" style="opacity: 0; width: 0%;">
+					</div>
+					
+					<div class="mb-2" style="width: 50%; display: flex; align-items: center;">
+			      <input class="form-control" style="width: 48%;" type="text" value="${ accountDetail.name }" readonly>
+			      <div style="margin-left: 30px;">
+			        <label for="gender" style="margin: 0 20px 0 0;">성별</label>
+				      <select id="gender" name="gender">
+								<c:choose>
+									<c:when test="${ accountDetail.gender eq 'M'.charAt(0) }">
+										<option value="M" selected>남</option>
+										<option value="F">여</option>
+									</c:when>
+									<c:otherwise>
+										<option value="M">남</option>
+										<option value="F" selected>여</option>
+									</c:otherwise>
+								</c:choose>
+							</select>
+			      </div>             
+			    </div>
+			    
+			    <div class="mb-1" style="width: 50%; display: flex; justify-content: space-between; align-items: center;">
+			      <input class="form-control" style="width: 48%;" type="text" value="${ accountDetail.birth.substring(0, 2) }년 ${ accountDetail.birth.substring(2, 4) }월 ${ accountDetail.birth.substring(4, 6) }일" readonly>
+			      <input class="form-control ml-2" style="width: 48%;" type="text" id="phone" name="phone" value="${ accountDetail.phone }" placeholder="전화번호" required>
+			    </div>
+			    <input class="form-control mb-3" style="width: 50%;" type="email" id="email" name="email" value="${ accountDetail.email }" placeholder="이메일" required>
+			    
+			    <div class="mb-2" style="width: 50%; display: flex; align-items: center;">
+			      <input class="form-control" style="width: 40%;" type="text" id="postNum" name="postNum" value="${ accountDetail.postNum }" placeholder="우편번호" readonly>
+			      <button type="button" class="btn btn-outline-secondary" style="padding: 2px 5px; font-size: 12px; margin-left: 20px;" id="findPost">주소 변경</button>
+			    </div>
+			    <input class="form-control mb-2" style="width: 50%;" type="text" id="address" name="address" value="${ accountDetail.address }" placeholder="주소" readonly>
+			    <input class="form-control mb-2" style="width: 50%;" type="text" id="addressDetail" name="addressDetail" value="${ accountDetail.addressDetail }" placeholder="상세주소">
+				
+					<button type="submit" class="btn btn-primary mt-3" >회원정보 변경</button>
+				</fieldset>
+			</form>
+			
+			<button type="button" onclick="openDeleteAccountModal()" class="btn btn-danger" style="padding: 2px 5px; margin-left: 24px;">회원 탈퇴</button>	
+		</div>
 		
+		<div style="width: 250px; position: absolute; top: 30%; right: 5%;">
+			<form id="editPw">
+				<h3 class="mb-4">비밀번호 변경</h3>
+				<input class="form-control mb-3" type="password" id="currentPw" placeholder="현재 비밀번호" required>
+				<input class="form-control mb-3" type="password" id="newPw" placeholder="새 비밀번호" required>
+	      <input class="form-control mb-3" type="password" id="newPwCheck" placeholder="새 비밀번호 확인" required>
+	      <button type="submit" class="btn btn-primary mt-3" >비밀번호 변경</button>
+			</form>
+		</div>
+		
+			
 	</section>
+
+
 	
-	<section class="">
-		<form id="editPw">
-			<div>
-				<input type="password" placeholder="현재 비밀번호" id="currentPw">
-			</div>
-			<div>
-				<input type="password" placeholder="새 비밀번호" id="newPw">
-			</div>
-			<div>
-				<input type="password" placeholder="새 비밀번호 확인" id="newPwCheck">
-			</div>
-			<button>변경 저장</button>
-		</form>
-	</section>
-	<a href="/myInfo/inactive">회원 탈퇴</a>
-</main>
+
 
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+	function openDeleteAccountModal() {
+		$("#deleteAccountModal").modal("show");
+	}
+
+	function readURL(input) {
+	  if (input.files && input.files[0]) {
+	    const reader = new FileReader();
+	    
+	    reader.onload = function(event) {
+	      document.getElementById('preview').src = event.target.result;
+	    };
+	    
+	    reader.readAsDataURL(input.files[0]);
+	  } else {
+	    document.getElementById('preview').src = "";
+	  }
+	}
 
 	function removeImg(accountNo) {
 		if (confirm('프로필 사진을 삭제합니다.')) {
@@ -239,6 +274,36 @@
 						alert(data.res_msg);
 						if (data.res_code == 200) {
 							location.href = "<%= request.getContextPath() %>/myInfo";
+						}
+					},
+					error : function(data) {
+						alert('요청 실패');
+					}
+				});
+			}
+		}
+	});
+	
+	$('#dropOut').on("click", function(e) {
+		e.preventDefault();
+		
+		const checkPw = $('#checkPw').val().trim();
+		
+		if(!checkPw) {
+			alert('비밀 번호를 입력하세요.');
+		} else {
+			if (confirm('탈퇴하시겠습니까?')) {
+				$.ajax({
+					url : '/myInfo/inactive',
+					type : 'post',
+					data : {
+						checkPw : checkPw
+					},
+					dataType : 'json',
+					success : function(data) {
+						alert(data.res_msg);
+						if (data.res_code == 200) {
+							location.href="<%= request.getContextPath() %>/";
 						}
 					},
 					error : function(data) {

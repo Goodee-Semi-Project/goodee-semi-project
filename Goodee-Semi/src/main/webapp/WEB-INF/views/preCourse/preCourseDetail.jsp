@@ -16,6 +16,7 @@
 		<h1>사전학습 세부 정보</h1>
 		<input type="text" id="author" value="${ loginAccount.author }" hidden>
 		<input type="text" id="preNo" value="${ preCourse.preNo }" hidden>
+		<input type="text" id="lastTime" value="${ watchLen }" hidden>
 		<c:if test="${ petNo ne -1 }">
 			<input type="text" id="petNo" value="${ petNo }" hidden>
 		</c:if>
@@ -36,11 +37,19 @@
 		</div>
 		<div>
 			<a href="/preCourse/list">목록</a>
-			<button id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'" disabled>학습 완료</button>
+			<c:choose>
+				<c:when test="${ loginAccount.author eq 1 }">
+					<button id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'">퀴즈 목록</button>
+				</c:when>
+				<c:otherwise>
+					<button id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'" <c:if test="${ preProgress.preProg ne 100 }"> disabled </c:if> >학습 완료</button>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<c:if test="${ loginAccount.author eq 1 }">
 			<div>
 				<a href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
+				<button onclick="deletePre()">삭제하기</button>
 			</div>
 		</c:if>
 	</main>
@@ -49,41 +58,56 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 
-	const vid = document.querySelector('#preVideo');
-	let lastTime = 0;
-	
-	vid.onseeked = function() {
-		if (vid.currentTime > lastTime) {
-			vid.currentTime = lastTime;
+if ($('#author').val() != 1) {
+	$(function() {
+		
+		const vid = document.querySelector('#preVideo');
+		let lastTime = 0;
+		console.log($('#lastTime').val());
+		if ($('#lastTime').val()) {
+			lastTime = $('#lastTime').val();
 		}
-	}
-	
-	vid.onseeking = function() {
-		if (vid.currentTime > lastTime) {
-			vid.currentTime = lastTime;
+		
+		vid.onloadeddata  = function() {
+			if (lastTime > 0 && confirm('이어보기')){
+				vid.play();
+				vid.currentTime = lastTime - 0.1;
+			}
 		}
-	}
-	
-	vid.ontimeupdate = function() {
-		if (vid.currentTime > lastTime + 1) {
-			vid.currentTime = lastTime;
-		} else if (vid.currentTime > lastTime) {
-			lastTime = vid.currentTime;
+		
+		vid.onseeked = function() {
+			if (vid.currentTime > lastTime) {
+				vid.currentTime = lastTime;
+			}
 		}
-	}
-	
-	vid.onended = function() {
-		$('#test').removeAttr('disabled');
-	}
-	
-	// TODO: beforeunload, popstate 이벤트로 시청 시간 보내기
-$(function() {
-	onbeforeunload = function(event) {
-		// event.preventDefault();
-		if ($('#author').val() != 1) {
+		
+		vid.onseeking = function() {
+			if (vid.currentTime > lastTime) {
+				vid.currentTime = lastTime;
+			}
+		}
+		
+		vid.ontimeupdate = function() {
+			if (vid.currentTime > lastTime + 1) {
+				vid.currentTime = lastTime;
+			} else if (vid.currentTime > lastTime) {
+				lastTime = vid.currentTime;
+			}
+		}
+		
+		vid.onended = function() {
+			$('#test').removeAttr('disabled');
+		}
+		
+		// TODO: beforeunload, popstate 이벤트로 시청 시간 보내기
+		onbeforeunload = function(event) {
+			if (lastTime < 1) {
+				lastTime = $('#lastTime').val();
+			}
 			const preNo = $('#preNo').val();
 			const videoLen = $('#videoLen').text();
 			const petNo = $('#petNo').val();
+			
 			$.ajax({
 				url : '/preCourse/detail',
 				type : 'post',
@@ -95,8 +119,8 @@ $(function() {
 				},
 				dataType : 'json',
 				success : function(data) {
-					if (data.res_code != 200) {
-						event.returnValue = '진행 상황이 저장되지 않았습니다.';
+					if (data.res_code == 500) {
+						event.preventDefault();
 						alert(data.res_msg);
 					}
 				},
@@ -104,10 +128,35 @@ $(function() {
 					saveState = false;
 				}
 			});
+		};
+			
+	})
+} else {
+	function deletePre() {
+		if (confirm('정말 삭제하시겠습니까?')) {
+			const preNo = $('#preNo').val();
+			const attachNo = $('#attachNo').val();
+			
+			$.ajax({
+				url : '/preCourse/delete',
+				type : 'post',
+				data : {
+					preNo : preNo
+				},
+				dataType : 'json',
+				success : function(data){
+					alert(data.res_msg);
+					if (data.res_code == 200) {
+						location.href="<%= request.getContextPath() %>/preCourse/list";
+					}
+				},
+				error : function(data) {
+					alert('요청 실패');
+				},
+			});
 		}
-		
-	};
-})
+	}
+}
 </script>
 </body>
 </html>

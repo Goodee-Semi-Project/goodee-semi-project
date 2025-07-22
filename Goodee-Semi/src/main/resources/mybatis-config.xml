@@ -28,5 +28,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="/mappers/class-mapper.xml"/>
 		<mapper resource="/mappers/schedule-mapper.xml"/>
 		<mapper resource="/mappers/preprogress-mapper.xml"/>
+		<mapper resource="/mappers/pretest-mapper.xml"/>
 	</mappers>
 </configuration>

@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.Like;
 import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.AccountService;
 import com.goodee.semi.service.CourseService;
@@ -43,6 +44,17 @@ public class CourseDetailServlet extends HttpServlet {
 			List<Pet> myPetList = petService.selectPetList(pet);
 			
 			request.setAttribute("myPetList", myPetList);
+			
+			Like like = new Like();
+			like.setCourseNo(course.getCourseNo());
+			like.setAccountNo(account.getAccountNo());
+			
+			Like resultLike = courseService.selectLike(like);
+			
+			if (resultLike != null) {
+				request.setAttribute("isLike", "Y");
+			} 
+			
 		}
 		
 		request.setAttribute("course", course);
