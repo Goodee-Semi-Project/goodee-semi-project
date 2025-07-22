@@ -17,8 +17,8 @@
 	<form id="write" method="post">
 		<div>
 			<div class="m-1">
-				<label class="mr-2" for="classNo">목록</label>
-				<select class="w-50 rounded" name="classNo">
+				<label class="mr-2" for="classNo">[목록] </label>
+				<select class="w-75 rounded" name="classNo">
 					<option value="-1">선택</option>
 					<!-- SJ: 수강 진도 확인 하기 -->
 					<c:forEach var="c" items="${ list }">
@@ -27,12 +27,12 @@
 				</select>
 			</div>
 			<div class="m-1">
-				<label class="mr-2" for="title">제목</label>
+				<label class="mr-2" for="title">[제목] </label>
 				<input class="w-75 form-control rounded d-inline-block" type="text" name="title">
 			</div>
 		</div>
 		<div>
-			<textarea class="border w-100 rounded p-3 overflow-hidden" id="content" name="content" spellcheck="false" style="resize: none;"></textarea>
+			<textarea class="border w-100 rounded p-3 overflow-hidden" id="content" name="content" spellcheck="false" style="height: 300px; resize: none;"></textarea>
 		</div>
 		<div>
 			<div class="d-flex justify-content-end">
@@ -58,7 +58,7 @@
 	$textarea.oninput = (event) => {
 		const $target = event.target;
 	
-		$target.style.height = '202px';
+		$target.style.height = '302px';
 		$target.style.height = $target.scrollHeight + 'px';
 	};
 

@@ -16,8 +16,8 @@
 	<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
 		<div class="border rounded px-2 py-1">
 			<input type="text" id="answer${ i }" value="${ list[i].testAnswer }" hidden>
-			<p class="border-bottom pb-2" style="font-size: 20px;">${ list[i].testContent }</p>
-			<div class="d-flex flex-column">
+			<p class="border-bottom p-2" style="font-size: 20px;">${ list[i].testContent }</p>
+			<div class="d-flex flex-column p-2">
 				<label>
 					<input type="radio" name="quiz${ i }" value="one">
 					${ list[i].one }
