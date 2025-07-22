@@ -16,7 +16,7 @@
 	<h1>사전 학습 수정</h1>
 	
 	<form id="edit" method="post">
-		<input type="text" name="preNo" value="${ preCourse.preNo }" hidden>
+		<input type="text" id="preNo" name="preNo" value="${ preCourse.preNo }" hidden>
 		<div>
 			<select name="courseNo">
 				<c:forEach var="c" items="${ courseList }">
@@ -34,7 +34,41 @@
 			<input type="text" name="videoLen" value="${ preCourse.videoLen }" readonly>
 		</div>
 	
-		<!-- SJ: 퀴즈 추가 -->
+		<!-- SJ: 퀴즈 추가 --><div>
+		<span>퀴즈 추가</span>
+			<button type="button" onclick="addTest()">+</button>
+		</div>
+		<input type="text" id="count" name="size" value="${ list.size() }" hidden>
+		<div id="testPart">
+			<c:if test="${ not empty list }">
+				<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
+					<div id="test${ i }">
+						<input type="text" id="test${ i }No" name="test${ i }No" value="${ list[i].testNo }" hidden>
+						<input type="text" name="answer${ i }" value="${ list[i].testAnswer }" hidden>
+						<textarea rows="30" cols="100" name="content${ i }" spellcheck="false" style="resize: none;">${ list[i].testContent }</textarea>
+						<br>
+						<label>
+							<input type="radio" name="quiz${ i }" value="one" <c:if test="${ list[i].testAnswer eq 'one' }">checked</c:if> >
+							<input type="text" name="one${ i }" value="${ list[i].one }">
+						</label>
+						<label>
+							<input type="radio" name="quiz${ i }" value="two" <c:if test="${ list[i].testAnswer eq 'two' }">checked</c:if> >
+							<input type="text" name="two${ i }" value="${ list[i].two }">
+						</label>
+						<label>
+							<input type="radio" name="quiz${ i }" value="three" <c:if test="${ list[i].testAnswer eq 'three' }">checked</c:if> >
+							<input type="text" name="three${ i }" value="${ list[i].three }">
+						</label>
+						<label>
+							<input type="radio" name="quiz${ i }" value="four" <c:if test="${ list[i].testAnswer eq 'four' }">checked</c:if> >
+							<input type="text" name="four${ i }" value="${ list[i].four }">
+						</label>
+						<button type="button" onclick="remove(${ i })">퀴즈 삭제</button>
+					</div>
+					<br>
+				</c:forEach>
+			</c:if>
+		</div>
 		
 		<button>수정</button>
 	</form>
@@ -44,8 +78,46 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+	let i = document.querySelector('#count').value;
+	function addTest() {
+		html =`<%@ include file="/WEB-INF/views/preCourse/preTest.jsp" %>`;
+		document.querySelector('#testPart').innerHTML += html;
+		document.querySelector('#count').value = ++i;
+	}
+	
+	function remove(num) {
+		if (confirm('퀴즈를 삭제합니다. 퀴즈 삭제는 즉시 반영됩니다.')) {
+			
+			const testNo = $('#test' + num + 'No').val();
+			
+			console.log(testNo);
+			
+			$.ajax({
+				url : '/preTest/delete',
+				type : 'post',
+				data : {
+					testNo : testNo
+				},
+				dataType : 'json',
+				success : function(data) {
+					alert(data.res_msg);
+					if (data.res_code == 200) {
+						location.href="<%= request.getContextPath() %>/preCourse/edit?no=" + $('#preNo').val();
+					}
+				},
+				error : function(data) {
+					alert('요청 실패');
+				},
+			});
+			
+			document.querySelector('#test' + num).remove();
+		}
+	}
+
 	$('#edit').submit(function(e) {
 		e.preventDefault();
+		
+		console.log(i);
 		
 		const form = document.querySelector('#edit');
 		const formData = new FormData(form);
@@ -53,6 +125,20 @@
 		const courseNo = formData.get('courseNo');
 		const title = formData.get('title');
 		const preNo = formData.get('preNo');
+		
+		for (let j = 0; j < i; j++) {
+			if (!formData.get('content' + j)) {
+				alert('테스트 내용을 입력해주세요.');
+				return;
+			} else if (!formData.get('one' + j) || !formData.get('two' + j)
+					|| !formData.get('three' + j) || !formData.get('four' + j)) {
+				alert('선택지 내용을 입력해주세요.');
+				return;
+			} else if (!formData.get('quiz' + j)) {
+				alert('정답을 골라주세요');
+				return;
+			}
+		}
 		
 		// TODO: 첨부파일 등록 확인하기
 		if (!courseNo) {
