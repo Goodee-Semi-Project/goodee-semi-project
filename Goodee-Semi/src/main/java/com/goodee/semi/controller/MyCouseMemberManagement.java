@@ -24,7 +24,7 @@ public class MyCouseMemberManagement extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		
 		Account account = (Account)session.getAttribute("loginAccount");
 		if(account == null || account.getAuthor() != 1) {

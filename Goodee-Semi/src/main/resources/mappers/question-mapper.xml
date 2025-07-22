@@ -37,17 +37,17 @@
 			</when>
 		</choose>
 		<choose>
+			<when test="orderBy == 0">
+				ORDER BY q.quest_mod DESC
+			</when>
 			<when test="orderBy == 1">
-				ORDER BY q.quest_no ASC
+				ORDER BY q.quest_mod DESC
 			</when>
 			<when test="orderBy == 2">
-				ORDER BY q.quest_reg DESC
-			</when>
-			<when test="orderBy == 3">
-				ORDER BY q.quest_no ASC
+				ORDER BY q.quest_mod ASC
 			</when>
 			<otherwise>
-				ORDER BY q.quest_no ASC
+				ORDER BY q.quest_mod DESC
 			</otherwise>
 		</choose>
 		LIMIT #{limitPageNo},#{numPerPage}
