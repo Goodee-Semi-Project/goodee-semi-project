@@ -12,10 +12,6 @@ public class AnswerService {
 	QuestionDao questionDao = new QuestionDao();
 	AnswerDao answerDao = new AnswerDao();
 	
-	public Question selectOneQuest(int questNo) {
-		return questionDao.selectOneQuest(questNo);
-	}
-	
 	public int insertAnswer(int accountNo, int questNo, String answerContent) {
 		Answer answer = new Answer();
 		answer.setAccountNo(accountNo);

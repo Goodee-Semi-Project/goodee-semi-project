@@ -81,7 +81,8 @@
 			c.course_no, 
 			c.class_no AS class_no,
 			at.attach_no AS attach_no, 
-			a.account_name AS account_name
+			a.account_name AS account_name,
+			a.account_no AS account_no
 		FROM pet p
 		JOIN class c ON p.pet_no = c.pet_no
 		JOIN (
@@ -148,5 +149,12 @@
 	<select id="countTotalPetNo" resultType="_int">
 		SELECT COUNT(pet_no)
 		FROM pet
+	</select>
+	
+	<select id="selectAttachByPetNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM pet p
+		LEFT JOIN attachment at ON p.pet_no = at.pk_no
+		WHERE at.pk_no = #{petNo} AND type_no = 2	
 	</select>
 </mapper>
