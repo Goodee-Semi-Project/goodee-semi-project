@@ -44,10 +44,13 @@ public class PreCourseDao {
 		return session.insert("com.goodee.semi.mapper.PreCourseMapper.updatePreCourse", preCourse);
 	}
 
-	public int deleteAttach(Attach attach) {
-		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+	public int deleteAttach(SqlSession session, Attach attach) {
 		int result = session.delete("com.goodee.semi.mapper.PreCourseMapper.deleteAttach", attach);
 		return result;
+	}
+
+	public int deleteOne(SqlSession session, int preNo) {
+		return session.delete("com.goodee.semi.mapper.PreCourseMapper.deleteOne", preNo);
 	}
 
 }
