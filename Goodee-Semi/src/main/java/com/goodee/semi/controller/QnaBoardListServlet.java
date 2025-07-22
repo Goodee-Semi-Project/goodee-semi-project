@@ -45,6 +45,10 @@ public class QnaBoardListServlet extends HttpServlet {
 		question.setTotalData(totalData);
 		
 		List<Question> questionList = service.selectAllQuestionList(question);
+		for (Question q : questionList) {
+			String newDate = q.getQuestReg().substring(0, 10);
+			q.setQuestReg(newDate);
+		}
 		
 		request.setAttribute("question", question);
 		request.setAttribute("questionList", questionList);

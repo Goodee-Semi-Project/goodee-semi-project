@@ -6,6 +6,40 @@
 
 // TODO 반려견 이미지 등록하지 않을 시 기본 이미지 띄우기
 
+//============================= 파일 업로드 검증 =============================
+const petImgInputs = document.querySelectorAll('input[name="petImg"]');
+petImgInputs.forEach(input => validatePetImgData(input));
+
+function validatePetImgData(input) {
+    // 1. input 안의 내용이 바뀔때마다 검증해야 함 => input[name="petImg"]에 change 이벤트리스너 추가
+    input.addEventListener('change', () => {
+        // 2. target 안의 file[0] 받아오기
+        const file = input.files[0];
+
+        // 3. 허용되지 않는 파일이 들어가있다면 target 안에 있는 value를 초기화
+        const allowedTypes = ['image/png', 'image/jpeg'];
+
+        console.log("[validatePetImgData] 업로드 된 파일 타입: ", file.type)
+        console.log("[validatePetImgData] 업로드 된 파일 크기: ", file.type)
+        
+        if(!allowedTypes.includes(file.type)) {
+            alert('PNG, JPG, JPEG 파일만 업로드 가능합니다.');
+            input.value = '';
+
+            return;
+        }
+        
+        if(file.size > 5 * 1024 * 1024) { // 파일 크기를 5MB로 제한
+            alert('파일 크기는 5MB 이하여야 합니다.');
+            input.value = '';
+
+            return;
+        }
+
+        console.log('파일 업로드 검증 통과');
+    });
+}
+
 //============================= 공통 함수 =============================
 
 // input의 disabled 속성 제거 함수
@@ -87,7 +121,6 @@ function editPetEvent(petLi) {
     const petBtn = petLi.querySelector('.pet-btn');
     const petImg = petLi.querySelector('.pet-img');
     const petImgInput = petLi.querySelector('.pet-img-input');
-    const form = petLi.querySelector('form');
 	const petGenderSelect = petLi.querySelector('.pet-gender');
 	const petGender = petGenderSelect.value;
     
@@ -125,14 +158,16 @@ function editPetEvent(petLi) {
         const petBreed = petLi.querySelector('.pet-breed').value.trim();
         const petNo = petLi.querySelector('.pet-no').value;
         const accountNo = petLi.querySelector('.account-no').value;
-        
+
         // 유효성 검사
         if (!validatePetData(petName, petAge, petGender, petBreed)) {
             return;
         }
         
+        // 파일 유효성 검사 및 파일데이터 받아오기
 		const selectedFile = petImgInput.files && petImgInput.files[0] ? petImgInput.files[0] : null;
-		const formData = createFormData(petName, petAge, petGender, petBreed, petNo, accountNo, selectedFile);
+		
+        const formData = createFormData(petName, petAge, petGender, petBreed, petNo, accountNo, selectedFile);
 
         // TODO 정보, 사진 유효성 검사 추가하기
 
