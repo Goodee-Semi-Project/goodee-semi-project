@@ -106,7 +106,7 @@ public class ScheduleListServlet extends HttpServlet {
 			prop.put("start", sched.getSchedStart().format(formatDateTime));
 			prop.put("end", sched.getSchedEnd().format(formatDateTime));
 			
-			prop.put("title", "(" + sched.getCourseTitle() + ") " + sched.getAccountName() + "-" + sched.getPetName());
+			prop.put("title", "(" + sched.getCourseTitle() + ") " + sched.getAccountName() + "-" + sched.getPetName() + " " + sched.getSchedStep() + "차시");
 			
 			jsonArr.add(prop);
 		}

@@ -1,5 +1,6 @@
 package com.goodee.semi.service;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -52,10 +53,23 @@ public class ReviewService {
 	public int deleteReview(int reviewNo) {
 		int result = reviewDao.deleteReview(reviewNo);
 		
-		Attach attach = new Attach();
-		attach.setTypeNo(Attach.REVIEW);
-		attach.setPkNo(reviewNo);
-		reviewDao.deleteAttach(attach);
+		if (result > 0) {
+			Attach attach = new Attach();
+			attach.setTypeNo(Attach.REVIEW);
+			attach.setPkNo(reviewNo);
+
+			Attach preAttach = reviewDao.selectAttachByReviewNo(reviewNo);
+			
+			if (preAttach != null) {
+				result = reviewDao.deleteAttach(attach);
+				
+				String filePath = "C://goodee/upload/review/" + preAttach.getSavedName();
+				File preFile = new File(filePath);
+				if (preFile.exists()) {
+					preFile.delete();
+				}
+			}
+		}
 		
 		return result;
 	}
@@ -127,12 +141,20 @@ public class ReviewService {
 			if (attach != null && result > 0) {
 				attach.setTypeNo(Attach.REVIEW);
 				attach.setPkNo(review.getReviewNo());
+				
 				if (result > 0) {
 					result = -1;
-					result = reviewDao.deleteAttach(attach);
-				}
-				if (result > 0) {
-					result = -1;
+					Attach preAttach = reviewDao.selectAttachByReviewNo(review.getReviewNo());
+					
+					if (preAttach != null) {
+						reviewDao.deleteAttach(attach);
+						
+						String filePath = "C://goodee/upload/review/" + preAttach.getSavedName();
+						File preFile = new File(filePath);
+						if (preFile.exists()) {
+							preFile.delete();
+						}
+					}
 					result = reviewDao.insertAttach(session, attach);
 				}
 			}

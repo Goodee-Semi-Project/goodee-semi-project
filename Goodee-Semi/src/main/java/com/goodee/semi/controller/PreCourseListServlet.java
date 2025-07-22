@@ -7,8 +7,10 @@ import java.util.Map;
 import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.PreCourse;
+import com.goodee.semi.dto.PreProgress;
 import com.goodee.semi.service.CourseService;
 import com.goodee.semi.service.PreCourseService;
+import com.goodee.semi.service.PreProgressService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,6 +27,7 @@ public class PreCourseListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CourseService courseService = new CourseService();
 	PreCourseService preCourseService = new PreCourseService();
+	PreProgressService preProgressService = new PreProgressService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -53,8 +56,13 @@ public class PreCourseListServlet extends HttpServlet {
 		} else {
 			courseList = courseService.selectListByPetAccount(account.getAccountNo());
 		}
-		
+
 		Map<Integer, List<PreCourse>> preCourseMap = preCourseService.selectMap(courseList);
+
+		if (account.getAuthor() != 1) {
+			Map<Integer, PreProgress> preProgMap = preProgressService.selectMap(courseList, preCourseMap);
+			request.setAttribute("preProgMap", preProgMap);
+		}
 				
 		request.setAttribute("courseList", courseList);
 		request.setAttribute("preCourseMap", preCourseMap);

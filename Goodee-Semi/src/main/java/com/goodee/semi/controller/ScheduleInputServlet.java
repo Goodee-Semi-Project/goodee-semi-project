@@ -28,7 +28,9 @@ public class ScheduleInputServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String valueType = request.getParameter("valueType");
+		Schedule sched = new Schedule();
 		List<Schedule> list = null;
+		Integer schedStep = null;
 		JSONArray jsonArr = new JSONArray();
 		
 		switch (valueType) {
@@ -36,11 +38,10 @@ public class ScheduleInputServlet extends HttpServlet {
 				int courseNo = Integer.parseInt(request.getParameter("courseNo"));
 				list = service.selectAccountList(courseNo);
 				
-				
-				for(Schedule sched : list) {
+				for(Schedule s : list) {
 					JSONObject prop = new JSONObject();
-					prop.put("accountNo", sched.getAccountNo());
-					prop.put("accountName", sched.getAccountName());
+					prop.put("accountNo", s.getAccountNo());
+					prop.put("accountName", s.getAccountName());
 					
 					jsonArr.add(prop);
 				}
@@ -48,18 +49,29 @@ public class ScheduleInputServlet extends HttpServlet {
 			case "accountNo" -> {
 				int courseNo = Integer.parseInt(request.getParameter("courseNo"));
 				int accountNo = Integer.parseInt(request.getParameter("accountNo"));
-				Map<String, Integer> map = new HashMap<String, Integer>();
-				map.put("courseNo", courseNo);
-				map.put("accountNo", accountNo);
-				list = service.selectPetList(map);
+				sched.setCourseNo(courseNo);
+				sched.setAccountNo(accountNo);
+				list = service.selectPetList(sched);
 				
-				for(Schedule sched : list) {
+				for(Schedule s : list) {
 					JSONObject prop = new JSONObject();
-					prop.put("petNo", sched.getPetNo());
-					prop.put("petName", sched.getPetName());
+					prop.put("petNo", s.getPetNo());
+					prop.put("petName", s.getPetName());
 					
 					jsonArr.add(prop);
 				}
+			}
+			case "petNo" -> {
+				int courseNo = Integer.parseInt(request.getParameter("courseNo"));
+				int petNo = Integer.parseInt(request.getParameter("petNo"));
+				sched.setCourseNo(courseNo);
+				sched.setPetNo(petNo);
+				schedStep = service.selectSchedStep(sched);
+				
+				JSONObject prop = new JSONObject();
+				prop.put("schedStep", schedStep + 1);
+				
+				jsonArr.add(prop);
 			}
 		}
 		
@@ -68,8 +80,6 @@ public class ScheduleInputServlet extends HttpServlet {
 		
 		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().print(json);
-		
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
