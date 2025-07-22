@@ -117,7 +117,7 @@
 			s.sched_no = #{schedNo}		
 		</where>
 	</select>
-
+	
 	<select id="selectScheduleListAttend" parameterType="com.goodee.semi.dto.Schedule" resultMap="scheduleResultMap">
 		SELECT sc.* ,cl.class_no ,cl.course_no ,co.title ,p.pet_no ,p.pet_name, account_name
 		FROM schedule sc
@@ -140,6 +140,13 @@
 		</where>
 	</update>
 	
+	<delete id="delete" parameterType="_int">
+		DELETE FROM schedule
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</delete>
+	
 	<delete id="deleteScheduleBySchedNo" parameterType="_int">
 		DELETE FROM schedule
 		WHERE sched_no = #{schedNo}
@@ -152,10 +159,4 @@
 			sched_no = #{schedNo}
 		</where>
 	</update>
-	<delete id="delete" parameterType="_int">
-		DELETE FROM schedule
-		<where>
-			sched_no = #{schedNo}
-		</where>
-	</delete>
 </mapper>
