@@ -61,6 +61,7 @@ public class MyPetListServlet extends HttpServlet {
 		
 		// 5. pet 데이터를 가져와 바인딩
 		List<Pet> list = service.selectPetList(param);
+		System.out.println("[MyPetListServlet] DB에서 가져온 반려견 수: " + list.size());
 
 		request.setAttribute("list", list);
 		
