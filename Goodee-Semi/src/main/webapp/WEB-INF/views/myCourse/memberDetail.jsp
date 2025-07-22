@@ -78,9 +78,7 @@
 	
 	
 	<script>
-	
 	function moveToSchedList(petNo, courseNo) {
-		console.log(petNo)
 		location.href="<%=request.getContextPath()%>/schedule?petNo=" + petNo + "/&courseNo=" + courseNo;
 	}
 	

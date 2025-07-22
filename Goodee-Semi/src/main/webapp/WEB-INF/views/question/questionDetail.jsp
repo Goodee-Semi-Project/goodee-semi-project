@@ -10,7 +10,13 @@
 <style>
 	.container button {
 		padding : 5px 20px !important; 
-		background-color: #5672f9 !important;
+ 		background-color: #5672f9 !important;
+	}
+	.container .btn-delete {
+		background-color: #dc3545 !important;
+	}
+	.container .btn-update {
+		background-color: #212529 !important;
 	}
 </style>
 
@@ -27,15 +33,15 @@
 				<span style="font-weight: bold;">[QnA]</span>
 			</div>
 			<div>
-				<span class="h2" style="font-size: 18px;">${question.questTitle}</span>
+				<span class="h2" style="font-size: 18px;">${ question.questTitle }</span>
 			</div>
 			<div>
-				<div>${question.questReg}</div>
+				<div>${ question.questReg }</div>
 			</div>
 		</div>
-		<div class="p-2">
-		    <div class="p-3">
-		      ${question.questContent}
+		<div>
+		    <div style="padding : 24px">
+		      ${ question.questContent }
 		    </div>
   		</div>
 	</div>	
@@ -44,19 +50,18 @@
 	<!-- 훈련사답변 -->
 	<div class="container">
 		<div class="p-2">
-			<c:if test="${not empty answer}">
+			<c:if test="${ not empty answer }">
 				<div class="d-flex justify-content-between p-2">
 					<div class="d-flex p-1" style="align-items : center">
-						<img src="<c:url value='/filePath?no=${answer.profileAttach.attachNo}'/>" alt="프로필사진" 
-						style="width : 40px; height : 40px; border-radius : 20px; margin : 1px">
-						<div class="mx-2">${answer.accountId}</div>
+						<img src="<c:url value='/filePath?no=${ answer.profileAttach.attachNo }'/>" alt="프로필사진" style="width : 40px; height : 40px; border-radius : 20px; margin : 1px">
+						<div class="mx-2">${ answer.accountId }</div>
 					</div>
 					<div class="d-flex" style="align-items: center; padding-right: 16px">
-						<div>${answer.answerReg}</div>
+						<div>${ answer.answerReg }</div>
 					</div>		
 				</div>
 				<div>
-					<div style="padding : 0 16px 16px 16px">${answer.answerContent}</div>
+					<div style="padding : 0 16px 16px 16px">${ answer.answerContent }</div>
 				</div>
 			</c:if>
 		</div>
@@ -67,20 +72,20 @@
 			<div>
 				<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
 			</div>
-			<c:if test="${not empty loginAccount}">
+			<c:if test="${ not empty loginAccount }">
 				<div class="btn_design">
-					<c:if test="${loginAccount.accountNo eq question.accountNo}">
-						<button type="button" class="btn btn-primary" onclick="updateQuestion()">수정</button>
-						<button type="button" class="btn btn-primary" onclick="openDeleteQuestionModal()">삭제</button>
+					<c:if test="${ loginAccount.accountNo eq question.accountNo }">
+						<button type="button" class="btn btn-dark btn-update" onclick="updateQuestion()">수정</button>
+						<button type="button" class="btn btn-danger btn-delete" onclick="openDeleteQuestionModal()">삭제</button>
 					</c:if>
-					<c:if test="${loginAccount.author eq 1}">
+					<c:if test="${ loginAccount.author eq 1 }">
 						<c:choose>
-							<c:when test="${empty answer}">
+							<c:when test="${ empty answer }">
 								<button type="button" class="btn btn-primary" onclick="addAnswer()">답변등록</button>
 							</c:when>
 							<c:otherwise>
-								<button type="button" class="btn btn-primary" onclick="updateAnswer()">답변수정</button>
-								<button type="button" class="btn btn-primary" onclick="openDeleteAnswerModal()">답변삭제</button>
+								<button type="button" class="btn btn-dark btn-update" onclick="updateAnswer()">답변수정</button>
+								<button type="button" class="btn btn-danger btn-delete" onclick="openDeleteAnswerModal()">답변삭제</button>
 							</c:otherwise>
 						</c:choose>
 					</c:if>
@@ -101,9 +106,7 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
-	      <div class="modal-body text-center">
-	        게시글을 삭제하시겠습니까?
-	      </div>
+	      <div class="modal-body text-center">게시글을 삭제하시겠습니까?</div>
 	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
 	        <button type="button" id="btn_modal_delete_question" class="btn btn-success">확인</button>
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
@@ -121,9 +124,7 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
-	      <div class="modal-body text-center">
-	        답변을 삭제하시겠습니까?
-	      </div>
+	      <div class="modal-body text-center">답변을 삭제하시겠습니까?</div>
 	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
 	        <button type="button" id="btn_modal_delete_answer" class="btn btn-success">확인</button>
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
