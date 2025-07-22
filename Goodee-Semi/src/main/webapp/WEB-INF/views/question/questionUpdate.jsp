@@ -35,7 +35,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <textarea name="message" id="quest_content" class="border w-100 p-3 mt-3 mt-lg-4"
+                            <textarea name="message" id="quest_content" class="border w-100 p-3 mt-1 mt-lg-4"
                             style="resize: none; height: 450px; outline: none;">${question.questContent}</textarea>
                         </fieldset>
                        	<div class="d-flex justify-content-between p-4">
