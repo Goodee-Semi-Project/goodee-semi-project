@@ -26,32 +26,30 @@
 				<span style="font-weight: bold;">[QnA]</span>
 			</div>
 			<div>
-				<span class="h2" style="font-size: 18px;">${question.questTitle}</span>
+				<span class="h2" style="font-size: 18px;">${ question.questTitle }</span>
 			</div>
 			<div>
-				<div>${question.questReg}</div>
+				<div>${ question.questReg }</div>
 			</div>
 		</div>
-		<div class="p-2">
-		    <div class="p-3">
-		      ${question.questContent}
-		    </div>
+		<div>
+		    <div style="padding : 24px"></div>
   		</div>
 	</div>	
 	
 	
-	<section class="section" style="padding: 0">
+	<section>
 	    <div class="container">
 	        <div class="row">
 	            <div class="col-md-12">
                     <form id="update_list_form">
                         <div class="col-lg-12 pt-6">
-                        	<input type="hidden" id="answer_account_no" value="${loginAccount.accountNo}">
-                        	<input type="hidden" id="quest_no" value="${question.questNo}">
-                       		<textarea name="message" id="answer_content" class="border w-100 p-3 mx-2 mt-3 mt-lg-4" style="resize: none; height: 200px; outline: none;">${answer.answerContent}</textarea>
+                        	<input type="hidden" id="answer_account_no" value="${ loginAccount.accountNo }">
+                        	<input type="hidden" id="quest_no" value="${ question.questNo }">
+                       		<textarea name="message" id="answer_content" class="border p-3 mx-2 mt-3 mt-lg-4" style="resize: none; height: 200px; width: 97%; outline: none;">${answer.answerContent}</textarea>
 	                       	<div class="d-flex justify-content-between m-2">
 	                 			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
-								<button type="button" class="btn btn-primary" onclick="openUpdateModal()">수정완료</button>
+								<button type="button" class="btn btn-success" style="background-color: #198754 !important;" onclick="openUpdateModal()">등록</button>
 							</div>
                         </div>
                     </form>
@@ -71,9 +69,7 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
-	      <div class="modal-body text-center">
-	        답변을 수정하시겠습니까?
-	      </div>
+	      <div class="modal-body text-center">답변을 수정하시겠습니까?</div>
 	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
 	        <button type="button" id="btn_modal_update_confirm" class="btn btn-success">확인</button>
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
@@ -121,7 +117,6 @@
 		});
 	});
 	</script>
-	
 	
 </body>
 </html>

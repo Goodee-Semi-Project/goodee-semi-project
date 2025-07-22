@@ -56,11 +56,6 @@ public class QrAttendServlet extends HttpServlet {
         sched.setSchedAttend('Y');
         int result = scheduleService.updateScheduleAttend(sched);
         
-        if(result > 0) {
-        	System.out.println("출석체크성공");
-        }
-        request.setAttribute("sched", sched);
-        
         String message;
         if(result > 0) {
         	message = "출석체크완료";
