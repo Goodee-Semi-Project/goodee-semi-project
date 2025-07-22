@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %> 
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +17,15 @@
 	<section>
 		<div>
 			<div class="text-center">
-				<div>출석 현황</div>
+				<h1>${scheduleList[0].courseTitle}</h1>
+			</div>
+		</div>
+	</section>
+	
+	<section>
+		<div>
+			<div class="text-center">
+				<h3>출석 현황</h3>
 			</div>
 		</div>
 	</section>
@@ -25,17 +34,44 @@
 		<table class="text-center" style="width: 100%">
 			<tbody>
 				<c:if test="${not empty scheduleList}">
-					<c:forEach var="sc" items="${scheduleList}">
+					<c:choose>
+						<c:when test="${loginAccount.author eq 1}">
+							<tr>
+								<th style="width: 10%">회차</th>
+								<th style="width: 15%">이미지</th>
+								<th style="width: 20%">반려견 이름</th>
+								<th style="width: 20%">교육일</th>
+								<th style="width: 10%">출석여부</th>
+								<th style="width: 20%">출결수정</th>
+							</tr>
+						</c:when>					
+						<c:when test="${loginAccount.author eq 2}">
+							<tr>
+								<th style="width: 10%">회차</th>
+								<th style="width: 15%">이미지</th>
+								<th style="width: 20%">반려견 이름</th>
+								<th style="width: 20%">교육일</th>
+								<th style="width: 25%">교육시간</th>
+								<th style="width: 10%">출석여부</th>
+							</tr>
+						</c:when>					
+					</c:choose>
+					<c:forEach var="sc" items="${scheduleList}" varStatus="vs">
 						<tr style="height: 50px;">
 							<td style="width: 10%">${sc.schedStep}회차</td>
 							<td style="width: 15%">
 								<c:if test="${not empty petAttach.attachNo }">
 									<img src="<c:url value='/filePath?no=${petAttach.attachNo}'/>" alt="${sc.courseTitle}" 
-									style="width : 80px; height : 80px; border-radius : 50%">
+									style="width : 70px; height : 70px; border-radius : 50%">
 								</c:if>
 							</td>
 							<td style="width: 20%">${sc.petName}</td>
 							<td style="width: 20%">${sc.schedDate}</td>
+							<c:if test="${loginAccount.author eq 2}">	
+								<td style="width: 25%">
+									${startEndList[vs.index]}																	
+								</td>
+							</c:if>
 							<c:choose>
 								<c:when test="${sc.schedAttend eq 89}">
 									<td style="width: 10%">출석</td>
@@ -44,20 +80,15 @@
 									<td style="width: 10%">결석</td>
 								</c:when>
 								<c:otherwise>
-									<td style="width: 10%">알 수 없음</td>
+									<td style="width: 10%">결석</td>
 								</c:otherwise>
 							</c:choose>
 							<c:if test="${loginAccount.author eq 1}">	
 								<td style="width: 20%">
 									<button type="button" onclick="updateAttend('${sc.schedAttend}', ${sc.petNo}, ${sc.courseNo}, ${sc.schedNo})" 
 									style="padding: 5px 10px;" class="btn btn-outline-secondary">수정</button>
-									<button type="button" onclick="deleteSchedule(${sc.schedNo}, ${sc.petNo}, ${sc.courseNo})"
-									 style="padding: 5px 10px;" class="btn btn-outline-secondary">삭제</button>
-								</td>
-							</c:if>
-							<c:if test="${loginAccount.author eq 2}">	
-								<td style="width: 25%">
-									${sc.schedStart}~<br>${sc.schedEnd}							
+									<button type="button" onclick="moveToAttendQr(${sc.schedNo})"class="btn btn-outline-secondary"
+									style="padding: 5px 10px;" ${sc.schedAttend eq 89 ? "disabled" : ""}>QR생성</button>
 								</td>
 							</c:if>
 						</tr>
@@ -79,6 +110,12 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
 
 	<script>
+	
+		function moveToAttendQr(schedNo) {
+			console.log("schedNo: " + schedNo);
+			location.href="<%=request.getContextPath()%>/qr/qrCode?schedNo=" + schedNo
+		}
+	
 		function updateAttend(didAttend, petNo, courseNo, schedNo) {
 			let msg;
 			if(didAttend == 'Y') {

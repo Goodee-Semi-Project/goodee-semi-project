@@ -1,10 +1,8 @@
 package com.goodee.semi.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
-import org.json.simple.JSONObject;
-
-import com.goodee.semi.dto.Question;
 import com.goodee.semi.service.QuestionService;
 
 import jakarta.servlet.ServletException;
@@ -26,7 +24,17 @@ public class QuestionDeleteServlet extends HttpServlet {
 		
 		int questNo = Integer.parseInt(request.getParameter("no"));
 
-		int result = service.deleteQuestion(questNo);
+		int result;
+		
+		Map<String, Object> map =  service.selectDetail(questNo);
+		if(map.get("answer") != null) {
+			result = -1;
+			response.setContentType("text/plain; charset=utf-8");
+			response.getWriter().println(result);
+			return;
+		}
+		
+		result = service.deleteQuestion(questNo);
 		
 		response.setContentType("text/plain; charset=utf-8");
 		response.getWriter().println(result);

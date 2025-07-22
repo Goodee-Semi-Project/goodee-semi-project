@@ -13,7 +13,7 @@
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	<h3 class="widget-header">
-  	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
+	<%@ include file="/WEB-INF/views/include/courseInnerBar.jsp" %>
   </h3>
 	
 	
@@ -35,10 +35,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="pet" items="${petList}">
+			<c:forEach var="pet" items="${ petList }">
 				<tr style="height: 80px;">
 					<td style="width: 25%">
-						<c:if test="${not empty pet.attachNo }">
+						<c:if test="${ not empty pet.attachNo }">
 							<img src="<c:url value='/filePath?no=${pet.attachNo}'/>" class="rounded-circle" alt="${course.title}" style="width : 70px; height : 70px; border-radius : 50% border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);" >
 							<p>${pet.attachNo}</p>
 						</c:if>
@@ -46,11 +46,9 @@
 					<td style="width: 25%">${ pet.petName } (${ pet.petBreed })<br>${ pet.petAge }세 / ${ pet.petGender }</td>
 					<td style="width: 20%">${ pet.accountName } 님</td>
 					<td style="width: 30%">
-						<button type="button" onclick="" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
+						<button type="button" onclick="moveToSchedList(${pet.petNo}, ${course.courseNo})" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
 						<button type="button" onclick="" style="padding: 5px 10px;" class="btn btn-outline-secondary">과제</button>
-						<button type="button" class="btn_kickout btn btn-danger" data-account-name="${pet.accountName}"
-							data-class-no="${pet.classNo}"
-							data-pet-name="${pet.petName}" style="padding: 5px 10px;">추방</button>
+						<button type="button" onclick="openKickoutModal('${pet.accountName}',${pet.classNo},'${pet.petName}')" class="btn_kickout btn btn-danger" style="padding: 5px 10px;">추방</button>
 					</td>
 				</tr>
 			</c:forEach>
@@ -60,29 +58,55 @@
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	
-	<script>
-	$(".btn_kickout").click(function(){
-		const petName = $(this).data("pet-name");
-		const accountName = $(this).data("account-name");
-		const msg = "반려견 " + petName + "(회원 " + accountName + ")님을 과정에서 제외하시겠습니까?";
-
-		if(confirm(msg)) {
-			const classNo = $(this).data("class-no")
-			$.ajax({
-				url : "/myCourse/memberKickout?no=" + classNo,
-				type : "get",
-				success : function(data) {
-					if(data == 1) {
-						alert("제외 처리되었습니다!");
-						location.href="<%= request.getContextPath()%>/myCourse/memberDetail?=${course.courseNo}"
-					} else {
-						alert("오류가 발생했습니다!")
-					}
-				}
-			})
-		}
-	})
+	<div class="modal fade" id="kickoutModal" tabindex="-1" role="dialog" aria-labelledby="printModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header border-bottom-0">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body text-center" id="modal_text">
+	      </div>
+	      <input type="hidden" id="modal_class_no">
+	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
+	        <button type="button" id="btn_modal_kickout_confirm" class="btn btn-success">확인</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	
+	
+	<script>
+	
+	function moveToSchedList(petNo, courseNo) {
+		console.log(petNo)
+		location.href="<%=request.getContextPath()%>/schedule?petNo=" + petNo + "/&courseNo=" + courseNo;
+	}
+	
+	function openKickoutModal(accountName, classNo, petName) {
+		console.log($("#modal_class_no"));
+		$("#modal_text").text("반려견 " + petName + "(회원 " + accountName + ")님을 과정에서 제외하시겠습니까?");
+		$("#modal_class_no").val(classNo);
+		$("#kickoutModal").modal("show");
+	}
+
+	$("#btn_modal_kickout_confirm").click(function(){
+		const classNo = $("#modal_class_no").val();
+		$.ajax({
+			url : "/myCourse/memberKickout?no=" + classNo,
+			type : "get",
+			success : function(data) {
+				if(data == 1) {
+					alert("제외 처리되었습니다!");
+					location.href="<%= request.getContextPath()%>/myCourse/memberDetail?courseNo=${course.courseNo}";
+				} else {
+					alert("오류가 발생했습니다!")
+				}
+			}
+		})
+	})
 	
 	</script>
 </body>

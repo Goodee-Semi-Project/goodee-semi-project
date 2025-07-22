@@ -77,24 +77,26 @@
 		</a>
 	</div>
 	
-	<table class="text-center" style="width: 100%">
-		<tbody>
-			<tr style="height: 70px;">
-				<th>글번호</th>
-				<th>제목</th>
-				<th>작성자</th>
-				<th>등록날짜</th>
-			</tr>
-			<c:forEach var="q" items="${questionList}">
-				<tr>
-					<td>${q.questNo}</td>
-					<td><a href="<c:url value='/qnaBoard/detail?no=${q.questNo}'/>">${q.questTitle}</a></td>
-					<td>${q.accountId}</td>
-					<td>${q.questReg}</td>
+	<section>
+		<table class="text-center" style="width: 100%">
+			<tbody>
+				<tr style="height: 70px;">
+					<th>글번호</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>등록날짜</th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+				<c:forEach var="q" items="${questionList}">
+					<tr>
+						<td>${q.questNo}</td>
+						<td><a href="<c:url value='/qnaBoard/detail?no=${q.questNo}'/>">${q.questTitle}</a></td>
+						<td>${q.accountId}</td>
+						<td>${q.questReg}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</section>
 	
 	<c:if test="${not empty questionList}">
 		<div class="text-center" style="margin-top : 20px;">
@@ -104,9 +106,7 @@
 				</a>
 			</c:if>
 			<c:forEach var="i" begin="${question.pageBarStart}" end="${question.pageBarEnd}">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${i}&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">
-					${i}
-				</a>			
+				<a href="<c:url value='/qnaBoard/list?nowPage=${i}&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">${i}</a>			
 			</c:forEach>
 			<c:if test="${question.next}">
 				<a href="<c:url value='/qnaBoard/list?nowPage=${question.pageBarEnd + 1 }&keyword=${question.keyword}&searchBy=${question.searchBy}&orderBy=${question.orderBy}'/>">
