@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.PreTestMapper">
+	<resultMap type="com.goodee.semi.dto.PreTest" id="preTestResultMap">
+		<result property="testNo" column="test_no" />
+		<result property="preNo" column="pre_no"/>
+		<result property="testContent" column="test_content" />
+		<result property="testAnswer" column="test_answer" />
+		<result property="one" column="one" />
+		<result property="two" column="two" />
+		<result property="three" column="three" />
+		<result property="four" column="four" />
+		
+	</resultMap>
+	
+	<insert id="insertPreTest" parameterType="com.goodee.semi.dto.PreTest">
+		INSERT INTO pre_test (pre_no ,test_content ,test_answer ,one ,two ,three ,four)
+		VALUE (#{ preNo } ,#{ testContent },#{ testAnswer },#{ one },#{ two },#{ three },#{ four })
+	</insert>
+	
+	<select id="selectList" parameterType="string" resultMap="preTestResultMap">
+		SELECT *
+		FROM pre_test
+		WHERE pre_no = #{ preNo }
+	</select>
+	
+	<update id="update">
+		UPDATE pre_test
+		SET test_content = #{ testContent } ,test_answer = #{ testAnswer }
+			,one = #{ one } ,two = #{ two } ,three = #{ three } ,four = #{ four }
+		WHERE test_no = #{ testNo }
+	</update>
+	
+	<select id="countOne" parameterType="com.goodee.semi.dto.PreTest" resultType="_int">
+		SELECT COUNT(*)
+		FROM pre_test
+		WHERE test_no = #{ testNo }
+	</select>
+	
+	<delete id="delete" parameterType="string">
+		DELETE FROM pre_test
+		WHERE test_no = #{ testNo };
+	</delete>
+</mapper>
