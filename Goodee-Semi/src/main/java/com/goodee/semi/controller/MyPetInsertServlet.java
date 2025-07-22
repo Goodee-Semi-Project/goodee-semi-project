@@ -1,8 +1,6 @@
 package com.goodee.semi.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
@@ -22,8 +20,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
-// TODO 사진 안넣어도 등록되게 하는 기능 추가
-// 내 반려견 정보 추가 servlet
 @WebServlet("/myPet/insert")
 @MultipartConfig(
 		maxFileSize = 5 * 1024 * 1024, // 개별 파일 최대 크기: 5MB
