@@ -112,7 +112,7 @@ public class MyPetUpdateServlet extends HttpServlet {
     				attach.setPkNo(pet.getPetNo());
     				
     				// 기존 이미지파일 삭제
-    				// 1) petNo로 기존 이미지파일의 savedName을 가져옴
+    				// 1) petNo, typeNo로 기존 이미지파일의 savedName을 가져옴
     				// 2) savedName에 해당하는 파일을 저장소에서 삭제
     				String oldSavedName = service.selectPetImgSavedName(attach);
     				System.out.println("[MyPetUpdateServlet] 삭제할 파일명: " + oldSavedName);
@@ -121,12 +121,12 @@ public class MyPetUpdateServlet extends HttpServlet {
 	    				System.out.println("[MyPetUpdateServlet] 삭제할 파일경로: " + oldSavedFile.getAbsolutePath());
 	    				if(oldSavedFile.exists()) {
 	    					if (oldSavedFile.delete()) {
-	    						System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 삭제에 성공했습니다");
+	    						System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 삭제 성공");
 	    					} else {
-	    						System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 삭제에 실패했습니다");
+	    						System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 삭제 실패");
 	    					}
 	    				} else {
-	    					System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 파일이 존재하지 않습니다");
+	    					System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 파일이 존재하지 않음");
 	    				}
     				}
     			} catch(Exception e) {
