@@ -23,6 +23,14 @@
 					<div class="advance-search nice-select-white">
 						<form action="<c:url value='/review/list'/>" id="search" method="get">
 							<div class="form-row align-items-center">
+								<!-- 정렬 방법 -->
+								<div class="form-group col-lg-2 col-md-6">
+									<select class="w-100 form-control my-2 my-lg-0" name="order">
+										<option value="dsc">정렬</option>
+										<option value="dsc" <c:if test="${ paging.order eq 'dsc' }">selected</c:if> >최신순</option>
+										<option value="asc" <c:if test="${ paging.order eq 'asc' }">selected</c:if> >오래된순</option>
+									</select>
+								</div>
 								<div class="form-group col-lg-2 col-md-6">
 									<select class="w-100 form-control my-2 my-lg-0" name="category">
 										<option value="reviewTitle">선택</option>
@@ -31,19 +39,11 @@
 										<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
 									</select>
 								</div>
-								<div class="form-group col-xl-6 col-lg-3 col-md-6">
+								<div class="form-group col-xl-6 col-lg-5 col-md-6">
 									<input type="text" class="form-control my-2 my-lg-0" id="keyword" name="keyword" placeholder="검색" value="${ paging.keyword }">
 								</div>
 								<div class="form-group col-xl-2 col-lg-3 col-md-6">
 									<button class="btn btn-primary active w-100">검색</button>
-								</div>
-								<!-- 정렬 방법 -->
-								<div class="form-group col-lg-2 col-md-6">
-									<select class="w-100 form-control my-2 my-lg-0" name="order">
-										<option value="dsc">정렬</option>
-										<option value="dsc" <c:if test="${ paging.order eq 'dsc' }">selected</c:if> >최신순</option>
-										<option value="asc" <c:if test="${ paging.order eq 'asc' }">selected</c:if> >오래된순</option>
-									</select>
 								</div>
 							</div>
 						</form>
@@ -55,7 +55,7 @@
 
 	<section>
 		<div class="my-1 w-100 text-right">
-			<a href="/review/write" class="btn btn-main-sm" >후기 작성</a>
+			<a href="/review/write" class="btn btn-main-sm px-3" >후기 작성</a>
 		</div>
 		<div>
 			<table class="table table-hover text-center">
