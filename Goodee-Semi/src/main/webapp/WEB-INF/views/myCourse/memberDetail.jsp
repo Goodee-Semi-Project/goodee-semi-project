@@ -79,14 +79,11 @@
 	
 	
 	<script>
-	
 	function moveToSchedList(petNo, courseNo) {
-		console.log(petNo)
 		location.href="<%=request.getContextPath()%>/schedule?petNo=" + petNo + "/&courseNo=" + courseNo;
 	}
 	
 	function openKickoutModal(accountName, classNo, petName) {
-		console.log($("#modal_class_no"));
 		$("#modal_text").text("반려견 " + petName + "(회원 " + accountName + ")님을 과정에서 제외하시겠습니까?");
 		$("#modal_class_no").val(classNo);
 		$("#kickoutModal").modal("show");

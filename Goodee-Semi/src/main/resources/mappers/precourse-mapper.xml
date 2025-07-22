@@ -67,4 +67,9 @@
 		DELETE FROM attachment
 		WHERE type_no = 4 AND pk_no = #{ pkNo }
 	</delete>
+	
+	<delete id="deleteOne" parameterType="_int">
+		DELETE FROM pre_course
+		WHERE pre_no = #{ preNo }
+	</delete>
 </mapper>
