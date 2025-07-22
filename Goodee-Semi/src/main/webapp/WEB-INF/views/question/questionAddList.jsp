@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <textarea id="quest_content" class="border w-100 p-3 mt-3 mt-lg-2" style="resize: none; height: 450px; outline: none;"></textarea>
+                            <textarea id="quest_content" class="border w-100 p-3 mt-1 mt-lg-2" style="resize: none; height: 450px; outline: none;"></textarea>
                         </fieldset>
                        	<div class="d-flex justify-content-between px-4">
                  			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>

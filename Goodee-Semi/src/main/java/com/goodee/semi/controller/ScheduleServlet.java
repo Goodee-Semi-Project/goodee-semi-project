@@ -42,6 +42,7 @@ public class ScheduleServlet extends HttpServlet {
 		// 훈련사와 회원은 서로 다른 페이지로 이동
 		if(authorNo == 1) {
 			String petNo = request.getParameter("petNo");
+			String courseNo = request.getParameter("courseNo");
 			
 			if(petNo == null) { // 모든 반려견의 일정을 조회하는 페이지로 이동
 				// 3. 일정 등록/수정/삭제 모달에 표시할 정보를 service로부터 받아와 바인딩
@@ -50,6 +51,7 @@ public class ScheduleServlet extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_trainer.jsp").forward(request, response);
 			} else { // 특정 반려견의 일정을 조회하는 페이지로 이동
 				request.setAttribute("petNo", petNo);
+				request.setAttribute("courseNo", courseNo);
 				request.getRequestDispatcher("/WEB-INF/views/schedule/schedule_trainer_byPet.jsp").forward(request, response);
 			}
 			
