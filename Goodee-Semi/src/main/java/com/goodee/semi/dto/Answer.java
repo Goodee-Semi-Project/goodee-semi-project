@@ -20,4 +20,5 @@ public class Answer {
 	private String answerMod;
 	
 	private String accountId;
+	private Attach profileAttach;
 }
