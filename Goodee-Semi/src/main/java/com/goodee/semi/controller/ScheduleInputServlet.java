@@ -55,12 +55,12 @@ public class ScheduleInputServlet extends HttpServlet {
     	res.getWriter().print(jsonString);
     }
     
-    private void sendSuccessResponse(String resCode, String resMsg, Integer schedStep, ServletResponse res) throws IOException {
+    private void sendSuccessResponse(String resCode, String resMsg, Integer nextSchedStep, ServletResponse res) throws IOException {
     	JSONObject json = new JSONObject();
     	json.put("resCode", resCode);
     	json.put("resMsg", resMsg);
     	
-    	json.put("schedStep", schedStep);
+    	json.put("schedStep", nextSchedStep);
     	
     	res.setContentType(HttpConstants.CONTENT_TYPE_JSON);
     	res.getWriter().print(json);
@@ -69,7 +69,7 @@ public class ScheduleInputServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Schedule sched = new Schedule();
 		List<Schedule> list = null;
-		Integer schedStep = null;
+		int nextSchedStep = 1;
 		
 		try {
 			String valueType = request.getParameter("valueType");
@@ -91,7 +91,12 @@ public class ScheduleInputServlet extends HttpServlet {
 					int petNo = Integer.parseInt(request.getParameter("petNo"));
 					sched.setCourseNo(courseNo);
 					sched.setPetNo(petNo);
-					schedStep = service.selectSchedStep(sched);
+					Integer schedStep = service.selectSchedStep(sched);
+					
+					// 다음 차시 계산
+			    	if(schedStep != null) {
+			    		nextSchedStep = schedStep + 1;
+			    	}
 				}
 				default -> {
 					sendErrorResponse("400", "잘못된 valueType입니다", null, response);
@@ -107,7 +112,7 @@ public class ScheduleInputServlet extends HttpServlet {
 		if (list != null) {
 			sendSuccessResponse("200", "일정표 모달의 선택란 데이터 전송에 성공했습니다", list, response);
 		} else {
-			sendSuccessResponse("200", "일정표 모달의 선택란 데이터 전송에 성공했습니다", schedStep, response);
+			sendSuccessResponse("200", "일정표 모달의 선택란 데이터 전송에 성공했습니다", nextSchedStep, response);
 		}
 	}
 
