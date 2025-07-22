@@ -8,6 +8,13 @@
 	
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 	<script defer src="<c:url value='/static/js/myPetList.js'/>"></script>
+	
+	<style type="text/css">
+		img {
+			object-fit: cover !important;
+			border-radius: 50%;
+		}
+	</style>
 </head>
 <body>
 	<!-- header -->
@@ -32,7 +39,7 @@
 								<input type="file" class="pet-img-input" name="petImg" style="display: none;">
 								<c:choose>
 									<c:when test="${pet.imgFileSaveName eq null}">
-										<img width="150" height="150" src="<c:url value='/static/images/favicon.ico'/>" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">
+										<img width="150" height="150" src="<c:url value='/static/images/user/pet_profile.png'/>" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">
 									</c:when>
 									<c:otherwise>
 										<img width="150" height="150" src="<c:url value='/upload/pet/${pet.imgFileSaveName}'/>" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">
