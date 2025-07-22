@@ -86,7 +86,8 @@ public class PetDao implements PetMapper {
 		session.close();
 		return count;
 	}
-
+	
+	@Override
 	public List<Pet> selectMyPetInCourse(Course key) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		List<Pet> petList = session.selectList("com.goodee.semi.mapper.PetMapper.selectMyPetInCourse", key);
@@ -94,5 +95,14 @@ public class PetDao implements PetMapper {
 
 		return petList;
 
+	}
+	
+	@Override
+	public String selectPetImgSavedName(Attach attach) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		String savedName = session.selectOne("com.goodee.semi.mapper.PetMapper.selectPetImgSavedName", attach);
+		session.close();
+		
+		return savedName;
 	}
 }

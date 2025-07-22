@@ -149,4 +149,13 @@
 		SELECT COUNT(pet_no)
 		FROM pet
 	</select>
+	
+	<select id="selectPetImgSavedName" parameterType="com.goodee.semi.dto.Attach" resultType="string">
+		SELECT save_name
+		FROM attachment
+		<where>
+			type_no = #{typeNo}
+			AND pk_no = #{pkNo}
+		</where>
+	</select>
 </mapper>

@@ -1,6 +1,6 @@
-// TODO 차수 관련 기능 추가
 const calendarEl = document.querySelector('#calendar');
-const petNo = document.querySelector('input[type="hidden"').value;
+const petNo = document.querySelector('#data-pet-no').value;
+const courseNo = document.querySelector('#data-course-no').value;
 	
 console.log("일정 조회 중인 petNo : ", petNo)
 	
@@ -40,7 +40,8 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
             data: {
                 start: fetchInfo.startStr,
                 end: fetchInfo.endStr,
-				petNo: petNo
+				petNo: petNo,
+				courseNo: courseNo
             },
             dataType: 'json',
             success: function (data) {
