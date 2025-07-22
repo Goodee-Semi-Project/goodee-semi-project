@@ -41,7 +41,7 @@
 		<div>
 			<c:if test="${ review.accountId eq loginAccount.accountId }">
 				<a class="btn btn-primary px-2 py-1" href="<c:url value='/review/edit?reviewNo=${ review.reviewNo }' />">수정</a>
-				<input type="button" class="btn btn-primary px-2 py-1" value="삭제" onclick="deleteReview()">
+				<input type="button" class="btn btn-danger px-2 py-1" value="삭제" onclick="deleteReview()">
 			</c:if>
 		</div>
 	</div>
