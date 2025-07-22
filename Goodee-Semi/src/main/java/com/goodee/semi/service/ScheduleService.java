@@ -77,4 +77,12 @@ public class ScheduleService {
 	public int updateScheduleAttend(Schedule sched) {
 		return dao.updateScheduleAttend(sched);
 	}
+	
+	public Schedule selectSchedule(int schedNo) {
+		return dao.selectSchedule(schedNo);
+	}
+	public int delete(int schedNo) {
+		return dao.delete(schedNo);
+	}
+
 }
