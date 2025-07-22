@@ -17,23 +17,29 @@
 		 </div>
 	 </div>
 	 
-<!-- 	 <script> -->
-// 	 	const schedNo = '${sched.schedNo}';
-// 	 	const stop = setInterval(function() {
-// 	 		$.ajax({
-// 	 			url : "/attend/check",
-// 	 			type : "get",
-// 	 			data : { schedNo : schedNo },
-// 	 		dataType : "json",
-// 	 		success : function(data) {
-// 	 			if(data.attend === true) {
-// 	 				clearInterval(stop);
-// 	 				alert("출석이 확인되었습니다")
-<%-- 	 				location.href="<%= request.getContextPath() %>/attend/detail?petNo=${sched.petNo}&courseNo=${sched.courseNo}"; --%>
-// 	 			}
-// 	 		},
-// 	 		});
-// 	 	}, 3000);
-<!-- 	 </script> -->
+	 <script>
+	 	const schedNo = '${sched.schedNo}';
+	 	const stop = setInterval(function() {
+	 		$.ajax({
+	 			url : "/attend/check",
+	 			type : "get",
+	 			data : { schedNo : schedNo },
+	 		dataType : "json",
+	 		success : function(data) {
+	 			if(data.attend === true) {
+	 				clearInterval(stop);
+	 				alert("출석이 확인되었습니다")
+	 				location.href="<%= request.getContextPath() %>/attend/detail?petNo=${sched.petNo}&courseNo=${sched.courseNo}";
+	 			}
+	 		},
+	 		});
+	 	}, 3000);
+	 	
+	 	// 페이지 뒤로가기를 하거나 새로고침을 하면 Interval종료
+		window.addEventListener("beforeunload", function () {
+			console.log("interval :종료됨")
+			clearInterval(stop);
+		});
+	 </script>
 </body>
 </html>
