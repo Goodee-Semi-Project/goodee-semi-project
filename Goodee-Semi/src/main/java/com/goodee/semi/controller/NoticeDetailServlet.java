@@ -29,13 +29,11 @@ public class NoticeDetailServlet extends HttpServlet {
 		Notice notice = service.selectNoticeDetail(noticeNo);
 		Attach param = new Attach();
 		param.setPkNo(noticeNo);
-		param.setTypeNo(Attach.NOTICE); 
-		Attach attach = service.selectAttachOne(param);
+		param.setTypeNo(Attach.NOTICE);
 		
+		notice.setNoticeAttach(service.selectAttachOne(param));
 		
 		request.setAttribute("notice", notice);
-		request.setAttribute("attach", attach);
-		
 		request.getRequestDispatcher("/WEB-INF/views/notice/noticeDetail.jsp").forward(request, response);
 	}
 		
