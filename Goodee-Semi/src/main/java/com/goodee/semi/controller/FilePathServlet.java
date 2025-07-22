@@ -40,20 +40,26 @@ public class FilePathServlet extends HttpServlet {
 		
 		Attach attach = null;
 		String filePath = null;
+
 		if (attachNo != -1) {
 			attach = service.selectAttachNo(attachNo);
 			
-			filePath = "C://goodee/upload/" + switch (attach.getTypeNo()) {
-			case Attach.ACCOUNT -> "account/";
-			case Attach.PET -> "pet/";
-			case Attach.COURSE -> "course/";
-			case Attach.PRE_COURSE -> "preCourse/";
-			case Attach.ASSIGN -> "assign/";
-			case Attach.SUBMIT -> "submit/";
-			case Attach.REVIEW -> "review/";
-			case Attach.NOTICE -> "notice/";
-			default -> "";
-			} + attach.getSavedName();
+			try {
+				filePath = "C://goodee/upload/" + switch (attach.getTypeNo()) {
+				case Attach.ACCOUNT -> "account/";
+				case Attach.PET -> "pet/";
+				case Attach.COURSE -> "course/";
+				case Attach.PRE_COURSE -> "preCourse/";
+				case Attach.ASSIGN -> "assign/";
+				case Attach.SUBMIT -> "submit/";
+				case Attach.REVIEW -> "review/";
+				case Attach.NOTICE -> "notice/";
+				default -> "";
+				} + attach.getSavedName();				
+			} catch (Exception e) {
+				System.out.println("[FilePathServlet] 파일의 메타데이터가 존재하지 않습니다: " + e.getMessage());
+				return;
+			}
 		}
 		
 		if (filePath == null || filePath.trim().equals("") ) {
