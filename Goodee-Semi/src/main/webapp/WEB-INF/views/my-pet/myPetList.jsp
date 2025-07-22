@@ -37,6 +37,7 @@
 						<div class="container mb-3" style="display: flex; align-items: center; padding: 5px; border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">
 							<div class="col-3">
 								<input type="file" class="pet-img-input" name="petImg" style="display: none;">
+<<<<<<< HEAD
 								<c:choose>
 									<c:when test="${pet.imgFileSaveName eq null}">
 										<img width="150" height="150" src="<c:url value='/static/images/user/pet_profile.png'/>" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">
@@ -45,6 +46,9 @@
 										<img width="150" height="150" src="<c:url value='/upload/pet/${pet.imgFileSaveName}'/>" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">
 									</c:otherwise>
 								</c:choose>
+=======
+								<img width="150" height="150" src="<c:url value='/upload/pet/${pet.imgFileSaveName }'/>" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">						
+>>>>>>> parent of d3087a2 (Update: 반려견 정보 조회 기능 - 반려견 프로필 이미지가 업로드되어있지 않아도 기본 이미지를 띄우는 기능 추가)
 							</div>
 							<div class="pet-detail col-7" style="display: flex; align-items: center;">
 								<div style="width: 60%; text-align: center;">
@@ -63,7 +67,7 @@
 									<select class="pet-gender" name="petGender" disabled required>
 										<option value="" disabled>성별</option>
 										<c:choose>
-											<c:when test="${pet.petGender eq 'M'.charAt(0)}">
+											<c:when test="${pet.petGender == 77}">
 												<option value="M" selected>남</option>
 												<option value="F">여</option>
 											</c:when>
