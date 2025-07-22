@@ -1,6 +1,7 @@
 package com.goodee.semi.controller;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import com.goodee.semi.dto.Course;
@@ -26,7 +27,7 @@ public class MyCourseMemberDetail extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String courseNo = request.getParameter("courseNo");
-
+		
 		Course course = courseService.selectCourseOne(courseNo);
 		List<Pet> petList = petService.selectAllPetByCourseNo(courseNo);
 		
