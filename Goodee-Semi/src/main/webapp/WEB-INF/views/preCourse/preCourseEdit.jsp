@@ -13,64 +13,73 @@
 <%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
 
 <main>
-	<h1>사전 학습 수정</h1>
+	<h2>사전 학습 수정</h2>
 	
 	<form id="edit" method="post">
 		<input type="text" id="preNo" name="preNo" value="${ preCourse.preNo }" hidden>
-		<div>
-			<select name="courseNo">
+		<div class="m-1">
+			<select class="w-50 rounded" name="courseNo">
 				<c:forEach var="c" items="${ courseList }">
 					<option value="${ c.courseNo }" <c:if test="${ c.courseNo eq preCourse.courseNo }">selected</c:if> >${ c.title }</option>
 				</c:forEach>
 			</select>
 		</div>
-		<div>
-			<label for="title">[제목] </label>
-			<input type="text" name="title" value="${ preCourse.preTitle }">
+		<div class="m-1">
+			<label class="mr-2" for="title">[제목] </label>
+			<input type="text" class="w-75 form-control rounded d-inline-block" name="title" value="${ preCourse.preTitle }">
 		</div>
-		<div>
-			<label for="attach">[학습영상] </label>
-			<input type="file" name="attach">
+		<div class="d-flex justify-content-between">
+			<div>
+				<label for="attach">[학습영상] </label>
+				<input type="file" name="attach">
+			</div>
 			<input type="text" name="videoLen" value="${ preCourse.videoLen }" readonly>
 		</div>
 	
-		<!-- SJ: 퀴즈 추가 --><div>
-		<span>퀴즈 추가</span>
-			<button type="button" onclick="addTest()">+</button>
+		<!-- SJ: 퀴즈 추가 -->
+		<div>
+			<button type="button" class="btn btn-info px-2 py-1 my-1" onclick="addTest()">퀴즈 추가</button>
 		</div>
 		<input type="text" id="count" name="size" value="${ list.size() }" hidden>
-		<div id="testPart">
+		<div class="mt-1" id="testPart">
 			<c:if test="${ not empty list }">
 				<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
 					<div id="test${ i }">
 						<input type="text" id="test${ i }No" name="test${ i }No" value="${ list[i].testNo }" hidden>
 						<input type="text" name="answer${ i }" value="${ list[i].testAnswer }" hidden>
-						<textarea rows="30" cols="100" name="content${ i }" spellcheck="false" style="resize: none;">${ list[i].testContent }</textarea>
-						<br>
-						<label>
-							<input type="radio" name="quiz${ i }" value="one" <c:if test="${ list[i].testAnswer eq 'one' }">checked</c:if> >
-							<input type="text" name="one${ i }" value="${ list[i].one }">
-						</label>
-						<label>
-							<input type="radio" name="quiz${ i }" value="two" <c:if test="${ list[i].testAnswer eq 'two' }">checked</c:if> >
-							<input type="text" name="two${ i }" value="${ list[i].two }">
-						</label>
-						<label>
-							<input type="radio" name="quiz${ i }" value="three" <c:if test="${ list[i].testAnswer eq 'three' }">checked</c:if> >
-							<input type="text" name="three${ i }" value="${ list[i].three }">
-						</label>
-						<label>
-							<input type="radio" name="quiz${ i }" value="four" <c:if test="${ list[i].testAnswer eq 'four' }">checked</c:if> >
-							<input type="text" name="four${ i }" value="${ list[i].four }">
-						</label>
-						<button type="button" onclick="remove(${ i })">퀴즈 삭제</button>
+						<textarea class="border w-100 rounded p-3 overflow-hidden" name="content${ i }" id="content${ i }" oninput="contentInput(${ i })" spellcheck="false" style="resize: none;">${ list[i].testContent }</textarea>
+
+						<div class="d-flex flex-row">
+							<div class="d-flex flex-wrap w-75">
+								<div class="my-1 mr-1 flex-grow-1">
+									<input type="radio" name="quiz${ i }" value="one" <c:if test="${ list[i].testAnswer eq 'one' }">checked</c:if> >
+									<input type="text" class="mx-1" name="one${ i }" value="${ list[i].one }">
+								</div>
+								<div class="my-1 mr-1 flex-grow-1">
+									<input type="radio" name="quiz${ i }" value="two" <c:if test="${ list[i].testAnswer eq 'two' }">checked</c:if> >
+									<input type="text" class="mx-1" name="two${ i }" value="${ list[i].two }">
+								</div>
+								<div class="my-1 mr-1 flex-grow-1">
+									<input type="radio" name="quiz${ i }" value="three" <c:if test="${ list[i].testAnswer eq 'three' }">checked</c:if> >
+									<input type="text" class="mx-1" name="three${ i }" value="${ list[i].three }">
+								</div>
+								<div class="my-1 mr-1 flex-grow-1">
+									<input type="radio" name="quiz${ i }" value="four" <c:if test="${ list[i].testAnswer eq 'four' }">checked</c:if> >
+									<input type="text" class="mx-1" name="four${ i }" value="${ list[i].four }">
+								</div>
+							</div>
+							<div class="w-25 text-right">
+								<button type="button" class="btn btn-danger px-2 py-1" onclick="remove(${ i })">퀴즈 삭제</button>
+							</div>
+						</div>
 					</div>
-					<br>
 				</c:forEach>
 			</c:if>
 		</div>
 		
-		<button>수정</button>
+		<div class="d-flex justify-content-end">
+			<button class="btn btn-success px-2 py-1 mr-1">수정</button>
+		</div>
 	</form>
 
 </main>
@@ -78,6 +87,13 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+	function contentInput(num) {
+		const $target = document.querySelector('#content' + num);
+	
+		$target.style.height = '202px';
+		$target.style.height = $target.scrollHeight + 'px';
+	};
+
 	let i = document.querySelector('#count').value;
 	function addTest() {
 		html =`<%@ include file="/WEB-INF/views/preCourse/preTest.jsp" %>`;
