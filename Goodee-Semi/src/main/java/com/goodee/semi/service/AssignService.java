@@ -88,4 +88,18 @@ public class AssignService {
 		return result;
 	}
 
+	public List<PetClass> selectClassListByAccountDetail(AccountDetail account) {
+		List<PetClass> classList = classDao.selectClassListByAccountDetail(account);
+		
+		if (classList != null) {
+			for (PetClass petClass : classList) {
+				petClass.setCourseThumbAttach(courseDao.selectThumbAttach(courseDao.selectCourseOne(String.valueOf(petClass.getCourseNo()))));
+				petClass.setPetAttach(petDao.selectAttachByPetNo(petClass.getPetNo()));
+				petClass.setAssignList(assignDao.selectAssignListByClassNo(petClass.getClassNo()));
+			}
+		}
+		
+		return classList;
+	}
+
 }
