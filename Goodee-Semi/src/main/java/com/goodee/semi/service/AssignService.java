@@ -102,4 +102,12 @@ public class AssignService {
 		return classList;
 	}
 
+	public Attach selectThumbAttach(Course course) {
+		return courseDao.selectThumbAttach(course);
+	}
+
+	public Attach selectPetAttach(Pet pet) {
+		return petDao.selectAttachByPetNo(pet.getPetNo());
+	}
+
 }
