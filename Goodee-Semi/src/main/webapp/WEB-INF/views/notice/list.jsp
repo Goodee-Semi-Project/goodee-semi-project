@@ -46,6 +46,25 @@
 					</c:forEach>
 	
 					<!-- Pagination -->
+					<c:if test="${ not empty noticeList }">
+						<div style="text-align: center;">
+							<c:if test="${paging.prev }">
+								<a href="<c:url value='/notice/list?nowPage=${paging.pageBarStart-1 }&keyword=${param.keyword }'/>" class="btn btn-outline-secondary" style="padding: 2px 5px;">
+									&laquo;
+								</a>
+							</c:if>
+							<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
+								<a href="<c:url value='/notice/list?nowPage=${i }&keyword=${param.keyword }'/>" class="btn btn-outline-secondary" style="padding: 2px 5px;">
+									${i }
+								</a>
+							</c:forEach>
+							<c:if test="${paging.next }">
+								<a href="<c:url value='/notice/list?nowPage=${paging.pageBarEnd+1 }&keyword=${param.keyword }'/>" class="btn btn-outline-secondary" style="padding: 2px 5px;">
+									&raquo;
+								</a>
+							</c:if>			
+						</div>
+					</c:if>
 					
 				</div>
 				<div class="col-lg-4">
@@ -61,29 +80,29 @@
 						</div>
 						
 						<div class="widget user text-center">
-						<c:choose>
-							<c:when test="${ sessionScope.loginAccount.author eq 1 }">
-								<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
-								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
-								<div class="d-grid gap-2">
-										<a href="<c:url value='/notice/write' />" class="btn btn-success col-12 mt-4">공지사항 등록</a>
+							<c:choose>
+								<c:when test="${ sessionScope.loginAccount.author eq 1 }">
+									<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+									<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
+									<div class="d-grid gap-2">
+											<a href="<c:url value='/notice/write' />" class="btn btn-success col-12 mt-4">공지사항 등록</a>
+										</div>
+								</c:when>
+								
+								<c:when test="${ sessionScope.loginAccount.author eq 2 }">
+									<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+									<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
+									<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
+								</c:when>
+								
+								<c:otherwise>
+									<div class="d-grid gap-2">
+										<a href="<c:url value='/account/login' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">로그인</a>
+										<a href="<c:url value='/account/register' />" class="btn btn-success col-12 px-5 my-1">회원가입</a>
 									</div>
-							</c:when>
-							
-							<c:when test="${ sessionScope.loginAccount.author eq 2 }">
-								<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
-								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
-								<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
-							</c:when>
-							
-							<c:otherwise>
-								<div class="d-grid gap-2">
-									<a href="<c:url value='/account/login' />" class="btn btn-light btn-outline-dark col-12 px-5 my-1">로그인</a>
-									<a href="<c:url value='/account/register' />" class="btn btn-success col-12 px-5 my-1">회원가입</a>
-								</div>
-							</c:otherwise>
-						</c:choose>
-					</div>
+								</c:otherwise>
+							</c:choose>
+						</div>
 						
 					</div>
 				</div>
@@ -96,64 +115,8 @@
 
 
 
-	<form action="/notice/list" method="get">
-	  <input type="text" name="keyword" placeholder="제목 또는 작성자 검색" value="${param.keyword}">
-	  <button type="submit">검색</button>
-	</form>	
-	<table >
-	  <thead>
-	    <tr>
-	    	<th>번호</th>
-	    	<th>제목</th>
-	    	<th>작성자</th>
-	    	<th>작성일</th>
-    	</tr>
-	  </thead>
-	  <tbody>
-	    
-		 <tr>
-		   <td>
-		     <c:choose>
-		       <c:when test="${n.nailUp eq 'Y'}">
-		         <span style="font-size: 18px;">📌</span>
-		       </c:when>
-		       <c:otherwise>
-		         ${n.noticeNo}
-		       </c:otherwise>
-		     </c:choose>
-		   </td>
-		   <td onclick="location.href='<c:url value='/noticeDetail?no=${n.noticeNo}'/>'">${n.noticeTitle}</td>
-		   <td>${n.writer}</td>
-		   <td>${n.regDate}</td>
-		 </tr>
+	
 
-
-	  </tbody>
-	</table>
-	<c:if test="${ not empty noticeList }">
-		<div>
-			<c:if test="${paging.prev }">
-				<a href="<c:url value='/notice/list?nowPage=${paging.pageBarStart-1 }&keyword=${param.keyword }'/>">
-					&laquo;
-				</a>
-			</c:if>
-			<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
-				<a href="<c:url value='/notice/list?nowPage=${i }&keyword=${param.keyword }'/>">
-					${i }
-				</a>
-			</c:forEach>
-			<c:if test="${paging.next }">
-				<a href="<c:url value='/notice/list?nowPage=${paging.pageBarEnd+1 }&keyword=${param.keyword }'/>">
-					&raquo;
-				</a>
-			</c:if>			
-		</div>
-	</c:if>
-	<c:if test="${sessionScope.loginAccount.author == 1}">
-	  <form action="/notice/write" method="get" style="display:inline;">
-	    <button type="submit">등록</button>
-	  </form>
-	</c:if>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </body>
 </html>
