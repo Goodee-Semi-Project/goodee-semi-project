@@ -21,7 +21,7 @@
 	      <h3 class="tab-title" style="text-align: center; font-size: 32px;">새 과제 생성</h3>
 	      <form id="createAssignForm">
 	      	<c:if test="${ sessionScope.loginAccount.author eq 1 }">
-	      		<input type="hidden" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
+	      		<input type="hidden" id="trainer" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
 	      		
 	      		<fieldset class="p-4">
 	      			<div style="display: flex; justify-content: center; align-items: center;">
@@ -183,6 +183,36 @@
 					});
 				}
 				
+			});
+			
+			$("#saveAssignForm").on("click", (event) => {
+				event.preventDefault();
+				
+				if (confirm("과제를 임시저장 하시겠습니까?")) {
+					const formData = new FormData(document.getElementById("createAssignForm"));
+					formData.append("flag", "save");
+					
+					$.ajax({
+						url : "/assign/create",
+						type : "POST",
+						data : formData,
+						enctype : "multipart/form-data",
+						contentType : false,
+						processData : false,
+						cache : false,
+						dataType : "JSON",
+						success : function(data) {
+							alert(data.resultMsg);
+							
+							if (data.resultCode == 200) {
+								location.href = "<%= request.getContextPath() %>/assign/management";
+							}
+						},
+						error : function() {
+							alert("오류 발생!!");
+						}
+					});
+				}
 			});
 			
 			$("#submitAssignForm").on("click", (event) => {

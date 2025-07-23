@@ -53,8 +53,34 @@
 	</c:forEach>
 
 	<div class="mt-4" style="display: flex; justify-content: center; align-items: center;">
-		<a href="<c:url value='/assign/create' />" class="btn btn-success" style="padding: 5px 10px;">새 과제 생성</a>
+		<a href="<c:url value='/assign/create' />" class="btn btn-success mr-2" style="padding: 5px 10px;">새 과제 생성</a>
+		<button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;" onclick="">작성중인 과제</button>
 	</div>
+	
+	<!-- 모달 창 -->
+	<div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 700px;">
+	    <div class="modal-content">
+	      <div class="modal-header border-bottom-0">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body text-center">
+	        <h3 class="tab-title mb-2">작성중인 과제</h3>
+	        <p>작성중인 과제를 선택해주세요.</p>
+	        <select id="selectMyAssign" name="selectMyAssign">
+	        	
+	        </select>
+	      </div>
+	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
+	        <button type="button" class="btn btn-primary" style="padding: 5px 10px;" onclick="">선택</button>
+	        <button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;" data-dismiss="modal">취소</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 모달 창 종료 -->
 	
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
