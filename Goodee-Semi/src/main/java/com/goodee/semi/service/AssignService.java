@@ -88,4 +88,48 @@ public class AssignService {
 		return result;
 	}
 
+	public List<PetClass> selectClassListByAccountDetail(AccountDetail account) {
+		List<PetClass> classList = classDao.selectClassListByAccountDetail(account);
+		
+		if (classList != null) {
+			for (PetClass petClass : classList) {
+				petClass.setCourseThumbAttach(courseDao.selectThumbAttach(courseDao.selectCourseOne(String.valueOf(petClass.getCourseNo()))));
+				petClass.setPetAttach(petDao.selectAttachByPetNo(petClass.getPetNo()));
+				petClass.setAssignList(assignDao.selectAssignListByClassNo(petClass.getClassNo()));
+			}
+		}
+		
+		return classList;
+	}
+
+	public Attach selectThumbAttach(Course course) {
+		return courseDao.selectThumbAttach(course);
+	}
+
+	public Attach selectPetAttach(Pet pet) {
+		return petDao.selectAttachByPetNo(pet.getPetNo());
+	}
+
+	public List<Assign> selectAssignListByClassNo(String classNo) {
+		return assignDao.selectAssignListByClassNo(Integer.parseInt(classNo));
+	}
+
+	public PetClass selectClass(String classNo) {
+		return classDao.selectClass(Integer.parseInt(classNo));
+	}
+
+	public Course selectCourse(int courseNo) {
+		Course course = courseDao.selectCourseOne(String.valueOf(courseNo));
+		course.setThumbAttach(courseDao.selectThumbAttach(course));
+		
+		return course;
+	}
+
+	public Pet selectPet(int petNo) {
+		Pet pet = petDao.selectPetOne(petNo);
+		pet.setPetAttach(petDao.selectAttachByPetNo(petNo));
+		
+		return pet;
+	}
+
 }

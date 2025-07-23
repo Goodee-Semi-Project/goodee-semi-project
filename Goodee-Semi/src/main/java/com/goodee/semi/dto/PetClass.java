@@ -1,5 +1,7 @@
 package com.goodee.semi.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,4 +22,9 @@ public class PetClass {
 	private String courseTitle;
 	private int accountNo;
 	private String petName;
+	
+	private Attach courseThumbAttach;
+	private Attach petAttach;
+	
+	private List<Assign> assignList;
 }
