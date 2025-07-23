@@ -6,4 +6,5 @@ public interface AssignSubmitMapper {
 	AssignSubmit selectAssignSubmitByAssignNo(int assignNo);
 	int insertAssignSubmit(AssignSubmit assignSubmit);
 	int updateAssignSubmit(AssignSubmit assignSubmit);
+	int deleteAssignSubmit(int submitNo);
 }

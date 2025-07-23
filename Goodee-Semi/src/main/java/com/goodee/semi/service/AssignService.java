@@ -221,4 +221,8 @@ public class AssignService {
 		return result;
 	}
 
+	public int deleteAssignSubmit(String submitNo) {
+		return assignSubmitDao.deleteAssignSubmit(Integer.parseInt(submitNo));
+	}
+
 }

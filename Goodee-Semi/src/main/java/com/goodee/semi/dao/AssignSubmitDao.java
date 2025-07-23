@@ -27,4 +27,12 @@ public class AssignSubmitDao {
 		return result;
 	}
 
+	public int deleteAssignSubmit(int submitNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.AssignSubmitMapper.deleteAssignSubmit", submitNo);
+		session.close();
+		
+		return result;
+	}
+
 }
