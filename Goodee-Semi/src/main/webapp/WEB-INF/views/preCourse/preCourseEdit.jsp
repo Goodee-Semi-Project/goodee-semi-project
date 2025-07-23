@@ -99,7 +99,7 @@
 	let i = document.querySelector('#count').value;
 	function addTest() {
 		html =`<%@ include file="/WEB-INF/views/preCourse/preTest.jsp" %>`;
-		document.querySelector('#testPart').innerHTML += html;
+		$('#testPart').append(html);
 		document.querySelector('#count').value = ++i;
 	}
 	
