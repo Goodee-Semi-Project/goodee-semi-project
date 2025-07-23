@@ -34,7 +34,12 @@
               <li><a href="<c:url value='/myCourse/list' />">내 교육과정</a></li>
               <li><a href="<c:url value='/preCourse/list' />">사전학습</a></li>
               <li><a href="<c:url value='/schedule' />">일정표</a></li>
-              <li><a href="<c:url value='/assign/list' />">과제</a></li>
+              <c:if test="${ sessionScope.loginAccount.author eq 1 }">
+              	<li><a href="<c:url value='/assign/management' />">과제 관리</a></li> 
+              </c:if>
+              <c:if test="${ sessionScope.loginAccount.author eq 2 }">
+	              <li><a href="<c:url value='/assign/list' />">내 과제</a></li>             
+              </c:if>
               <li><a href="<c:url value='/qnaBoard/list' />">질문 게시판</a></li>
             </ul>
           </div>
