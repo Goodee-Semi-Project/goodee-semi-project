@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.AssignDao;
+import com.goodee.semi.dao.AssignSubmitDao;
 import com.goodee.semi.dao.AttachDao;
 import com.goodee.semi.dao.ClassDao;
 import com.goodee.semi.dao.CourseDao;
@@ -14,6 +15,7 @@ import com.goodee.semi.dao.PetDao;
 import com.goodee.semi.dao.ScheduleDao;
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Assign;
+import com.goodee.semi.dto.AssignSubmit;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Pet;
@@ -29,6 +31,7 @@ public class AssignService {
 	private ScheduleDao scheduleDao = new ScheduleDao();
 	private AssignDao assignDao = new AssignDao();
 	private AttachDao attachDao = new AttachDao();
+	private AssignSubmitDao assignSubmitDao = new AssignSubmitDao();
 
 	public List<Course> selectCourseListByAccountDetail(AccountDetail account) {
 		return courseDao.selectMyCourse(account);
@@ -141,6 +144,39 @@ public class AssignService {
 		assign.setAssignAttach(attachDao.selectAttachOne(attach));
 		
 		return assign;
+	}
+
+	public int insertAssignSubmitWithAttach(AssignSubmit assignSubmit, Part submitPart) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			
+			result = assignSubmitDao.insertAssignSubmit(session, assignSubmit);
+			
+			if (result > 0) {
+				File uploadDir = AttachService.getUploadDirectory(Attach.SUBMIT);
+				Attach attach = AttachService.handleUploadFile(submitPart, uploadDir);
+				attach.setTypeNo(Attach.SUBMIT);
+				attach.setPkNo(assignSubmit.getSubmitNo());
+				
+				result = attachDao.insertAttach(session, attach);
+			}
+			
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
 	}
 
 }
