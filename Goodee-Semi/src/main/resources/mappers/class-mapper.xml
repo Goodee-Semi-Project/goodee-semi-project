@@ -14,6 +14,13 @@
 		<result property="petName" column="pet_name"/>
 	</resultMap>
 	
+	<select id="selectClass" parameterType="_int" resultMap="classResultMap">
+		SELECT * FROM class
+		<where>
+			class_no = #{classNo}
+		</where>
+	</select>
+	
 	<select id="selectClassByCourseNoAndPetNo" parameterType="com.goodee.semi.dto.PetClass" resultMap="classResultMap">
 		SELECT * FROM class
 		<where>

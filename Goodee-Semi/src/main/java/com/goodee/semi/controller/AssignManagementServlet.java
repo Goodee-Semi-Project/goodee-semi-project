@@ -59,11 +59,16 @@ public class AssignManagementServlet extends HttpServlet {
 		
 		PetClass petClass = service.selectClassByCourseNoAndPetNo(courseNo, petNo);
 		
-		
 		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("classNo", petClass.getClassNo());
+		jsonObj.put("resultCode", "500");
 		
+		if (petClass != null) {
+			jsonObj.put("resultCode", "200");
+			jsonObj.put("classNo", petClass.getClassNo());
+		}
 		
+		response.setContentType("application/json; charset=UTF-8");
+		response.getWriter().print(jsonObj);
 	}
 
 }
