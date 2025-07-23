@@ -69,7 +69,9 @@
 				},
 				dataType : "JSON",
 				success : function(data) {
-					
+					if (data.resultCode == 200) {
+						location.href = "<%= request.getContextPath() %>/assign/listByClass?classNo=" + data.classNo;
+					}
 				},
 				error : function() {
 					alert("페이지 이동 중 오류가 발생했습니다.");

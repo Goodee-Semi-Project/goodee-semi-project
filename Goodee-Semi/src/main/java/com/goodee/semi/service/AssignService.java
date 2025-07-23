@@ -110,4 +110,26 @@ public class AssignService {
 		return petDao.selectAttachByPetNo(pet.getPetNo());
 	}
 
+	public List<Assign> selectAssignListByClassNo(String classNo) {
+		return assignDao.selectAssignListByClassNo(Integer.parseInt(classNo));
+	}
+
+	public PetClass selectClass(String classNo) {
+		return classDao.selectClass(Integer.parseInt(classNo));
+	}
+
+	public Course selectCourse(int courseNo) {
+		Course course = courseDao.selectCourseOne(String.valueOf(courseNo));
+		course.setThumbAttach(courseDao.selectThumbAttach(course));
+		
+		return course;
+	}
+
+	public Pet selectPet(int petNo) {
+		Pet pet = petDao.selectPetOne(petNo);
+		pet.setPetAttach(petDao.selectAttachByPetNo(petNo));
+		
+		return pet;
+	}
+
 }

@@ -46,7 +46,7 @@
 						<c:forEach var="assign" items="${ petClass.assignList }">
 							<tr style="height: 50px;">
 								<td>${ assign.schedStep }</td>
-								<td><a href="<c:url value='/assign/detail?no=${ assign.assignNo }' />">${ assign.assignTitle }</a></td>
+								<td><a href="<c:url value='/assign/detail?assignNo=${ assign.assignNo }' />">${ assign.assignTitle }</a></td>
 								<td style="font-size: 12px;">${ assign.assignStart }<br> ~ ${ assign.assignEnd }</td>
 								<td>
 									<button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;">제출 완료</button>
