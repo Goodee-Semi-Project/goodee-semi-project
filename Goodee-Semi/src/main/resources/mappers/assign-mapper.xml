@@ -56,8 +56,45 @@
 	</select>
 	
 	<insert id="insertAssign" parameterType="com.goodee.semi.dto.Assign" useGeneratedKeys="true" keyProperty="assignNo">
-		INSERT INTO assignment (class_no, sched_no, account_no, assign_title, assign_content, assign_receipt, assign_start, assign_end)
-		VALUE (#{classNo}, #{schedNo}, #{accountNo}, #{assignTitle}, #{assignContent}, #{assignReceipt}, #{assignStart}, #{assignEnd})
+		INSERT INTO assignment (
+					account_no
+				, assign_receipt
+			<if test="assignReceipt == 'Y'">
+				,	class_no
+				, sched_no			
+			</if>
+			<if test='assignTitle != "" and assignTitle != null'>
+				, assign_title
+			</if>
+			<if test='assignContent != "" and assignContent != null'>
+				, assign_content
+			</if>
+			<if test='assignStart != "" and assignStart != null'>
+				, assign_start
+			</if>
+			<if test='assignEnd != "" and assignEnd != null'>
+				, assign_end
+			</if>
+		) VALUE (
+				#{accountNo}
+			, #{assignReceipt}
+		<if test="assignReceipt == 'Y'">
+			,	#{classNo}
+			, #{schedNo}
+		</if>
+		<if test='assignTitle != "" and assignTitle != null'>
+			, #{assignTitle}
+		</if>
+		<if test='assignContent != "" and assignContent != null'>
+			, #{assignContent}
+		</if>
+		<if test='assignStart != "" and assignStart != null'>
+			, #{assignStart}
+		</if>
+		<if test='assignEnd != "" and assignEnd != null'>
+			, #{assignEnd}
+		</if>
+		)
 	</insert>
 	
 	<update id="updateAssign" parameterType="com.goodee.semi.dto.Assign">

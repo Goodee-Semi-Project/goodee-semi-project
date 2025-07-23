@@ -68,7 +68,7 @@ public class AssignService {
 			
 			result = assignDao.insertAssign(session, assign);
 			
-			if (result > 0) {
+			if (result > 0 && assignPart.getSize() > 0) {
 				File uploadDir = AttachService.getUploadDirectory(Attach.ASSIGN);
 				Attach attach = AttachService.handleUploadFile(assignPart, uploadDir);
 				attach.setTypeNo(Attach.ASSIGN);
