@@ -48,9 +48,9 @@ public class AttendDetailUpdateServlet extends HttpServlet {
 		
 		Schedule sched = new Schedule();
 		sched.setSchedAttend(attend);
+		sched.setSchedNo(schedNo);
 		sched.setPetNo(petNo);
 		sched.setCourseNo(courseNo);
-		sched.setSchedNo(schedNo);
 		int result = scheduleService.updateScheduleAttend(sched);
 		
 		JSONObject obj = new JSONObject();
