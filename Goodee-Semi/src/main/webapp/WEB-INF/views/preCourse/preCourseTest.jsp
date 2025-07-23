@@ -14,7 +14,7 @@
 
 <main>
 	<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
-		<div class="border rounded px-2 py-1">
+		<div class="border rounded px-2 py-1 mt-2">
 			<input type="text" id="answer${ i }" value="${ list[i].testAnswer }" hidden>
 			<p class="border-bottom p-2" style="font-size: 20px;">${ list[i].testContent }</p>
 			<div class="d-flex flex-column p-2">
