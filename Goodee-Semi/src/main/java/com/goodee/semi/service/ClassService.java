@@ -24,4 +24,8 @@ public class ClassService {
 		
 		return classDao.selectClassByCourseNoAndPetNo(keyObj);
 	}
+	
+	public int updateClassProg(PetClass petClass) {
+		return classDao.updateClassProg(petClass);
+	}
 }
