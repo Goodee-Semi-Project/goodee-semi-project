@@ -92,18 +92,25 @@ public class AssignCreateServlet extends HttpServlet {
 		} 
 		
 		if ("save".equals(flag)) {
-			String courseNo = request.getParameter("selectCourse");
-			String petNo = request.getParameter("selectPet");
-			
 			Assign assign = new Assign();
-			assign.setClassNo(service.selectClassByCourseNoAndPetNo(courseNo, petNo).getClassNo());
-			assign.setSchedNo(Integer.parseInt(request.getParameter("selectSchedule")));
 			assign.setAccountNo(Integer.parseInt(request.getParameter("trainer")));
-			assign.setAssignTitle(request.getParameter("assignTitle"));
-			assign.setAssignContent(request.getParameter("assignContent"));
-			assign.setAssignStart(request.getParameter("assignStart"));
-			assign.setAssignEnd(request.getParameter("assignEnd"));
-			assign.setAssignReceipt('Y');
+			assign.setAssignReceipt('N');
+			
+			if (request.getParameter("assignTitle") != "") {
+				assign.setAssignTitle(request.getParameter("assignTitle"));				
+			}
+			
+			if (request.getParameter("assignContent") != "") {
+				assign.setAssignContent(request.getParameter("assignContent"));				
+			}
+			
+			if (request.getParameter("assignStart") != "") {
+				assign.setAssignStart(request.getParameter("assignStart"));				
+			}
+			
+			if (request.getParameter("assignEnd") != "") {
+				assign.setAssignEnd(request.getParameter("assignEnd"));				
+			}
 			
 			Part assignPart = null;
 			try {
@@ -114,10 +121,10 @@ public class AssignCreateServlet extends HttpServlet {
 			
 			if (result > 0) {
 				jsonObj.put("resultCode", "200");
-				jsonObj.put("resultMsg", "과제가 등록되었습니다.");
+				jsonObj.put("resultMsg", "과제가 임시저장 되었습니다.");
 			} else {
 				jsonObj.put("resultCode", "500");
-				jsonObj.put("resultMsg", "과제 등록 중 오류가 발생했습니다.");
+				jsonObj.put("resultMsg", "과제 임시저장 중 오류가 발생했습니다.");
 			}
 		}
 		
@@ -128,6 +135,7 @@ public class AssignCreateServlet extends HttpServlet {
 			Assign assign = new Assign();
 			assign.setClassNo(service.selectClassByCourseNoAndPetNo(courseNo, petNo).getClassNo());
 			assign.setSchedNo(Integer.parseInt(request.getParameter("selectSchedule")));
+			assign.setAccountNo(Integer.parseInt(request.getParameter("trainer")));
 			assign.setAssignTitle(request.getParameter("assignTitle"));
 			assign.setAssignContent(request.getParameter("assignContent"));
 			assign.setAssignStart(request.getParameter("assignStart"));
