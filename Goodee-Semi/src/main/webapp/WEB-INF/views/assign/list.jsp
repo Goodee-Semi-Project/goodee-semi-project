@@ -49,7 +49,15 @@
 								<td><a href="<c:url value='/assign/detail?assignNo=${ assign.assignNo }' />">${ assign.assignTitle }</a></td>
 								<td style="font-size: 12px;">${ assign.assignStart }<br> ~ ${ assign.assignEnd }</td>
 								<td>
-									<button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;">제출 완료</button>
+									<c:choose>
+										<c:when test="${ not empty assign.assignSubmit }">
+											<button type="button" class="btn btn-success disabled" style="padding: 5px 10px;">제출 완료</button>										
+										</c:when>
+										
+										<c:otherwise>
+											<button type="button" class="btn btn-outline-secondary disabled" style="padding: 5px 10px;">미제출</button>
+										</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
 						</c:forEach>
