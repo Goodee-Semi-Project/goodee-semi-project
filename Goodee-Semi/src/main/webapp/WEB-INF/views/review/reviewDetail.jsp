@@ -32,7 +32,7 @@
 	</div>
 	<div>
 		<c:if test="${ not empty attach }">
-			<img class="img-fluid w-100" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+			<img class="img-fluid w-100 m-2" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
 		</c:if>
 		<p style="font-size: 20px">${ review.reviewContent }</p>
 	</div>
