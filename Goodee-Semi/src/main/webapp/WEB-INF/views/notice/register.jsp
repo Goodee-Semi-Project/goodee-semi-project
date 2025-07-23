@@ -61,7 +61,14 @@
 						<div class="widget user text-center">
 							<c:choose>
 								<c:when test="${ sessionScope.loginAccount.author eq 1 }">
-									<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+									<c:choose>
+										<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
+											<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+										</c:when>
+										<c:otherwise>
+											<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+										</c:otherwise>
+									</c:choose>
 									<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
 									<div class="d-grid gap-2">
 											<a href="<c:url value='/notice/write' />" class="btn btn-success col-12 mt-4">공지사항 등록</a>
@@ -69,7 +76,14 @@
 								</c:when>
 								
 								<c:when test="${ sessionScope.loginAccount.author eq 2 }">
-									<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+									<c:choose>
+										<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
+											<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+										</c:when>
+										<c:otherwise>
+											<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+										</c:otherwise>
+									</c:choose>
 									<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
 									<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
 								</c:when>
