@@ -105,6 +105,7 @@ public class AssignService {
 				for (Assign assign : petClass.getAssignList()) {
 					assign.setAssignStart(LocalDateTime.parse(assign.getAssignStart(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).format(DateTimeFormatter.ofPattern("MM월 dd일 HH시 mm분")));
 					assign.setAssignEnd(LocalDateTime.parse(assign.getAssignEnd(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).format(DateTimeFormatter.ofPattern("MM월 dd일 HH시 mm분")));
+					assign.setAssignSubmit(assignSubmitDao.selectAssignSubmitByAssignNo(assign.getAssignNo()));
 				}
 			}
 		}
@@ -286,6 +287,10 @@ public class AssignService {
 		}
 		
 		return assign;
+	}
+
+	public AssignSubmit selectAssignSubmit(Assign assign) {
+		return assignSubmitDao.selectAssignSubmitByAssignNo(assign.getAssignNo());
 	}
 
 }
