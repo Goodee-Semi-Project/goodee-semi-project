@@ -49,7 +49,7 @@
                        		<textarea name="message" id="answer_content" class="border p-3 mx-2 mt-3 mt-lg-4" style="resize: none; height: 200px; width: 97%; outline: none;">${answer.answerContent}</textarea>
 	                       	<div class="d-flex justify-content-between m-2">
 	                 			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
-								<button type="button" class="btn btn-success" style="background-color: #198754 !important;" onclick="openUpdateModal()">등록</button>
+								<button type="button" class="btn btn-success" style="background-color: #198754 !important;" onclick="openUpdateModal()">답변등록</button>
 							</div>
                         </div>
                     </form>
@@ -69,7 +69,7 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
-	      <div class="modal-body text-center">답변을 수정하시겠습니까?</div>
+	      <div class="modal-body text-center">답변을 등록하시겠습니까?</div>
 	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
 	        <button type="button" id="btn_modal_update_confirm" class="btn btn-success">확인</button>
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>

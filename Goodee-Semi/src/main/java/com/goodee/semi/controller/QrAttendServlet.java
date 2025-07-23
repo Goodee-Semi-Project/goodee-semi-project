@@ -31,7 +31,6 @@ public class QrAttendServlet extends HttpServlet {
 		
 		int schedNo = Integer.parseInt(request.getParameter("schedNo"));
 		Schedule sched = scheduleService.selectSchedule(schedNo);
-		System.out.println(sched);
 		
 		LocalDateTime now = LocalDateTime.now();
         LocalDateTime start = sched.getSchedStart();

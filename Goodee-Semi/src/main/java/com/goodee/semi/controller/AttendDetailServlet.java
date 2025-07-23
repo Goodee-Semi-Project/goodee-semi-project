@@ -30,6 +30,7 @@ public class AttendDetailServlet extends HttpServlet {
 
 		int petNo = Integer.parseInt(request.getParameter("petNo"));
 		int courseNo= Integer.parseInt(request.getParameter("courseNo"));
+		String courseTitle = request.getParameter("courseTitle");
 		
 		Schedule schedule = new Schedule();
 		schedule.setCourseNo(courseNo);
@@ -55,6 +56,7 @@ public class AttendDetailServlet extends HttpServlet {
 			request.setAttribute("startEndList", startEndList);
 		}
 		
+		request.setAttribute("courseTitle", courseTitle);
 		request.setAttribute("scheduleList", scheduleList);
 		request.setAttribute("petAttach", petAttach);
 		request.getRequestDispatcher("/WEB-INF/views/attend/attendDetail.jsp").forward(request, response);
