@@ -82,13 +82,21 @@ public class PreCourseRegistServlet extends HttpServlet {
 			// 영상 시간 구하기
 			// TODO: FFMpeg 설치하고 ffprobe.exe 경로 입력
 			int total = 0;
-			try {
-				FFprobe ffprobe = new FFprobe("C://ffmpeg/bin/ffprobe.exe");
-				FFmpegProbeResult probeResult = ffprobe.probe("C://goodee/upload/preCourse/" + attach.getSavedName());
-				FFmpegFormat format = probeResult.getFormat();
-				total = (int) format.duration;
-				
-			} catch (Exception e) {
+			if (new File("C:/ffmpeg/bin/ffprobe.exe").exists() == false) {
+				System.err.println("FFMpeg 경로 설정이 필요합니다!");
+			} else {
+				try {
+					FFprobe ffprobe = new FFprobe("C:/ffmpeg/bin/ffprobe.exe");
+					FFmpegProbeResult probeResult = ffprobe.probe("C://goodee/upload/preCourse/" + attach.getSavedName());
+					FFmpegFormat format = probeResult.getFormat();
+					total = (int) format.duration;
+					
+				} catch (Exception e) {
+				}
+			}
+			
+			if (new File("C:/ffmpeg/bin/ffprobe.exe").exists() == false) {
+				System.err.println("FFMpeg 경로 설정이 필요합니다!");
 			}
 			
 			int hour = total / 360;
@@ -136,7 +144,9 @@ public class PreCourseRegistServlet extends HttpServlet {
 				}
 			}
 			
-			result = preCourseService.insertPreCourse(preCourse, attach, testList);
+			if (total != 0) {
+				result = preCourseService.insertPreCourse(preCourse, attach, testList);
+			}
 		}
 
 		JSONObject obj = new JSONObject();
