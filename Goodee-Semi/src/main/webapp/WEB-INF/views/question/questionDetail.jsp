@@ -10,7 +10,6 @@
 <style>
 	.container button {
 		padding : 5px 20px !important; 
- 		background-color: #5672f9 !important;
 	}
 	.container .btn-delete {
 		background-color: #dc3545 !important;
@@ -61,12 +60,13 @@
 					</div>		
 				</div>
 				<div>
-					<div style="padding : 0 16px 16px 16px">${ answer.answerContent }</div>
+					<div style="padding : 0 16px 8px">${ answer.answerContent }</div>
 				</div>
 			</c:if>
 		</div>
 	</div>
 	
+	<!-- 버튼 -->
 	<div class="container">
 		<div class="d-flex justify-content-between p-3">
 			<div>
@@ -81,7 +81,7 @@
 					<c:if test="${ loginAccount.author eq 1 }">
 						<c:choose>
 							<c:when test="${ empty answer }">
-								<button type="button" class="btn btn-primary" onclick="addAnswer()">답변등록</button>
+								<button type="button" class="btn btn-success" onclick="addAnswer()">답변등록</button>
 							</c:when>
 							<c:otherwise>
 								<button type="button" class="btn btn-dark btn-update" onclick="updateAnswer()">답변수정</button>
