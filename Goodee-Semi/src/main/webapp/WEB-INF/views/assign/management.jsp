@@ -54,12 +54,12 @@
 
 	<div class="mt-4" style="display: flex; justify-content: center; align-items: center;">
 		<a href="<c:url value='/assign/create' />" class="btn btn-success mr-2" style="padding: 5px 10px;">새 과제 생성</a>
-		<button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;" onclick="">작성중인 과제</button>
+		<button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;" onclick="openSaveAssignModal()">작성중인 과제</button>
 	</div>
 	
 	<!-- 모달 창 -->
 	<div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModal" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 700px;">
+	  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
 	    <div class="modal-content">
 	      <div class="modal-header border-bottom-0">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -103,6 +103,10 @@
 					alert("페이지 이동 중 오류가 발생했습니다.");
 				}
 			});
+		}
+		
+		function openSaveAssignModal() {
+			$("#assignModal").modal("show");
 		}
 	</script>
 </body>
