@@ -37,4 +37,12 @@ public class AssignDao {
 		return result;
 	}
 
+	public int deleteAssign(int assignNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.AssignMapper.deleteAssign", assignNo);
+		session.close();
+		
+		return result;
+	}
+
 }

@@ -9,4 +9,5 @@ public interface AssignMapper {
 	List<Assign> selectAssignListByClassNo(int classNo);
 	int insertAssign(Assign assign);
 	int updateAssign(Assign assign);
+	int deleteAssign(int assignNo);
 }

@@ -265,4 +265,8 @@ public class AssignService {
 		return result;
 	}
 
+	public int deleteAssign(String assignNo) {
+		return assignDao.deleteAssign(Integer.parseInt(assignNo));
+	}
+
 }
