@@ -1,0 +1,135 @@
+package com.goodee.semi.service;
+
+import java.io.File;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
+import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dao.AssignDao;
+import com.goodee.semi.dao.AttachDao;
+import com.goodee.semi.dao.ClassDao;
+import com.goodee.semi.dao.CourseDao;
+import com.goodee.semi.dao.PetDao;
+import com.goodee.semi.dao.ScheduleDao;
+import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Assign;
+import com.goodee.semi.dto.Attach;
+import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.Pet;
+import com.goodee.semi.dto.PetClass;
+import com.goodee.semi.dto.Schedule;
+
+import jakarta.servlet.http.Part;
+
+public class AssignService {
+	private CourseDao courseDao = new CourseDao();
+	private PetDao petDao = new PetDao();
+	private ClassDao classDao = new ClassDao();
+	private ScheduleDao scheduleDao = new ScheduleDao();
+	private AssignDao assignDao = new AssignDao();
+	private AttachDao attachDao = new AttachDao();
+
+	public List<Course> selectCourseListByAccountDetail(AccountDetail account) {
+		return courseDao.selectMyCourse(account);
+	}
+
+	public List<Pet> selectPetListByCourseNo(String courseNo) {
+		return petDao.selectAllPetByCourseNo(courseNo);
+	}
+
+	public List<Schedule> selectScheduleListByCourseNoAndPetNo(String courseNo, String petNo) {
+		PetClass petClass = selectClassByCourseNoAndPetNo(courseNo, petNo);
+		
+		List<Schedule> scheduleList = scheduleDao.selectScheduleListByClassNo(petClass);
+		
+		return scheduleList;
+	}
+
+	public PetClass selectClassByCourseNoAndPetNo(String courseNo, String petNo) {
+		PetClass keyObj = new PetClass();
+		keyObj.setCourseNo(Integer.parseInt(courseNo));
+		keyObj.setPetNo(Integer.parseInt(petNo));
+		
+		PetClass petClass = classDao.selectClassByCourseNoAndPetNo(keyObj);
+		return petClass;
+	}
+
+	public int insertAssignWithAttach(Assign assign, Part assignPart) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			
+			result = assignDao.insertAssign(session, assign);
+			
+			if (result > 0) {
+				File uploadDir = AttachService.getUploadDirectory(Attach.ASSIGN);
+				Attach attach = AttachService.handleUploadFile(assignPart, uploadDir);
+				attach.setTypeNo(Attach.ASSIGN);
+				attach.setPkNo(assign.getAssignNo());
+				
+				result = attachDao.insertAttach(session, attach);
+			}
+			
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
+	}
+
+	public List<PetClass> selectClassListByAccountDetail(AccountDetail account) {
+		List<PetClass> classList = classDao.selectClassListByAccountDetail(account);
+		
+		if (classList != null) {
+			for (PetClass petClass : classList) {
+				petClass.setCourseThumbAttach(courseDao.selectThumbAttach(courseDao.selectCourseOne(String.valueOf(petClass.getCourseNo()))));
+				petClass.setPetAttach(petDao.selectAttachByPetNo(petClass.getPetNo()));
+				petClass.setAssignList(assignDao.selectAssignListByClassNo(petClass.getClassNo()));
+			}
+		}
+		
+		return classList;
+	}
+
+	public Attach selectThumbAttach(Course course) {
+		return courseDao.selectThumbAttach(course);
+	}
+
+	public Attach selectPetAttach(Pet pet) {
+		return petDao.selectAttachByPetNo(pet.getPetNo());
+	}
+
+	public List<Assign> selectAssignListByClassNo(String classNo) {
+		return assignDao.selectAssignListByClassNo(Integer.parseInt(classNo));
+	}
+
+	public PetClass selectClass(String classNo) {
+		return classDao.selectClass(Integer.parseInt(classNo));
+	}
+
+	public Course selectCourse(int courseNo) {
+		Course course = courseDao.selectCourseOne(String.valueOf(courseNo));
+		course.setThumbAttach(courseDao.selectThumbAttach(course));
+		
+		return course;
+	}
+
+	public Pet selectPet(int petNo) {
+		Pet pet = petDao.selectPetOne(petNo);
+		pet.setPetAttach(petDao.selectAttachByPetNo(petNo));
+		
+		return pet;
+	}
+
+}

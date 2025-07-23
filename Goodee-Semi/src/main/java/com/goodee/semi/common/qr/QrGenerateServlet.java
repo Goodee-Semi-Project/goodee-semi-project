@@ -42,8 +42,8 @@ public class QrGenerateServlet extends HttpServlet {
 //		int token = schedule.getAccountNo();
 //		String qrContent = "http://192.168.1.20:8080/qr/attend?schedNo=" + schedNo + "&token=" + token;
 		
-		int width = 500;
-		int height = 500;
+		int width = 400;
+		int height = 400;
 		
 		try {
 			QRCodeWriter qrWriter = new QRCodeWriter();

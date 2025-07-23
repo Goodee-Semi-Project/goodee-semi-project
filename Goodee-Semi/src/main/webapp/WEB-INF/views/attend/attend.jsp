@@ -19,6 +19,7 @@
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 <%@ include file="/WEB-INF/views/include/myPageSideBar.jsp"%>
 
+	<!-- 교육과정 제목 행 -->
 	<c:forEach var="c" varStatus="status" items="${ courseList }">
 		<table class="mb-4" style="width: 100%;">
 			<tbody>
