@@ -31,7 +31,7 @@
 					<div style="display: flex; justify-content: center; align-items: center;">
 						<c:if test="${ (sessionScope.loginAccount.author eq 1) and (empty assign.assignSubmit) }">
 							<button class="btn btn-success mr-2" onclick="assignUpdate('${ assign.assignNo }')" id="assignUpdate" style="padding: 5px 10px;">수정</button>
-							<button class="btn btn-danger" onclick="" id="assignDelete" style="padding: 5px 10px;">삭제</button>
+							<button class="btn btn-danger" onclick="assignDelete('${ assign.assignNo }')" id="assignDelete" style="padding: 5px 10px;">삭제</button>
 						</c:if>
 						
 						<c:if test="${ (sessionScope.loginAccount.author eq 2) and (empty assign.assignSubmit) }">
@@ -105,6 +105,29 @@
 	<script>
 		function assignUpdate(assignNo) {
 			location.href = "<%= request.getContextPath() %>/assign/update?assignNo=" + assignNo;
+		}
+		
+		function assignDelete(assignNo) {
+			if (confirm("과제를 삭제하시겠습니까?")) {
+				$.ajax({
+					url : "/assign/delete",
+					type : "POST",
+					data : {
+						assignNo : assignNo
+					},
+					dataType : "JSON",
+					success : function(data) {
+						alert(data.resultMsg);
+						
+						if (data.resultCode == 200) {
+							location.href = "<%= request.getContextPath() %>/assign/management";
+						}
+					},
+					error : function() {
+						alert("오류 발생!!");
+					}
+				});
+			}
 		}
 	
 		function assignSubmitFormOpen() {
