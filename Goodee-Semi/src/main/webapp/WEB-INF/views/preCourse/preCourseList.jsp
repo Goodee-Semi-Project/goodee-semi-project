@@ -31,8 +31,8 @@
 							<input type="text" value="${ c.petNo }" hidden>
 						</c:if>
 						<div class="d-flex border-bottom ">
-							<div class="overflow-hidden mr-2" style="height: 50px;">
-								<img style="width: 200px;" alt="교육과정 썸네일" src="<c:url value='/filePath?no=${ attachMap.get(c.courseNo) }'/>">
+							<div class="overflow-hidden mr-2">
+								<img style="width: 200px; height: 50px; object-fit: cover;" alt="교육과정 썸네일" src="<c:url value='/filePath?no=${ attachMap.get(c.courseNo) }'/>">
 							</div>
 							<h4 style="line-height: 50px;"><c:if test="${ not empty c.name }">${ c.name } - </c:if>${ c.title }</h4>
 						</div>
