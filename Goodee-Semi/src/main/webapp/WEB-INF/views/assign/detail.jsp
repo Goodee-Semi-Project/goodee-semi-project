@@ -44,6 +44,7 @@
 					<h4 style="text-align: center;">과제 제출</h4>
 					<form id="assignSubmitForm">
 						<!-- Message -->
+						<input type="hidden" id="assignNo" name="assignNo" value="${ assign.assignNo }">
 						<div class="form-group mb-30">
 							<label for="assignSubmitTitle">제목</label>
 							<input type="text" class="form-control" id="assignSubmitTitle" name="assignSubmitTitle" required>
@@ -94,6 +95,39 @@
 			  document.getElementById('preview').src = "";
 			}
 		}
+		
+		$(() => {
+			$("#assignSubmitForm").submit((event) => {
+				event.preventDefault();
+				
+				const assignNo = $("#assignNo").val();
+				
+				if (confirm("과제를 제출하시겠습니까?")) {
+					const formData = new FormData(document.getElementById("assignSubmitForm"));
+					
+					$.ajax({
+						url : "/assign/submit/create",
+						type : "POST",
+						data : formData,
+						enctype : "multipart/form-data",
+						contentType : false,
+						processData : false,
+						cache : false,
+						dataType : "JSON",
+						success : function(data) {
+							alert(data.resultMsg);
+							
+							if (data.resultCode == 200) {
+								location.href = "<%= request.getContextPath() %>/assign/detail?assignNo=" + assignNo;
+							}
+						},
+						error : function() {
+							alert("오류 발생!!");
+						}
+					});
+				}
+			});
+		});
 	</script>
 </body>
 
