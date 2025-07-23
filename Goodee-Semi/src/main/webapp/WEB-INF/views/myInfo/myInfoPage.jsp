@@ -106,7 +106,7 @@
 				</fieldset>
 			</form>
 			
-			<button type="button" onclick="openDeleteAccountModal()" class="btn btn-danger" style="padding: 2px 5px; margin-left: 24px;">회원 탈퇴</button>	
+			<button type="button" onclick="openDeleteAccountModal()" class="btn btn-danger px-2 py-1" style="padding: 2px 5px; margin-left: 24px;">회원 탈퇴</button>	
 		</div>
 		
 		<div style="width: 250px; position: absolute; top: 30%; right: 5%;">
