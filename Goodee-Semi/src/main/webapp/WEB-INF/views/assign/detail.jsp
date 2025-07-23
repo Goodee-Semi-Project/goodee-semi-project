@@ -52,7 +52,7 @@
 						<div style="display: flex; justify-content: center; align-items: center;">
 							<c:if test="${ sessionScope.loginAccount.author eq 2 }">
 								<button class="btn btn-success mr-2" onclick="assignSubmitUpdateFormOpen()" style="padding: 5px 10px;">수정</button>
-								<button class="btn btn-danger" onclick="" style="padding: 5px 10px;">삭제</button>
+								<button class="btn btn-danger" onclick="assignSubmitDelete('${ assign.assignSubmit.submitNo }')" style="padding: 5px 10px;">삭제</button>
 							</c:if>					
 						</div>
 					</article>
@@ -104,10 +104,10 @@
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
 		function assignSubmitFormOpen() {
-			$("#submitNo").val("");
-			$("#assignSubmitTitle").val("");
-			$("#assignSubmitContent").val("");
-			document.getElementById('preview').src = "";
+			$("#submitNo").removeAttr("value");
+			$("#assignSubmitTitle").removeAttr("value");
+			$("#assignSubmitContent").removeAttr("value");
+			$("#preview").removeAttr("src");
 			
 			$("#assignSubmitOpen").css("display", "none");
 			$("#assignSubmitFormController").css("display", "block");
@@ -121,6 +121,31 @@
 		function assignSubmitUpdateFormClose() {
 			$("#assignSubmitFormController").css("display", "none");
 			$("#calledAssignSubmit").css("display", "block");
+		}
+		
+		function assignSubmitDelete(submitNo) {
+			const assignNo = $("#assignNo").val();
+			
+			if (confirm("과제를 삭제하시겠습니까?")) {
+				$.ajax({
+					url : "/assign/submit/delete",
+					type : "POST",
+					data : {
+						submitNo : submitNo
+					},
+					dataType : "JSON",
+					success : function(data) {
+						alert(data.resultMsg);
+						
+						if (data.resultCode == 200) {
+							location.href = "<%= request.getContextPath() %>/assign/detail?assignNo=" + assignNo;
+						}
+					},
+					error : function() {
+						alert("오류 발생!!");
+					}
+				});
+			}
 		}
 		
 		function readURL(input) {
