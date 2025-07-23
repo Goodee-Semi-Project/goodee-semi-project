@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,6 +25,7 @@
 		<div style="border-bottom: 1px solid #ccc; padding: 15px; display: flex; justify-content: space-between;">
 			<div>
 				<span style="font-weight: bold;">[QnA]</span>
+				<span>${ question.accountId }</span>
 			</div>
 			<div>
 				<span class="h2" style="font-size: 18px;">${ question.questTitle }</span>

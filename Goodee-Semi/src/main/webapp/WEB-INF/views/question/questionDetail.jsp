@@ -7,17 +7,17 @@
 <meta charset="UTF-8">
 <title>QnA게시글 조회</title>
 
-<style>
-	.container button {
-		padding : 5px 20px !important; 
-	}
-	.container .btn-delete {
-		background-color: #dc3545 !important;
-	}
-	.container .btn-update {
-		background-color: #212529 !important;
-	}
-</style>
+	<style>
+		.container button {
+			padding : 5px 20px !important; 
+		}
+		.container .btn-delete {
+			background-color: #dc3545 !important;
+		}
+		.container .btn-update {
+			background-color: #212529 !important;
+		}
+	</style>
 
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
