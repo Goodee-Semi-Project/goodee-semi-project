@@ -15,9 +15,9 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 	},
 	locale: 'ko', // 언어 설정
 	navLinks: true, // 요일과 날짜 클릭 시 일이나 주단위로 보여주는 화면으로 넘어감
- 	editable: false, // 드래그해서 수정 가능한지
+ 	editable: true, // 드래그해서 수정 가능한지
 	selectable: true,
-	selectMirror: false,
+	selectMirror: true,
 	dayMaxEvents: false, // +more 표시 전 최대 이벤트 갯수, default: false | true: 셀 높이에 의해 결정, false: 일정만큼 셀 높이 확장
 	
     // 이벤트 데이터 로드
@@ -40,6 +40,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
             dataType: 'json',
             success: function (data) {
 				console.log("성공: ", data);
+				eventDatas = data;
 				successCallback(data);
             },
             error: function (err) {
@@ -96,9 +97,9 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 	            const memberInfo = titleMatch[2];   // 회원명-반려견명
 	            
 	            htmlContent = `
-	                <div style="font-size: 11px; color: #666; line-height: 1.2;">${displayText}</div>
-	                <div style="font-size: 12px; line-height: 1.2; margin-bottom: 2px;">${courseTitle}</div>
-	                <div style="font-size: 11px; line-height: 1.2; color: #555;">${memberInfo}</div>
+				<div class="event-title event-title-1" style="line-height: 1.2;">${displayText}</div>
+				<div class="event-title event-title-2" style="line-height: 1.2; margin-bottom: 2px;">${courseTitle}</div>
+				<div class="event-title event-title-3" style="line-height: 1.2;">${memberInfo}</div>
 	            `;
 	            tooltipText = displayText + '\n' + courseTitle + '\n' + memberInfo;
 	        } else {
@@ -130,7 +131,22 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 	    
 	    // 새로운 툴팁용 title 속성 추가
 	    info.el.setAttribute('title', tooltipText);
-	}
+	},
+	
+	contentHeight: 'auto', // 캘린더 내부에 스크롤을 표시하지 않음
+	handleWindowResize: true, // 창 크기 조정에 반응하도록 설정
+	
+	dayCellContent: function(arg) {
+		return arg.dayNumberText.replace('일', '');
+	}, // '13일' -> '13'으로 날짜 표시 방식 변경
+	
+	buttonText: {
+		today: '오늘',
+		month: '월',
+		week: '주',
+		day: '일',
+		list: '목록'
+	}, // 달력 헤더 버튼에 표시되는 텍스트 변경
 });
 
 // 캘린더 렌더링
