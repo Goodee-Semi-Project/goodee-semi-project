@@ -11,8 +11,25 @@
 		<result property="submitDate" column="submit_date" />
 	</resultMap>
 	
+	<select id="selectAssignSubmitByAssignNo" parameterType="_int" resultMap="assignSubmitResultMap">
+		SELECT * FROM submit
+		<where>
+			assign_no = #{assignNo}
+		</where>
+	</select>
+	
 	<insert id="insertAssignSubmit" parameterType="com.goodee.semi.dto.AssignSubmit" useGeneratedKeys="true" keyProperty="submitNo">
 		INSERT INTO submit (assign_no, submit_title, submit_content)
 		VALUE (#{assignNo}, #{submitTitle}, #{submitContent})
 	</insert>
+	
+	<update id="updateAssignSubmit" parameterType="com.goodee.semi.dto.AssignSubmit">
+		UPDATE submit
+		SET 
+				submit_title = #{submitTitle}
+			, submit_content = #{submitContent}
+		<where>
+			submit_no = #{submitNo}
+		</where>
+	</update>
 </mapper>
