@@ -284,7 +284,7 @@
 				event.preventDefault();
 				
 				if (confirm("찜 목록에서 제거하시겠습니까?")) {
-					const likeFlag = "REMOVE";
+					const likeFlag = "DELETE";
 					const accountNo = $("#accountNo").val();
 					const courseNo = $("#courseNo").val();
 					
@@ -305,7 +305,7 @@
 							}
 						},
 						error : function() {
-							alert("찜 목록 추가 중 오류가 발생했습니다.");
+							alert("찜 목록에서 제거 중 오류가 발생했습니다.");
 						}
 					});
 				}

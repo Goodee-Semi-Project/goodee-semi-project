@@ -22,4 +22,5 @@ public class Notice extends Paging{
 	private String writer;
 	private String keyword;
 	
+	private Attach noticeAttach;
 }

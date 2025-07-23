@@ -2,11 +2,14 @@ package com.goodee.semi.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.PreCourse;
+import com.goodee.semi.dto.PreTest;
 import com.goodee.semi.service.AttachService;
 import com.goodee.semi.service.PreCourseService;
 
@@ -100,7 +103,40 @@ public class PreCourseRegistServlet extends HttpServlet {
 			preCourse.setPreTitle(title);
 			preCourse.setVideoLen(videoLen);
 			
-			result = preCourseService.insertPreCourse(preCourse, attach);
+			// TODO: 사전 학습 테스트
+			
+			int count = -1;
+			if (request.getParameter("count") != null) {
+				count = Integer.parseInt(request.getParameter("count"));
+			}
+			
+			List<PreTest> testList = new ArrayList<PreTest>();
+			if (count != -1) {
+				for (int i = 1; i <= count; i++) {
+					
+					String testContent = request.getParameter("content" + i);
+					String testAnswer = request.getParameter("quiz" + i);
+					String one = request.getParameter("one" + i);
+					String two = request.getParameter("two" + i);
+					String three = request.getParameter("three" + i);
+					String four = request.getParameter("four" + i);
+					
+					if (testContent != null && testAnswer != null && one != null && 
+							two != null && three != null && four != null) {
+						PreTest preTest = new PreTest();
+						preTest.setTestContent(testContent);
+						preTest.setTestAnswer(testAnswer);
+						preTest.setOne(one);
+						preTest.setTwo(two);
+						preTest.setThree(three);
+						preTest.setFour(four);
+						
+						testList.add(preTest);
+					}
+				}
+			}
+			
+			result = preCourseService.insertPreCourse(preCourse, attach, testList);
 		}
 
 		JSONObject obj = new JSONObject();

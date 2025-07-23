@@ -3,6 +3,7 @@ package com.goodee.semi.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Notice;
 import com.goodee.semi.service.NoticeService;
 
@@ -41,6 +42,17 @@ public class NoticeListServlet extends HttpServlet {
 		param.setTotalData(totalData);
 		
 		List<Notice> list = service.selectList(param);
+		for (Notice notice : list) {
+			notice.setNoticeContent(notice.getNoticeContent().substring(0, notice.getNoticeContent().length() > 50 ? 50 : notice.getNoticeContent().length()) + "...");
+			
+			Attach attParam = new Attach();
+			attParam.setPkNo(notice.getNoticeNo());
+			attParam.setTypeNo(Attach.NOTICE); 
+			
+			Attach attach = service.selectAttachOne(attParam);
+			if (attach != null) notice.setNoticeAttach(attach);
+		}
+		
 		request.setAttribute("noticeList", list);
 		request.setAttribute("paging", param);
 		request.getRequestDispatcher("/WEB-INF/views/notice/list.jsp").forward(request, response);

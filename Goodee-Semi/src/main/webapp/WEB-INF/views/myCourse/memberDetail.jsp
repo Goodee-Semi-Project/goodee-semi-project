@@ -40,7 +40,6 @@
 					<td style="width: 25%">
 						<c:if test="${ not empty pet.attachNo }">
 							<img src="<c:url value='/filePath?no=${pet.attachNo}'/>" class="rounded-circle" alt="${course.title}" style="width : 70px; height : 70px; border-radius : 50% border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);" >
-							<p>${pet.attachNo}</p>
 						</c:if>
 					</td>
 					<td style="width: 25%">${ pet.petName } (${ pet.petBreed })<br>${ pet.petAge }세 / ${ pet.petGender }</td>
@@ -79,14 +78,11 @@
 	
 	
 	<script>
-	
 	function moveToSchedList(petNo, courseNo) {
-		console.log(petNo)
 		location.href="<%=request.getContextPath()%>/schedule?petNo=" + petNo + "/&courseNo=" + courseNo;
 	}
 	
 	function openKickoutModal(accountName, classNo, petName) {
-		console.log($("#modal_class_no"));
 		$("#modal_text").text("반려견 " + petName + "(회원 " + accountName + ")님을 과정에서 제외하시겠습니까?");
 		$("#modal_class_no").val(classNo);
 		$("#kickoutModal").modal("show");
