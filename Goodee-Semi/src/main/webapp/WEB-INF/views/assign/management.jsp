@@ -77,6 +77,7 @@
 	      </div>
 	      <div class="modal-footer border-top-0 mt-3 mb-3 mx-5 justify-content-center">
 	        <button type="button" class="btn btn-primary" style="padding: 5px 10px;" onclick="moveToSavedAssign()">선택</button>
+	        <button type="button" class="btn btn-danger" style="padding: 5px 10px;" onclick="deleteSavedAssign()">삭제</button>
 	        <button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;" data-dismiss="modal">취소</button>
 	      </div>
 	    </div>
@@ -120,6 +121,31 @@
 			
 			if (assignNo != "") {
 				location.href = "<%= request.getContextPath() %>/assign/create?save=" + assignNo;
+			}
+		}
+		
+		function deleteSavedAssign() {
+			const assignNo = $("#selectMyAssign").val();
+			
+			if (confirm("임시저장한 과제를 삭제하시겠습니까?")) {
+				$.ajax({
+					url : "/assign/delete",
+					type : "POST",
+					data : {
+						assignNo : assignNo
+					},
+					dataType : "JSON",
+					success : function(data) {
+						alert(data.resultMsg);
+						
+						if (data.resultCode == 200) {
+							location.href = "<%= request.getContextPath() %>/assign/management";
+						}
+					},
+					error : function() {
+						alert("페이지 이동 중 오류가 발생했습니다.");
+					}
+				});
 			}
 		}
 	</script>

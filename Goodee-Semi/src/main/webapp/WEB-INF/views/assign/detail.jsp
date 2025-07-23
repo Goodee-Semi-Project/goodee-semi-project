@@ -93,7 +93,7 @@
 								<button type="button" class="btn btn-danger" onclick="assignSubmitUpdateFormClose()" style="padding: 5px 10px;">취소</button>												
 							</c:if>
 						</div>
-					</form>
+					</form> 
 				</div>
 				
 			</div>
