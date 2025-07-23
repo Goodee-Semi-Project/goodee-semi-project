@@ -7,6 +7,7 @@ import com.goodee.semi.dto.PetClass;
 
 public interface ClassMapper {
 	PetClass selectClassByCourseNoAndPetNo(PetClass keyObj);
+	PetClass selectClass(String classNo);
 	int deleteClass(int classNo);
 	List<PetClass> selectListByAccountNo(int accountNo);
 	List<PetClass> selectClassListByAccountDetail(AccountDetail account);

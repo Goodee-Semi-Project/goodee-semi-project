@@ -39,5 +39,13 @@ public class ClassDao {
 		
 		return result;
 	}
+
+	public PetClass selectClass(int classNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		PetClass result = session.selectOne("com.goodee.semi.mapper.ClassMapper.selectClass", classNo);
+		session.close();
+		
+		return result;
+	}
 	
 }
