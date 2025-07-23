@@ -54,7 +54,7 @@
 	function addTest() {
 		document.querySelector('#count').value = ++i;
 		html =`<%@ include file="/WEB-INF/views/preCourse/preTest.jsp" %>`;
-		document.querySelector('#testPart').innerHTML += html;
+		$('#testPart').append(html);
 	}
 
 	$('#regist').submit(function(e) {
