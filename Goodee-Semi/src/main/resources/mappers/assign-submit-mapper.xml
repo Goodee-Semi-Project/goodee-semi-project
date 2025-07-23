@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.AssignSubmitMapper">
+	<resultMap type="com.goodee.semi.dto.AssignSubmit" id="assignSubmitResultMap">
+		<result property="submitNo" column="submit_no" />
+		<result property="assignNo" column="assign_no" />
+		<result property="submitTitle" column="submit_title" />
+		<result property="submitContent" column="submit_content" />
+		<result property="submitDate" column="submit_date" />
+	</resultMap>
+	
+	<select id="selectAssignSubmitByAssignNo" parameterType="_int" resultMap="assignSubmitResultMap">
+		SELECT * FROM submit
+		<where>
+			assign_no = #{assignNo}
+		</where>
+	</select>
+	
+	<insert id="insertAssignSubmit" parameterType="com.goodee.semi.dto.AssignSubmit" useGeneratedKeys="true" keyProperty="submitNo">
+		INSERT INTO submit (assign_no, submit_title, submit_content)
+		VALUE (#{assignNo}, #{submitTitle}, #{submitContent})
+	</insert>
+	
+	<update id="updateAssignSubmit" parameterType="com.goodee.semi.dto.AssignSubmit">
+		UPDATE submit
+		SET 
+				submit_title = #{submitTitle}
+			, submit_content = #{submitContent}
+		<where>
+			submit_no = #{submitNo}
+		</where>
+	</update>
+	
+	<delete id="deleteAssignSubmit" parameterType="_int">
+		DELETE FROM submit
+		<where>
+			submit_no = #{submitNo}
+		</where>
+	</delete>
+</mapper>

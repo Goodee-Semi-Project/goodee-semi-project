@@ -43,7 +43,7 @@
 			<input type="file" class="d-none" id="attach" name="attach" onchange="readURL(this);">
 		</div>
 		<div class="d-flex justify-content-between mt-5">
-			<a class="btn btn-primary px-2 py-1" href="<c:url value='/review/list' />">목록</a>
+			<a class="btn btn-primary px-2 py-1" href="javascript:history.back();">뒤로가기</a>
 			<button class="btn btn-success px-2 py-1">등록하기</button>
 		</div>
 	</form>
