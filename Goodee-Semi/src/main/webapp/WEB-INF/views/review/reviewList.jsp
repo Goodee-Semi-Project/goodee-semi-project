@@ -81,19 +81,27 @@
 		</div>
 		<c:if test="${ not empty reviewList }">
 			<div class="pagination justify-content-center">
-				<c:if test="${ paging.prev }">
-					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarStart - 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
-						&laquo;
-					</a>
-				</c:if>
-				<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
-					<a href="<c:url value='/review/list?nowPage=${ i }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">${ i }</a>
-				</c:forEach>
-				<c:if test="${ paging.next }">
-					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarEnd + 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
-						&raquo;
-					</a>
-				</c:if>
+				<ul class="pagination">
+					<c:if test="${ paging.prev }">
+						<li class="page-item">
+							<a class="page-link" href="<c:url value='/review/list?nowPage=${ paging.pageBarStart - 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
+								&laquo;
+							</a>
+						</li>
+					</c:if>
+					<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
+						<li class="page-item ">
+							<a class="page-link" href="<c:url value='/review/list?nowPage=${ i }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">${ i }</a>
+						</li>
+					</c:forEach>
+					<c:if test="${ paging.next }">
+						<li class="page-item">
+							<a class="page-link" href="<c:url value='/review/list?nowPage=${ paging.pageBarEnd + 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
+								&raquo;
+							</a>
+						</li>
+					</c:if>
+				</ul>
 				
 			</div>
 		</c:if>
