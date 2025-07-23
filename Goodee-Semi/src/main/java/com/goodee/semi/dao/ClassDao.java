@@ -48,4 +48,12 @@ public class ClassDao {
 		return result;
 	}
 	
+	public int updateClassProg(PetClass petClass) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.ClassMapper.updateClassProg", petClass);
+		session.close();
+		
+		return result;
+	}
+	
 }

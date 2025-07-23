@@ -11,4 +11,5 @@ public interface ClassMapper {
 	int deleteClass(int classNo);
 	List<PetClass> selectListByAccountNo(int accountNo);
 	List<PetClass> selectClassListByAccountDetail(AccountDetail account);
+	int updateClassProg(PetClass petClass);
 }

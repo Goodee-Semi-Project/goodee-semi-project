@@ -63,4 +63,12 @@
 			P.account_no = #{accountNo}
 		</where>
 	</select>
+	
+	<update id="updateClassProg" parameterType="com.goodee.semi.dto.PetClass">
+		UPDATE class
+		SET class_prog = #{classProg}
+		<where>
+			pet_no = #{petNo} AND course_no = #{courseNo}
+		</where>
+	</update>
 </mapper>

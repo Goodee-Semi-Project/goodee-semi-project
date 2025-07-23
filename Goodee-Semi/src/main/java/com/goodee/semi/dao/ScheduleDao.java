@@ -122,5 +122,13 @@ public class ScheduleDao implements ScheduleMapper {
 		
 		return result;
 	}
+	
+	public int selectCountAttend(Schedule sched) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int count = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectCountAttend", sched);
+		session.close();
+		
+		return count;
+	}
 
 }

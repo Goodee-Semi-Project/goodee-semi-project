@@ -168,4 +168,13 @@
 			sched_no = #{schedNo}
 		</where>
 	</update>
+	
+	<select id="selectCountAttend" parameterType="com.goodee.semi.dto.Schedule" resultType="_int">
+		SELECT COUNT(*)
+		FROM schedule sc
+		JOIN class cl ON sc.class_no = cl.class_no
+		<where>
+			cl.course_no = #{courseNo} AND cl.pet_no = #{petNo} AND sched_attend = 'Y'
+		</where>	
+	</select>
 </mapper>
