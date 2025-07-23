@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `class` (
 	`pet_no` INT NOT NULL,
 	`class_prog` INT NOT NULL DEFAULT 0,
 	PRIMARY KEY (`class_no`),
+	UNIQUE KEY(`course_no`, `pet_no`),
 	FOREIGN KEY (`course_no`) REFERENCES `course`(`course_no`),
 	FOREIGN KEY (`pet_no`) REFERENCES `pet`(`pet_no`)
 );
@@ -110,6 +111,7 @@ CREATE TABLE IF NOT EXISTS `enroll` (
 	`pet_no` INT NOT NULL,
 	`enroll_status` CHAR(1),
 	PRIMARY KEY (`enroll_no`),
+	UNIQUE KEY(`course_no`, `pet_no`),
 	FOREIGN KEY (`course_no`) REFERENCES `course`(`course_no`),
 	FOREIGN KEY (`pet_no`) REFERENCES `pet`(`pet_no`)
 );
