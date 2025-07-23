@@ -55,7 +55,7 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
-	      <div class="modal-body text-center">게시글을 수정하시겠습니까?</div>
+	      <div class="modal-body text-center">등록하시겠습니까?</div>
 	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
 	        <button type="button" id="btn_modal_confirm" class="btn btn-success">확인</button>
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>

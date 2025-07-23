@@ -54,8 +54,9 @@
 	</select>
 
 	<select id="selectOneQuest" resultMap="questionResultMap" parameterType="_int">
-		SELECT *
-		FROM question
+		SELECT *, ac.account_id AS account_id
+		FROM question q
+		JOIN account ac ON q.account_no = ac.account_no
 		WHERE quest_no = #{questNo}
 	</select>
 	

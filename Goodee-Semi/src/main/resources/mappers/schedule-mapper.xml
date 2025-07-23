@@ -132,7 +132,9 @@
 		JOIN pet p ON cl.pet_no = p.pet_no
 		JOIN course co ON cl.course_no = co.course_no
 		JOIN account a ON p.account_no = a.account_no
-		WHERE cl.pet_no = #{petNo} AND cl.course_no = #{courseNo}
+		<where>
+			cl.pet_no = #{petNo} AND cl.course_no = #{courseNo}
+		</where>
 	</select>
 	
 	<update id="update" parameterType="com.goodee.semi.dto.Schedule">

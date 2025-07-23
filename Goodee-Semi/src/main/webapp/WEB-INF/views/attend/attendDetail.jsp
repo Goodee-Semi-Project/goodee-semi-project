@@ -18,9 +18,15 @@
 	
 	<div class="container my-2" style="width: 80%; height: 50px; border: 1px solid black; border-radius: 10px; overflow: hidden; padding: 0; display: flex;">
 		<div class="col-12" style="display: flex; justify-content: center; align-items: center;">
-			<span style="font-size: 20px; font-weight: 700;">${scheduleList[0].courseTitle}</span>
+			<span style="font-size: 20px; font-weight: 700;">${courseTitle}</span>
 		</div>
 	</div>
+	
+	<c:if test="${ empty scheduleList }">
+		<div class="text-center">
+			<h2>조회된 출석 기록이 없습니다</h2>
+		</div>
+	</c:if>
 	
 	<section>
 		<table class="text-center" style="width: 100%">
@@ -86,12 +92,6 @@
 			</tbody>
 		</table>
 	</section>
-	
-	<c:if test="${ empty scheduleList }">
-		<div class="text-center">
-			<h2>조회된 출석 기록이 없습니다</h2>
-		</div>
-	</c:if>
 	
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
