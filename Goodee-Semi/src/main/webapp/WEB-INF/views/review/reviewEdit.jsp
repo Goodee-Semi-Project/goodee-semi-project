@@ -14,14 +14,14 @@
 <%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
 
 <main>
-	<h1>후기 수정</h1>
+	<h2>후기 수정</h2>
 	<form id="edit" method="post">
 		<!-- 후기 번호 히든으로 -->
 		<input type="text" id="reviewNo" name="reviewNo" value="${ review.reviewNo }" hidden>
 		<div>
 			<div class="m-1">
-				<label class="mr-2" for="classNo">목록</label>
-				<select class="rounded" name="classNo">
+				<label class="mr-2" for="classNo">[목록] </label>
+				<select class="w-75 rounded" name="classNo">
 					<option value="-1">선택</option>
 					<c:forEach var="c" items="${ list }">
 						<option value="${ c.classNo }" <c:if test="${ c.classNo eq review.classNo }">selected</c:if> >${ c.petName } - ${ c.courseTitle }</option>
@@ -29,8 +29,8 @@
 				</select>
 			</div>
 			<div class="m-1">
-				<label class="mr-2" for="title">제목</label>
-				<input class="w-75 form-control rounded d-inline-block" type="text" id="title" name="title" value="${ review.reviewTitle }">
+				<label class="	mr-2" for="title">[제목] </label>
+				<input type="text" class="w-75 form-control rounded d-inline-block" id="title" name="title" value="${ review.reviewTitle }">
 			</div>
 		</div>
 		<div class="d-flex justify-content-between">
@@ -45,10 +45,10 @@
 			</c:choose>
 		</div>
 		<c:if test="${ not empty attach }">
-			<img src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+			<img class="img-fluid w-100 m-2" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
 		</c:if>
 		<div>
-			<textarea class="border w-100 rounded p-3" id="content" name="content" spellcheck="false" style="resize: none;">${ review.reviewContent }</textarea>
+			<textarea class="border w-100 rounded p-3 overflow-hidden" id="content" name="content" spellcheck="false" style="height: 300px; resize: none;">${ review.reviewContent }</textarea>
 		</div>
 		<div class="d-flex justify-content-end">
 			<!-- 우선은 첨부파일은 1개 -->
@@ -65,15 +65,13 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
-	const DEFAULT_HEIGHT = 30;
-	
 	const $textarea = document.querySelector('#content');
 	
 	$textarea.oninput = (event) => {
 		const $target = event.target;
 	
-		$target.style.height = 0;
-		$target.style.height = DEFAULT_HEIGHT + $target.scrollHeight + 'px';
+		$target.style.height = '302px';
+		$target.style.height = $target.scrollHeight + 'px';
 	};
 	
 	$('#edit').submit(function(e) {
