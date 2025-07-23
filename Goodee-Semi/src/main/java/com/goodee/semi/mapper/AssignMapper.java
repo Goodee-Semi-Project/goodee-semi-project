@@ -8,4 +8,5 @@ public interface AssignMapper {
 	Assign selectAssign(int assignNo);
 	List<Assign> selectAssignListByClassNo(int classNo);
 	int insertAssign(Assign assign);
+	int updateAssign(Assign assign);
 }

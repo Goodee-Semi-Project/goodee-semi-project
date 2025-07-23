@@ -1,6 +1,8 @@
 package com.goodee.semi.service;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -99,6 +101,11 @@ public class AssignService {
 				petClass.setCourseThumbAttach(courseDao.selectThumbAttach(courseDao.selectCourseOne(String.valueOf(petClass.getCourseNo()))));
 				petClass.setPetAttach(petDao.selectAttachByPetNo(petClass.getPetNo()));
 				petClass.setAssignList(assignDao.selectAssignListByClassNo(petClass.getClassNo()));
+				
+				for (Assign assign : petClass.getAssignList()) {
+					assign.setAssignStart(LocalDateTime.parse(assign.getAssignStart(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).format(DateTimeFormatter.ofPattern("MM월 dd일 HH시 mm분")));
+					assign.setAssignEnd(LocalDateTime.parse(assign.getAssignEnd(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).format(DateTimeFormatter.ofPattern("MM월 dd일 HH시 mm분")));
+				}
 			}
 		}
 		
@@ -223,6 +230,39 @@ public class AssignService {
 
 	public int deleteAssignSubmit(String submitNo) {
 		return assignSubmitDao.deleteAssignSubmit(Integer.parseInt(submitNo));
+	}
+
+	public int updateAssignWithAttach(Assign assign, Part assignPart) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			
+			result = assignDao.updateAssign(session, assign);
+			
+			if (result > 0 && assignPart.getSize() > 0) {
+				File uploadDir = AttachService.getUploadDirectory(Attach.ASSIGN);
+				Attach attach = AttachService.handleUploadFile(assignPart, uploadDir);
+				attach.setTypeNo(Attach.ASSIGN);
+				attach.setPkNo(assign.getAssignNo());
+				
+				result = attachDao.insertAttach(session, attach);
+			}
+			
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
 	}
 
 }

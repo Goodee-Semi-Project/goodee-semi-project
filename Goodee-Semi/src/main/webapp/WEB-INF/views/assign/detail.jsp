@@ -30,7 +30,7 @@
 					
 					<div style="display: flex; justify-content: center; align-items: center;">
 						<c:if test="${ (sessionScope.loginAccount.author eq 1) and (empty assign.assignSubmit) }">
-							<button class="btn btn-success mr-2" onclick="" id="assignUpdate" style="padding: 5px 10px;">수정</button>
+							<button class="btn btn-success mr-2" onclick="assignUpdate('${ assign.assignNo }')" id="assignUpdate" style="padding: 5px 10px;">수정</button>
 							<button class="btn btn-danger" onclick="" id="assignDelete" style="padding: 5px 10px;">삭제</button>
 						</c:if>
 						
@@ -103,6 +103,10 @@
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
+		function assignUpdate(assignNo) {
+			location.href = "<%= request.getContextPath() %>/assign/update?assignNo=" + assignNo;
+		}
+	
 		function assignSubmitFormOpen() {
 			$("#submitNo").removeAttr("value");
 			$("#assignSubmitTitle").removeAttr("value");
