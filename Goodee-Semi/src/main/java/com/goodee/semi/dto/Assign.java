@@ -1,7 +1,5 @@
 package com.goodee.semi.dto;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +17,10 @@ public class Assign {
 	private int schedNo;
 	private String assignTitle;
 	private String assignContent;
-	private LocalDateTime assignStart;
-	private LocalDateTime assignEnd;
+	private String assignStart;
+	private String assignEnd;
 	private char assignReceipt;
 	
 	private Attach assignAttach;
+	private int schedStep;
 }
