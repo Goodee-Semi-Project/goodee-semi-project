@@ -82,4 +82,8 @@ public class ScheduleService {
 		return dao.selectSchedule(schedNo);
 	}
 
+	public int selectCountAttend(Schedule sched) {
+		return dao.selectCountAttend(sched);
+	}
+	
 }

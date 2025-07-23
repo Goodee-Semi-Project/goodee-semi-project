@@ -14,7 +14,7 @@
 
 	<div class="container">
 		<div style="display: flex; justify-content: center; align-items: center; height: 100vh">
-			 <img src="<c:url value='/qr/generate?schedNo=${ sched.schedNo }'/>" style="width : 400px; height : 400px;" alt="QR 코드">
+			 <img src="<c:url value='/qr/generate?schedNo=${ sched.schedNo }&petNo=${ sched.petNo }&courseNo=${ sched.courseNo }'/>" style="width : 400px; height : 400px;" alt="QR 코드">
 		 </div>
 	 </div>
 	 

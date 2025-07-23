@@ -28,13 +28,16 @@ public class QrGenerateServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String schedNoStr =  request.getParameter("schedNo");
+		String petNo = request.getParameter("petNo");
+		String courseNo = request.getParameter("courseNo");
+		
 		if (schedNoStr == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "shedNo is required.");
 			return;
 		}
 		
 		// IP기반으로 URL 생성
-		String qrContent = "http://192.168.1.20:8080/qr/attend?schedNo=" + schedNoStr;
+		String qrContent = "http://192.168.1.20:8080/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
 		
 		// accountNo 기반 토큰 생성
 //		int schedNo = Integer.parseInt(schedNoStr);		

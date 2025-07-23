@@ -4,7 +4,10 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.PetClass;
 import com.goodee.semi.dto.Schedule;
+import com.goodee.semi.service.ClassService;
+import com.goodee.semi.service.CourseService;
 import com.goodee.semi.service.ScheduleService;
 
 import jakarta.servlet.ServletException;
@@ -17,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AttendDetailUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ScheduleService scheduleService = new ScheduleService();
+	ClassService classService = new ClassService();
+	CourseService courseService =new CourseService();
        
     public AttendDetailUpdateServlet() {
         super();
@@ -46,7 +51,6 @@ public class AttendDetailUpdateServlet extends HttpServlet {
 		sched.setPetNo(petNo);
 		sched.setCourseNo(courseNo);
 		sched.setSchedNo(schedNo);
-		
 		int result = scheduleService.updateScheduleAttend(sched);
 		
 		JSONObject obj = new JSONObject();
@@ -54,6 +58,15 @@ public class AttendDetailUpdateServlet extends HttpServlet {
 		if(result > 0) {
 			obj.put("res_code", "200");
 			obj.put("res_msg", "수정되었습니다!");
+			
+        	int currentStep = scheduleService.selectCountAttend(sched);
+        	int totalStep = courseService.selectCourseOne(request.getParameter("courseNo")).getTotalStep();
+        	int currentProg = (int)((double)currentStep / totalStep * 100);
+    		PetClass petClass = new PetClass();
+    		petClass.setPetNo(petNo);
+    		petClass.setCourseNo(courseNo);
+        	petClass.setClassProg(currentProg);
+        	classService.updateClassProg(petClass);
 		} else {
 			obj.put("res_code", "500");
 			obj.put("res_code", "수정에 실패했습니다!");
