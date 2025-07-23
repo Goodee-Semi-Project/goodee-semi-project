@@ -23,4 +23,6 @@ public class Assign {
 	
 	private Attach assignAttach;
 	private int schedStep;
+	
+	private AssignSubmit assignSubmit;
 }
