@@ -51,11 +51,14 @@
 			<textarea class="border w-100 rounded p-3 overflow-hidden" id="content" name="content" spellcheck="false" style="height: 300px; resize: none;">${ review.reviewContent }</textarea>
 		</div>
 		<div class="d-flex justify-content-end">
-			<!-- 우선은 첨부파일은 1개 -->
-			<label class="btn btn-info px-2 py-1" for="attach">이미지 변경</label>
-			<input type="file" class="d-none" id="attach" name="attach">
+			<!-- SJ: 우선은 첨부파일은 1개 -->
+			<div class="position-relative mx-2" style="width: 100px;">
+				<img alt="미리보기" class="position-absolute w-100" id="preview"/>
+			</div>
+			<label class="btn btn-info px-2 py-1 d-inline" for="attach">이미지 변경</label>
+			<input type="file" class="d-none" id="attach" name="attach" onchange="readURL(this);">
 		</div>
-		<div class="d-flex justify-content-between">
+		<div class="d-flex justify-content-between mt-5">
 			<a class="btn btn-primary px-2 py-1" href="<c:url value='/review/list' />">목록</a>
 			<button class="btn btn-success px-2 py-1">수정하기</button>
 		</div>
@@ -65,6 +68,18 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			let reader = new FileReader();
+			reader.onload = function(e) {
+				document.querySelector('#preview').src = e.target.result;
+			};
+			reader.readAsDataURL(input.files[0]);
+		} else {
+			document.querySelector('#preview').src = "";
+		}
+	}
+
 	const $textarea = document.querySelector('#content');
 	
 	$textarea.oninput = (event) => {
