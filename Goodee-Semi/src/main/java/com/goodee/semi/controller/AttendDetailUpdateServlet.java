@@ -21,7 +21,6 @@ public class AttendDetailUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ScheduleService scheduleService = new ScheduleService();
 	ClassService classService = new ClassService();
-	CourseService courseService =new CourseService();
        
     public AttendDetailUpdateServlet() {
         super();
@@ -40,7 +39,7 @@ public class AttendDetailUpdateServlet extends HttpServlet {
 		int schedNo = Integer.parseInt(request.getParameter("schedNo"));
 		
 		char attend;
-		if(didAttend.equalsIgnoreCase("Y")) {
+		if("Y".equalsIgnoreCase(didAttend)) {
 			attend = 'N';
 		} else {
 			attend = 'Y';
@@ -56,17 +55,10 @@ public class AttendDetailUpdateServlet extends HttpServlet {
 		JSONObject obj = new JSONObject();
 		
 		if(result > 0) {
+			classService.updateClassProgBySchedule(sched);
 			obj.put("res_code", "200");
 			obj.put("res_msg", "수정되었습니다!");
 			
-        	int currentStep = scheduleService.selectCountAttend(sched);
-        	int totalStep = courseService.selectCourseOne(request.getParameter("courseNo")).getTotalStep();
-        	int currentProg = (int)((double)currentStep / totalStep * 100);
-    		PetClass petClass = new PetClass();
-    		petClass.setPetNo(petNo);
-    		petClass.setCourseNo(courseNo);
-        	petClass.setClassProg(currentProg);
-        	classService.updateClassProg(petClass);
 		} else {
 			obj.put("res_code", "500");
 			obj.put("res_code", "수정에 실패했습니다!");

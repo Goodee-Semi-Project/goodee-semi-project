@@ -33,6 +33,8 @@ public class QrAttendServlet extends HttpServlet {
 //			response.sendError(HttpServletResponse.SC_FORBIDDEN, "유효하지 않은 접근입니다");
 //			return;
 //		}
+		
+		System.out.println("QrAttend서블릿 들어옴");
 		int schedNo = Integer.parseInt(request.getParameter("schedNo"));
 		int petNo = Integer.parseInt(request.getParameter("petNo"));
 		int courseNo = Integer.parseInt(request.getParameter("courseNo"));
@@ -43,30 +45,17 @@ public class QrAttendServlet extends HttpServlet {
 		schedule.setCourseNo(courseNo);
 		
 		// 현재 등록되어있는 출석여부를 가져옴
-		Schedule didAttend = scheduleService.selectSchedule(schedNo);
+		Schedule currentAttend = scheduleService.selectSchedule(schedNo);
 		
         // 가져온 출석여부를 확인 후 결과에 따른 로직 분기
 		String message = "";
-        if(didAttend.getSchedAttend() == 'Y') {
+        if(currentAttend.getSchedAttend() == 'Y') {
         	message = "이미 출석처리 되어있습니다.";
         } else {
         	message = "출석체크완료";
         	schedule.setSchedAttend('Y');
-        	int updateAttendResult = scheduleService.updateScheduleAttend(schedule);
-        	int currentStep = scheduleService.selectCountAttend(schedule);
-        	int totalStep = courseService.selectCourseOne(request.getParameter("courseNo")).getTotalStep();
-        	int currentProg = (int)((double)currentStep / totalStep * 100);
-    		PetClass petClass = new PetClass();
-    		petClass.setPetNo(petNo);
-    		petClass.setCourseNo(courseNo);
-        	petClass.setClassProg(currentProg);
-        	int updateProgResult = classService.updateClassProg(petClass);
-        	if(updateAttendResult < 1) {
-        		System.out.println("QrAttendServlet: 출석 update 실패");
-        	}
-        	if(updateProgResult < 1) {
-        		System.out.println("QrAttendServlet: 진행도 update 실패");
-        	}
+        	int result = scheduleService.updateScheduleAttend(schedule);
+        	if (result > 0) classService.updateClassProgBySchedule(schedule);
         }
         
 		request.setAttribute("message", message);
