@@ -83,7 +83,8 @@ public class PreCourseRegistServlet extends HttpServlet {
 			// TODO: FFMpeg 설치하고 ffprobe.exe 경로 입력
 			int total = 0;
 			if (new File("C:/ffmpeg/bin/ffprobe.exe").exists() == false) {
-				System.err.println("FFMpeg 경로 설정이 필요합니다!");
+				System.err.println("FFMpeg 경로 설정이 필요합니다!\n"
+						+ "https://github.com/GyanD/codexffmpeg/releases/tag/2025-07-12-git-35a6de137a");
 			} else {
 				try {
 					FFprobe ffprobe = new FFprobe("C:/ffmpeg/bin/ffprobe.exe");
@@ -120,14 +121,16 @@ public class PreCourseRegistServlet extends HttpServlet {
 			
 			List<PreTest> testList = new ArrayList<PreTest>();
 			if (count != -1) {
-				for (int i = 1; i <= count; i++) {
-					
-					String testContent = request.getParameter("content" + i);
-					String testAnswer = request.getParameter("quiz" + i);
-					String one = request.getParameter("one" + i);
-					String two = request.getParameter("two" + i);
-					String three = request.getParameter("three" + i);
-					String four = request.getParameter("four" + i);
+				String arrStr = request.getParameter("arr");
+				String[] arr = arrStr.split(",");
+				
+				for (int i = 0; i < arr.length; i++) {
+					String testContent = request.getParameter("content" + arr[i]);
+					String testAnswer = request.getParameter("quiz" + arr[i]);
+					String one = request.getParameter("one" + arr[i]);
+					String two = request.getParameter("two" + arr[i]);
+					String three = request.getParameter("three" + arr[i]);
+					String four = request.getParameter("four" + arr[i]);
 					
 					if (testContent != null && testAnswer != null && one != null && 
 							two != null && three != null && four != null) {
