@@ -78,7 +78,8 @@
 			</c:if>
 		</div>
 		
-		<div class="d-flex justify-content-end">
+		<div class="d-flex justify-content-between mt-5">
+			<a class="btn btn-primary px-2 py-1" href="javascript:history.back();">뒤로가기</a>
 			<button class="btn btn-success px-2 py-1 mr-1">수정하기</button>
 		</div>
 	</form>
