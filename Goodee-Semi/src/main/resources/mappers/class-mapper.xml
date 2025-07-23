@@ -64,7 +64,7 @@
 		</where>
 	</select>
 	
-	<update id="updateClassProg" parameterType="com.goodee.semi.dto.PetClass">
+	<update id="updateClassProg" parameterType="com.goodee.semi.dto.Schedule">
 		UPDATE class
 		SET class_prog = #{classProg}
 		<where>
