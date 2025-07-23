@@ -132,4 +132,15 @@ public class AssignService {
 		return pet;
 	}
 
+	public Assign selectAssign(String assignNo) {
+		Assign assign = assignDao.selectAssign(Integer.parseInt(assignNo));
+		
+		Attach attach = new Attach();
+		attach.setTypeNo(Attach.ASSIGN);
+		attach.setPkNo(assign.getAssignNo());
+		assign.setAssignAttach(attachDao.selectAttachOne(attach));
+		
+		return assign;
+	}
+
 }

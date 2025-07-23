@@ -16,6 +16,24 @@
 		<result property="schedStep" column="sched_step"/>
 	</resultMap>
 	
+	<select id="selectAssign" parameterType="_int" resultMap="assignResultMap">
+		SELECT
+				A.assign_no
+			, A.class_no
+			, A.sched_no
+			, A.assign_title
+			, A.assign_content
+			, DATE_FORMAT(A.assign_start, '%m월 %d일 %H시 %i분') "assign_start"
+			, DATE_FORMAT(A.assign_end, '%m월 %d일 %H시 %i분') "assign_end"
+			, A.assign_receipt
+			, S.sched_step
+		FROM assignment A
+		INNER JOIN schedule S ON A.sched_no = S.sched_no
+		<where>
+			A.assign_no = #{assignNo}
+		</where>
+	</select>
+	
 	<select id="selectAssignListByClassNo" parameterType="_int" resultMap="assignResultMap">
 		SELECT
 				A.assign_no
