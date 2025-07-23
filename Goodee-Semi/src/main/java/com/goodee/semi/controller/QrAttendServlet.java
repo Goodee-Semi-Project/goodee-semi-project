@@ -52,7 +52,7 @@ public class QrAttendServlet extends HttpServlet {
         } else {
         	message = "출석체크완료";
         	schedule.setSchedAttend('Y');
-        	scheduleService.updateScheduleAttend(schedule);
+        	int updateAttendResult = scheduleService.updateScheduleAttend(schedule);
         	int currentStep = scheduleService.selectCountAttend(schedule);
         	int totalStep = courseService.selectCourseOne(request.getParameter("courseNo")).getTotalStep();
         	int currentProg = (int)((double)currentStep / totalStep * 100);
@@ -60,13 +60,17 @@ public class QrAttendServlet extends HttpServlet {
     		petClass.setPetNo(petNo);
     		petClass.setCourseNo(courseNo);
         	petClass.setClassProg(currentProg);
-        	int result = classService.updateClassProg(petClass);
-        	
+        	int updateProgResult = classService.updateClassProg(petClass);
+        	if(updateAttendResult < 1) {
+        		System.out.println("QrAttendServlet: 출석 update 실패");
+        	}
+        	if(updateProgResult < 1) {
+        		System.out.println("QrAttendServlet: 진행도 update 실패");
+        	}
         }
         
 		request.setAttribute("message", message);
 		request.getRequestDispatcher("/WEB-INF/views/account/login.jsp").forward(request, response);
-        
 		
         // 교육시작시간 + 10분까지 출석등록
 //		  LocalDateTime now = LocalDateTime.now();

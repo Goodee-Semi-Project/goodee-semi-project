@@ -22,12 +22,12 @@
 	
 	<!-- 회원글 -->
 	<div class="container">
-		<div style="border-bottom: 1px solid #ccc; padding: 15px; display: flex; justify-content: space-between;">
+		<div style="border-bottom: 1px solid #ccc; padding: 15px; position: relative; display: flex; justify-content: space-between; align-items: center;">
 			<div>
 				<span style="font-weight: bold;">[QnA]</span>
 				<span>${ question.accountId }</span>
 			</div>
-			<div>
+			<div style="position: absolute; left: 50%; transform: translateX(-50%);">
 				<span class="h2" style="font-size: 18px;">${ question.questTitle }</span>
 			</div>
 			<div>
@@ -35,11 +35,12 @@
 			</div>
 		</div>
 		<div>
-		    <div style="padding : 24px">${ question.questContent }</div>
+		    <div style="padding : 24px">
+		      ${ question.questContent }
+		    </div>
   		</div>
 	</div>	
-	
-	
+
 	<!-- 답변작성란 -->
 	<section class="section" style="padding: 0">
 	    <div class="container">
