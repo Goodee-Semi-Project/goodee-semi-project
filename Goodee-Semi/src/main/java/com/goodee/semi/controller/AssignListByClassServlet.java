@@ -5,32 +5,37 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
 import java.util.List;
 
-import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Assign;
+import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.Pet;
 import com.goodee.semi.dto.PetClass;
 import com.goodee.semi.service.AssignService;
 
-@WebServlet("/assign/list")
-public class AssignListServlet extends HttpServlet {
+@WebServlet("/assign/listByClass")
+public class AssignListByClassServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AssignService service = new AssignService();
        
-  public AssignListServlet() {
+  public AssignListByClassServlet() {
     super();
   }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		AccountDetail account = (AccountDetail) session.getAttribute("loginAccount");
+		String classNo = request.getParameter("classNo");
 		
-		List<PetClass> petClassList = service.selectClassListByAccountDetail(account);
+		List<Assign> assignList = service.selectAssignListByClassNo(classNo);
+		PetClass petClass = service.selectClass(classNo);
 		
-		request.setAttribute("petClassList", petClassList);
-		request.getRequestDispatcher("/WEB-INF/views/assign/list.jsp").forward(request, response);
+		Course course = service.selectCourse(petClass.getCourseNo());
+		Pet pet = service.selectPet(petClass.getPetNo());
+		
+		request.setAttribute("course", course);
+		request.setAttribute("pet", pet);
+		request.setAttribute("assignList", assignList);
+		request.getRequestDispatcher("/WEB-INF/views/assign/listByClass.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
