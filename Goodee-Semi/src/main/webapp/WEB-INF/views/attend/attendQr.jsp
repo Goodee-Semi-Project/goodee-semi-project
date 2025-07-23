@@ -21,7 +21,7 @@
 	 <script>
 	 	const schedNo = '${sched.schedNo}';
 	 	
-	 	setInterval(function() {
+	 	const stop = setInterval(function() {
 	 		$.ajax({
 	 			url : "/attend/check",
 	 			type : "get",
@@ -29,6 +29,7 @@
 	 		dataType : "json",
 	 		success : function(data) {
 	 			if(data.attend === true) {
+	 				clearInterval(stop);
 	 				alert("출석이 확인되었습니다")
 	 				location.href="<%= request.getContextPath() %>/attend/detail?petNo=${sched.petNo}&courseNo=${sched.courseNo}";
 	 			}
