@@ -202,6 +202,7 @@ CREATE TABLE IF NOT EXISTS `assignment` (
 	`assign_no` INT AUTO_INCREMENT NOT NULL,
 	`class_no` INT DEFAULT NULL,
 	`sched_no` INT DEFAULT NULL,
+  `account_no` INT NOT NULL,
 	`assign_title` VARCHAR(255) NOT NULL DEFAULT '새 과제',
 	`assign_content` TEXT DEFAULT NULL,
 	`assign_receipt` CHAR(1),

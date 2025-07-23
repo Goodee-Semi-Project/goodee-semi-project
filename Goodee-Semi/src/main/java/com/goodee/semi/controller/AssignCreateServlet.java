@@ -91,6 +91,36 @@ public class AssignCreateServlet extends HttpServlet {
 			jsonObj.put("scheduleList", jsonArr);
 		} 
 		
+		if ("save".equals(flag)) {
+			String courseNo = request.getParameter("selectCourse");
+			String petNo = request.getParameter("selectPet");
+			
+			Assign assign = new Assign();
+			assign.setClassNo(service.selectClassByCourseNoAndPetNo(courseNo, petNo).getClassNo());
+			assign.setSchedNo(Integer.parseInt(request.getParameter("selectSchedule")));
+			assign.setAccountNo(Integer.parseInt(request.getParameter("trainer")));
+			assign.setAssignTitle(request.getParameter("assignTitle"));
+			assign.setAssignContent(request.getParameter("assignContent"));
+			assign.setAssignStart(request.getParameter("assignStart"));
+			assign.setAssignEnd(request.getParameter("assignEnd"));
+			assign.setAssignReceipt('Y');
+			
+			Part assignPart = null;
+			try {
+				assignPart = request.getPart("assignImage");
+			} catch (IOException | ServletException e) { e.printStackTrace(); }
+			
+			int result = service.insertAssignWithAttach(assign, assignPart);
+			
+			if (result > 0) {
+				jsonObj.put("resultCode", "200");
+				jsonObj.put("resultMsg", "과제가 등록되었습니다.");
+			} else {
+				jsonObj.put("resultCode", "500");
+				jsonObj.put("resultMsg", "과제 등록 중 오류가 발생했습니다.");
+			}
+		}
+		
 		if ("submit".equals(flag)) {
 			String courseNo = request.getParameter("selectCourse");
 			String petNo = request.getParameter("selectPet");
