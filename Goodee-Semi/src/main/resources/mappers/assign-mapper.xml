@@ -69,4 +69,10 @@
 		</where>
 	</update>
 
+	<delete id="deleteAssign" parameterType="_int">
+		DELETE FROM assignment
+		<where>
+			assign_no = #{assignNo}
+		</where>
+	</delete>
 </mapper>
