@@ -17,7 +17,7 @@
 
 	<div class="container my-2" style="width: 80%; height: 50px; border: 1px solid black; border-radius: 10px; overflow: hidden; padding: 0; display: flex;">
 		<div class="col-12" style="display: flex; justify-content: center; align-items: center;">
-			<span style="font-size: 20px; font-weight: 700;">${scheduleList[0].courseTitle} 출석 현황</span>
+			<span style="font-size: 20px; font-weight: 700;">${scheduleList[0].courseTitle}</span>
 		</div>
 	</div>
 	
@@ -75,7 +75,7 @@
 							</c:choose>
 							<c:if test="${ loginAccount.author eq 1 }">	
 								<td style="width: 20%">
-									<button type="button" onclick="updateAttend('${ sc.schedAttend }', ${ sc.petNo }, ${ sc.courseNo }, ${ sc.schedNo })" style="padding: 5px 10px;" class="btn btn-outline-secondary">수정</button>
+									<button type="button" onclick="openUpdateAttendModal('${ sc.schedAttend }', ${ sc.petNo }, ${ sc.courseNo }, ${ sc.schedNo })"class="btn btn-outline-secondary"  style="padding: 5px 10px;" >수정</button>
 									<button type="button" onclick="moveToAttendQr(${ sc.schedNo }, ${ sc.petNo }, ${ sc.courseNo })"class="btn btn-outline-secondary" style="padding: 5px 10px; background-color: #1D1F20; color: white;" ${sc.schedAttend eq '89' ? "disabled" : ""}>QR생성</button>
 								</td>
 							</c:if>
@@ -95,10 +95,78 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
 
+	<div class="modal fade" id="updateAttend" tabindex="-1" role="dialog" aria-labelledby="printModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header border-bottom-0">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body text-center" id="modal_text"></div>
+				<input type="hidden" id="modal_pet_no">
+				<input type="hidden" id="modal_course_no">
+				<input type="hidden" id="modal_sched_no">
+				<input type="hidden" id="modal_didAttend">
+				<div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
+					<button type="button" id="btn_modal_change_attend_confirm" class="btn btn-success">확인</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script>
 		function moveToAttendQr(schedNo, petNo, courseNo) {
 			location.href="<%=request.getContextPath()%>/qr/qrCode?schedNo=" + schedNo + "&petNo=" + petNo + "&courseNo=" + courseNo;
 		}
+		
+// 		function openUpdateAttendModal(didAttend, petNo, courseNo, schedNo) {
+// 			let msg;
+// 			if(didAttend == 'Y') {
+// 				msg = "결석으로 변경하시겠습니까?"
+// 			} else{
+// 				msg = "출석으로 변경하겠습니까?"
+// 			}	
+// 			$("#modal_text").text(msg);
+// 			$("#moda_pet_no").val(petNo);
+// 			$("#modal_course_no").val(courseNo);
+// 			$("#modal_sched_no").val(schedNo);
+// 			$("#modal_didAttend").val(didAttend);
+// 			$("#updateAttend").modal("show");
+// 		}
+		
+// 		$("#btn_modal_change_attend_confirm").click(function(){
+// 			const petNo = $("#modal_pet_no").val();
+// 			const courseNo = $("#modal_course_no").val();
+// 			const schedNo = $("#modal_sched_no").val();
+// 			const didAttend = $("#modal_didAttend").val();
+			
+// 			console.log(petNo);
+// 			console.log(courseNo);
+// 			console.log(schedNo);
+// 			console.log(didAttend);
+			
+// 			$.ajax({
+// 				url : "/attend/detailUpdate",
+// 				type : "post",
+// 				data : {
+// 					didAttend : didAttend,
+// 					petNo : petNo,
+// 					courseNo : courseNo,
+// 					schedNo : schedNo,
+// 					},
+// 				dataType : "json",
+// 				success : function(data) {
+// 					if(data.res_code == 200) {
+// 						alert(data.res_msg);
+<%-- 						location.href="<%=request.getContextPath()%>/attend/detail?petNo="+petNo+"&courseNo="+courseNo; --%>
+// 					} else if(data.res_code == 500) {
+// 						alert(data.res_msg);
+// 					}
+// 				}
+// 			});
+// 		})
 	
 		function updateAttend(didAttend, petNo, courseNo, schedNo) {
 			let msg;
@@ -129,25 +197,6 @@
 				});
 			}
 		}
-	
-		function deleteSchedule(schedNo, petNo, courseNo) {
-			if(confirm("출석 기록을 삭제하시겠습니까?")) {
-				$.ajax({
-					url : "/attend/detailDelete",
-					type : "post",
-					data : {schedNo : schedNo},
-					dataType : "json",
-					success : function(data) {
-						if(data.res_code == 200) {
-							alert(data.res_msg);
-							location.href="<%=request.getContextPath()%>/attend/detail?petNo="+petNo+"&courseNo="+courseNo;
-						} else if(data.res_code == 500)	{
-							alert(data.res_msg);
-						} else alert("오류가 발생했습니다!");
-					} 
-				});
-			}
-		}	
 	</script>
 </body>
 </html>
