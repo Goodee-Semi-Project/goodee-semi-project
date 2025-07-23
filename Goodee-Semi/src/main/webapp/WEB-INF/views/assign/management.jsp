@@ -59,7 +59,7 @@
 	
 	<!-- 모달 창 -->
 	<div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModal" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
+	  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
 	    <div class="modal-content">
 	      <div class="modal-header border-bottom-0">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -67,14 +67,16 @@
 	        </button>
 	      </div>
 	      <div class="modal-body text-center">
-	        <h3 class="tab-title mb-2">작성중인 과제</h3>
-	        <p>작성중인 과제를 선택해주세요.</p>
-	        <select id="selectMyAssign" name="selectMyAssign">
-	        	
+	        <h3 class="tab-title mb-3">작성중인 과제</h3>
+	        <select id="selectMyAssign" class="selectMyAssign" name="selectMyAssign">
+	        	<option value="" selected>-- 작성중인 과제를 선택해주세요 --</option>
+	        	<c:forEach var="savedAssign" items="${ savedAssignList }">
+	        		<option value="${ savedAssign.assignNo }">${ savedAssign.assignTitle }</option>
+	        	</c:forEach>
 	        </select>
 	      </div>
-	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
-	        <button type="button" class="btn btn-primary" style="padding: 5px 10px;" onclick="">선택</button>
+	      <div class="modal-footer border-top-0 mt-3 mb-3 mx-5 justify-content-center">
+	        <button type="button" class="btn btn-primary" style="padding: 5px 10px;" onclick="moveToSavedAssign()">선택</button>
 	        <button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;" data-dismiss="modal">취소</button>
 	      </div>
 	    </div>
@@ -85,6 +87,10 @@
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
+		$(".selectMyAssign.nice-select").css({
+			width : "70%"
+		});
+	
 		function getAssignList(courseNo, petNo) {
 			$.ajax({
 				url : "/assign/management",
@@ -107,6 +113,14 @@
 		
 		function openSaveAssignModal() {
 			$("#assignModal").modal("show");
+		}
+		
+		function moveToSavedAssign() {
+			const assignNo = $("#selectMyAssign").val();
+			
+			if (assignNo != "") {
+				location.href = "<%= request.getContextPath() %>/assign/create?save=" + assignNo;
+			}
 		}
 	</script>
 </body>

@@ -45,6 +45,13 @@ public class AssignCreateServlet extends HttpServlet {
 			// TODO 잘못된 접근 예외처리
 		}
 		
+		String savedAssignNo = request.getParameter("save");
+		if (savedAssignNo != null) {
+			Assign assign = service.selectSavedAssign(savedAssignNo);
+			
+			request.setAttribute("savedAssign", assign);
+		}
+		
 		List<Course> courseList = service.selectCourseListByAccountDetail(account);
 		
 		request.setAttribute("courseList", courseList);
@@ -92,9 +99,17 @@ public class AssignCreateServlet extends HttpServlet {
 		} 
 		
 		if ("save".equals(flag)) {
-			Assign assign = new Assign();
-			assign.setAccountNo(Integer.parseInt(request.getParameter("trainer")));
-			assign.setAssignReceipt('N');
+			String savedAssignNo = request.getParameter("savedAssignNo");
+			Assign assign = null;
+			
+			if (savedAssignNo == null) {
+				assign = new Assign();
+				assign.setAccountNo(Integer.parseInt(request.getParameter("trainer")));
+				assign.setAssignReceipt('N');				
+			} else {
+				assign = service.selectSavedAssign(savedAssignNo);
+			}
+			
 			
 			if (request.getParameter("assignTitle") != "") {
 				assign.setAssignTitle(request.getParameter("assignTitle"));				
@@ -117,7 +132,12 @@ public class AssignCreateServlet extends HttpServlet {
 				assignPart = request.getPart("assignImage");
 			} catch (IOException | ServletException e) { e.printStackTrace(); }
 			
-			int result = service.insertAssignWithAttach(assign, assignPart);
+			int result = 0;
+			if (savedAssignNo == null) {
+				result = service.insertAssignWithAttach(assign, assignPart);							
+			} else {
+				result = service.updateAssignWithAttach(assign, assignPart);
+			}
 			
 			if (result > 0) {
 				jsonObj.put("resultCode", "200");
@@ -129,10 +149,18 @@ public class AssignCreateServlet extends HttpServlet {
 		}
 		
 		if ("submit".equals(flag)) {
+			String savedAssignNo = request.getParameter("savedAssignNo");
+			Assign assign = null;
+			
+			if (savedAssignNo == null) {
+				assign = new Assign();
+			} else {
+				assign = service.selectSavedAssign(savedAssignNo);
+			}
+			
 			String courseNo = request.getParameter("selectCourse");
 			String petNo = request.getParameter("selectPet");
-			
-			Assign assign = new Assign();
+
 			assign.setClassNo(service.selectClassByCourseNoAndPetNo(courseNo, petNo).getClassNo());
 			assign.setSchedNo(Integer.parseInt(request.getParameter("selectSchedule")));
 			assign.setAccountNo(Integer.parseInt(request.getParameter("trainer")));
@@ -147,7 +175,13 @@ public class AssignCreateServlet extends HttpServlet {
 				assignPart = request.getPart("assignImage");
 			} catch (IOException | ServletException e) { e.printStackTrace(); }
 			
-			int result = service.insertAssignWithAttach(assign, assignPart);
+			int result = 0;
+			if (savedAssignNo == null) {
+				result = service.insertAssignWithAttach(assign, assignPart);										
+			} else {
+				result = service.updateAssignWithAttach(assign, assignPart);	
+			}
+			
 			
 			if (result > 0) {
 				jsonObj.put("resultCode", "200");

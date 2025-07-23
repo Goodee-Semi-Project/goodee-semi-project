@@ -75,7 +75,7 @@
 						
 						<div class="mt-3 mb-3" style="display: flex; justify-content: center; align-items: center;">
 	      			<div style="width: 45%;">
-	             	<img width="150" height="150" src="<c:url value='/filePath?no=${ assign.assignSubmit.submitAttach.attachNo }' />" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" id="preview" />
+	             	<img width="150" height="150" <c:if test="${ not empty assign.assignSubmit }"> src="<c:url value='/filePath?no=${ assign.assignSubmit.submitAttach.attachNo }' />" </c:if> style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" id="preview" />
 	             	<label for="assignSubmitImage" class="btn btn-outline-secondary" style="padding: 2px 5px;">
 	             		<span style="width: 100px; font-size: 12px;">이미지 선택</span>
 	             	</label>
