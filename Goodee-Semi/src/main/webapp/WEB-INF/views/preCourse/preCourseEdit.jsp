@@ -42,10 +42,10 @@
 			<button type="button" class="btn btn-info px-2 py-1 my-1" onclick="addTest()">퀴즈 추가</button>
 		</div>
 		<input type="text" id="count" name="size" value="${ list.size() }" hidden>
-		<div class="mt-1" id="testPart">
+		<div id="testPart">
 			<c:if test="${ not empty list }">
 				<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
-					<div id="test${ i }">
+					<div class="mt-1" id="test${ i }">
 						<input type="text" id="test${ i }No" name="test${ i }No" value="${ list[i].testNo }" hidden>
 						<input type="text" name="answer${ i }" value="${ list[i].testAnswer }" hidden>
 						<textarea class="border w-100 rounded p-3 overflow-hidden" name="content${ i }" id="content${ i }" oninput="contentInput(${ i })" spellcheck="false" style="resize: none;">${ list[i].testContent }</textarea>
@@ -89,6 +89,13 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+	const arr = [];
+	function remove2(num) {
+		$('#test' + num).remove();
+		const idx = arr.indexOf(num);
+		arr.splice(idx, 1);
+	}
+
 	function contentInput(num) {
 		const $target = document.querySelector('#content' + num);
 	
@@ -96,11 +103,13 @@
 		$target.style.height = $target.scrollHeight + 'px';
 	};
 
-	let i = document.querySelector('#count').value;
+	const count = Number(document.querySelector('#count').value);
+	let i = Number(document.querySelector('#count').value);
 	function addTest() {
 		html =`<%@ include file="/WEB-INF/views/preCourse/preTest.jsp" %>`;
-		document.querySelector('#testPart').innerHTML += html;
-		document.querySelector('#count').value = ++i;
+		$('#testPart').append(html);
+		arr.push(i);
+		++i;
 	}
 	
 	function remove(num) {
@@ -136,12 +145,16 @@
 		const form = document.querySelector('#edit');
 		const formData = new FormData(form);
 		
+		if (arr.length > 0) {
+			formData.append('arr', arr);
+		}
+		
 		const courseNo = formData.get('courseNo');
 		const title = formData.get('title');
 		const preNo = formData.get('preNo');
 		const attachName = formData.get('attach').name;
 		
-		for (let j = 0; j < i; j++) {
+		for (let j = 0; j < count; j++) {
 			if (!formData.get('content' + j)) {
 				alert('테스트 내용을 입력해주세요.');
 				return;
@@ -150,6 +163,20 @@
 				alert('선택지 내용을 입력해주세요.');
 				return;
 			} else if (!formData.get('quiz' + j)) {
+				alert('정답을 골라주세요');
+				return;
+			}
+		}
+		
+		for (let j = 0; j < arr.length; j++) {
+			if (!formData.get('content' + arr[j])) {
+				alert('테스트 내용을 입력해주세요.');
+				return;
+			} else if (!formData.get('one' + arr[j]) || !formData.get('two' + arr[j])
+					|| !formData.get('three' + arr[j]) || !formData.get('four' + arr[j])) {
+				alert('선택지 내용을 입력해주세요.');
+				return;
+			} else if (!formData.get('quiz' + arr[j])) {
 				alert('정답을 골라주세요');
 				return;
 			}
