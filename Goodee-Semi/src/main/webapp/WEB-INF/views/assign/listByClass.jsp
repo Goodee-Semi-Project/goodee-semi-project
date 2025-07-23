@@ -5,7 +5,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>내 과제</title>
+	<title>과제 관리</title>
 	
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
@@ -14,25 +14,24 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
-	
+
 	<h3 class="tab-title mb-4 text-center">내 과제</h3>
-  <c:forEach var="petClass" items="${ petClassList }" varStatus="index">
   <hr>
 		<div class="container my-2" style="border: 1px solid black; overflow: hidden; padding: 0; display: flex;">
 			<div class="col-4" style="padding: 0;">
-			 <img style="width: 200px; height: 50px; object-fit: cover;" src="<c:url value='/filePath?no=${ petClass.courseThumbAttach.attachNo }' />" alt="img">
+			 <img style="width: 200px; height: 50px; object-fit: cover;" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
 			</div>
 			<div class="col-5" style="display: flex; align-items: center;">
-				<span style="font-size: 18px;">${ petClass.courseTitle }</span>
+				<span style="font-size: 18px;">${ course.title }</span>
 			</div>
 			<div class="col-3" style="display:flex; align-items:center;">
-				<img class="rounded-circle" style="width: 40px; display: inline-block; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ petClass.petAttach.attachNo }' />" alt="img">
-		   	<span class="ml-1" style="font-size: 15px;">${ petClass.petName }</span>
+				<img class="rounded-circle" style="width: 40px; display: inline-block; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ pet.petAttach.attachNo }' />" alt="img">
+		   	<span class="ml-1" style="font-size: 15px;">${ pet.petName }</span>
 			</div>
 		</div>
 		
 		<c:choose>
-			<c:when test="${ not empty petClass.assignList }">
+			<c:when test="${ not empty assignList }">
 				<table class="text-center" style="width: 100%">
 					<thead>
 						<tr style="height: 70px;">
@@ -43,7 +42,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="assign" items="${ petClass.assignList }">
+						<c:forEach var="assign" items="${ assignList }">
 							<tr style="height: 50px;">
 								<td>${ assign.schedStep }</td>
 								<td><a href="<c:url value='/assign/detail?assignNo=${ assign.assignNo }' />">${ assign.assignTitle }</a></td>
@@ -63,7 +62,6 @@
 				</div>
 			</c:otherwise>
 		</c:choose>
-	</c:forEach>
 
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
