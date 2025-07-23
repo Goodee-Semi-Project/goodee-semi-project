@@ -32,4 +32,11 @@
 			submit_no = #{submitNo}
 		</where>
 	</update>
+	
+	<delete id="deleteAssignSubmit" parameterType="_int">
+		DELETE FROM submit
+		<where>
+			submit_no = #{submitNo}
+		</where>
+	</delete>
 </mapper>
