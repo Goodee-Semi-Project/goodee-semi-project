@@ -36,7 +36,7 @@
 						
 						<c:if test="${ (sessionScope.loginAccount.author eq 2) and (empty assign.assignSubmit) }">
 							<button class="btn btn-transparent" onclick="assignSubmitFormOpen()" id="assignSubmitOpen" style="padding: 5px 10px;">제출하기</button>	
-						</c:if>						
+						</c:if>
 					</div>
 				</article>
 				
