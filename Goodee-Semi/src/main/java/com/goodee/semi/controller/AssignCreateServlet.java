@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -101,8 +100,8 @@ public class AssignCreateServlet extends HttpServlet {
 			assign.setSchedNo(Integer.parseInt(request.getParameter("selectSchedule")));
 			assign.setAssignTitle(request.getParameter("assignTitle"));
 			assign.setAssignContent(request.getParameter("assignContent"));
-			assign.setAssignStart(LocalDateTime.parse(request.getParameter("assignStart"), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
-			assign.setAssignEnd(LocalDateTime.parse(request.getParameter("assignEnd"), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
+			assign.setAssignStart(request.getParameter("assignStart"));
+			assign.setAssignEnd(request.getParameter("assignEnd"));
 			assign.setAssignReceipt('Y');
 			
 			Part assignPart = null;
