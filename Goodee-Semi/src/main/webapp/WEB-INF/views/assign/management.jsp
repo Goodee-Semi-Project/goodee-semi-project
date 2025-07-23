@@ -53,12 +53,45 @@
 	</c:forEach>
 
 	<div class="mt-4" style="display: flex; justify-content: center; align-items: center;">
-		<a href="<c:url value='/assign/create' />" class="btn btn-success" style="padding: 5px 10px;">새 과제 생성</a>
+		<a href="<c:url value='/assign/create' />" class="btn btn-success mr-2" style="padding: 5px 10px;">새 과제 생성</a>
+		<button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;" onclick="openSaveAssignModal()">작성중인 과제</button>
 	</div>
+	
+	<!-- 모달 창 -->
+	<div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
+	    <div class="modal-content">
+	      <div class="modal-header border-bottom-0">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body text-center">
+	        <h3 class="tab-title mb-3">작성중인 과제</h3>
+	        <select id="selectMyAssign" class="selectMyAssign" name="selectMyAssign">
+	        	<option value="" selected>-- 작성중인 과제를 선택해주세요 --</option>
+	        	<c:forEach var="savedAssign" items="${ savedAssignList }">
+	        		<option value="${ savedAssign.assignNo }">${ savedAssign.assignTitle }</option>
+	        	</c:forEach>
+	        </select>
+	      </div>
+	      <div class="modal-footer border-top-0 mt-3 mb-3 mx-5 justify-content-center">
+	        <button type="button" class="btn btn-primary" style="padding: 5px 10px;" onclick="moveToSavedAssign()">선택</button>
+	        <button type="button" class="btn btn-danger" style="padding: 5px 10px;" onclick="deleteSavedAssign()">삭제</button>
+	        <button type="button" class="btn btn-outline-secondary" style="padding: 5px 10px;" data-dismiss="modal">취소</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 모달 창 종료 -->
 	
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
+		$(".selectMyAssign.nice-select").css({
+			width : "70%"
+		});
+	
 		function getAssignList(courseNo, petNo) {
 			$.ajax({
 				url : "/assign/management",
@@ -77,6 +110,43 @@
 					alert("페이지 이동 중 오류가 발생했습니다.");
 				}
 			});
+		}
+		
+		function openSaveAssignModal() {
+			$("#assignModal").modal("show");
+		}
+		
+		function moveToSavedAssign() {
+			const assignNo = $("#selectMyAssign").val();
+			
+			if (assignNo != "") {
+				location.href = "<%= request.getContextPath() %>/assign/create?save=" + assignNo;
+			}
+		}
+		
+		function deleteSavedAssign() {
+			const assignNo = $("#selectMyAssign").val();
+			
+			if (confirm("임시저장한 과제를 삭제하시겠습니까?")) {
+				$.ajax({
+					url : "/assign/delete",
+					type : "POST",
+					data : {
+						assignNo : assignNo
+					},
+					dataType : "JSON",
+					success : function(data) {
+						alert(data.resultMsg);
+						
+						if (data.resultCode == 200) {
+							location.href = "<%= request.getContextPath() %>/assign/management";
+						}
+					},
+					error : function() {
+						alert("페이지 이동 중 오류가 발생했습니다.");
+					}
+				});
+			}
 		}
 	</script>
 </body>

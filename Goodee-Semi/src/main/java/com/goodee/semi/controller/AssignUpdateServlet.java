@@ -44,12 +44,17 @@ public class AssignUpdateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
+		Assign beforeAssign = service.selectAssign(request.getParameter("assignNo"));
+		
 		Assign assign = new Assign();
-		assign.setAssignNo(Integer.parseInt(request.getParameter("assignNo")));
+		assign.setAssignNo(beforeAssign.getAssignNo());
+		assign.setClassNo(beforeAssign.getClassNo());
+		assign.setSchedNo(beforeAssign.getSchedNo());
 		assign.setAssignTitle(request.getParameter("assignTitle"));
 		assign.setAssignContent(request.getParameter("assignContent"));
 		assign.setAssignStart(request.getParameter("assignStart"));
 		assign.setAssignEnd(request.getParameter("assignEnd"));
+		assign.setAssignReceipt('Y');
 		
 		Part assignPart = null;
 		try {

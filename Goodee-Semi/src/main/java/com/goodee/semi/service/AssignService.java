@@ -68,7 +68,7 @@ public class AssignService {
 			
 			result = assignDao.insertAssign(session, assign);
 			
-			if (result > 0) {
+			if (result > 0 && assignPart.getSize() > 0) {
 				File uploadDir = AttachService.getUploadDirectory(Attach.ASSIGN);
 				Attach attach = AttachService.handleUploadFile(assignPart, uploadDir);
 				attach.setTypeNo(Attach.ASSIGN);
@@ -105,6 +105,7 @@ public class AssignService {
 				for (Assign assign : petClass.getAssignList()) {
 					assign.setAssignStart(LocalDateTime.parse(assign.getAssignStart(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).format(DateTimeFormatter.ofPattern("MM월 dd일 HH시 mm분")));
 					assign.setAssignEnd(LocalDateTime.parse(assign.getAssignEnd(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).format(DateTimeFormatter.ofPattern("MM월 dd일 HH시 mm분")));
+					assign.setAssignSubmit(assignSubmitDao.selectAssignSubmitByAssignNo(assign.getAssignNo()));
 				}
 			}
 		}
@@ -267,6 +268,29 @@ public class AssignService {
 
 	public int deleteAssign(String assignNo) {
 		return assignDao.deleteAssign(Integer.parseInt(assignNo));
+	}
+
+	public List<Assign> selectSavedAssignList(AccountDetail account) {
+		List<Assign> savedAssignList = assignDao.selectSavedAssignListByAccountNo(account.getAccountNo());
+		
+		return savedAssignList;
+	}
+
+	public Assign selectSavedAssign(String savedAssignNo) {
+		Assign assign = assignDao.selectSavedAssign(Integer.parseInt(savedAssignNo));
+		
+		if (assign != null) {
+			Attach attach = new Attach();
+			attach.setTypeNo(Attach.ASSIGN);
+			attach.setPkNo(assign.getAssignNo());
+			assign.setAssignAttach(attachDao.selectAttachOne(attach));
+		}
+		
+		return assign;
+	}
+
+	public AssignSubmit selectAssignSubmit(Assign assign) {
+		return assignSubmitDao.selectAssignSubmitByAssignNo(assign.getAssignNo());
 	}
 
 }
