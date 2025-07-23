@@ -90,7 +90,7 @@
 						</li>
 					</c:if>
 					<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
-						<li class="page-item ">
+						<li class="page-item <c:if test='${ i eq paging.nowPage }'>active</c:if>">
 							<a class="page-link" href="<c:url value='/review/list?nowPage=${ i }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">${ i }</a>
 						</li>
 					</c:forEach>
@@ -102,7 +102,6 @@
 						</li>
 					</c:if>
 				</ul>
-				
 			</div>
 		</c:if>
 	</section>

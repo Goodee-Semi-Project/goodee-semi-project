@@ -13,34 +13,46 @@
 <%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
 
 <main>
-	<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
-		<div class="border rounded px-2 py-1 mt-2">
-			<input type="text" id="answer${ i }" value="${ list[i].testAnswer }" hidden>
-			<p class="border-bottom p-2" style="font-size: 20px;">${ list[i].testContent }</p>
-			<div class="d-flex flex-column p-2">
-				<label>
-					<input type="radio" name="quiz${ i }" value="one">
-					${ list[i].one }
-				</label>
-				<label>
-					<input type="radio" name="quiz${ i }" value="two">
-					${ list[i].two }
-				</label>
-				<label>
-					<input type="radio" name="quiz${ i }" value="three">
-					${ list[i].three }
-				</label>
-				<div class="d-flex justify-content-between">
-					<label>
-						<input type="radio" name="quiz${ i }" value="four">
-						${ list[i].four }
-					</label>
-					<button class="btn btn-primary px-2 py-1" type="button" onclick="check(${ i })">정답 확인</button>
-				</div>
+	<c:choose>
+		<c:when test="${ list.size() eq 0 }">
+			<div class="content-block" style="height: 50vh;">
+				<h1>해당하는 퀴즈가 없습니다.</h1>
+				<hr>
 			</div>
-		</div>
-	</c:forEach>
-	
+		</c:when>
+		<c:otherwise>
+			<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
+				<div class="border rounded px-2 py-1 mb-2">
+					<input type="text" id="answer${ i }" value="${ list[i].testAnswer }" hidden>
+					<p class="border-bottom p-2" style="font-size: 20px;">${ list[i].testContent }</p>
+					<div class="d-flex flex-column p-2">
+						<label>
+							<input type="radio" name="quiz${ i }" value="one">
+							${ list[i].one }
+						</label>
+						<label>
+							<input type="radio" name="quiz${ i }" value="two">
+							${ list[i].two }
+						</label>
+						<label>
+							<input type="radio" name="quiz${ i }" value="three">
+							${ list[i].three }
+						</label>
+						<div class="d-flex justify-content-between">
+							<label>
+								<input type="radio" name="quiz${ i }" value="four">
+								${ list[i].four }
+							</label>
+							<button class="btn btn-primary px-2 py-1" type="button" onclick="check(${ i })">정답 확인</button>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</c:otherwise>
+	</c:choose>
+	<div>
+		<a class="btn btn-primary px-2 py-1" href="javascript:history.back();">뒤로가기</a>
+	</div>
 </main>
 
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
