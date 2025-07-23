@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.AssignMapper">
+	<resultMap type="com.goodee.semi.dto.Assign" id="assignResultMap">
+		<result property="assignNo" column="assign_no"/>
+		<result property="classNo" column="class_no"/>
+		<result property="schedNo" column="sched_no"/>
+		<result property="assignTitle" column="assign_title"/>
+		<result property="assignContent" column="assign_content"/>
+		<result property="assignStart" column="assign_start"/>
+		<result property="assignEnd" column="assign_end"/>
+		<result property="assignReceipt" column="assign_receipt"/>
+		
+		<result property="schedStep" column="sched_step"/>
+	</resultMap>
+	
+	<select id="selectAssignListByClassNo" parameterType="_int" resultMap="assignResultMap">
+		SELECT
+				A.assign_no
+			, A.class_no
+			, A.sched_no
+			, A.assign_title
+			, A.assign_content
+			, DATE_FORMAT(A.assign_start, '%m월 %d일 %H시 %i분') "assign_start"
+			, DATE_FORMAT(A.assign_end, '%m월 %d일 %H시 %i분') "assign_end"
+			, A.assign_receipt
+			, S.sched_step
+		FROM assignment A
+		INNER JOIN schedule S ON A.sched_no = S.sched_no
+		<where>
+			A.class_no = #{classNo}
+		</where>
+	</select>
+	
+	<insert id="insertAssign" parameterType="com.goodee.semi.dto.Assign" useGeneratedKeys="true" keyProperty="assignNo">
+		INSERT INTO assignment (class_no, sched_no, assign_title, assign_content, assign_receipt, assign_start, assign_end)
+		VALUE (#{classNo}, #{schedNo}, #{assignTitle}, #{assignContent}, #{assignReceipt}, #{assignStart}, #{assignEnd})
+	</insert>
+
+</mapper>
