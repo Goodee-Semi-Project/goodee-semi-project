@@ -30,7 +30,7 @@
 		</div>
 		<div class="m-1">
 			<label class="mr-2" for="attach">[영상] </label>
-			<input type="file" class="w-75 border rounded" name="attach">
+			<input type="file" class="w-75 border rounded" id="attach" name="attach">
 		</div>
 	
 		<!-- SJ: 퀴즈 추가 -->
@@ -40,11 +40,11 @@
 		<input type="text" id="count" name="count" value="0" hidden>
 		<div class="mt-1" id="testPart"></div>
 		
-		<div class="d-flex justify-content-end">
+		<div class="d-flex justify-content-between mt-5">
+			<a class="btn btn-primary px-2 py-1" href="javascript:history.back();">뒤로가기</a>
 			<button class="btn btn-success px-2 py-1 mr-1">등록</button>
 		</div>
 	</form>
-
 </main>
 
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
@@ -81,6 +81,9 @@
 			}
 		}
 		
+		const attachExtIdx = attachName.lastIndexOf('.') + 1;
+		const attachExt = attachName.slice(attachExtIdx).toLowerCase();
+		const vidExt = ['mp4', 'mov', 'avi', 'wmv', 'mkv', 'webm'];
 		
 		// TODO: 첨부파일 등록 확인하기
 		if (!courseNo) {
@@ -89,6 +92,8 @@
 			alert('제목을 입력해주세요.');
 		} else if (!attachName) {
 			alert('학습 영상을 첨부해주세요.');
+		} else if(!vidExt.includes(attachExt)){
+			alert('동영상 파일만 첨부할 수 있습니다!')
 		} else {
 			if (confirm('사전 교육을 저장 하시겠습니까?')) {
 				$.ajax({
