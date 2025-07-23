@@ -16,34 +16,34 @@
 <main>
 	<div>
 		<input type="text" id="reviewNo" value="${ review.reviewNo }" hidden>
-		<span id="title" name="title">[후기] ${ review.reviewTitle }</span>
-		<c:choose>
-			<c:when test="${ review.regDate eq review.modDate }">
-				<span id="date">[작성일] ${ review.regDate }</span>
-			</c:when>
-			<c:otherwise>
-				<span id="date">[수정일] ${ review.modDate }</span>
-			</c:otherwise>
-		</c:choose>
-	</div>
-	<div>
-		<span>[코스명] ${ review.courseTitle }</span>
-		<span>
-			[작성자] ${ review.accountId }
-		</span>
+		<h2 id="title" name="title">[후기] ${ review.reviewTitle }</h2>
+		<ul class="list-inline d-flex flex-wrap justify-content-between">
+			<li class="list-inline-item">[코스명] ${ review.courseTitle }</li>
+			<c:choose>
+				<c:when test="${ review.regDate eq review.modDate }">
+					<li class="list-inline-item" id="date">[작성일] ${ review.regDate }</li>
+				</c:when>
+				<c:otherwise>
+					<li class="list-inline-item" id="date">[수정일] ${ review.modDate }</li>
+				</c:otherwise>
+			</c:choose>
+			<li class="list-inline-item w-100">[작성자] ${ review.accountId }</li>
+		</ul>
 	</div>
 	<div>
 		<c:if test="${ not empty attach }">
-			<img src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+			<img class="img-fluid w-100 m-2" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
 		</c:if>
-		<textarea rows="30" cols="100" id="content" name="content" spellcheck="false" style="resize: none;" readonly>${ review.reviewContent }</textarea>
+		<p style="font-size: 20px">${ review.reviewContent }</p>
 	</div>
-	<div>
-		<a href="<c:url value='/review/list' />">목록</a>
-		<c:if test="${ review.accountId eq loginAccount.accountId }">
-			<a href="<c:url value='/review/edit?reviewNo=${ review.reviewNo }' />">수정</a>
-			<input type="button" value="삭제" onclick="deleteReview()">
-		</c:if>
+	<div class="d-flex justify-content-between">
+		<a class="btn btn-primary px-2 py-1" href="<c:url value='/review/list' />">목록</a>
+		<div>
+			<c:if test="${ review.accountId eq loginAccount.accountId }">
+				<a class="btn btn-primary px-2 py-1" href="<c:url value='/review/edit?reviewNo=${ review.reviewNo }' />">수정</a>
+				<input type="button" class="btn btn-danger px-2 py-1" value="삭제" onclick="deleteReview()">
+			</c:if>
+		</div>
 	</div>
 </main>
 

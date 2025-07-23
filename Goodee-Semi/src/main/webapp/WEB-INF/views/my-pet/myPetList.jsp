@@ -8,6 +8,28 @@
 	
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 	<script defer src="<c:url value='/static/js/myPetList.js'/>"></script>
+	
+	<style type="text/css">
+		img {
+			object-fit: cover !important;
+			border-radius: 50%;
+		}
+		
+		input:disabled {
+			border: none;
+			background-color: rgba(0, 0, 0, 0) !important;
+		}
+		
+		.nice-select.disabled {
+			border: none;
+			background-color: rgba(0, 0, 0, 0) !important;
+			color: #666;
+		}
+		
+		.nice-select.disabled:after {
+			border-color: rgba(0, 0, 0, 0);
+		}
+	</style>
 </head>
 <body>
 	<!-- header -->
@@ -32,7 +54,7 @@
 								<input type="file" class="pet-img-input" name="petImg" style="display: none;">
 								<c:choose>
 									<c:when test="${pet.imgFileSaveName eq null}">
-										<img width="150" height="150" src="<c:url value='/static/images/favicon.ico'/>" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">
+										<img width="150" height="150" src="<c:url value='/static/images/user/pet_profile.png'/>" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">
 									</c:when>
 									<c:otherwise>
 										<img width="150" height="150" src="<c:url value='/upload/pet/${pet.imgFileSaveName}'/>" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">
@@ -56,7 +78,7 @@
 									<select class="pet-gender" name="petGender" disabled required>
 										<option value="" disabled>성별</option>
 										<c:choose>
-											<c:when test="${pet.petGender eq 'M'.charAt(0)}">
+											<c:when test="${pet.petGender == 77}">
 												<option value="M" selected>남</option>
 												<option value="F">여</option>
 											</c:when>

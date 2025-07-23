@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.PetClass;
 import com.goodee.semi.dto.Schedule;
 import com.goodee.semi.mapper.ScheduleMapper;
 
@@ -113,4 +114,13 @@ public class ScheduleDao implements ScheduleMapper {
 		session.close();
 		return result;
 	}
+
+	public List<Schedule> selectScheduleListByClassNo(PetClass petClass) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Schedule> result = session.selectList("com.goodee.semi.mapper.ScheduleMapper.selectScheduleListByClassNo", petClass);
+		session.close();
+		
+		return result;
+	}
+
 }
