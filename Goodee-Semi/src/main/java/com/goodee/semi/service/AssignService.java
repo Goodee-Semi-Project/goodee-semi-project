@@ -269,4 +269,23 @@ public class AssignService {
 		return assignDao.deleteAssign(Integer.parseInt(assignNo));
 	}
 
+	public List<Assign> selectSavedAssignList(AccountDetail account) {
+		List<Assign> savedAssignList = assignDao.selectSavedAssignListByAccountNo(account.getAccountNo());
+		
+		return savedAssignList;
+	}
+
+	public Assign selectSavedAssign(String savedAssignNo) {
+		Assign assign = assignDao.selectSavedAssign(Integer.parseInt(savedAssignNo));
+		
+		if (assign != null) {
+			Attach attach = new Attach();
+			attach.setTypeNo(Attach.ASSIGN);
+			attach.setPkNo(assign.getAssignNo());
+			assign.setAssignAttach(attachDao.selectAttachOne(attach));
+		}
+		
+		return assign;
+	}
+
 }

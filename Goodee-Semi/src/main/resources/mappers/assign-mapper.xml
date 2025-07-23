@@ -55,6 +55,20 @@
 		</where>
 	</select>
 	
+	<select id="selectSavedAssignListByAccountNo" parameterType="_int" resultMap="assignResultMap">
+		SELECT * FROM assignment
+		<where>
+			account_no = #{accountNo} AND assign_receipt = 'N'
+		</where>
+	</select>
+	
+	<select id="selectSavedAssign" parameterType="_int" resultMap="assignResultMap">
+		SELECT * FROM assignment
+		<where>
+			assign_no = #{savedAssignNo} AND assign_receipt = 'N'
+		</where>
+	</select>
+	
 	<insert id="insertAssign" parameterType="com.goodee.semi.dto.Assign" useGeneratedKeys="true" keyProperty="assignNo">
 		INSERT INTO assignment (
 					account_no
@@ -100,10 +114,23 @@
 	<update id="updateAssign" parameterType="com.goodee.semi.dto.Assign">
 		UPDATE assignment
 		SET
-				assign_title = #{assignTitle}
+				assign_receipt = #{assignReceipt}
+		<if test="assignReceipt == 'Y'">
+			,	class_no = #{classNo}
+			, sched_no = #{schedNo}
+		</if>
+		<if test='assignTitle != "" and assignTitle != null'>
+			, assign_title = #{assignTitle}
+		</if>
+		<if test='assignContent != "" and assignContent != null'>
 			, assign_content = #{assignContent}
+		</if>
+		<if test='assignStart != "" and assignStart != null'>
 			, assign_start = #{assignStart}
+		</if>
+		<if test='assignEnd != "" and assignEnd != null'>
 			, assign_end = #{assignEnd}
+		</if>
 		<where>
 			assign_no = #{assignNo}
 		</where>

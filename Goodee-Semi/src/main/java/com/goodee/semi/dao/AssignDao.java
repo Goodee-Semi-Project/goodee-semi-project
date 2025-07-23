@@ -45,4 +45,20 @@ public class AssignDao {
 		return result;
 	}
 
+	public List<Assign> selectSavedAssignListByAccountNo(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Assign> result = session.selectList("com.goodee.semi.mapper.AssignMapper.selectSavedAssignListByAccountNo", accountNo);
+		session.close();
+		
+		return result;
+	}
+
+	public Assign selectSavedAssign(int savedAssignNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Assign result = session.selectOne("com.goodee.semi.mapper.AssignMapper.selectSavedAssign", savedAssignNo);
+		session.close();
+		
+		return result;
+	}
+
 }
