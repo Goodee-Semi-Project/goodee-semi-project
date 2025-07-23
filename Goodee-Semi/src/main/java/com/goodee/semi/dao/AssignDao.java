@@ -31,4 +31,10 @@ public class AssignDao {
 		return result;
 	}
 
+	public int updateAssign(SqlSession session, Assign assign) {
+		int result = session.update("com.goodee.semi.mapper.AssignMapper.updateAssign", assign);
+		
+		return result;
+	}
+
 }
