@@ -154,7 +154,31 @@ public class PreCourseEditServlet extends HttpServlet {
 				if (size > 0) {
 					List<PreTest> list = new ArrayList<PreTest>();
 					
-					for (int i = 0; i < size; i++) {
+					int len = 0;
+					if (request.getParameter("arr") != null) {
+						
+						String arrStr = request.getParameter("arr");
+						String[] arr = arrStr.split(",");
+						len = arr.length;
+						
+						for (int i = 0; i < arr.length; i++) {
+							PreTest preTest = new PreTest();
+							String testNo = request.getParameter("test" + arr[i] + "No");
+							if (testNo == null) testNo = "-1";
+							preTest.setTestNo(testNo);
+							preTest.setPreNo(preNo);
+							preTest.setTestContent(request.getParameter("content" + arr[i]));
+							preTest.setTestAnswer(request.getParameter("quiz" + arr[i]));
+							preTest.setOne(request.getParameter("one" + arr[i]));
+							preTest.setTwo(request.getParameter("two" + arr[i]));
+							preTest.setThree(request.getParameter("three" + arr[i]));
+							preTest.setFour(request.getParameter("four" + arr[i]));
+							
+							list.add(preTest);
+						}
+					}
+					
+					for (int i = 0; i < size - len; i++) {
 						PreTest preTest = new PreTest();
 						String testNo = request.getParameter("test" + i + "No");
 						if (testNo == null) testNo = "-1";
