@@ -34,7 +34,7 @@ public class FilePathServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int attachNo = -1;
-		if (request.getParameter("no") != null) {
+		if (request.getParameter("no") != null && request.getParameter("no") != "") {
 			attachNo = Integer.parseInt(request.getParameter("no"));
 		}
 		
