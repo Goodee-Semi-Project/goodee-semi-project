@@ -20,12 +20,12 @@ import com.goodee.semi.service.AssignService;
     maxFileSize = 1024 * 1024 * 5,
     maxRequestSize = 1024 * 1024 * 20
 )
-@WebServlet("/assign/submit/create")
-public class AssignSubmitCreateServlet extends HttpServlet {
+@WebServlet("/assign/submit/update")
+public class AssignSubmitUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AssignService service = new AssignService();
        
-  public AssignSubmitCreateServlet() {
+  public AssignSubmitUpdateServlet() {
     super();
   }
 
@@ -38,6 +38,7 @@ public class AssignSubmitCreateServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		AssignSubmit assignSubmit = new AssignSubmit();
+		assignSubmit.setSubmitNo(Integer.parseInt(request.getParameter("submitNo")));
 		assignSubmit.setAssignNo(Integer.parseInt(request.getParameter("assignNo")));
 		assignSubmit.setSubmitTitle(request.getParameter("assignSubmitTitle"));
 		assignSubmit.setSubmitContent(request.getParameter("assignSubmitContent"));
@@ -47,15 +48,15 @@ public class AssignSubmitCreateServlet extends HttpServlet {
 			submitPart = request.getPart("assignSubmitImage");
 		} catch (IOException | ServletException e) { e.printStackTrace(); }
 		
-		int result = service.insertAssignSubmitWithAttach(assignSubmit, submitPart);
+		int result = service.updateAssignSubmitWithAttach(assignSubmit, submitPart);
 		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("resultCode", "500");
-		jsonObj.put("resultMsg", "과제 제출 중 오류가 발생했습니다.");
+		jsonObj.put("resultMsg", "과제 수정 중 오류가 발생했습니다.");
 		
 		if (result > 0) {
 			jsonObj.put("resultCode", "200");
-			jsonObj.put("resultMsg", "과제가 제출되었습니다.");
+			jsonObj.put("resultMsg", "제출된 과제가 수정되었습니다.");
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");

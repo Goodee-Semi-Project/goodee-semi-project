@@ -138,10 +138,19 @@ public class AssignService {
 	public Assign selectAssign(String assignNo) {
 		Assign assign = assignDao.selectAssign(Integer.parseInt(assignNo));
 		
-		Attach attach = new Attach();
-		attach.setTypeNo(Attach.ASSIGN);
-		attach.setPkNo(assign.getAssignNo());
-		assign.setAssignAttach(attachDao.selectAttachOne(attach));
+		if (assign != null) {
+			Attach attach = new Attach();
+			attach.setTypeNo(Attach.ASSIGN);
+			attach.setPkNo(assign.getAssignNo());
+			assign.setAssignAttach(attachDao.selectAttachOne(attach));
+			
+			assign.setAssignSubmit(assignSubmitDao.selectAssignSubmitByAssignNo(Integer.parseInt(assignNo)));
+			if (assign.getAssignSubmit() != null) {
+				attach.setTypeNo(Attach.SUBMIT);
+				attach.setPkNo(assign.getAssignSubmit().getSubmitNo());
+				assign.getAssignSubmit().setSubmitAttach(attachDao.selectAttachOne(attach));
+			}
+		}
 		
 		return assign;
 	}
@@ -155,6 +164,39 @@ public class AssignService {
 			result = assignSubmitDao.insertAssignSubmit(session, assignSubmit);
 			
 			if (result > 0) {
+				File uploadDir = AttachService.getUploadDirectory(Attach.SUBMIT);
+				Attach attach = AttachService.handleUploadFile(submitPart, uploadDir);
+				attach.setTypeNo(Attach.SUBMIT);
+				attach.setPkNo(assignSubmit.getSubmitNo());
+				
+				result = attachDao.insertAttach(session, attach);
+			}
+			
+			if (result > 0) {
+				session.commit();
+			} else {
+				session.rollback();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return result;
+	}
+
+	public int updateAssignSubmitWithAttach(AssignSubmit assignSubmit, Part submitPart) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		int result = 0;
+		
+		try {
+			
+			result = assignSubmitDao.updateAssignSubmit(session, assignSubmit);
+			
+			if (result > 0 && submitPart.getSize() > 0) {
 				File uploadDir = AttachService.getUploadDirectory(Attach.SUBMIT);
 				Attach attach = AttachService.handleUploadFile(submitPart, uploadDir);
 				attach.setTypeNo(Attach.SUBMIT);

@@ -23,7 +23,10 @@ public class AssignDetailServlet extends HttpServlet {
 		String assignNo = request.getParameter("assignNo");
 		
 		Assign assign = service.selectAssign(assignNo);
-		assign.setAssignContent(assign.getAssignContent().replaceAll("\n", "<br>"));
+		
+		if (assign != null) {
+			assign.setAssignContent(assign.getAssignContent().replaceAll("\n", "<br>"));
+		}
 		
 		request.setAttribute("assign", assign);
 		request.getRequestDispatcher("/WEB-INF/views/assign/detail.jsp").forward(request, response);
