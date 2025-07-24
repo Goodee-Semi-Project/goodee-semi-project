@@ -24,7 +24,7 @@
 			      		
 			      		<fieldset class="p-4">
 			      			<div class="mb-2" style="display: flex; justify-content: center;">
-			      				<input class="form-control" type="text" id="noticeTitle" name="noticeTitle" placeholder="제목" style="width: 90%; height: 30px; margin: 0 5%;" required>
+			      				<input class="form-control" type="text" id="noticeTitle" name="noticeTitle" placeholder="제목" style="width: 90%; height: 30px; margin: 0 5%;">
 			      			</div>
 			      			<textarea class="form-control" id="noticeContent" name="noticeContent" placeholder="내용을 입력하세요." style="width: 90%; height: 400px; margin: 0 auto;"></textarea>
 			      			
@@ -125,6 +125,30 @@
         
         const form = document.getElementById("createNoticeFrm");
         const formData = new FormData(form);
+        
+        const noticeTitle = formData.get("noticeTitle")?.trim();
+        const noticeContent = formData.get("noticeContent")?.trim();
+        const file = formData.get("noticeFile");
+        
+        if (!noticeTitle) {
+            alert("제목을 입력해주세요.");
+            return;
+          }
+
+          if (!noticeContent) {
+            alert("내용을 입력해주세요.");
+            return;
+          }
+
+          
+          if (file && file.name) {
+            const allowedExt = ["jpg", "jpeg", "png", "gif"];
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (!allowedExt.includes(ext)) {
+              alert("이미지 파일(jpg, jpeg, png, gif)만 업로드할 수 있습니다.");
+              return;
+            }
+          }
         
         $.ajax({
           url : "<%=request.getContextPath()%>/notice/write",
