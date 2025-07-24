@@ -50,6 +50,14 @@
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+
+	function contentInput(num) {
+		const $target = document.querySelector('#content' + num);
+	
+		$target.style.height = '202px';
+		$target.style.height = $target.scrollHeight + 'px';
+	}
+
 	const arr = [];
 	function remove2(num) {
 		$('#test' + num).remove();
