@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.PetClass;
 import com.goodee.semi.dto.Schedule;
 import com.goodee.semi.mapper.ScheduleMapper;
 
@@ -44,9 +45,9 @@ public class ScheduleDao implements ScheduleMapper {
 	}
 
 	@Override
-	public int selectClassNo(Schedule sched) {
+	public Integer selectClassNo(Schedule sched) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int result = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectClassNo", sched);
+		Integer result = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectClassNo", sched);
 		session.close();
 		return result;
 	}
@@ -83,13 +84,52 @@ public class ScheduleDao implements ScheduleMapper {
 		session.close();
 		return result;
 	}
+
+	public List<Schedule> selectScheduleListAttend(Schedule schedule) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Schedule> list = session.selectList("com.goodee.semi.mapper.ScheduleMapper.selectScheduleListAttend", schedule);
+		session.close();
+		return list;
+	}
 	
 	@Override
-	public int selectSchedStep(Schedule sched) {
+	public int deleteScheduleBySchedNo(int schedNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int result = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectSchedStep", sched);
+		int result = session.delete("com.goodee.semi.mapper.ScheduleMapper.deleteScheduleBySchedNo", schedNo);
 		session.close();
 		return result;
 	}
 	
+	@Override
+	public int updateScheduleAttend(Schedule sched) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.ScheduleMapper.updateScheduleAttend", sched);
+		session.close();
+		return result;
+	}
+	
+	@Override
+	public Integer selectSchedStep(Schedule sched) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Integer result = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectSchedStep", sched);
+		session.close();
+		return result;
+	}
+
+	public List<Schedule> selectScheduleListByClassNo(PetClass petClass) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Schedule> result = session.selectList("com.goodee.semi.mapper.ScheduleMapper.selectScheduleListByClassNo", petClass);
+		session.close();
+		
+		return result;
+	}
+	
+	public int selectCountAttend(Schedule sched) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int count = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectCountAttend", sched);
+		session.close();
+		
+		return count;
+	}
+
 }

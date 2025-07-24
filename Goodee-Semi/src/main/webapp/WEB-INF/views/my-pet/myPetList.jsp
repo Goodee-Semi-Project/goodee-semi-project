@@ -8,6 +8,89 @@
 	
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 	<script defer src="<c:url value='/static/js/myPetList.js'/>"></script>
+	
+	<style>
+		img {
+			object-fit: cover !important;
+			border-radius: 50%;
+		}
+		
+		input:disabled {
+			border: none;
+			background-color: rgba(0, 0, 0, 0) !important;
+		}
+		
+		.nice-select.disabled {
+			border: none;
+			background-color: rgba(0, 0, 0, 0) !important;
+			color: #666;
+		}
+		
+		.nice-select.disabled:after {
+			border-color: rgba(0, 0, 0, 0);
+		}
+		
+		.nice-select,
+		.form-control {
+			padding: .375rem .75rem;
+    		height: 50px;
+		}
+		
+		.pet-detail.col-7 {
+			max-width: 52%;
+		}
+		
+ 		label {
+			margin-right: 2px;
+		}
+		
+		.col-3 {
+		    max-width: 100%;
+		}
+		
+ 		.col-2 {
+			margin-left: 10px;
+		}
+		
+		/* 붓스트랩 스타일 커스터마이징 */
+		div.container.mb-3 {
+			display: flex; align-items: center; padding: 15px 25px; border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+		}
+		input.pet-img-input {
+			display: none;
+		}
+		img.pet-img {
+			padding: 5px; border: 1px solid #ced4da; object-fit: contain;
+		}
+		div.pet-detail.col-7 {
+			display: flex; align-items: center;
+		}
+		div.pet-detail.col-7 div:nth-child(1) {
+			width: 60%; text-align: center;
+		}
+		div.pet-detail.col-7 div:nth-child(2) {
+			width: 40%; margin-left: 20px; text-align: left;
+		}
+		input.form-control.pet-name.mb-3 {
+			width: 75%; display: inline-block;
+		}
+		input.form-control.pet-breed {
+			width: 75%; display: inline-block;
+		}
+		input.form-control.pet-age.mb-3 {
+			width: 60%; display: inline-block;
+		}
+		button.pet-btn-up.btn.btn-primary.mb-3,
+		button.pet-btn-del.btn.btn-danger,
+		button.pet-btn-up.btn.btn-success.mb-3,
+		button.pet-btn-del.btn.btn-outline-secondary,
+		button.pet-btn-save.btn.btn-success {
+			padding: 5px 10px !important;
+		}
+		div.pet-btn.col-2 {
+			display: flex; flex-direction: column; justify-content: center; align-items: center
+		}
+	</style>
 </head>
 <body>
 	<!-- header -->
@@ -27,23 +110,29 @@
 			<ul id="pet-list">
 				<c:forEach var="pet" items="${list }" varStatus="status">
 					<li>
-						<div class="container mb-3" style="display: flex; align-items: center; padding: 5px; border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">
+						<div class="container mb-3">
 							<div class="col-3">
-								<input type="file" class="pet-img-input" name="petImg" style="display: none;">
-								<img width="150" height="150" src="<c:url value='/upload/pet/${pet.imgFileSaveName }'/>" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">						
+								<input type="file" class="pet-img-input" name="petImg">
+								<c:choose>
+									<c:when test="${pet.imgFileSaveName eq null}">
+										<img width="150" height="150" src="<c:url value='/static/images/user/pet_profile.png'/>" class="pet-img" alt="반려견 이미지">
+									</c:when>
+									<c:otherwise>
+										<img width="150" height="150" src="<c:url value='/upload/pet/${pet.imgFileSaveName}'/>" class="pet-img" alt="반려견 이미지">
+									</c:otherwise>
+								</c:choose>
 							</div>
-							<div class="pet-detail col-7" style="display: flex; align-items: center;">
-								<div style="width: 60%; text-align: center;">
+							<div class="pet-detail col-7">
+								<div>
 									<label>이름: </label>
-									<input type="text" class="form-control pet-name mb-3" style="width: 80%; display: inline-block;" name="petName" value="${pet.petName }" disabled>
+									<input type="text" class="form-control pet-name mb-3" name="petName" value="${pet.petName }" disabled>
 									<br>
 									<label>견종: </label>
-									<input type="text" class="form-control pet-breed" style="width: 80%; display: inline-block;" name="petBreed" value="${pet.petBreed }" disabled>							
+									<input type="text" class="form-control pet-breed" name="petBreed" value="${pet.petBreed }" disabled>							
 								</div>
-								
-								<div style="width: 40%; margin-left: 20px; text-align: left;">
+								<div>
 									<label>나이: </label>
-									<input type="text" class="form-control pet-age mb-3" style="width: 60%; display: inline-block;" name="petAge" value="${pet.petAge }" disabled>
+									<input type="text" class="form-control pet-age mb-3" name="petAge" value="${pet.petAge }" disabled>
 									<br>
 									<label>성별: </label>
 									<select class="pet-gender" name="petGender" disabled required>
@@ -63,9 +152,9 @@
 								<input type="hidden" class="pet-no" name="petNo" value="${pet.petNo }">
 								<input type="hidden" class="account-no" name="accountNo" value="${pet.accountNo }">
 							</div>
-							<div class="pet-btn col-2" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-								<button class="pet-btn-up btn btn-primary mb-3" style="padding: 5px 10px;">수정</button>
-								<button class="pet-btn-del btn btn-danger" style="padding: 5px 10px;">삭제</button>
+							<div class="pet-btn col-2">
+								<button class="pet-btn-up btn btn-primary mb-3">수정</button>
+								<button class="pet-btn-del btn btn-danger">삭제</button>
 							</div>
 						</div>
 					</li>

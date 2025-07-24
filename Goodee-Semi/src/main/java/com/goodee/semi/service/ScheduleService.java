@@ -28,11 +28,11 @@ public class ScheduleService {
 		return dao.selectPetList(sched);
 	}
 
-	public int selectClassNo(Schedule sched) {
+	public Integer selectClassNo(Schedule sched) {
 		return dao.selectClassNo(sched);
 	}
 	
-	public int selectSchedStep(Schedule sched) {
+	public Integer selectSchedStep(Schedule sched) {
 		return dao.selectSchedStep(sched);
 	}
 
@@ -61,10 +61,25 @@ public class ScheduleService {
 		
 		return result;
 	}
+	
+	public List<Schedule> selectScheduleListAttend(Schedule schedule) {
+		return dao.selectScheduleListAttend(schedule);
+	}
 
 	public int delete(int schedNo) {
 		return dao.delete(schedNo);
 	}
 
-
+	public int deleteScheduleBySchedNo(int schedNo) {
+		return dao.deleteScheduleBySchedNo(schedNo);
+	}
+	
+	public int updateScheduleAttend(Schedule sched) {
+		return dao.updateScheduleAttend(sched);
+	}
+	
+	public Schedule selectSchedule(int schedNo) {
+		return dao.selectSchedule(schedNo);
+	}
+	
 }

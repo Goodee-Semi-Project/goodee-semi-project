@@ -12,10 +12,6 @@ public class AnswerService {
 	QuestionDao questionDao = new QuestionDao();
 	AnswerDao answerDao = new AnswerDao();
 	
-	public Question selectOneQuest(int questNo) {
-		return questionDao.selectOneQuest(questNo);
-	}
-	
 	public int insertAnswer(int accountNo, int questNo, String answerContent) {
 		Answer answer = new Answer();
 		answer.setAccountNo(accountNo);
@@ -28,6 +24,12 @@ public class AnswerService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Question question = questionDao.selectOneQuest(questNo);
 		Answer answer = answerDao.selectOneAnswer(questNo);
+		if(question != null) {
+			question.setQuestReg(question.getQuestReg().substring(0, 10));
+		}
+		if(answer != null) {
+			answer.setAnswerReg(answer.getAnswerReg().substring(0, 10));
+		}
 		map.put("question", question);
 		map.put("answer", answer);
 		return map;

@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
+// TODO 나이 입력란 유효성 검증 로직 추가
 @WebServlet("/myPet/update")
 @MultipartConfig(
 	maxFileSize = 5 * 1024 * 1024, // 개별 파일 최대 크기: 5MB
@@ -29,7 +30,7 @@ import jakarta.servlet.http.Part;
 )
 public class MyPetUpdateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private PetService petService = new PetService();
+    private PetService service = new PetService();
 
     public MyPetUpdateServlet() {
         super();
@@ -112,18 +113,23 @@ public class MyPetUpdateServlet extends HttpServlet {
     				attach.setPkNo(pet.getPetNo());
     				
     				// 기존 이미지파일 삭제
-    				// 1. petNo로 기존 이미지파일의 savedName을 가져옴
-    				// 2. savedName에 해당하는 파일을 저장소에서 삭제
-    				String oldSavedName = petService.selectPetImgSavedName(attach);
+    				// 1) petNo, typeNo로 기존 이미지파일의 savedName을 가져옴
+    				// 2) savedName에 해당하는 파일을 저장소에서 삭제
+    				String oldSavedName = service.selectPetImgSavedName(attach);
     				System.out.println("[MyPetUpdateServlet] 삭제할 파일명: " + oldSavedName);
-    				File oldSavedFile = new File(AttachService.getUploadDirectory(Attach.PET) + "/" + oldSavedName);
-    				System.out.println("[MyPetUpdateServlet] 삭제할 파일경로: " + oldSavedFile.getAbsolutePath());
-    				if (oldSavedFile.delete()) {
-    					System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 삭제 성공");
-    				} else {
-    					System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 삭제 실패");
+    				if (oldSavedName != null) {
+	    				File oldSavedFile = new File(AttachService.getUploadDirectory(Attach.PET), oldSavedName);
+	    				System.out.println("[MyPetUpdateServlet] 삭제할 파일경로: " + oldSavedFile.getAbsolutePath());
+	    				if(oldSavedFile.exists()) {
+	    					if (oldSavedFile.delete()) {
+	    						System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 삭제 성공");
+	    					} else {
+	    						System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 삭제 실패");
+	    					}
+	    				} else {
+	    					System.out.println("[MyPetUpdateServlet] 기존 반려견 이미지 파일이 존재하지 않음");
+	    				}
     				}
-    				
     			} catch(Exception e) {
     	            sendErrorResponse("500", "파일 저장/삭제 중 문제가 발생했습니다: " + e.getMessage(), e, response);
     	            return;
@@ -135,7 +141,7 @@ public class MyPetUpdateServlet extends HttpServlet {
 		}
         
         // 3. service 호출
-        int result = petService.updatePet(pet, attach);
+        int result = service.updatePet(pet, attach);
         if (result != 0) {
         	sendSuccessResponse("200", "반려견 정보 수정에 성공했습니다", pet, response);
         	return;

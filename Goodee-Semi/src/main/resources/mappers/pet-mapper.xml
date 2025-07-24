@@ -29,10 +29,10 @@
 	<select id="selectPetList" parameterType="com.goodee.semi.dto.Pet" resultMap="petResultMap">
 		SELECT pet_no, account_no, pet_name, pet_gender, pet_age, pet_breed, save_name
 		FROM pet p
-		JOIN attachment a ON (p.pet_no = a.pk_no)
-		JOIN attach_type at ON (a.type_no = at.type_no)
+		LEFT JOIN attachment a 
+			ON p.pet_no = a.pk_no AND a.type_no = 2
 		<where>
-			a.type_no = 2 AND account_no = #{accountNo}
+			p.account_no = #{accountNo}
 		</where>
 		LIMIT #{limitPageNo}, #{numPerPage}
 	</select>
@@ -81,7 +81,8 @@
 			c.course_no, 
 			c.class_no AS class_no,
 			at.attach_no AS attach_no, 
-			a.account_name AS account_name
+			a.account_name AS account_name,
+			a.account_no AS account_no
 		FROM pet p
 		JOIN class c ON p.pet_no = c.pet_no
 		JOIN (
@@ -150,12 +151,19 @@
 		FROM pet
 	</select>
 	
-	<select id="selectPetImgSavedName" parameterType="com.goodee.semi.dto.Pet" resultType="string">
+	<select id="selectPetImgSavedName" parameterType="com.goodee.semi.dto.Attach" resultType="string">
 		SELECT save_name
 		FROM attachment
 		<where>
 			type_no = #{typeNo}
-			AND pk_no = #{pkNo};
+			AND pk_no = #{pkNo}
 		</where>
+	</select>
+
+	<select id="selectAttachByPetNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM pet p
+		LEFT JOIN attachment at ON p.pet_no = at.pk_no
+		WHERE at.pk_no = #{petNo} AND type_no = 2	
 	</select>
 </mapper>

@@ -20,8 +20,8 @@ public class Question extends Paging{
 	private String questContent;
 	private String questReg;
 	private String questMod;
-	private String accountId;
 	
+	private String accountId;
 	private String keyword;
 	private String searchBy;
 	private String orderBy;
