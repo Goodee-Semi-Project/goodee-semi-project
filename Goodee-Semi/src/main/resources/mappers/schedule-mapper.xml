@@ -78,7 +78,7 @@
 		</where>
 	</select>
 	
-	<select id="selectClassNo" parameterType="com.goodee.semi.dto.Schedule" resultType="_int">
+	<select id="selectClassNo" parameterType="com.goodee.semi.dto.Schedule" resultType="integer">
 		SELECT c.class_no
 		FROM course co
 		JOIN class c ON (co.course_no = c.course_no)

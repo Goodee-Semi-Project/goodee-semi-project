@@ -36,7 +36,9 @@
 										<option value="reviewTitle">선택</option>
 										<option value="reviewTitle" <c:if test="${ paging.category eq 'reviewTitle' }">selected</c:if> >제목</option>
 										<option value="courseTitle" <c:if test="${ paging.category eq 'courseTitle' }">selected</c:if> >코스명</option>
-										<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
+										<c:if test="${ loginAccount.author eq 1 }">
+											<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
+										</c:if>
 									</select>
 								</div>
 								<div class="form-group col-xl-6 col-lg-5 col-md-6">
