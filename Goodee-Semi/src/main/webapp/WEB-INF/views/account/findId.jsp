@@ -56,8 +56,8 @@
 				const name = $("#name").val();
 				const email = $("#email").val();
 				
-				if (!name) alert("이름을 입력해주세요.");
-				else if (!email) alert("이메일을 입력해주세요.");
+				if (!name) Swal.fire({ icon: "error", text: "이름을 입력해주세요."});
+				else if (!email) Swal.fire({ icon: "error", text: "이메일을 입력해주세요."});
 				else {
 					$.ajax({
 						url : "/account/findId",
@@ -75,7 +75,7 @@
 							}
 						},
 						error : function() {
-							alert("아이디 찾기 중 오류가 발생했습니다.");
+							Swal.fire({ icon: "error", text: "아이디 찾기 중 오류가 발생했습니다."});
 						}
 					});
 				}

@@ -43,7 +43,7 @@ public class AccountService {
 				result = accountDao.insertAccountInfo(session, account);
 			}
 			
-			if (result > 0) {
+			if (result > 0 && attach != null) {
 				attach.setTypeNo(Attach.ACCOUNT);
 				attach.setPkNo(account.getAccountNo());
 				result = accountDao.insertAttach(session, attach);
@@ -174,5 +174,13 @@ public class AccountService {
 	
 	public int countTotalAccountNo() {
 		return accountDao.countTotalAccountNo();
+	}
+
+	public AccountDetail selectAccountByPhoneAndEmail(String phone, String email) {
+		AccountDetail keyObj = new AccountDetail();
+		keyObj.setPhone(phone);
+		keyObj.setEmail(email);
+		
+		return accountDao.selectAccountByPhoneAndEmail(keyObj);
 	}
 }
