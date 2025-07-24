@@ -123,6 +123,10 @@ public class PreCourseEditServlet extends HttpServlet {
 				}
 			}
 			
+			if (new File("C:/ffmpeg/bin/ffprobe.exe").exists() == false) {
+				System.err.println("FFMpeg 경로 설정이 필요합니다!");
+			}
+			
 			
 			int hour = total / 360;
 			int minute = (total % 360) / 60;
@@ -140,8 +144,12 @@ public class PreCourseEditServlet extends HttpServlet {
 			} else {
 				preCourse.setVideoLen(request.getParameter("videoLen"));
 			}
-			
-			result = preCourseService.updatePreCourse(preCourse, attach);
+
+			if (total != 0) {
+				result = preCourseService.updatePreCourse(preCourse, attach);
+			} else {
+				result = -2;
+			}
 			
 			// 테스트 수정
 			if (result > 0) {
@@ -205,6 +213,9 @@ public class PreCourseEditServlet extends HttpServlet {
 		if (result > 0) {
 			obj.put("res_code", "200");
 			obj.put("res_msg", "사전 학습 수정 완료");
+		} else if (result == -2) {
+			obj.put("res_code", "501");
+			obj.put("res_msg", "FFMpeg 설정이 필요합니다. 서버 관리자에게 문의하세요.");
 		} else {
 			obj.put("res_code", "500");
 			obj.put("res_msg", "수정 실패");
