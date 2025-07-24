@@ -8,18 +8,25 @@
 <meta charset="UTF-8">
 <title>출석 상세</title>
 
+
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 <%@ include file="/WEB-INF/views/include/myPageSideBar.jsp"%>
 
-
+	
 	<div class="container my-2" style="width: 80%; height: 50px; border: 1px solid black; border-radius: 10px; overflow: hidden; padding: 0; display: flex;">
 		<div class="col-12" style="display: flex; justify-content: center; align-items: center;">
-			<span style="font-size: 20px; font-weight: 700;">${scheduleList[0].courseTitle}</span>
+			<span style="font-size: 20px; font-weight: 700;">${courseTitle}</span>
 		</div>
 	</div>
+	
+	<c:if test="${ empty scheduleList }">
+		<div class="text-center">
+			<h2>조회된 출석 기록이 없습니다</h2>
+		</div>
+	</c:if>
 	
 	<section>
 		<table class="text-center" style="width: 100%">
@@ -86,12 +93,6 @@
 		</table>
 	</section>
 	
-	<c:if test="${ empty scheduleList }">
-		<div class="text-center">
-			<h2>조회된 출석 기록이 없습니다</h2>
-		</div>
-	</c:if>
-	
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
 
@@ -121,82 +122,55 @@
 			location.href="<%=request.getContextPath()%>/qr/qrCode?schedNo=" + schedNo + "&petNo=" + petNo + "&courseNo=" + courseNo;
 		}
 		
-// 		function openUpdateAttendModal(didAttend, petNo, courseNo, schedNo) {
-// 			let msg;
-// 			if(didAttend == 'Y') {
-// 				msg = "결석으로 변경하시겠습니까?"
-// 			} else{
-// 				msg = "출석으로 변경하겠습니까?"
-// 			}	
-// 			$("#modal_text").text(msg);
-// 			$("#moda_pet_no").val(petNo);
-// 			$("#modal_course_no").val(courseNo);
-// 			$("#modal_sched_no").val(schedNo);
-// 			$("#modal_didAttend").val(didAttend);
-// 			$("#updateAttend").modal("show");
-// 		}
-		
-// 		$("#btn_modal_change_attend_confirm").click(function(){
-// 			const petNo = $("#modal_pet_no").val();
-// 			const courseNo = $("#modal_course_no").val();
-// 			const schedNo = $("#modal_sched_no").val();
-// 			const didAttend = $("#modal_didAttend").val();
-			
-// 			console.log(petNo);
-// 			console.log(courseNo);
-// 			console.log(schedNo);
-// 			console.log(didAttend);
-			
-// 			$.ajax({
-// 				url : "/attend/detailUpdate",
-// 				type : "post",
-// 				data : {
-// 					didAttend : didAttend,
-// 					petNo : petNo,
-// 					courseNo : courseNo,
-// 					schedNo : schedNo,
-// 					},
-// 				dataType : "json",
-// 				success : function(data) {
-// 					if(data.res_code == 200) {
-// 						alert(data.res_msg);
-<%-- 						location.href="<%=request.getContextPath()%>/attend/detail?petNo="+petNo+"&courseNo="+courseNo; --%>
-// 					} else if(data.res_code == 500) {
-// 						alert(data.res_msg);
-// 					}
-// 				}
-// 			});
-// 		})
-	
-		function updateAttend(didAttend, petNo, courseNo, schedNo) {
+		function openUpdateAttendModal(didAttend, petNo, courseNo, schedNo) {
 			let msg;
 			if(didAttend == 'Y') {
-				msg = "결석으로 바꾸시겠습니까?"
+				msg = "결석으로 변경하시겠습니까?"
 			} else{
-				msg = "출석으로 바꾸시겠습니까?"
-			}			
-			if(confirm(msg)) {
-				$.ajax({
-					url : "/attend/detailUpdate",
-					type : "post",
-					data : {
-						didAttend : didAttend,
-						petNo : petNo,
-						courseNo : courseNo,
-						schedNo : schedNo,
-						},
-					dataType : "json",
-					success : function(data) {
-						if(data.res_code == 200) {
-							alert(data.res_msg);
-							location.href="<%=request.getContextPath()%>/attend/detail?petNo="+petNo+"&courseNo="+courseNo;
-						} else if(data.res_code == 500) {
-							alert(data.res_msg);
-						}
-					}
-				});
-			}
+				msg = "출석으로 변경하겠습니까?"
+			}	
+			$("#modal_text").text(msg);
+			$("#modal_didAttend").val(didAttend);
+			$("#modal_pet_no").val(petNo);
+			$("#modal_course_no").val(courseNo);
+			$("#modal_sched_no").val(schedNo);
+			$("#updateAttend").modal("show");
 		}
+		
+		$("#btn_modal_change_attend_confirm").click(function(){
+			const petNo = $("#modal_pet_no").val();
+			const courseNo = $("#modal_course_no").val();
+			const schedNo = $("#modal_sched_no").val();
+			const didAttend = $("#modal_didAttend").val();
+			
+			$.ajax({
+				url : "/attend/detailUpdate",
+				type : "post",
+				data : {
+					didAttend : didAttend,
+					petNo : petNo,
+					courseNo : courseNo,
+					schedNo : schedNo,
+					},
+				dataType : "json",
+				success : function(data) {
+					if (data.res_code == 200) {
+						Swal.fire({
+							icon: "success",
+							text: data.res_msg,
+							confirmButtonText: "확인"
+						}).then((result) => {
+							if (result.isConfirmed) {
+								location.href="<%=request.getContextPath()%>/attend/detail?petNo="+petNo+"&courseNo="+courseNo;							    
+							}
+						});
+					} else {
+						Swal.fire({ icon: "error", text: data.res_msg});
+					}
+
+				}
+			});
+		})
 	</script>
 </body>
 </html>

@@ -64,8 +64,8 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
 
 	<script>
-		function goToDetail(petNo, courseNo) {
-			location.href="<%= request.getContextPath() %>/attend/detail?petNo=" + petNo + "&courseNo=" + courseNo
+		function goToDetail(petNo, courseNo, courseTitle) {
+			location.href="<%= request.getContextPath() %>/attend/detail?petNo=" + petNo + "&courseNo=" + courseNo; 
 		}
 		
 		function toggleCourse(index) {
