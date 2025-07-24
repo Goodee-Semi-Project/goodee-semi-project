@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS `account_info` (
 	`address` VARCHAR(255) NOT NULL,
 	`address_detail` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`info_no`),
-	UNIQUE KEY (`phone`, `email`),
+	UNIQUE KEY (`phone`),
+	UNIQUE KEY (`email`),
 	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 
@@ -67,6 +68,7 @@ CREATE TABLE IF NOT EXISTS `class` (
 	`pet_no` INT NOT NULL,
 	`class_prog` INT NOT NULL DEFAULT 0,
 	PRIMARY KEY (`class_no`),
+	UNIQUE KEY(`course_no`, `pet_no`),
 	FOREIGN KEY (`course_no`) REFERENCES `course`(`course_no`),
 	FOREIGN KEY (`pet_no`) REFERENCES `pet`(`pet_no`)
 );
@@ -202,6 +204,7 @@ CREATE TABLE IF NOT EXISTS `assignment` (
 	`assign_no` INT AUTO_INCREMENT NOT NULL,
 	`class_no` INT DEFAULT NULL,
 	`sched_no` INT DEFAULT NULL,
+  `account_no` INT NOT NULL,
 	`assign_title` VARCHAR(255) NOT NULL DEFAULT '새 과제',
 	`assign_content` TEXT DEFAULT NULL,
 	`assign_receipt` CHAR(1),

@@ -5,6 +5,11 @@ import java.util.List;
 import com.goodee.semi.dto.Assign;
 
 public interface AssignMapper {
+	Assign selectAssign(int assignNo);
 	List<Assign> selectAssignListByClassNo(int classNo);
+	List<Assign> selectSavedAssignListByAccountNo(int accountNo);
+	Assign selectSavedAssign(int savedAssignNo);
 	int insertAssign(Assign assign);
+	int updateAssign(Assign assign);
+	int deleteAssign(int assignNo);
 }
