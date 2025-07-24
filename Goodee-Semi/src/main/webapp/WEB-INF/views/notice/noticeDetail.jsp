@@ -117,24 +117,41 @@
     $("#noticeDeleteBtn").click(function(e){
     	e.preventDefault();
     	
-    	if(confirm("삭제하시겠습니까?")) {
-	    	const noticeNo = $(this).data("no");
-    		$.ajax({
-    			url:"<%=request.getContextPath()%>/noticeDelete",
-    			type : "post",
-    			data : {noticeNo : noticeNo},
-    			success : function(data){
-    				alert(data.res_msg);
-    				
-    				if(data.res_code == 200){
-    					location.href="<%=request.getContextPath() %>/notice/list"
-    				}
-    			}
-    		});		
-    	}
-    
+    	Swal.fire({
+				text: "게시글을 삭제하시겠습니까?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "삭제",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					const noticeNo = $(this).data("no");
+		    		
+					$.ajax({
+		    		url:"<%=request.getContextPath()%>/noticeDelete",
+		    		type : "post",
+		    		data : {noticeNo : noticeNo},
+		    		success : function(data){
+		    			if (data.res_code == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.res_msg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href="<%=request.getContextPath() %>/notice/list";						    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.res_msg});
+							}
+		    		}
+		    	});
+				}
+			});
     });
-    
   </script>
 </body>
 </html>
