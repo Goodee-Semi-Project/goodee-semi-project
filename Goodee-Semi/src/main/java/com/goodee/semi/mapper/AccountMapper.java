@@ -14,6 +14,7 @@ public interface AccountMapper {
 	AccountDetail loginInfo(Account result);
 	Account selectAccountByNameAndEmail(AccountDetail account);
 	AccountDetail selectAccountDetail(String accountId);
+	AccountDetail selectAccountByPhoneAndEmail(AccountDetail keyObj);
 	int updateAccountDetail(AccountDetail param);
 	int checkIdPw(Account account);
 	int deactivateAccount(Account account);
