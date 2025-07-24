@@ -114,7 +114,7 @@
 				showCancelButton: true,
 				confirmButtonColor: "#3085d6",
 				cancelButtonColor: "#d33",
-				confirmButtonText: "저장",
+				confirmButtonText: "삭제",
 				cancelButtonText: "취소"
 			}).then((result) => {
 				if (result.isConfirmed) {
@@ -177,7 +177,7 @@
 				showCancelButton: true,
 				confirmButtonColor: "#3085d6",
 				cancelButtonColor: "#d33",
-				confirmButtonText: "저장",
+				confirmButtonText: "삭제",
 				cancelButtonText: "취소"
 			}).then((result) => {
 				if (result.isConfirmed) {
@@ -237,7 +237,7 @@
 					showCancelButton: true,
 					confirmButtonColor: "#3085d6",
 					cancelButtonColor: "#d33",
-					confirmButtonText: "저장",
+					confirmButtonText: "수정",
 					cancelButtonText: "취소"
 				}).then((result) => {
 					if (result.isConfirmed) {
@@ -286,7 +286,7 @@
 					showCancelButton: true,
 					confirmButtonColor: "#3085d6",
 					cancelButtonColor: "#d33",
-					confirmButtonText: "저장",
+					confirmButtonText: "제출",
 					cancelButtonText: "취소"
 				}).then((result) => {
 					if (result.isConfirmed) {
