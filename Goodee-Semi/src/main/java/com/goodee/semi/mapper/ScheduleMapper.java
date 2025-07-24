@@ -13,7 +13,7 @@ public interface ScheduleMapper {
 	List<Schedule> selectAccountList(int courseNo);
 	List<Schedule> selectPetList(Schedule sched);
 	List<Schedule> selectScheduleListByClassNo(PetClass petClass);
-	int selectClassNo(Schedule sched);
+	Integer selectClassNo(Schedule sched);
 	int insert(Schedule sched);
 	Schedule selectSchedule(int schedNo);
 	int update(Schedule sched);

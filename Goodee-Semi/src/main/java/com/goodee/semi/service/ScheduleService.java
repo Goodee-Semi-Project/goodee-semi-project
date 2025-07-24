@@ -28,7 +28,7 @@ public class ScheduleService {
 		return dao.selectPetList(sched);
 	}
 
-	public int selectClassNo(Schedule sched) {
+	public Integer selectClassNo(Schedule sched) {
 		return dao.selectClassNo(sched);
 	}
 	
