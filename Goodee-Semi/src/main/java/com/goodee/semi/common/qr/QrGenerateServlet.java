@@ -35,7 +35,6 @@ public class QrGenerateServlet extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "shedNo is required.");
 			return;
 		}
-		
 		// IP기반으로 URL 생성
 		String qrContent = "http://192.168.1.20:8080/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
 		// 상시 서버
