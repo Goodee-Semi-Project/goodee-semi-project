@@ -35,7 +35,7 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 		
 		$.ajax({
             url: '/schedule/list',
-            type: 'post',
+            type: 'get',
             data: {
                 start: fetchInfo.startStr,
                 end: fetchInfo.endStr
