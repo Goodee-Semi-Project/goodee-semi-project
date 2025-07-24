@@ -220,10 +220,6 @@
 					cache : false,
 					dataType : "JSON",
 					success : function(data) {
-						if (data.resultCode != 200) {
-							Swal.fire({ icon: "error", text: data.resultMsg});
-						}
-						
 						if (data.resultCode == 200) {
 							Swal.fire({
 								icon: "success",
@@ -234,6 +230,8 @@
 									location.href = "<%= request.getContextPath() %>/";								    
 								}
 							});
+						} else {
+							Swal.fire({ icon: "error", text: data.resultMsg});
 						}
 					},
 					error : function() {
