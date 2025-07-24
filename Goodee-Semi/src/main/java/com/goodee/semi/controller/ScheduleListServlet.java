@@ -101,17 +101,10 @@ public class ScheduleListServlet extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 로그인한 사용자만 접근을 허용하는 로직
-		HttpSession session = request.getSession(false);
-		if (session == null || session.getAttribute("loginAccount") == null) {
-			response.sendRedirect(request.getContextPath() + "/");
-			return;
-		}
+		// 1. session에서 account 정보 가져오기
+		AccountDetail accountDetail = (AccountDetail) request.getSession(false).getAttribute("loginAccount");
 		
-		// 2. session에서 account 정보 가져오기
-		AccountDetail accountDetail = (AccountDetail) session.getAttribute("loginAccount");
-		
-		// 3. request에 바인딩 된 값 받아오기
+		// 2. request에 바인딩 된 값 받아오기
 		Map<String, String> map = new HashMap<String, String>();
 		try {
 			String start = request.getParameter("start");
@@ -149,7 +142,7 @@ public class ScheduleListServlet extends HttpServlet {
             return;
 		}
 		
-		// 4. service에서 일정 리스트 데이터 받아오기
+		// 3. service에서 일정 리스트 데이터 받아오기
 		List<Schedule> list = new ArrayList<>();
 		try {
 			list = service.selectScheduleList(map);
