@@ -90,35 +90,55 @@
 		const imgExt = ['', 'png', 'jpg', 'jpeg', 'webp', 'gif'];
 		
 		if (!title) {
-			alert('제목을 입력해주세요!');
+			Swal.fire({ icon: "error", text: "제목을 입력해주세요."});
 		} else if (!content) {
-			alert('내용을 입력해주세요!');
+			Swal.fire({ icon: "error", text: "내용을 입력해주세요."});
 		} else if (!classNo || classNo == -1) {
-			alert('해당 과정을 선택해주세요');
+			Swal.fire({ icon: "error", text: "교육과정을 선택해주세요."});
 		} else if(!imgExt.includes(attachExt)){
-			alert('이미지 파일만 첨부할 수 있습니다!')
+			Swal.fire({ icon: "error", text: "이미지 파일만 첨부할 수 있습니다."});
 		} else {
-			$.ajax({
-				url : '/review/write',
-				type : 'post',
-				data : formData,
-				enctype : 'multipart/form-data',
-				contentType : false,
-				processData : false,
-				cache : false,
-				dataType : 'json',
-				success : function(data) {
-					alert(data.res_msg);
-					if (data.res_code == 200) {
-						location.href = "<%= request.getContextPath() %>/review/list";
-					}
-				},
-				error : function(data) {
-					alert('요청 실패');
+			Swal.fire({
+				text: "후기를 등록하시겠습니까?",
+				icon: "question",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "등록",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url : '/review/write',
+						type : 'post',
+						data : formData,
+						enctype : 'multipart/form-data',
+						contentType : false,
+						processData : false,
+						cache : false,
+						dataType : 'json',
+						success : function(data) {
+							if (data.res_code == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.res_msg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/review/list";			    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.res_msg});
+							}
+						},
+						error : function(data) {
+							Swal.fire({ icon: "error", text: "후기 등록 중 오류가 발생했습니다."});
+						}
+					});
 				}
 			});
-		}
-		
+		}	
 	});
 
 </script>
