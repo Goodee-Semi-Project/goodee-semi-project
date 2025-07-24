@@ -10,7 +10,9 @@ document.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
             if (!validateFile(file, e.target)) {
-                return;
+				e.stopPropagation(); // 다른 이벤트리스너 실행 방지
+				e.preventDefault();   // 기본 동작 방지
+				return;
             }
         }
     }
@@ -99,6 +101,12 @@ function setupImagePreview(petImg, petImgInput) {
     petImgInput.addEventListener('change', function() {
         const file = this.files[0];
         if (file) {
+			// 미리보기 전에 한 번 더 검증
+			if (!validateFile(file, this)) {
+			    return; // 검증 실패시 미리보기 안 함
+			}
+			
+			// 검증 통과시에만 미리보기
             const reader = new FileReader();
             reader.onload = function(e) {
                 petImg.src = e.target.result; // 선택한 이미지를 img 태그에 표시
@@ -130,7 +138,7 @@ function editPetEvent(petLi) {
     
     // 3. 버튼 바꾸기
     const oriPetBtnHtml = petBtn.innerHTML;
-    const btnSaveHtml = '<button type="button" class="pet-btn-save btn btn-success" style="padding: 5px 10px;">적용</button>';
+    const btnSaveHtml = '<button type="button" class="pet-btn-save btn btn-success">적용</button>';
     petBtn.innerHTML = btnSaveHtml;
 
     // 4. 반려견 이미지 img 클릭 시 input:file의 클릭 이벤트(파일 선택창 열기)를 발생시킴
@@ -279,38 +287,38 @@ document.querySelector('#delete-confirm-btn').addEventListener('click', deletePe
 // 새 반려견 정보 입력을 위한 HTML 생성 함수
 function createNewPetItemHTML(accountNo) {
     return 	`
-									<div class="container mb-3" style="display: flex; align-items: center; padding: 5px; border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">
-										<div class="col-3">
-											<input type="file" class="pet-img-input" name="petImg" style="display: none;">
-											<img width="150" height="150" src="/static/images/default-pet.png" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">						
-										</div>
-										<div class="pet-detail col-7" style="display: flex; align-items: center;">
-											<div style="width: 60%; text-align: center;">
-												<label>이름: </label>
-												<input type="text" class="form-control pet-name mb-3" style="width: 80%; display: inline-block;" placeholder="이름">
-												<br>
-												<label>견종: </label>
-												<input type="text" class="form-control pet-breed" style="width: 80%; display: inline-block;" placeholder="견종">							
-											</div>
-											
-											<div style="width: 40%; margin-left: 20px; text-align: left;">
-												<label>나이: </label>
-												<input type="text" class="form-control pet-age mb-3" style="width: 60%; display: inline-block;" placeholder="나이">
-												<br>
-												<label>성별: </label>
-												<select class="pet-gender" name="petGender" required>
-													<option value="" selected>성별</option>
-													<option value="M">남</option>
-													<option value="F">여</option>
-												</select>
-											</div>
-											<input type="hidden" class="account-no" value="${accountNo }">
-										</div>
-										<div class="pet-btn col-2" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-											<button class="pet-btn-up btn btn-success mb-3" style="padding: 5px 10px;">등록</button>
-											<button class="pet-btn-del btn btn-outline-secondary" style="padding: 5px 10px;">취소</button>
-										</div>
-									</div>
+			<div class="container mb-3">
+				<div class="col-3">
+					<input type="file" class="pet-img-input" name="petImg">
+					<img width="150" height="150" src="/static/images/user/pet_profile.png" class="pet-img" alt="반려견 이미지">						
+				</div>
+				<div class="pet-detail col-7">
+					<div>
+						<label>이름: </label>
+						<input type="text" class="form-control pet-name mb-3" placeholder="이름">
+						<br>
+						<label>견종: </label>
+						<input type="text" class="form-control pet-breed" placeholder="견종">							
+					</div>
+					
+					<div>
+						<label>나이: </label>
+						<input type="text" class="form-control pet-age mb-3" placeholder="나이">
+						<br>
+						<label>성별: </label>
+						<select class="pet-gender" name="petGender" required>
+							<option value="" selected>성별</option>
+							<option value="M">남</option>
+							<option value="F">여</option>
+						</select>
+					</div>
+					<input type="hidden" class="account-no" value="${accountNo }">
+				</div>
+				<div class="pet-btn col-2">
+					<button class="pet-btn-up btn btn-success mb-3">등록</button>
+					<button class="pet-btn-del btn btn-outline-secondary">취소</button>
+				</div>
+			</div>
     `;
 }
 
