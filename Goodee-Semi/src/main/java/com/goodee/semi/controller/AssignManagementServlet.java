@@ -13,6 +13,7 @@ import java.util.List;
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.AccountDetail;
+import com.goodee.semi.dto.Assign;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Pet;
 import com.goodee.semi.dto.PetClass;
@@ -45,6 +46,11 @@ public class AssignManagementServlet extends HttpServlet {
 			}
 			
 			request.setAttribute("courseList", courseList);
+		}
+		
+		List<Assign> savedAssignList = service.selectSavedAssignList(account);
+		if (savedAssignList != null && savedAssignList.size() > 0) {
+			request.setAttribute("savedAssignList", savedAssignList);
 		}
 		
 		request.getRequestDispatcher("/WEB-INF/views/assign/management.jsp").forward(request, response);

@@ -15,6 +15,7 @@ public class Assign {
 	private int assignNo;
 	private int classNo;
 	private int schedNo;
+	private int accountNo;
 	private String assignTitle;
 	private String assignContent;
 	private String assignStart;
