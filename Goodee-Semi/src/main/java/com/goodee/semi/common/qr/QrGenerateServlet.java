@@ -38,7 +38,7 @@ public class QrGenerateServlet extends HttpServlet {
 		
 		// IP기반으로 URL 생성
 		String qrContent = "http://192.168.1.20:8080/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
-		// 작업 서버
+		// 상시 서버
 //		String qrContent = "http://192.168.1.19:8080/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
 		
 		// accountNo 기반 토큰 생성
