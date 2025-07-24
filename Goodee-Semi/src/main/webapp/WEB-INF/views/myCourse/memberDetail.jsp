@@ -93,11 +93,18 @@
 			url : "/myCourse/memberKickout?no=" + classNo,
 			type : "get",
 			success : function(data) {
-				if(data == 1) {
-					alert("제외 처리되었습니다!");
-					location.href="<%= request.getContextPath()%>/myCourse/memberDetail?courseNo=${course.courseNo}";
+				if (data == 1) {
+					Swal.fire({
+						icon: "success",
+						text: "제외 처리되었습니다.",
+						confirmButtonText: "확인"
+					}).then((result) => {
+						if (result.isConfirmed) {
+							location.href="<%= request.getContextPath()%>/myCourse/memberDetail?courseNo=${course.courseNo}";				    
+						}
+					});
 				} else {
-					alert("오류가 발생했습니다!")
+					Swal.fire({ icon: "error", text: "제외 중 오류가 발생했습니다."});
 				}
 			}
 		})
