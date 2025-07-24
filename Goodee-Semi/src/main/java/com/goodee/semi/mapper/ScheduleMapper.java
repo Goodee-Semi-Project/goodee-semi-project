@@ -18,7 +18,7 @@ public interface ScheduleMapper {
 	Schedule selectSchedule(int schedNo);
 	int update(Schedule sched);
 	int delete(int schedNo);
-	int selectSchedStep(Schedule sched);
+	Integer selectSchedStep(Schedule sched);
 	List<Schedule> selectScheduleListAttend(Schedule schedule);
 	int deleteScheduleBySchedNo(int schedNo);
 	int updateScheduleAttend(Schedule sched);
