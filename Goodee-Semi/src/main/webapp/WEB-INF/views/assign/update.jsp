@@ -85,30 +85,48 @@
 				
 				const assignNo = $("#assignNo").val();
 				
-				if (confirm("과제를 수정하시겠습니까?")) {
-					const formData = new FormData(document.getElementById("updateAssignForm"));
-					
-					$.ajax({
-						url : "/assign/update",
-						type : "POST",
-						data : formData,
-						enctype : "multipart/form-data",
-						contentType : false,
-						processData : false,
-						cache : false,
-						dataType : "JSON",
-						success : function(data) {
-							alert(data.resultMsg);
-							
-							if (data.resultCode == 200) {
-								location.href = "<%= request.getContextPath() %>/assign/detail?assignNo=" + assignNo;
+				Swal.fire({
+					text: "과제를 수정하시겠습니까?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "저장",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						const formData = new FormData(document.getElementById("updateAssignForm"));
+						
+						$.ajax({
+							url : "/assign/update",
+							type : "POST",
+							data : formData,
+							enctype : "multipart/form-data",
+							contentType : false,
+							processData : false,
+							cache : false,
+							dataType : "JSON",
+							success : function(data) {
+								if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href = "<%= request.getContextPath() %>/assign/detail?assignNo=" + assignNo;							    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+							},
+							error : function() {
+								Swal.fire({ icon: "error", text: "수정 중 오류가 발생했습니다."});
 							}
-						},
-						error : function() {
-							alert("오류 발생!!");
-						}
-					});
-				}
+						});
+					}
+				});
 			});
 		});
 	</script>

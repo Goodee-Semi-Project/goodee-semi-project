@@ -94,9 +94,9 @@
 		
 		if(!answerContent) {
 			$("#modal_update_answer").modal("hide");
-			alert("내용을 작성해주세요");
-			return;
-		}
+				Swal.fire({ icon: "error", text: "내용을 작성해주세요."});
+				return;
+			}
 		
 		$.ajax({
 			url : "/qnaBoard/answerUpdate",
@@ -108,11 +108,17 @@
 			},
 			dataType : "json",
 			success : function(data) {
-				console.log(data);
 				if(data.res_code == "200") {
-					alert(data.res_msg);
-					location.href="<%= request.getContextPath()%>/qnaBoard/detail?no=" + questNo;
-				} 
+					Swal.fire({
+						icon: "success",
+						text: data.res_msg,
+						confirmButtonText: "확인"
+					}).then((result) => {
+						if (result.isConfirmed) {
+							location.href="<%=request.getContextPath()%>/qnaBoard/detail?no=" + questNo;							    
+						}
+					});
+				}
 			}
 		});
 	});
