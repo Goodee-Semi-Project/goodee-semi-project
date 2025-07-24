@@ -56,7 +56,10 @@ if (cookies != null) {
 	</section>
 
   <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<<<<<<< HEAD
   
+=======
+>>>>>>> test
   <script>
     $("#accountLoginFrm").submit(function(e){
       e.preventDefault();
@@ -66,9 +69,9 @@ if (cookies != null) {
       const remember = $("#remember").is(":checked");
 		
       if(!accountId){
-        alert('아이디를 입력하세요.');
+    	  Swal.fire({ icon: "error", text: "아이디를 입력해주세요."});
       } else if(!accountPw){
-        alert('비밀번호를 입력하세요.');
+    	  Swal.fire({ icon: "error", text: "비밀번호를 입력해주세요."});
       } else {
         $.ajax({
           url : "/account/login",
@@ -87,23 +90,31 @@ if (cookies != null) {
                     document.cookie = "rememberId=; path=/; max-age=0";
                   }
             	
-            	  alert(data.res_msg);
-            	  location.href = "<%= request.getContextPath() %>/";
-            	} else {
-            	  alert(data.res_msg); // 실패 메시지 or 탈퇴 안내
-            	  location.href = "<%= request.getContextPath() %>/account/login";
-            	}
+            	Swal.fire({
+								icon: "success",
+								text: data.res_msg,
+								confirmButtonText: "확인"
+							}).then((result) => {
+								if (result.isConfirmed) {
+									location.href = "<%= request.getContextPath() %>/";							    
+								}
+							});
+            } else {
+            	Swal.fire({
+								icon: "error",
+								text: data.res_msg,
+								confirmButtonText: "확인"
+							}).then((result) => {
+								if (result.isConfirmed) {
+									location.href = "<%= request.getContextPath() %>/account/login";							    
+								}
+							});
+            }
           }
         });
       }
     });
   </script>
-  
-  <c:if test="${not empty message}">
-  	<script>
-  		alert("${message}");
-  	</script>
-  </c:if>
 </body>
 
 </html>
