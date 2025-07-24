@@ -21,13 +21,21 @@ public class QuestionService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Question question = questionDao.selectOneQuest(questNo);
 		Answer answer = answerDao.selectOneAnswer(questNo);
+		if(question != null) {
+			question.setQuestReg(question.getQuestReg().substring(0, 10));
+		}
+		if(answer != null) {
+			answer.setAnswerReg(answer.getAnswerReg().substring(0, 10));
+		}
 		map.put("question", question);
 		map.put("answer", answer);
 		return map;
 	}
 
 	public Question selectOneQuest(int questNo) {
-		return questionDao.selectOneQuest(questNo);
+		Question quest = questionDao.selectOneQuest(questNo);
+		quest.setQuestReg(quest.getQuestReg().substring(0, 10));
+		return quest;
 	}
 	
 	public int insertQuestion(int accountNo, String questTitle, String questContent) {
