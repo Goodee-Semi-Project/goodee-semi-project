@@ -49,8 +49,8 @@
 	              </div>
 	              <input class="form-control mb-2" type="email" id="accountEmail" name="accountEmail" placeholder="이메일" required>
 	              <div class="mb-5" style="display: flex; justify-content: space-between; align-items: center;">
-	              	<input class="form-control" style="width: 48%;" type="text" id="accountBirth" name="accountBirth" placeholder="생년월일" required>
-	              	<input class="form-control" style="width: 48%;" type="text" id="accountPhone" name="accountPhone" placeholder="전화번호" required>
+	              	<input class="form-control" style="width: 48%;" type="text" id="accountBirth" name="accountBirth" placeholder="생년월일 (6자리)" required>
+	              	<input class="form-control" style="width: 48%;" type="text" id="accountPhone" name="accountPhone" placeholder="전화번호 (- 포함)" required>
 	              </div>
 	              
 	              <div class="mb-2" style="display: flex; align-items: center;">
@@ -60,8 +60,8 @@
 	              <input class="form-control mb-2" type="text" id="roadAddress" name="roadAddress" placeholder="주소" readonly>
 	              <input class="form-control mb-2" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
 	              <div class="loggedin-forgot my-3" style="align-items: center;">
-	                <input type="checkbox" id="registering" style="vertical-align: -2px;">
-	                <label for="registering"><a class="text-primary" href="terms-condition.html">개인정보 수집 및 이용약관</a>에 동의합니다.</label>
+	                <input type="checkbox" id="registering" value="registering" style="vertical-align: -2px;">
+	                <label for="registering"><a class="text-primary" href="#">개인정보 수집 및 이용약관</a>에 동의합니다.</label>
 	              </div>
 	              <button type="submit" class="btn btn-primary font-weight-bold mt-3" style="width: 100%;">회원가입</button>
 	            </fieldset>
@@ -116,6 +116,7 @@
 			const postcode = $("#postcode").val();
 			const address = $("#roadAddress").val();
 			const addressDetail = $("#detailAddress").val();
+			const registering = $("#registering").is(":checked");
 			
 			const idReg = /^[a-z0-9]{4,16}$/
 			const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/
@@ -136,6 +137,7 @@
 			else if (!emailReg.test(accountEmail)) alert("이메일을 정확히 입력해주세요.");
 			else if (postcode == "") alert("주소를 입력해주세요.");
 			else if (addressDetail == "") alert("상세주소를 입력해주세요.");
+			else if (!registering) alert("개인정보 수집 및 이용약관에 동의해주세요.");
 			else {
 				const formData = new FormData(document.getElementById("registerForm"));
 				
