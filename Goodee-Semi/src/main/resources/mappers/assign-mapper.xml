@@ -7,6 +7,7 @@
 		<result property="assignNo" column="assign_no"/>
 		<result property="classNo" column="class_no"/>
 		<result property="schedNo" column="sched_no"/>
+		<result property="accountNo" column="account_no"/>
 		<result property="assignTitle" column="assign_title"/>
 		<result property="assignContent" column="assign_content"/>
 		<result property="assignStart" column="assign_start"/>
@@ -21,6 +22,7 @@
 				A.assign_no
 			, A.class_no
 			, A.sched_no
+			, A.account_no
 			, A.assign_title
 			, A.assign_content
 			, A.assign_start
@@ -30,7 +32,7 @@
 		FROM assignment A
 		INNER JOIN schedule S ON A.sched_no = S.sched_no
 		<where>
-			A.assign_no = #{assignNo}
+			A.assign_no = #{assignNo} AND A.assign_receipt = 'Y'
 		</where>
 	</select>
 	
@@ -39,6 +41,7 @@
 				A.assign_no
 			, A.class_no
 			, A.sched_no
+			, A.account_no
 			, A.assign_title
 			, A.assign_content
 			, A.assign_start
@@ -48,22 +51,86 @@
 		FROM assignment A
 		INNER JOIN schedule S ON A.sched_no = S.sched_no
 		<where>
-			A.class_no = #{classNo}
+			A.class_no = #{classNo} AND A.assign_receipt = 'Y'
+		</where>
+	</select>
+	
+	<select id="selectSavedAssignListByAccountNo" parameterType="_int" resultMap="assignResultMap">
+		SELECT * FROM assignment
+		<where>
+			account_no = #{accountNo} AND assign_receipt = 'N'
+		</where>
+	</select>
+	
+	<select id="selectSavedAssign" parameterType="_int" resultMap="assignResultMap">
+		SELECT * FROM assignment
+		<where>
+			assign_no = #{savedAssignNo} AND assign_receipt = 'N'
 		</where>
 	</select>
 	
 	<insert id="insertAssign" parameterType="com.goodee.semi.dto.Assign" useGeneratedKeys="true" keyProperty="assignNo">
-		INSERT INTO assignment (class_no, sched_no, assign_title, assign_content, assign_receipt, assign_start, assign_end)
-		VALUE (#{classNo}, #{schedNo}, #{assignTitle}, #{assignContent}, #{assignReceipt}, #{assignStart}, #{assignEnd})
+		INSERT INTO assignment (
+					account_no
+				, assign_receipt
+			<if test="assignReceipt == 'Y'">
+				,	class_no
+				, sched_no			
+			</if>
+			<if test='assignTitle != "" and assignTitle != null'>
+				, assign_title
+			</if>
+			<if test='assignContent != "" and assignContent != null'>
+				, assign_content
+			</if>
+			<if test='assignStart != "" and assignStart != null'>
+				, assign_start
+			</if>
+			<if test='assignEnd != "" and assignEnd != null'>
+				, assign_end
+			</if>
+		) VALUE (
+				#{accountNo}
+			, #{assignReceipt}
+		<if test="assignReceipt == 'Y'">
+			,	#{classNo}
+			, #{schedNo}
+		</if>
+		<if test='assignTitle != "" and assignTitle != null'>
+			, #{assignTitle}
+		</if>
+		<if test='assignContent != "" and assignContent != null'>
+			, #{assignContent}
+		</if>
+		<if test='assignStart != "" and assignStart != null'>
+			, #{assignStart}
+		</if>
+		<if test='assignEnd != "" and assignEnd != null'>
+			, #{assignEnd}
+		</if>
+		)
 	</insert>
 	
 	<update id="updateAssign" parameterType="com.goodee.semi.dto.Assign">
 		UPDATE assignment
 		SET
-				assign_title = #{assignTitle}
+				assign_receipt = #{assignReceipt}
+		<if test="assignReceipt == 'Y'">
+			,	class_no = #{classNo}
+			, sched_no = #{schedNo}
+		</if>
+		<if test='assignTitle != "" and assignTitle != null'>
+			, assign_title = #{assignTitle}
+		</if>
+		<if test='assignContent != "" and assignContent != null'>
 			, assign_content = #{assignContent}
+		</if>
+		<if test='assignStart != "" and assignStart != null'>
 			, assign_start = #{assignStart}
+		</if>
+		<if test='assignEnd != "" and assignEnd != null'>
 			, assign_end = #{assignEnd}
+		</if>
 		<where>
 			assign_no = #{assignNo}
 		</where>
