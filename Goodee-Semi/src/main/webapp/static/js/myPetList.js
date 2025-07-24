@@ -231,10 +231,16 @@ document.querySelectorAll('.pet-btn-up').forEach(btn => {
 // 삭제 모달을 보여주는 함수
 function showDeleteModal(petLi) {
     const petNo = petLi.querySelector('.pet-no').value;
+    const prePetLi = petLi.previousElementSibling;
+	let prePetNo = null;
+	if (prePetLi !== null) {
+		prePetNo = prePetLi.querySelector('.pet-no').value;	
+	}
     const confirmBtn = document.querySelector('#delete-confirm-btn');
 
-	// petNo를 data 속성에 저장해 둠
+	// 현재 항목의 petNo, 바로 전 항목의 petNo를 data 속성에 저장해 둠
 	confirmBtn.setAttribute('data-pet-no', petNo);
+	confirmBtn.setAttribute('data-pet-no-pre', prePetNo);
 	document.querySelector('#delete-input').value = ''; // 입력창 초기화
 	$('#delete-modal-box').modal("show");
 }
@@ -242,7 +248,11 @@ function showDeleteModal(petLi) {
 // 삭제 확인 버튼 클릭 시 이벤트 ('삭제' 텍스트 입력 확인 후 실제 삭제)
 function deletePetEvent() {
 	const petNo = document.querySelector('#delete-confirm-btn').getAttribute('data-pet-no');
+	const prePetNo = document.querySelector('#delete-confirm-btn').getAttribute('data-pet-no-pre');
+	console.log(prePetNo);
 	const val = document.querySelector('#delete-input').value;
+	const nowPage = new URL(window.location.href).searchParams.get('nowPage');
+	console.log(nowPage);
 	
 	if (val === '삭제') {
 		// 삭제 로직 실행
@@ -254,16 +264,28 @@ function deletePetEvent() {
 			},
 			dataType: 'json',
 			success: function (data) {
-				alert('삭제되었습니다.');
-				$('#delete-modal-box').modal("hide");
+				console.log('성공:', data);
 				
-			    console.log('응답:', data);
-				
-				// 페이지 새로고침으로 최신 데이터 가져오기
-				location.reload();
+				if(data.resCode === "200") {
+				    alert('삭제되었습니다.');
+					if (prePetNo === null) {
+						location.href = `/myPet/list?nowPage=${nowPage - 1}`; // 삭제 후 맨앞 페이지로 이동
+						location.reload(); // 페이지 새로고침 (버튼 되돌리기)
+					} else {
+						location.href = `/myPet/list?nowPage=${nowPage}#${prePetNo}`; // 삭제 후 맨앞 페이지로 이동
+						location.reload(); // 페이지 새로고침 (버튼 되돌리기)
+					}
+				} else {
+					alert('삭제 중 문제가 발생했습니다.');
+				}
 			},
 			error: function (err) {
 			    console.log('에러:', err);
+				
+				alert('삭제 중 문제가 발생했습니다.');
+			},
+			complete: function () {
+				$('#delete-modal-box').modal("hide");
 			}
 		});
 	} else {
@@ -352,12 +374,18 @@ function setupNewPetRegisterEvent(newLi) {
             dataType: 'json',
             success: function(data) {
                 console.log('성공:', data);
-                alert('등록되었습니다.');
-                location.href = '/myPet/list'; // 등록 후 목록 페이지로 이동
+				
+				if(data.resCode === "200") {
+	                alert('등록되었습니다.');
+					location.href = `/myPet/list?nowPage=${data.targetPage}#${data.pet.pet_no}`; // 등록 후 해당 항목 페이지로 이동
+					location.reload(); // 페이지 새로고침 (버튼 되돌리기)
+				} else {
+					alert('등록 중 문제가 발생했습니다.');
+				}
             },
             error: function(err) {
                 console.log('에러:', err);
-                alert('등록 실패');
+                alert('등록 중 문제가 발생했습니다.');
             }
         });
     });
