@@ -1,0 +1,135 @@
+/* FullCalendar 스타일 커스터마이징 */
+
+/* 캘린더 너비 조절 */
+.widget.dashboard-container {
+	width: 120%;
+}
+
+/* 캘린더 태그 요소 양식 */
+.widget.dashboard-container a:hover {
+	text-decoration: none !important;
+}
+
+/* 캘린더 헤더 날짜 스타일 */
+     .fc-toolbar-title {
+    font-size: 1.3rem !important;
+    font-weight: 700;
+}
+
+/* 캘린더 헤더 버튼 스타일 */
+.fc-button {
+	border: none !important;
+}
+.fc-button:hover {
+	background: #3367d6 !important;
+}
+.fc-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+.fc-button.fc-button-primary,
+.fc-button.fc-button-primary.fc-today-button {
+	background: #4285f4;
+}
+.fc-button.fc-button-primary.fc-button-active {
+	background: #1565c0 !important;
+}
+      
+/* 날짜 칸 스타일 */
+.fc-daygrid-day-frame {
+	transition: background-color 0.3s ease;
+}
+.fc-daygrid-day-frame:hover {
+	background-color: rgb(245,252,253);
+}
+
+/* 날짜 칸(오늘) 스타일 */
+.fc-day-today {
+    background-color: rgba(255, 220, 40, .1) !important;
+}
+.fc-dayGridMonth-view .fc-day-today {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+/* 선택된 날짜 칸 스타일 */
+.fc-highlight {
+	z-index: -1 !important;
+}
+
+/* 날짜(일) 스타일 */
+.fc-daygrid-day-number {
+	margin-right: 5px;
+}
+
+/* 오늘 날짜(일) 스타일 */
+.fc-dayGridMonth-view .fc-day-today .fc-daygrid-day-number {
+    color: white;
+    position: relative;
+    z-index: 5;
+    isolation: isolate;
+    font-weight: 700;
+}
+.fc-dayGridMonth-view .fc-day-today .fc-daygrid-day-number:before {
+    position: absolute;
+    content: "";
+    width: 28px;
+    height: 28px;
+    background: #4285f4;
+	z-index: -1;
+	transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+}
+      
+      /* 일정 맨 앞의 점(dot) 제거 */
+.fc-daygrid-event-dot {
+    display: none;
+}
+
+/* 일정 배경색 및 기본 스타일 */
+.fc-event {
+    background-color: rgba(16, 185, 129, 0.1); /* 기본 파란색 */
+    border-radius: 4px;
+    overflow: hidden;
+    border: none;
+}
+.fc-event:hover {
+    background-color: rgba(5, 150, 105, 0.3);
+}
+
+/* 일정 패딩 */
+.fc-daygrid-event,
+.fc-event-main {
+	padding: 5px 5px 5px 0;
+}
+
+/* 일정 앞에 바 표시 */
+.fc-daygrid-event:before,
+.fc-timegrid-event:before {
+	content: "";
+	height: 100%;
+	width: 3px;
+	background-color: rgb(16, 185, 129);
+	position: absolute;
+	border-radius: 4px 0 0 4px;
+}
+.fc-daygrid-event:before:hover,
+.fc-timegrid-event:before:hover {
+	background-color: rgb(5, 150, 105);
+}
+
+/* 일정 텍스트 스타일 */
+.event-title {
+ font-size: 12px;
+ padding-left: 7px;
+}
+.event-title-2 {
+    color: #047857;
+    font-weight: 700;
+} 
+.event-title-1,
+.event-title-3 {
+    color: #047857;
+    font-weight: 500;
+}
