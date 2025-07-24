@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.AccountDao;
+import com.goodee.semi.dao.ClassDao;
 import com.goodee.semi.dao.CourseDao;
 import com.goodee.semi.dao.PetDao;
 import com.goodee.semi.dto.AccountDetail;
@@ -25,6 +26,7 @@ public class CourseService {
 	private CourseDao courseDao = new CourseDao();
 	private PetDao petDao = new PetDao();
 	private AccountDao accountDao = new AccountDao();
+	private ClassDao classDao = new ClassDao();
 	
 	public Course selectCourseOne(String courseNo) {
 		Course course = courseDao.selectCourseOne(courseNo);
@@ -275,6 +277,16 @@ public class CourseService {
 			map.put(c.getCourseNo(), attach.getAttachNo());
 		}
 		return map;
+	}
+
+	public PetClass selectClassByCourseNoAndPetNo(Enroll enroll) {
+		PetClass keyObj = new PetClass();
+		keyObj.setCourseNo(enroll.getCourseNo());
+		keyObj.setPetNo(enroll.getPetNo());
+		
+		PetClass result = classDao.selectClassByCourseNoAndPetNo(keyObj);
+		
+		return result;
 	}
 
 }

@@ -18,7 +18,11 @@ import jakarta.servlet.http.HttpSession;
  * Servlet Filter implementation class MyInfoLoginFilter
  */
 // TODO: 비회원 접근 제한 경로 추가
+<<<<<<< HEAD
 @WebFilter({"/myInfo/*", "/review/write", "/preCourse/*", "/myCourse/*", "/attend/*", "/qnaBoard/questionAdd", "/myPet", "/myPet/*", "/schedule", "/schedule/*"})
+=======
+@WebFilter({"/myInfo/*", "/review/*", "/preCourse/*", "/myCourse/*", "/attend/*", "/qnaBoard/questionAdd"})
+>>>>>>> ac5ab583606bdcc555eae48d8f7a7c89fb52f5b0
 public class LoginAccountFilter extends HttpFilter implements Filter {
        
     /**

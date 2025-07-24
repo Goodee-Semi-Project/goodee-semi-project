@@ -18,6 +18,8 @@ public class Review extends Paging {
 	private String regDate;
 	private String modDate;
 	
+	private int accountNo;
+	private int authNo;
 	private String accountId;
 	private String courseTitle;
 	private String keyword;
