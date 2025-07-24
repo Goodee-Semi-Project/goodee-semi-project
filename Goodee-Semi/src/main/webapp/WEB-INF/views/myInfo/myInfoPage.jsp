@@ -100,7 +100,7 @@
 			    
 			    <div class="mb-2" style="width: 50%; display: flex; align-items: center;">
 			      <input class="form-control" style="width: 40%;" type="text" id="postNum" name="postNum" value="${ accountDetail.postNum }" placeholder="우편번호" readonly>
-			      <button type="button" class="btn btn-outline-secondary text-primary px-2 py-1 mx-2" style="font-weight: 500;" id="findPost">주소 변경</button>
+			      <button type="button" class="btn btn-outline-primary px-2 py-1 mx-2" style="font-weight: 500;" id="findPost">주소 변경</button>
 			    </div>
 			    <input class="form-control mb-2" style="width: 50%;" type="text" id="address" name="address" value="${ accountDetail.address }" placeholder="주소" readonly>
 			    <input class="form-control mb-2" style="width: 50%;" type="text" id="addressDetail" name="addressDetail" value="${ accountDetail.addressDetail }" placeholder="상세주소">
