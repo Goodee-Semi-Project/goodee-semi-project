@@ -3,6 +3,7 @@ package com.goodee.semi.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Review;
 import com.goodee.semi.service.ReviewService;
 
@@ -11,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class ReviewListServlet
@@ -32,6 +34,19 @@ public class ReviewListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		Account account = null;
+		if (session != null && session.getAttribute("loginAccount") != null ) {
+			account = (Account) session.getAttribute("loginAccount");
+		}
+		
+		int accountNo = -1;
+		int authNo = -1;
+		if (account != null) {
+			accountNo = account.getAccountNo();
+			authNo = account.getAuthor();
+		}
+		
 		Review param = new Review();
 		// 현재 페이지
 		int nowPage = 1;
@@ -47,6 +62,8 @@ public class ReviewListServlet extends HttpServlet {
 		param.setCategory(category);
 		param.setKeyword(keyword);
 		param.setOrder(order);
+		param.setAccountNo(accountNo);
+		param.setAuthNo(authNo);
 		
 		// 게시글 개수
 		int totalData = service.selectReviewCount(param);

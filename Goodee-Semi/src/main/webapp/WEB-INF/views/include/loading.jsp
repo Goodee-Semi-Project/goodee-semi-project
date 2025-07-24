@@ -14,4 +14,5 @@
 </html>
 
 <%-- 부트스트랩 d-block/d-none으로 켜고 끄시면 됩니다. --%>
+<%-- @include file="/WEB-INF/views/include/loading.jsp" --%>
 <%-- $('#loading').addClass('d-block'); --%>

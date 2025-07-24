@@ -25,7 +25,25 @@
 	
 	<select id="selectReviewCount" parameterType="com.goodee.semi.dto.Review" resultType="_int">
 		SELECT COUNT(*)
-		FROM review
+		FROM review AS r
+		JOIN (
+			SELECT class_no ,course_no ,pet_no
+			FROM class
+		) AS c ON r.class_no = c.class_no
+		JOIN (
+			SELECT pet_no ,account_no
+			FROM pet
+			<if test="authNo eq 2">
+				WHERE account_no = #{ accountNo }
+			</if>
+		)AS p ON c.pet_no = p.pet_no
+		JOIN (
+			SELECT course_no ,title ,account_no
+			FROM course
+			<if test="authNo eq 1">
+				WHERE account_no = #{ accountNo }
+			</if>
+		) AS co ON c.course_no = co.course_no
 		<if test="keyword != null and keyword != ''">
 			<where>
 				review_title LIKE CONCAT('%' ,#{ keyword } ,'%')
@@ -43,14 +61,20 @@
 		JOIN (
 			SELECT pet_no ,account_no
 			FROM pet
+			<if test="authNo eq 2">
+				WHERE account_no = #{ accountNo }
+			</if>
 		)AS p ON c.pet_no = p.pet_no
 		JOIN (
 			SELECT account_no ,account_id
 			FROM account
 		) AS a ON p.account_no = a.account_no
 		JOIN (
-			SELECT course_no ,title
+			SELECT course_no ,title ,account_no
 			FROM course
+			<if test="authNo eq 1">
+				WHERE account_no = #{ accountNo }
+			</if>
 		) AS co ON c.course_no = co.course_no
 		<if test="keyword != null and keyword != ''">
 			<where>
