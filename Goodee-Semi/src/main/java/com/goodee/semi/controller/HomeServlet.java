@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.goodee.semi.dto.Course;
@@ -24,6 +25,7 @@ public class HomeServlet extends HttpServlet {
 		List<Course> courseList = courseService.selectCourse(new Course());
 		
 		request.setAttribute("courseList", courseList);
+		request.setAttribute("afterSearch", "Y");
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 
@@ -47,15 +49,20 @@ public class HomeServlet extends HttpServlet {
 			courseList = courseService.selectCourseByTag(keyTag);
 		}
 		
-		if ("Y".equals(onlyAvailable)) {
+		if ("Y".equals(onlyAvailable) && courseList != null && courseList.size() > 0) {
+			List<Course> newList = new ArrayList<Course>();
+			
 			for (Course cs : courseList) {
-				if (cs.getCapacity() <= cs.getPetInCourseCount()) {
-					courseList.remove(cs);
+				if (cs.getCapacity() > cs.getPetInCourseCount()) {
+					newList.add(cs);
 				}
 			}
+			
+			courseList = newList;
 		}
-		
+
 		request.setAttribute("courseList", courseList);
+		request.setAttribute("afterSearch", "Y");
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 
