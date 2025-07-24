@@ -47,25 +47,33 @@
 	
 					<!-- Pagination -->
 					<c:if test="${ not empty noticeList }">
-						<div style="text-align: center;">
-							<c:if test="${paging.prev }">
-								<a href="<c:url value='/notice/list?nowPage=${paging.pageBarStart-1 }&keyword=${param.keyword }'/>" class="btn btn-outline-secondary" style="padding: 2px 5px;">
-									&laquo;
-								</a>
-							</c:if>
-							<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
-								<a href="<c:url value='/notice/list?nowPage=${i }&keyword=${param.keyword }'/>" class="btn btn-outline-secondary" style="padding: 2px 5px;">
-									${i }
-								</a>
-							</c:forEach>
-							<c:if test="${paging.next }">
-								<a href="<c:url value='/notice/list?nowPage=${paging.pageBarEnd+1 }&keyword=${param.keyword }'/>" class="btn btn-outline-secondary" style="padding: 2px 5px;">
-									&raquo;
-								</a>
-							</c:if>			
-						</div>
-					</c:if>
+					  <div class="pagination justify-content-center">
+					    <ul class="pagination">
 					
+					      <c:if test="${paging.prev}">
+					        <li class="page-item">
+					          <a class="page-link"
+					             href="<c:url value='/notice/list?nowPage=${paging.pageBarStart - 1}&keyword=${param.keyword}'/>">&laquo;</a>
+					        </li>
+					      </c:if>
+					
+					      <c:forEach var="i" begin="${paging.pageBarStart}" end="${paging.pageBarEnd}">
+					        <li class="page-item ${i == paging.nowPage ? 'active' : ''}">
+					          <a class="page-link"
+					             href="<c:url value='/notice/list?nowPage=${i}&keyword=${param.keyword}'/>">${i}</a>
+					        </li>
+					      </c:forEach>
+					
+					      <c:if test="${paging.next}">
+					        <li class="page-item">
+					          <a class="page-link"
+					             href="<c:url value='/notice/list?nowPage=${paging.pageBarEnd + 1}&keyword=${param.keyword}'/>">&raquo;</a>
+					        </li>
+					      </c:if>
+					
+					    </ul>
+					  </div>
+					</c:if>					
 				</div>
 				<div class="col-lg-4">
 					<div class="sidebar">
