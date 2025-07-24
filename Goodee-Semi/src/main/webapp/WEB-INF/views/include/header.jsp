@@ -17,11 +17,11 @@
 					<div class="collapse navbar-collapse" id="navbarSupportedContent" style="background-color: white;">
 						<ul class="navbar-nav ml-auto main-nav ">
 							<li class="nav-item dropdown dropdown-slide @@dashboard">
-								<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#!">○○훈련소<span><i class="fa fa-angle-down"></i></span></a>
+								<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#!">멍스터클래스<span><i class="fa fa-angle-down"></i></span></a>
 								
 								<ul class="dropdown-menu">
 									<li><a class="dropdown-item" href="<c:url value='/notice/list' />">공지사항</a></li>
-									<li><a class="dropdown-item" href="<c:url value='/intro' />">회사 소개</a></li>
+									<li><a class="dropdown-item" href="<c:url value='/intro' />">훈련소 소개</a></li>
 									<li><a class="dropdown-item" href="<c:url value='/location' />">찾아오시는 길</a></li>
 								</ul>
 							</li>
