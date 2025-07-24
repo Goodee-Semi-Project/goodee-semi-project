@@ -268,12 +268,12 @@ function deletePetEvent() {
 				
 				if(data.resCode === "200") {
 				    alert('삭제되었습니다.');
-					if (prePetNo === null) {
-						location.href = `/myPet/list?nowPage=${nowPage - 1}`; // 삭제 후 맨앞 페이지로 이동
-						location.reload(); // 페이지 새로고침 (버튼 되돌리기)
+					if (prePetNo === null || prePetNo === 'null') {
+						// 삭제한 요소가 현재 페이지의 유일한 항목이었던 경우
+						location.href = `/myPet/list?nowPage=${Math.max(nowPage - 1, 1)}`; // 삭제 후 삭제한 요소 바로 앞의 페이지로 이동하되, 삭제한 요소가 있던 페이지가 1페이지라면 1페이지로 이동 
 					} else {
-						location.href = `/myPet/list?nowPage=${nowPage}#${prePetNo}`; // 삭제 후 맨앞 페이지로 이동
-						location.reload(); // 페이지 새로고침 (버튼 되돌리기)
+						location.reload(true);
+						location.href = `/myPet/list?nowPage=${nowPage}#${prePetNo}`; // 삭제 후 삭제한 요소 바로 위에 있던 항목으로 이동
 					}
 				} else {
 					alert('삭제 중 문제가 발생했습니다.');
@@ -377,8 +377,8 @@ function setupNewPetRegisterEvent(newLi) {
 				
 				if(data.resCode === "200") {
 	                alert('등록되었습니다.');
-					location.href = `/myPet/list?nowPage=${data.targetPage}#${data.pet.pet_no}`; // 등록 후 해당 항목 페이지로 이동
-					location.reload(); // 페이지 새로고침 (버튼 되돌리기)
+					
+					location.assign(`/myPet/list?nowPage=${data.targetPage}#${data.pet.pet_no}`); // 등록 후 해당 항목 페이지로 이동
 				} else {
 					alert('등록 중 문제가 발생했습니다.');
 				}
@@ -414,15 +414,11 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
     const petList = document.querySelector('#pet-list');
     const newLi = document.createElement('li');
     const accountNo = document.querySelector('#add-pet-btn').getAttribute('data-account-no');
-    
-    console.log(accountNo);
 
-    // 새 반려견 등록 폼 HTML 생성 및 추가
-    newLi.innerHTML = createNewPetItemHTML(accountNo);
+	// 새 반려견 등록 폼 HTML 생성 및 추가
+	newLi.innerHTML = createNewPetItemHTML(accountNo);
     petList.appendChild(newLi);
     newLi.scrollIntoView({ behavior: 'smooth', block: 'center' }); // 추가된 항목으로 스크롤
-    
-    const form = newLi.querySelector('form');
     
 	// *** 중요: NiceSelect 초기화 ***
 	const newSelect = newLi.querySelector('.pet-gender');
