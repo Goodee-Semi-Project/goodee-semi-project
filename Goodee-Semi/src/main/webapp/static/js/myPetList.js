@@ -4,40 +4,36 @@
 // 수정사항 저장 시 유효성 검사
 // 유효성 검사 통과시: '수정되었습니다' 라는 메시지 창이 뜨고, '확인'을 누르면 메시지 창 사라짐
 
-// TODO 반려견 이미지 등록하지 않을 시 기본 이미지 띄우기
-
 //============================= 파일 업로드 검증 =============================
-const petImgInputs = document.querySelectorAll('input[name="petImg"]');
-petImgInputs.forEach(input => validatePetImgData(input));
-
-function validatePetImgData(input) {
-    // 1. input 안의 내용이 바뀔때마다 검증해야 함 => input[name="petImg"]에 change 이벤트리스너 추가
-    input.addEventListener('change', () => {
-        // 2. target 안의 file[0] 받아오기
-        const file = input.files[0];
-
-        // 3. 허용되지 않는 파일이 들어가있다면 target 안에 있는 value를 초기화
-        const allowedTypes = ['image/png', 'image/jpeg'];
-
-        console.log("[validatePetImgData] 업로드 된 파일 타입: ", file.type)
-        console.log("[validatePetImgData] 업로드 된 파일 크기: ", file.type)
-        
-        if(!allowedTypes.includes(file.type)) {
-            alert('PNG, JPG, JPEG 파일만 업로드 가능합니다.');
-            input.value = '';
-
-            return;
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('pet-img-input')) {
+        const file = e.target.files[0];
+        if (file) {
+            if (!validateFile(file, e.target)) {
+                return;
+            }
         }
-        
-        if(file.size > 5 * 1024 * 1024) { // 파일 크기를 5MB로 제한
-            alert('파일 크기는 5MB 이하여야 합니다.');
-            input.value = '';
+    }
+});
 
-            return;
-        }
-
-        console.log('파일 업로드 검증 통과');
-    });
+// 검증 함수 분리
+function validateFile(file, input) {
+    console.log('검증시작');
+	const allowedTypes = ['image/png', 'image/jpeg'];
+    
+    if (!allowedTypes.includes(file.type)) {
+        alert('PNG, JPG, JPEG 파일만 업로드 가능합니다.');
+        input.value = '';
+        return false;
+    }
+    
+    if (file.size > 5 * 1024 * 1024) {
+        alert('파일 크기는 5MB 이하여야 합니다.');
+        input.value = '';
+        return false;
+    }
+    
+    return true;
 }
 
 //============================= 공통 함수 =============================
@@ -329,6 +325,8 @@ function setupNewPetRegisterEvent(newLi) {
         const accountNo = newLi.querySelector('.account-no').value;
         const petImgInput = newLi.querySelector('.pet-img-input');
         
+		console.log(petName, petAge, petGenderSelect, petGender, petBreed, accountNo, petImgInput.files[0]);
+		
         // 유효성 검사
         if (!validatePetData(petName, petAge, petGender, petBreed)) {
             return;
