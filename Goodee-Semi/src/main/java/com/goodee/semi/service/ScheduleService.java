@@ -32,7 +32,7 @@ public class ScheduleService {
 		return dao.selectClassNo(sched);
 	}
 	
-	public int selectSchedStep(Schedule sched) {
+	public Integer selectSchedStep(Schedule sched) {
 		return dao.selectSchedStep(sched);
 	}
 
@@ -81,5 +81,5 @@ public class ScheduleService {
 	public Schedule selectSchedule(int schedNo) {
 		return dao.selectSchedule(schedNo);
 	}
-
+	
 }
