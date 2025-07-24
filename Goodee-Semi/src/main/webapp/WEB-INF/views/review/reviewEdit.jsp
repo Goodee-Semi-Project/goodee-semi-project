@@ -53,7 +53,7 @@
 		<div class="d-flex justify-content-end">
 			<!-- SJ: 우선은 첨부파일은 1개 -->
 			<div class="position-relative mx-2" style="width: 100px;">
-				<img alt="미리보기" class="position-absolute w-100" id="preview"/>
+				<img alt="미리보기" class="position-absolute w-100 d-none" id="preview"/>
 			</div>
 			<label class="btn btn-info px-2 py-1 d-inline" for="attach">이미지 변경</label>
 			<input type="file" class="d-none" id="attach" name="attach" onchange="readURL(this);">
@@ -70,12 +70,16 @@
 <script type="text/javascript">
 	function readURL(input) {
 		if (input.files && input.files[0]) {
+			$('#preview').removeClass('d-none');
+			$('#preview').addClass('d-block');
 			let reader = new FileReader();
 			reader.onload = function(e) {
 				document.querySelector('#preview').src = e.target.result;
 			};
 			reader.readAsDataURL(input.files[0]);
 		} else {
+			$('#preview').removeClass('d-block');
+			$('#preview').addClass('d-none');
 			document.querySelector('#preview').src = "";
 		}
 	}
