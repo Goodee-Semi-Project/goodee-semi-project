@@ -60,26 +60,37 @@
 			<a href="/review/write" class="btn btn-primary px-2 py-1" >후기 작성</a>
 		</div>
 		<div>
-			<table class="table table-hover text-center" style="table-layout:fixed;">
-				<thead class="w-100">
-					<tr>
-						<th class="col-2">번호</th>
-						<th class="col-8">제목</th>
-						<th class="col-3">작성자</th>
-						<th class="col-4">작성일</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="r" items="${ reviewList }">
-						<tr>
-							<td>${ r.reviewNo }</td>
-							<td class="text-truncate" style="cursor: pointer;" onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
-							<td>${ r.accountId }</td>
-							<td>${ r.regDate.substring(0, 10) }</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
+			<c:choose>
+				<c:when test="${ reviewList.size() eq 0 }">
+					<div class="col-12">
+						<div style="height: 450px; display: flex; justify-content: center; align-items: center;">
+							<h3 style="text-align: center">검색 결과가 없습니다.</h3>						
+						</div>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<table class="table table-hover text-center" style="table-layout:fixed;">
+						<thead class="w-100">
+							<tr>
+								<th class="col-2">번호</th>
+								<th class="col-8">제목</th>
+								<th class="col-3">작성자</th>
+								<th class="col-4">작성일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="r" items="${ reviewList }">
+								<tr>
+									<td>${ r.reviewNo }</td>
+									<td class="text-truncate" style="cursor: pointer;" onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
+									<td>${ r.accountId }</td>
+									<td>${ r.regDate.substring(0, 10) }</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<c:if test="${ not empty reviewList }">
 			<div class="pagination justify-content-center">
