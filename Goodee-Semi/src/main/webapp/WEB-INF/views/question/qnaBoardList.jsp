@@ -71,11 +71,13 @@
 		</div>
 	</section>
 	
-	<div style="display : flex; justify-content : end;">
-		<a href="<c:url value='/qnaBoard/questionAdd'/>" class="btn_question_add">
-		   질문 등록
-		</a>
-	</div>
+	<c:if test="${loginAccount.author eq 2}">
+		<div style="display : flex; justify-content : end;">
+			<a href="<c:url value='/qnaBoard/questionAdd'/>" class="btn_question_add">
+			   질문 등록
+			</a>
+		</div>
+	</c:if>
 	
 	<section>
 		<table class="text-center" style="table-layout: fixed; width: 100%;">
