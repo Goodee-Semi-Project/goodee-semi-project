@@ -29,7 +29,6 @@
 		<result property="postNum" column="post_num" />
 		<result property="address" column="address" />
 		<result property="addressDetail" column="address_detail" />
-			
 	</resultMap>
 
 	<resultMap type="com.goodee.semi.dto.Notice" id="noticeResultMap">
