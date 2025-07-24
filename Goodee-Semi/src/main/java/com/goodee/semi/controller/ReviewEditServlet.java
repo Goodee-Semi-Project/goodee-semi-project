@@ -61,6 +61,11 @@ public class ReviewEditServlet extends HttpServlet {
 			account = (Account) session.getAttribute("loginAccount");
 		}
 		
+		if (account != null && account.getAuthor() == 1) {
+			response.sendRedirect("/review/list");
+			return;
+		}
+		
 		String accountId = null;
 		if (account != null && account.getAccountId() != null) {
 			accountId = account.getAccountId();
