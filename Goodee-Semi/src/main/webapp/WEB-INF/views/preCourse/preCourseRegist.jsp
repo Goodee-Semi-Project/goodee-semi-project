@@ -146,10 +146,14 @@
 									}
 								});
 							} else {
+								$('#loading').removeClass('d-block');
+								$('#loading').addClass('d-none');
 								Swal.fire({ icon: "error", text: data.res_msg});
 							}
 						},
 						error : function(data) {
+							$('#loading').removeClass('d-block');
+							$('#loading').addClass('d-none');
 							Swal.fire({ icon: "error", text: "저장 중 오류가 발생했습니다."});
 						}
 					});
