@@ -36,7 +36,9 @@
 										<option value="reviewTitle">선택</option>
 										<option value="reviewTitle" <c:if test="${ paging.category eq 'reviewTitle' }">selected</c:if> >제목</option>
 										<option value="courseTitle" <c:if test="${ paging.category eq 'courseTitle' }">selected</c:if> >코스명</option>
-										<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
+										<c:if test="${ loginAccount.author eq 1 }">
+											<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
+										</c:if>
 									</select>
 								</div>
 								<div class="form-group col-xl-6 col-lg-5 col-md-6">
@@ -90,7 +92,7 @@
 						</li>
 					</c:if>
 					<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
-						<li class="page-item ">
+						<li class="page-item <c:if test='${ i eq paging.nowPage }'>active</c:if>">
 							<a class="page-link" href="<c:url value='/review/list?nowPage=${ i }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">${ i }</a>
 						</li>
 					</c:forEach>
@@ -102,7 +104,6 @@
 						</li>
 					</c:if>
 				</ul>
-				
 			</div>
 		</c:if>
 	</section>

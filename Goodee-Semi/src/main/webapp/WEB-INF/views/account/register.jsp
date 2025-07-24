@@ -24,9 +24,12 @@
 	          <h3 class="bg-gray p-4">REGISTER</h3>
 	          <form id="registerForm">
 	            <fieldset class="p-4">
-	              <input class="form-control mb-2" type="text" id="accountId" name="accountId" placeholder="아이디" required>
-	              <input class="form-control mb-2" type="password" id="accountPw" name="accountPw" placeholder="비밀번호" required>
-	              <input class="form-control mb-5" type="password" id="accountPwChk" placeholder="비밀번호 확인" required>
+	              <input class="form-control mb-2" type="text" id="accountId" name="accountId" placeholder="아이디" onchange="idCheck()" required>
+	              <p class="ml-2 mb-2" id="idCheck" style="height: 25px;"></p>
+	              <input class="form-control mb-2" type="password" id="accountPw" name="accountPw" placeholder="비밀번호" onchange="pwCheck()" required>
+	              <p class="ml-2 mb-2" id="pwCheck" style="height: 25px;"></p>
+	              <input class="form-control mb-2" type="password" id="accountPwChk" placeholder="비밀번호 확인" onchange="pwCheckResult()" required>
+	              <p class="ml-2 mb-5" id="pwCheckResult" style="height: 25px;"></p>
 	              
 	              <div style="display: flex; align-items: center; width: 100%;">
 	             		<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da;" id="preview" />
@@ -49,8 +52,8 @@
 	              </div>
 	              <input class="form-control mb-2" type="email" id="accountEmail" name="accountEmail" placeholder="이메일" required>
 	              <div class="mb-5" style="display: flex; justify-content: space-between; align-items: center;">
-	              	<input class="form-control" style="width: 48%;" type="text" id="accountBirth" name="accountBirth" placeholder="생년월일" required>
-	              	<input class="form-control" style="width: 48%;" type="text" id="accountPhone" name="accountPhone" placeholder="전화번호" required>
+	              	<input class="form-control" style="width: 48%;" type="text" id="accountBirth" name="accountBirth" placeholder="생년월일 (6자리)" required>
+	              	<input class="form-control" style="width: 48%;" type="text" id="accountPhone" name="accountPhone" placeholder="전화번호 (- 포함)" required>
 	              </div>
 	              
 	              <div class="mb-2" style="display: flex; align-items: center;">
@@ -60,8 +63,8 @@
 	              <input class="form-control mb-2" type="text" id="roadAddress" name="roadAddress" placeholder="주소" readonly>
 	              <input class="form-control mb-2" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
 	              <div class="loggedin-forgot my-3" style="align-items: center;">
-	                <input type="checkbox" id="registering" style="vertical-align: -2px;">
-	                <label for="registering"><a class="text-primary" href="terms-condition.html">개인정보 수집 및 이용약관</a>에 동의합니다.</label>
+	                <input type="checkbox" id="registering" value="registering" style="vertical-align: -2px;">
+	                <label for="registering"><a class="text-primary" href="#">개인정보 수집 및 이용약관</a>에 동의합니다.</label>
 	              </div>
 	              <button type="submit" class="btn btn-primary font-weight-bold mt-3" style="width: 100%;">회원가입</button>
 	            </fieldset>
@@ -98,6 +101,72 @@
 		    document.getElementById('preview').src = "";
 		  }
 		}
+		
+		function idCheck() {
+			const accountId = $("#accountId").val();
+			const idReg = /^[a-z0-9]{4,16}$/
+			
+			if (!idReg.test(accountId)) {
+				$("#accountId").css("border-color", "red");
+				$("#idCheck").css("color", "red");
+				$("#idCheck").text("사용할 수 없는 아이디입니다.");
+				return;
+			}
+			
+			$.ajax({
+				url : "/account/idCheck",
+				type : "POST",
+				data : {
+					accountId : accountId
+				},
+				dataType : "JSON",
+				success : function(data) {
+					if (data.resultCode == 500) {
+						$("#accountId").css("border-color", "red");
+						$("#idCheck").css("color", "red");
+						$("#idCheck").text(data.resultMsg);
+					} else {
+						$("#accountId").css("border-color", "rgb(16, 185, 129)");
+						$("#idCheck").css("color", "rgb(16, 185, 129)");
+						$("#idCheck").text(data.resultMsg);
+					}
+				},
+				error : function() {
+					alert("아이디를 확인하는 중 오류가 발생했습니다.");
+				}
+			});
+			
+		}
+		
+		function pwCheck() {
+			const accountPw = $("#accountPw").val();
+			const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/
+			
+			if (!pwReg.test(accountPw)) {
+				$("#accountPw").css("border-color", "red");
+				$("#pwCheck").css("color", "red");
+				$("#pwCheck").text("사용할 수 없는 비밀번호입니다.");
+			} else {
+				$("#accountPw").css("border-color", "rgb(16, 185, 129)");
+				$("#pwCheck").css("color", "rgb(16, 185, 129)");
+				$("#pwCheck").text("사용 가능한 비밀번호입니다.");
+			}
+		}
+		
+		function pwCheckResult() {
+			const accountPw = $("#accountPw").val();
+			const accountPwChk = $("#accountPwChk").val();
+			
+			if (accountPw !== accountPwChk) {
+				$("#accountPwChk").css("border-color", "red");
+				$("#pwCheckResult").css("color", "red");
+				$("#pwCheckResult").text("비밀번호가 일치하지 않습니다.");
+			} else {
+				$("#accountPwChk").css("border-color", "rgb(16, 185, 129)");
+				$("#pwCheckResult").css("color", "rgb(16, 185, 129)");
+				$("#pwCheckResult").text("비밀번호가 일치합니다.");
+			}
+		}
 	</script>
 	
 	<script>
@@ -116,6 +185,7 @@
 			const postcode = $("#postcode").val();
 			const address = $("#roadAddress").val();
 			const addressDetail = $("#detailAddress").val();
+			const registering = $("#registering").is(":checked");
 			
 			const idReg = /^[a-z0-9]{4,16}$/
 			const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/
@@ -136,6 +206,7 @@
 			else if (!emailReg.test(accountEmail)) alert("이메일을 정확히 입력해주세요.");
 			else if (postcode == "") alert("주소를 입력해주세요.");
 			else if (addressDetail == "") alert("상세주소를 입력해주세요.");
+			else if (!registering) alert("개인정보 수집 및 이용약관에 동의해주세요.");
 			else {
 				const formData = new FormData(document.getElementById("registerForm"));
 				
