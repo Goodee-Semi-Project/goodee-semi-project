@@ -17,7 +17,7 @@
 										</div>
 										
 										<div class="form-group col-2">
-											<input type="text" class="form-control my-2" id="searchByTag" name="searchByTag" placeholder="태그">
+											<input type="text" class="form-control my-2" id="searchByTag" name="searchByTag" placeholder="#태그">
 										</div>
 										
 										<div class="form-group col-2">
