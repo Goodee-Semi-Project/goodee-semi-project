@@ -56,10 +56,7 @@ if (cookies != null) {
 	</section>
 
   <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-<<<<<<< HEAD
-  
-=======
->>>>>>> test
+
   <script>
     $("#accountLoginFrm").submit(function(e){
       e.preventDefault();
