@@ -121,30 +121,46 @@
 	}
 	
 	function remove(num) {
-		if (confirm('퀴즈를 삭제합니다. 퀴즈 삭제는 즉시 반영됩니다.')) {
-			
-			const testNo = $('#test' + num + 'No').val();
-			
-			$.ajax({
-				url : '/preTest/delete',
-				type : 'post',
-				data : {
-					testNo : testNo
-				},
-				dataType : 'json',
-				success : function(data) {
-					alert(data.res_msg);
-					if (data.res_code == 200) {
-						location.href="<%= request.getContextPath() %>/preCourse/edit?no=" + $('#preNo').val();
-					}
-				},
-				error : function(data) {
-					alert('요청 실패');
-				},
-			});
-			
-			document.querySelector('#test' + num).remove();
-		}
+		Swal.fire({
+			text: "퀴즈를 삭제하시겠습니까?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "삭제",
+			cancelButtonText: "취소"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				const testNo = $('#test' + num + 'No').val();
+				
+				$.ajax({
+					url : '/preTest/delete',
+					type : 'post',
+					data : {
+						testNo : testNo
+					},
+					dataType : 'json',
+					success : function(data) {
+						if (data.res_code == 200) {
+							Swal.fire({
+								icon: "success",
+								text: data.res_msg,
+								confirmButtonText: "확인"
+							}).then((result) => {
+								if (result.isConfirmed) {
+									location.href="<%= request.getContextPath() %>/preCourse/edit?no=" + $('#preNo').val();					    
+								}
+							});
+						} else {
+							Swal.fire({ icon: "error", text: data.res_msg});
+						}
+					},
+					error : function(data) {
+						Swal.fire({ icon: "error", text: "삭제 중 오류가 발생했습니다."});
+					},
+				});
+			}
+		});
 	}
 
 	$('#edit').submit(function(e) {
@@ -164,28 +180,28 @@
 		
 		for (let j = 0; j < count; j++) {
 			if (!formData.get('content' + j)) {
-				alert('테스트 내용을 입력해주세요.');
+				Swal.fire({ icon: "error", text: "테스트 내용을 입력해주세요."});
 				return;
 			} else if (!formData.get('one' + j) || !formData.get('two' + j)
 					|| !formData.get('three' + j) || !formData.get('four' + j)) {
-				alert('선택지 내용을 입력해주세요.');
+				Swal.fire({ icon: "error", text: "선택지 내용을 입력해주세요."});
 				return;
 			} else if (!formData.get('quiz' + j)) {
-				alert('정답을 골라주세요');
+				Swal.fire({ icon: "error", text: "정답을 골라주세요."});
 				return;
 			}
 		}
 		
 		for (let j = 0; j < arr.length; j++) {
 			if (!formData.get('content' + arr[j])) {
-				alert('테스트 내용을 입력해주세요.');
+				Swal.fire({ icon: "error", text: "테스트 내용을 입력해주세요."});
 				return;
 			} else if (!formData.get('one' + arr[j]) || !formData.get('two' + arr[j])
 					|| !formData.get('three' + arr[j]) || !formData.get('four' + arr[j])) {
-				alert('선택지 내용을 입력해주세요.');
+				Swal.fire({ icon: "error", text: "선택지 내용을 입력해주세요."});
 				return;
 			} else if (!formData.get('quiz' + arr[j])) {
-				alert('정답을 골라주세요');
+				Swal.fire({ icon: "error", text: "정답을 골라주세요."});
 				return;
 			}
 		}
@@ -196,36 +212,58 @@
 		
 		// TODO: 첨부파일 등록 확인하기
 		if (!courseNo) {
-			alert('교육과정을 선택해주세요.');
+			Swal.fire({ icon: "error", text: "교육과정을 선택해주세요."});
 		} else if (!title) {
-			alert('제목을 입력해주세요.');
+			Swal.fire({ icon: "error", text: "제목을 입력해주세요."});
 		} else if(!vidExt.includes(attachExt)){
-			alert('동영상 파일만 첨부할 수 있습니다!')
+			Swal.fire({ icon: "error", text: "동영상 파일만 첨부할 수 있습니다."});
 		} else {
-			if (confirm('사전 교육을 수정 하시겠습니까?')) {
-				
-				$('#loading').addClass('d-block');
-				
-				$.ajax({
-					url : '/preCourse/edit',
-					type : 'post',
-					data : formData,
-					enctype : 'multipart/form-data',
-					contentType : false,
-					processData : false,
-					cache : false,
-					dataType : 'json',
-					success : function(data) {
-						alert(data.res_msg);
-						if (data.res_code == 200) {
-							location.href = "<%= request.getContextPath() %>/preCourse/detail?preNo=" + preNo;
+			Swal.fire({
+				text: "사전 교육을 수정 하시겠습니까?",
+				icon: "question",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "수정",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$('#loading').addClass('d-block');
+					
+					$.ajax({
+						url : '/preCourse/edit',
+						type : 'post',
+						data : formData,
+						enctype : 'multipart/form-data',
+						contentType : false,
+						processData : false,
+						cache : false,
+						dataType : 'json',
+						success : function(data) {
+							if (data.res_code == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.res_msg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/preCourse/detail?preNo=" + preNo;				    
+									}
+								});
+							} else {
+								$('#loading').removeClass('d-block');
+								$('#loading').addClass('d-none');
+								Swal.fire({ icon: "error", text: data.res_msg});
+							}
+						},
+						error : function(data) {
+							$('#loading').removeClass('d-block');
+							$('#loading').addClass('d-none');
+							Swal.fire({ icon: "error", text: "수정 중 오류가 발생했습니다."});
 						}
-					},
-					error : function(data) {
-						alert('요청 실패');
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 	});
 </script>
