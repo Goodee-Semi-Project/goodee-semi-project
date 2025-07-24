@@ -56,18 +56,21 @@
 						<c:choose>
 							<c:when test="${ not empty attach }">
 								<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da;" id="preview" alt="profile-img" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+								<label for="attach" class="btn btn-outline-primary px-2 py-1 mx-2" style="padding: 2px 5px; margin: 0 5px 0 0;">
+							  	<span style="width: 100px; font-size: 12px; font-weight: 500;">수정</span>
+								</label>
+								<button type="button" class="btn btn-outline-danger px-2 py-1 mx-2" style="padding: 2px 5px;" onclick="removeImg(${ accountDetail.accountNo })"><span style="width: 100px; font-size: 12px; font-weight: 500;">삭제</span></button>
+								<input type="file" id="attach" name="attach" onchange="readURL(this)" style="opacity: 0; width: 0%;">
 							</c:when>
 							<c:otherwise>
 								<!-- NOTE: 공통 사용 이미지로 -->
 								<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da;" id="preview" alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"/>
+								<input type="file" id="attach" name="attach" onchange="readURL(this)" style="opacity: 0; width: 0%;">
+								<label for="attach" class="btn btn-outline-success px-2 py-1 mx-2" style="padding: 2px 5px; margin: 0 5px 0 0;">
+							  		<span style="width: 100px; font-size: 12px; font-weight: 500;">등록</span>
+								</label>
 							</c:otherwise>
 						</c:choose>
-				
-						<label for="attach" class="btn btn-outline-secondary text-primary px-2 py-1 mx-2" style="padding: 2px 5px; margin: 0 5px 0 0;">
-					  	<span style="width: 100px; font-size: 12px; font-weight: 500;">수정</span>
-						</label>
-						<button type="button" class="btn btn-outline-danger text-danger px-2 py-1 mx-2" style="padding: 2px 5px;" onclick="removeImg(${ accountDetail.accountNo })"><span style="width: 100px; font-size: 12px; font-weight: 500;">삭제</span></button>
-						<input type="file" id="attach" name="attach" onchange="readURL(this)" style="opacity: 0; width: 0%;">
 					</div>
 					
 					<div class="mb-2" style="width: 50%; display: flex; align-items: center;">
@@ -97,7 +100,7 @@
 			    
 			    <div class="mb-2" style="width: 50%; display: flex; align-items: center;">
 			      <input class="form-control" style="width: 40%;" type="text" id="postNum" name="postNum" value="${ accountDetail.postNum }" placeholder="우편번호" readonly>
-			      <button type="button" class="btn btn-outline-secondary text-primary px-2 py-1 mx-2" style="font-weight: 500;" id="findPost">주소 변경</button>
+			      <button type="button" class="btn btn-outline-primary px-2 py-1 mx-2" style="font-weight: 500;" id="findPost">주소 변경</button>
 			    </div>
 			    <input class="form-control mb-2" style="width: 50%;" type="text" id="address" name="address" value="${ accountDetail.address }" placeholder="주소" readonly>
 			    <input class="form-control mb-2" style="width: 50%;" type="text" id="addressDetail" name="addressDetail" value="${ accountDetail.addressDetail }" placeholder="상세주소">
@@ -118,13 +121,7 @@
 	      <button type="submit" class="btn btn-primary mt-3" >비밀번호 변경</button>
 			</form>
 		</div>
-		
-			
 	</section>
-
-
-	
-
 
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
@@ -148,22 +145,41 @@
 	}
 
 	function removeImg(accountNo) {
-		if (confirm('프로필 사진을 삭제합니다.')) {
-			$.ajax({
-				url : '/myInfo/removeImg',
-				type : 'post',
-				data : {
-					accountNo : accountNo
-				},
-				dataType : 'json',
-				success : function(data) {
-					alert(data.res_msg);
-					if (data.res_code == 200) {
-						location.href = "<%= request.getContextPath() %>/myInfo"
+		Swal.fire({
+			text: "프로필 사진을 삭제하시겠습니까?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "삭제",
+			cancelButtonText: "취소"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+					url : '/myInfo/removeImg',
+					type : 'post',
+					data : {
+						accountNo : accountNo
+					},
+					dataType : 'json',
+					success : function(data) {
+						if (data.res_code == 200) {
+							Swal.fire({
+								icon: "success",
+								text: data.res_msg,
+								confirmButtonText: "확인"
+							}).then((result) => {
+								if (result.isConfirmed) {
+									location.href = "<%= request.getContextPath() %>/myInfo";						    
+								}
+							});
+						} else {
+							Swal.fire({ icon: "error", text: data.res_msg});
+						}
 					}
-				}
-			});
-		}
+				});
+			}
+		});
 	}
 
 	$('#editPw').submit(function(e) {
@@ -175,33 +191,52 @@
 		const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/;
 		
 		if (!currentPw || !newPw || !newPwCheck) {
-			alert('비밀번호를 입력하세요.');
+			Swal.fire({ icon: "error", text: "비밀번호를 입력하세요."});
 		} else if (!pwReg.test(currentPw) || !pwReg.test(newPw) || !pwReg.test(newPwCheck)) {
-			alert('비밀번호는 영문, 숫자 특수문자를 포함한 8~20자 형식입니다.')
+			Swal.fire({ icon: "error", text: "비밀번호는 영문, 숫자 특수문자를 포함한 8~20자 형식입니다."});
 		} else if (newPw !== newPwCheck) {
-			alert('비밀번호 확인이 맞지 않습니다.')
+			Swal.fire({ icon: "error", text: "비밀번호 확인이 맞지 않습니다."});
 		} else {
-			if (confirm('비밀번호를 변경 하시겠습니까?')) {
-				$.ajax({
-					url : '/myInfo/editPw',
-					type : 'post',
-					data : {
-						currentPw : currentPw,
-						newPw : newPw,
-						newPwCheck : newPwCheck
-					},
-					dataType : 'json',
-					success : function(data) {
-						alert(data.res_msg);
-						if (data.res_code == 200) {
-							location.href = "<%= request.getContextPath() %>/myInfo";
+			Swal.fire({
+				text: "비밀번호를 변경 하시겠습니까?",
+				icon: "question",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "변경",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url : '/myInfo/editPw',
+						type : 'post',
+						data : {
+							currentPw : currentPw,
+							newPw : newPw,
+							newPwCheck : newPwCheck
+						},
+						dataType : 'json',
+						success : function(data) {
+							if (data.res_code == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.res_msg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/myInfo";						    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.res_msg});
+							}
+						},
+						error : function(data) {
+							Swal.fire({ icon: "error", text: "비밀번호 변경 중 오류가 발생했습니다."});
 						}
-					},
-					error : function(data) {
-						alert('비밀번호 변경 요청 실패');
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 	});
 
@@ -243,44 +278,63 @@
 		} */
 		
 		if (!gender) {
-			alert('성별을 선택해주세요.');
+			Swal.fire({ icon: "error", text: "성별을 선택해주세요."});
 		} else if (!email) {
-			alert('이메일을 입력해주세요.');
+			Swal.fire({ icon: "error", text: "이메일을 입력해주세요."});
 		} else if (!phone) {
-			alert('전화번호를 입력해주세요');
+			Swal.fire({ icon: "error", text: "전화번호를 입력해주세요."});
 		}
 		else if (!emailReg.test(email)) {
-			alert('잘못된 이메일 형식입니다.');
+			Swal.fire({ icon: "error", text: "잘못된 이메일 형식입니다."});
 		} else if (!phoneReg.test(phone)) {
-			alert('잘못된 전화번호 형식입니다.');
+			Swal.fire({ icon: "error", text: "잘못된 전화번호 형식입니다."});
 		} else if (!address) {
-			alert('주소를 입력해주세요.');
+			Swal.fire({ icon: "error", text: "주소를 입력해주세요."});
 		} else if (!addressDetail) {
-			alert('상세 주소를 입력해주세요.');
+			Swal.fire({ icon: "error", text: "상세 주소를 입력해주세요."});
 		} else if(!imgExt.includes(attachExt)){
-			alert('이미지 파일만 첨부할 수 있습니다!')
+			Swal.fire({ icon: "error", text: "이미지 파일만 첨부할 수 있습니다."});
 		} else {
-			if(confirm('회원 정보를 변경하시겠습니까?')) {
-				$.ajax({
-					url : '/myInfo/editDetail',
-					type : 'post',
-					data : formData,
-					enctype : 'multipart/form-data',
-					contentType : false,
-					processData : false,
-					cache : false,
-					dataType : 'json',
-					success : function(data) {
-						alert(data.res_msg);
-						if (data.res_code == 200) {
-							location.href = "<%= request.getContextPath() %>/myInfo";
+			Swal.fire({
+				text: "회원 정보를 변경하시겠습니까?",
+				icon: "question",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "변경",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url : '/myInfo/editDetail',
+						type : 'post',
+						data : formData,
+						enctype : 'multipart/form-data',
+						contentType : false,
+						processData : false,
+						cache : false,
+						dataType : 'json',
+						success : function(data) {
+							if (data.res_code == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.res_msg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/myInfo";						    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.res_msg});
+							}
+						},
+						error : function(data) {
+							Swal.fire({ icon: "error", text: "회원정보 변경 중 오류가 발생했습니다."});
 						}
-					},
-					error : function(data) {
-						alert('요청 실패');
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 	});
 	
@@ -290,27 +344,46 @@
 		const checkPw = $('#checkPw').val().trim();
 		
 		if(!checkPw) {
-			alert('비밀 번호를 입력하세요.');
+			Swal.fire({ icon: "error", text: "비밀번호를 입력해주세요."});
 		} else {
-			if (confirm('탈퇴하시겠습니까?')) {
-				$.ajax({
-					url : '/myInfo/inactive',
-					type : 'post',
-					data : {
-						checkPw : checkPw
-					},
-					dataType : 'json',
-					success : function(data) {
-						alert(data.res_msg);
-						if (data.res_code == 200) {
-							location.href="<%= request.getContextPath() %>/";
+			Swal.fire({
+				text: "탈퇴하시겠습니까?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "탈퇴",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url : '/myInfo/inactive',
+						type : 'post',
+						data : {
+							checkPw : checkPw
+						},
+						dataType : 'json',
+						success : function(data) {
+							if (data.res_code == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.res_msg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href="<%= request.getContextPath() %>/home";						    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.res_msg});
+							}
+						},
+						error : function(data) {
+							Swal.fire({ icon: "error", text: "회원탈퇴 처리 중 오류가 발생했습니다."});
 						}
-					},
-					error : function(data) {
-						alert('요청 실패');
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 	});
 
