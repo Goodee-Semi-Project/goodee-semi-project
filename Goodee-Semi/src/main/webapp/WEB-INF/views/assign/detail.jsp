@@ -36,7 +36,7 @@
 						
 						<c:if test="${ (sessionScope.loginAccount.author eq 2) and (empty assign.assignSubmit) }">
 							<button class="btn btn-transparent" onclick="assignSubmitFormOpen()" id="assignSubmitOpen" style="padding: 5px 10px;">제출하기</button>	
-						</c:if>						
+						</c:if>
 					</div>
 				</article>
 				
@@ -75,7 +75,7 @@
 						
 						<div class="mt-3 mb-3" style="display: flex; justify-content: center; align-items: center;">
 	      			<div style="width: 45%;">
-	             	<img width="150" height="150" src="<c:url value='/filePath?no=${ assign.assignSubmit.submitAttach.attachNo }' />" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" id="preview" />
+	             	<img width="150" height="150" <c:if test="${ not empty assign.assignSubmit }"> src="<c:url value='/filePath?no=${ assign.assignSubmit.submitAttach.attachNo }' />" </c:if> style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" id="preview" />
 	             	<label for="assignSubmitImage" class="btn btn-outline-secondary" style="padding: 2px 5px;">
 	             		<span style="width: 100px; font-size: 12px;">이미지 선택</span>
 	             	</label>
@@ -93,7 +93,7 @@
 								<button type="button" class="btn btn-danger" onclick="assignSubmitUpdateFormClose()" style="padding: 5px 10px;">취소</button>												
 							</c:if>
 						</div>
-					</form>
+					</form> 
 				</div>
 				
 			</div>

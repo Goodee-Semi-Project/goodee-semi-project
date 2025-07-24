@@ -27,6 +27,12 @@ public class AssignListByClassServlet extends HttpServlet {
 		String classNo = request.getParameter("classNo");
 		
 		List<Assign> assignList = service.selectAssignListByClassNo(classNo);
+		if (assignList != null && assignList.size() > 0) {
+			for (Assign assign : assignList) {
+				assign.setAssignSubmit(service.selectAssignSubmit(assign));
+			}
+		}
+		
 		PetClass petClass = service.selectClass(classNo);
 		
 		Course course = service.selectCourse(petClass.getCourseNo());
