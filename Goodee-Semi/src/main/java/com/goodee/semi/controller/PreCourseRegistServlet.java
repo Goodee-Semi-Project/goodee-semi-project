@@ -163,6 +163,8 @@ public class PreCourseRegistServlet extends HttpServlet {
 			
 			if (total != 0) {
 				result = preCourseService.insertPreCourse(preCourse, attach, testList);
+			} else {
+				result = -2;
 			}
 		}
 
@@ -170,6 +172,9 @@ public class PreCourseRegistServlet extends HttpServlet {
 		if (result > 0) {
 			obj.put("res_code", "200");
 			obj.put("res_msg", "사전 학습 생성 완료");
+		} else if (result == -2) {
+			obj.put("res_code", "501");
+			obj.put("res_msg", "FFMpeg 설정이 필요합니다. 서버 관리자에게 문의하세요.");
 		} else {
 			obj.put("res_code", "500");
 			obj.put("res_msg", "등록 실패");
