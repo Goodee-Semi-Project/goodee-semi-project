@@ -72,8 +72,11 @@ public class AccountRegisterServlet extends HttpServlet {
 			profileImage = request.getPart("profileImage");
 		} catch (IOException | ServletException e) { e.printStackTrace(); }
 		
-		File uploadDir = AttachService.getUploadDirectory(Attach.ACCOUNT);
-		Attach profileAttach = AttachService.handleUploadFile(profileImage, uploadDir);
+		Attach profileAttach = null;
+		if (profileImage.getSize() > 0) {
+			File uploadDir = AttachService.getUploadDirectory(Attach.ACCOUNT);
+			profileAttach = AttachService.handleUploadFile(profileImage, uploadDir);			
+		}
 		
 		int result = accountService.insertAccount(account, profileAttach);
 		
