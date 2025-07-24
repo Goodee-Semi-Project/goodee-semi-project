@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.AssignMapper">
+	<resultMap type="com.goodee.semi.dto.Assign" id="assignResultMap">
+		<result property="assignNo" column="assign_no"/>
+		<result property="classNo" column="class_no"/>
+		<result property="schedNo" column="sched_no"/>
+		<result property="accountNo" column="account_no"/>
+		<result property="assignTitle" column="assign_title"/>
+		<result property="assignContent" column="assign_content"/>
+		<result property="assignStart" column="assign_start"/>
+		<result property="assignEnd" column="assign_end"/>
+		<result property="assignReceipt" column="assign_receipt"/>
+		
+		<result property="schedStep" column="sched_step"/>
+	</resultMap>
+	
+	<select id="selectAssign" parameterType="_int" resultMap="assignResultMap">
+		SELECT
+				A.assign_no
+			, A.class_no
+			, A.sched_no
+			, A.account_no
+			, A.assign_title
+			, A.assign_content
+			, A.assign_start
+			, A.assign_end
+			, A.assign_receipt
+			, S.sched_step
+		FROM assignment A
+		INNER JOIN schedule S ON A.sched_no = S.sched_no
+		<where>
+			A.assign_no = #{assignNo} AND A.assign_receipt = 'Y'
+		</where>
+	</select>
+	
+	<select id="selectAssignListByClassNo" parameterType="_int" resultMap="assignResultMap">
+		SELECT
+				A.assign_no
+			, A.class_no
+			, A.sched_no
+			, A.account_no
+			, A.assign_title
+			, A.assign_content
+			, A.assign_start
+			, A.assign_end
+			, A.assign_receipt
+			, S.sched_step
+		FROM assignment A
+		INNER JOIN schedule S ON A.sched_no = S.sched_no
+		<where>
+			A.class_no = #{classNo} AND A.assign_receipt = 'Y'
+		</where>
+	</select>
+	
+	<select id="selectSavedAssignListByAccountNo" parameterType="_int" resultMap="assignResultMap">
+		SELECT * FROM assignment
+		<where>
+			account_no = #{accountNo} AND assign_receipt = 'N'
+		</where>
+	</select>
+	
+	<select id="selectSavedAssign" parameterType="_int" resultMap="assignResultMap">
+		SELECT * FROM assignment
+		<where>
+			assign_no = #{savedAssignNo} AND assign_receipt = 'N'
+		</where>
+	</select>
+	
+	<insert id="insertAssign" parameterType="com.goodee.semi.dto.Assign" useGeneratedKeys="true" keyProperty="assignNo">
+		INSERT INTO assignment (
+					account_no
+				, assign_receipt
+			<if test="assignReceipt == 'Y'">
+				,	class_no
+				, sched_no			
+			</if>
+			<if test='assignTitle != "" and assignTitle != null'>
+				, assign_title
+			</if>
+			<if test='assignContent != "" and assignContent != null'>
+				, assign_content
+			</if>
+			<if test='assignStart != "" and assignStart != null'>
+				, assign_start
+			</if>
+			<if test='assignEnd != "" and assignEnd != null'>
+				, assign_end
+			</if>
+		) VALUE (
+				#{accountNo}
+			, #{assignReceipt}
+		<if test="assignReceipt == 'Y'">
+			,	#{classNo}
+			, #{schedNo}
+		</if>
+		<if test='assignTitle != "" and assignTitle != null'>
+			, #{assignTitle}
+		</if>
+		<if test='assignContent != "" and assignContent != null'>
+			, #{assignContent}
+		</if>
+		<if test='assignStart != "" and assignStart != null'>
+			, #{assignStart}
+		</if>
+		<if test='assignEnd != "" and assignEnd != null'>
+			, #{assignEnd}
+		</if>
+		)
+	</insert>
+	
+	<update id="updateAssign" parameterType="com.goodee.semi.dto.Assign">
+		UPDATE assignment
+		SET
+				assign_receipt = #{assignReceipt}
+		<if test="assignReceipt == 'Y'">
+			,	class_no = #{classNo}
+			, sched_no = #{schedNo}
+		</if>
+		<if test='assignTitle != "" and assignTitle != null'>
+			, assign_title = #{assignTitle}
+		</if>
+		<if test='assignContent != "" and assignContent != null'>
+			, assign_content = #{assignContent}
+		</if>
+		<if test='assignStart != "" and assignStart != null'>
+			, assign_start = #{assignStart}
+		</if>
+		<if test='assignEnd != "" and assignEnd != null'>
+			, assign_end = #{assignEnd}
+		</if>
+		<where>
+			assign_no = #{assignNo}
+		</where>
+	</update>
+
+	<delete id="deleteAssign" parameterType="_int">
+		DELETE FROM assignment
+		<where>
+			assign_no = #{assignNo}
+		</where>
+	</delete>
+</mapper>

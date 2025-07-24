@@ -137,4 +137,12 @@ public class AccountDao {
 		session.close();
 		return count;
 	}
+	
+	public AccountDetail selectAccountByPhoneAndEmail(AccountDetail keyObj) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		AccountDetail result = session.selectOne("com.goodee.semi.mapper.AccountMapper.selectAccountByPhoneAndEmail", keyObj);
+		session.close();
+		
+		return result;
+	}
 }

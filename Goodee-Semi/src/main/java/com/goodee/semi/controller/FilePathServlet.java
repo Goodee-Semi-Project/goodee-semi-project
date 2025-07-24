@@ -34,26 +34,32 @@ public class FilePathServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int attachNo = -1;
-		if (request.getParameter("no") != null) {
+		if (request.getParameter("no") != null && request.getParameter("no") != "") {
 			attachNo = Integer.parseInt(request.getParameter("no"));
 		}
 		
 		Attach attach = null;
 		String filePath = null;
+
 		if (attachNo != -1) {
 			attach = service.selectAttachNo(attachNo);
 			
-			filePath = "C://goodee/upload/" + switch (attach.getTypeNo()) {
-			case Attach.ACCOUNT -> "account/";
-			case Attach.PET -> "pet/";
-			case Attach.COURSE -> "course/";
-			case Attach.PRE_COURSE -> "preCourse/";
-			case Attach.ASSIGN -> "assign/";
-			case Attach.SUBMIT -> "submit/";
-			case Attach.REVIEW -> "review/";
-			case Attach.NOTICE -> "notice/";
-			default -> "";
-			} + attach.getSavedName();
+			try {
+				filePath = "C://goodee/upload/" + switch (attach.getTypeNo()) {
+				case Attach.ACCOUNT -> "account/";
+				case Attach.PET -> "pet/";
+				case Attach.COURSE -> "course/";
+				case Attach.PRE_COURSE -> "preCourse/";
+				case Attach.ASSIGN -> "assign/";
+				case Attach.SUBMIT -> "submit/";
+				case Attach.REVIEW -> "review/";
+				case Attach.NOTICE -> "notice/";
+				default -> "";
+				} + attach.getSavedName();				
+			} catch (Exception e) {
+				System.out.println("[FilePathServlet] 파일의 메타데이터가 존재하지 않습니다: " + e.getMessage());
+				return;
+			}
 		}
 		
 		if (filePath == null || filePath.trim().equals("") ) {

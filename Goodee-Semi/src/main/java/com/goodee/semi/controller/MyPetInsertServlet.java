@@ -1,16 +1,21 @@
 package com.goodee.semi.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.common.constant.HttpConstants;
+import com.goodee.semi.common.util.GsonUtil;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Pet;
+import com.goodee.semi.service.AttachService;
 import com.goodee.semi.service.PetService;
+import com.google.gson.Gson;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,10 +23,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
-// TODO 사진 안넣어도 등록되게 하는 기능 추가
-// 내 반려견 정보 추가 servlet
 @WebServlet("/myPet/insert")
-@MultipartConfig
+@MultipartConfig(
+		maxFileSize = 5 * 1024 * 1024, // 개별 파일 최대 크기: 5MB
+		maxRequestSize = 10 * 1024 * 1024, // 전체 요청 최대 크기: 10MB
+		fileSizeThreshold = 1024 * 1024 // 메모리에 저장할 임계값: 1MB
+)
 public class MyPetInsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PetService service = new PetService();
@@ -29,98 +36,110 @@ public class MyPetInsertServlet extends HttpServlet {
     public MyPetInsertServlet() {
         super();
     }
+    
+    private void sendErrorResponse(String resCode, String resMsg, Exception e, ServletResponse res) throws IOException {
+        JSONObject json = new JSONObject();
+        json.put("resCode", resCode);
+        json.put("resMsg", resMsg);
+        
+        if(e != null) {        	
+        	e.printStackTrace();
+        }
+        
+        res.setContentType(HttpConstants.CONTENT_TYPE_JSON);
+        res.getWriter().print(json);
+    }
+    
+    private void sendSuccessResponse(String resCode, String resMsg, Pet pet, int targetPage, ServletResponse res) throws IOException {
+    	// 응답 객체 생성
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("resCode", resCode);
+    	map.put("resMsg", resMsg);    	
+    	map.put("targetPage", targetPage);
+    	map.put("pet", pet);
+    	
+    	// Gson으로 전체를 JSON 문자열로 변환
+    	String jsonString = GsonUtil.toJson(map);
+    	
+    	res.setContentType(HttpConstants.CONTENT_TYPE_JSON);
+    	res.getWriter().print(jsonString);
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 요청값 인코딩
-		request.setCharacterEncoding("UTF-8");
-		
-		// 2. 바인딩된 값 받아와서 Pet, Attachment 객체에 바인딩
-		// 텍스트 데이터 받기
-		String petName = request.getParameter("petName");
-		int petAge = Integer.parseInt(request.getParameter("petAge"));
-		char petGender = request.getParameter("petGender").charAt(0);
-		String petBreed = request.getParameter("petBreed");
-		int accountNo = Integer.parseInt(request.getParameter("accountNo"));
-		
-		// Pet 객체에 바인딩
-		Pet pet = new Pet();
-		pet.setPetName(petName);
-		pet.setPetAge(petAge);
-		pet.setPetGender(petGender);
-		pet.setPetBreed(petBreed);
-		pet.setAccountNo(accountNo);
-		
-		// 이미지 파일 받기
-		Part petImgPart = request.getPart("petImg");
-		System.out.println("petImgPart: " + petImgPart);
-		
-		String uploadPath = "C:/goodee/upload/pet";
-		String oriFileName = petImgPart.getSubmittedFileName();
-		String fileExtension;
-		String uuid;
-		String saveFileName;
-		
-		Attach attach = new Attach();;
+    
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 1. request에 바인딩된 값 받아와서 dto에 바인딩
+        Pet pet = new Pet();
+        Attach attach = null;
+        
+		try {
+			// NullPointerException, NumberFormatException, StringIndexOutOfBoundsExceiption 발생 가능 코드
+			String petName = request.getParameter("petName");
+			int petAge = Integer.parseInt(request.getParameter("petAge"));
+			char petGender = request.getParameter("petGender").charAt(0);
+			String petBreed = request.getParameter("petBreed");
+			int accountNo = Integer.parseInt(request.getParameter("accountNo"));
+			Part petImgPart = request.getPart("petImg");
+			
+			pet.setPetName(petName);
+			pet.setPetAge(petAge);
+			pet.setPetGender(petGender);
+			pet.setPetBreed(petBreed);
+			pet.setAccountNo(accountNo);
+			
+    		// 2. 반려견 이미지가 업로드된 경우 업로드된 이미지파일 저장
+    		// Part를 받아왔고, Part에 실제 파일이 있는 경우
+    		if (petImgPart != null && petImgPart.getSize() > 0) {
+    			try { 
+    				String fileName = petImgPart.getSubmittedFileName();
+    				String fileExt = fileName.substring(fileName.lastIndexOf('.'));
+    				String contentType = petImgPart.getContentType();
 
-		// 이미지 파일이 업로드된 경우에만 이미지 정보 수정
-		if(oriFileName != null) {
-			// 업로드된 경우
-			// 1. 파일 경로, 이름 지정
-			fileExtension = oriFileName.substring(oriFileName.lastIndexOf("."));
-			uuid = UUID.randomUUID().toString().replace("-", "");
-			saveFileName = uuid + fileExtension;
-			
-			// 2. 로컬에 파일 저장
-			// 1) 폴더 없으면 생성
-			File uploadDir = new File(uploadPath);
-			if (!uploadDir.exists()) {
-			    uploadDir.mkdirs(); // 폴더 없으면 생성
-			}
-			
-			// 2) 파일 저장
-			petImgPart.write(uploadPath + "/" + saveFileName);
-			
-			// Attachment 객체에 바인딩
-			attach.setOriginName(oriFileName);
-			attach.setSavedName(saveFileName);
-			attach.setTypeNo(2);
+    				// 파일 MIME 타입 검증
+    				if (!(contentType.equals(HttpConstants.CONTENT_TYPE_PNG) || contentType.equals(HttpConstants.CONTENT_TYPE_JPEG))) {
+    					sendErrorResponse("400", "PNG, JPG, JPEG 파일만 업로드 가능합니다", null, response);
+    			        return;
+    				}
+    				
+    				// 파일 확장자 검증
+    				if (!(fileExt.equals(".png") || fileExt.equals(".jpg") || fileExt.equals(".jpeg"))) {
+    			        sendErrorResponse("400", "PNG, JPG, JPEG 파일만 업로드 가능합니다", null, response);
+    			        return;
+    				}
+    				
+    				// 파일 저장
+    				attach = AttachService.handleUploadFile(petImgPart, AttachService.getUploadDirectory(Attach.PET));
+    				
+    				// 파일 업로드 중 예외가 발생할 수 있음
+    				// 혹은 파일 업로드 중 문제가 발생해 attach = null이 되면
+    				// 아래 코드들은 null을 참조하게 되어 NullPointerException 발생
+    				attach.setTypeNo(Attach.PET);
+    				attach.setPkNo(pet.getPetNo());
+    				System.out.println("[MyPetInsertServlet] 업로드된 파일의 메타데이터: " + attach);
+    			} catch(Exception e) {
+    	            sendErrorResponse("500", "파일 저장/삭제 중 문제가 발생했습니다: " + e.getMessage(), e, response);
+    	            return;
+    			}
+    		}
+    	} catch (Exception e) {
+    		sendErrorResponse("400", "잘못된 입력 데이터입니다: " + e.getMessage(), e, response);
+            return;
 		}
 				
-		// 4. service의 등록 로직 호출 -> 실패: 상태 코드 전달 | 성공: 상태 코드와 수정한 값 전달
-		int result = service.insertPet(pet, attach);
-		
-		// 6. json에 정보 바인딩
-		String resCode = "";
-		String resMsg = "";
-		if (result == 0) {
-			resCode = "500";
-			resMsg = "반려견 정보 수정 중 오류 발생";
-		} else {
-			resCode = "200";
-			resMsg = "반려견 정보 수정 성공";
-		}
+        // 3. service 호출
+        int result = service.insertPet(pet, attach);
+        if (result != 0) {
+        	// 페이징
+        	pet.setNowPage(1);
+            int totalData = service.selectPetCount(pet);
+            pet.setTotalData(totalData); // 총 페이지 수가 pet에 set됨
+            int targetPage = pet.getTotalPage();
+            
+        	sendSuccessResponse("200", "반려견 정보 등록에 성공했습니다", pet, targetPage, response);
+        	return;
+        }
 
-		JSONObject json = new JSONObject();
-		
-		json.put("resCode", resCode);
-		json.put("resMsg", resMsg);
-		
-		json.put("petName", petName);
-		json.put("petAge", petAge);
-		json.put("petGender", String.valueOf(petGender));
-		// char 타입 값을 그대로 바인딩하면 값이 ''나 ""로 묶여서 바인딩되지 않아 AJAX에서 parserror를 발생시킴
-		// => String 타입으로 값 전달
-		json.put("petBreed", petBreed);
-		json.put("petNo", pet.getPetNo());
-		json.put("accountNo", accountNo);
-		
-		// 7. 응답 인코딩하고 보내기
-		response.setContentType("application/json; charset=utf-8");
-		response.getWriter().print(json);
+        // 4. 응답 인코딩하고 보내기
+        sendErrorResponse("500", "반려견 정보 등록에 실패했습니다", null, response);
+
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

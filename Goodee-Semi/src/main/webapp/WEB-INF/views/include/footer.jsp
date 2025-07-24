@@ -46,15 +46,26 @@
 <script src="/static/plugins/raty/jquery.raty-fa.js"></script>
 <script src="/static/plugins/slick/slick.min.js"></script>
 <script src="/static/plugins/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.2/dist/sweetalert2.all.min.js"></script>
 
 <script src="/static/js/script.js"></script>
 <script>
 	function logout(e){
 		e.preventDefault();
 		
-		if(confirm("로그아웃 하시겠습니까?")){
-			location.href = "<c:url value='/account/logout' />";
-		}
+		Swal.fire({
+			text: "로그아웃 하시겠습니까?",
+			icon: "question",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "로그아웃",
+			cancelButtonText: "취소"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				location.href = "<c:url value='/account/logout' />";
+			}
+		});
 	}
 
 	$(() => {
@@ -66,7 +77,7 @@
 			const keyName = $("#searchByTrainer").val();
 			const keyTag = $("#searchByTag").val();
 			
-			if ((keyTitle != "" || keyName != "") && keyTag != "") alert("태그는 다른 조건과 함께 검색할 수 없습니다.");
+			if ((keyTitle != "" || keyName != "") && keyTag != "") Swal.fire({ icon: "error", text: "태그는 다른 조건과 함께 검색할 수 없습니다."});
 			else {
 				const form = document.getElementById("searchCourseForm");
 				
@@ -79,9 +90,19 @@
 		$("#searchReset").on("click", (event) => {
 			event.preventDefault();
 			
-			if (confirm("검색을 초기화 하시겠습니까?")) {
-				location.href = "<%= request.getContextPath() %>/home";
-			}
+			Swal.fire({
+				text: "검색을 초기화 하시겠습니까?",
+				icon: "question",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "초기화",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					location.href = "<%= request.getContextPath() %>/home";
+				}
+			});
 		});
 	});
 </script>

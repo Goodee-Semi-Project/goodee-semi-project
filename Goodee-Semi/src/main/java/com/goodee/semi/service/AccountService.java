@@ -1,5 +1,6 @@
 package com.goodee.semi.service;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -24,6 +25,7 @@ public class AccountService {
 		param.setAccountPw(accountPw);
 		
 		AccountDetail result = accountDao.loginInfo(param);
+
 		if (result != null) result.setProfileAttach(accountDao.selectAttachByAccountNo(result.getAccountNo()));
 		
 		return result;
@@ -41,7 +43,7 @@ public class AccountService {
 				result = accountDao.insertAccountInfo(session, account);
 			}
 			
-			if (result > 0) {
+			if (result > 0 && attach != null) {
 				attach.setTypeNo(Attach.ACCOUNT);
 				attach.setPkNo(account.getAccountNo());
 				result = accountDao.insertAttach(session, attach);
@@ -114,6 +116,7 @@ public class AccountService {
 		SqlSession session = SqlSessionTemplate.getSqlSession(false);
 		int result = -1;
 		try {
+			Attach preAttach = accountDao.selectAttachByAccountNo(accountDetail.getAccountNo());
 			result = accountDao.updateAccountDetail(accountDetail);
 			if (attach != null && result > 0) {
 				attach .setTypeNo(Attach.ACCOUNT);
@@ -124,6 +127,13 @@ public class AccountService {
 			
 			if (result > 0) {
 				session.commit();
+				if (preAttach != null) {
+					String filePath = "C://goodee/upload/account/" + preAttach.getSavedName();
+					File preFile = new File(filePath);
+					if (preFile.exists()) {
+						preFile.delete();
+					}
+				}
 			} else {
 				session.rollback();
 			}
@@ -140,7 +150,15 @@ public class AccountService {
 		Attach attach = new Attach();
 		attach.setTypeNo(Attach.ACCOUNT);
 		attach.setPkNo(accountNo);
-		return accountDao.deleteAttach(attach);
+		Attach preAttach = accountDao.selectAttachByAccountNo(accountNo);
+		int result = accountDao.deleteAttach(attach);
+		if (result > 0) {
+			String filePath = "C://goodee/upload/account/" + preAttach.getSavedName();
+			File preFile = new File(filePath);
+			preFile.delete();
+		}
+		
+		return result;
 	}
 	
 	public List<Account> selectAccountTrainer4() {
@@ -156,5 +174,13 @@ public class AccountService {
 	
 	public int countTotalAccountNo() {
 		return accountDao.countTotalAccountNo();
+	}
+
+	public AccountDetail selectAccountByPhoneAndEmail(String phone, String email) {
+		AccountDetail keyObj = new AccountDetail();
+		keyObj.setPhone(phone);
+		keyObj.setEmail(email);
+		
+		return accountDao.selectAccountByPhoneAndEmail(keyObj);
 	}
 }

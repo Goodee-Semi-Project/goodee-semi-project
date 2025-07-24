@@ -25,17 +25,29 @@
             
             <h5 class="text-center" style="margin-top: 10px;">${ sessionScope.loginAccount.name } 님</h5>
             <p>회원 | 가입일: ${ sessionScope.loginAccount.reg_date }</p>
-            <a href="<c:url value='/myInfo' />" class="btn btn-main">내 정보</a>
+            <a href="<c:url value='/myInfo' />" class="btn btn-main" style="padding: 10px 20px;">내 정보</a>
             
           </div>
 
           <div class="widget user-dashboard-menu">
             <ul>
-              <li><a href="<c:url value='/myCourse/list' />">내 교육과정</a></li>
-              <li><a href="<c:url value='/preCourse/list' />">사전학습</a></li>
-              <li><a href="<c:url value='/schedule' />">일정표</a></li>
-              <li><a href="<c:url value='/assign/list' />">과제</a></li>
-              <li><a href="<c:url value='/qnaBoard/list' />">질문 게시판</a></li>
+            	<c:choose>
+								<c:when test="${ sessionScope.loginAccount.author eq 1 }">
+									<li><a href="<c:url value='/myCourse/list' />">교육과정 관리</a></li>
+									<li><a href="<c:url value='/preCourse/list' />">사전학습 관리</a></li>
+									<li><a href="<c:url value='/schedule' />">일정표</a></li>
+									<li><a href="<c:url value='/assign/management' />">과제 관리</a></li>										
+									<li><a href="<c:url value='/qnaBoard/list' />">질문 게시판</a></li>
+								</c:when>
+										
+								<c:otherwise>
+									<li><a href="<c:url value='/myCourse/list' />">내 교육과정</a></li>
+									<li><a href="<c:url value='/preCourse/list' />">내 사전학습</a></li>
+									<li><a href="<c:url value='/schedule' />">일정표</a></li>
+									<li><a href="<c:url value='/assign/list' />">내 과제</a></li>
+									<li><a href="<c:url value='/qnaBoard/list' />">질문 게시판</a></li>								
+								</c:otherwise>
+							</c:choose>
             </ul>
           </div>
         </div>

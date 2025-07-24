@@ -14,6 +14,13 @@
 		<result property="petName" column="pet_name"/>
 	</resultMap>
 	
+	<select id="selectClass" parameterType="_int" resultMap="classResultMap">
+		SELECT * FROM class
+		<where>
+			class_no = #{classNo}
+		</where>
+	</select>
+	
 	<select id="selectClassByCourseNoAndPetNo" parameterType="com.goodee.semi.dto.PetClass" resultMap="classResultMap">
 		SELECT * FROM class
 		<where>
@@ -39,6 +46,29 @@
 			SELECT pet_no ,pet_name ,account_no
 			FROM pet
 		) AS p ON c.pet_no = p.pet_no
-		WHERE p.account_no = #{ accountNo }
+		WHERE p.account_no = #{ accountNo } AND c.class_prog = 100
 	</select>
+	
+	<select id="selectClassListByAccountDetail" parameterType="com.goodee.semi.dto.Account" resultMap="classResultMap">
+		SELECT 
+				C.class_no
+			, C.course_no
+			, C.pet_no
+			, P.pet_name
+			, CS.title 
+		FROM class C
+		INNER JOIN pet P ON C.pet_no = P.pet_no
+		INNER JOIN course CS ON C.course_no = CS.course_no
+		<where>
+			P.account_no = #{accountNo}
+		</where>
+	</select>
+	
+	<update id="updateClassProg" parameterType="com.goodee.semi.dto.Schedule">
+		UPDATE class
+		SET class_prog = #{classProg}
+		<where>
+			pet_no = #{petNo} AND course_no = #{courseNo}
+		</where>
+	</update>
 </mapper>

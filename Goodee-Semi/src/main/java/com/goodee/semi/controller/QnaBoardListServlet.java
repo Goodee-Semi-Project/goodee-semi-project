@@ -44,7 +44,11 @@ public class QnaBoardListServlet extends HttpServlet {
 		int totalData = service.selectQuestionCount(question);
 		question.setTotalData(totalData);
 		
+		// 날짜의 YY-mm-HH 부분추출
 		List<Question> questionList = service.selectAllQuestionList(question);
+		for (Question q : questionList) {
+			q.setQuestReg(q.getQuestReg().substring(0,10));
+		}
 		
 		request.setAttribute("question", question);
 		request.setAttribute("questionList", questionList);

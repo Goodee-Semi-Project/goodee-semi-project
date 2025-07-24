@@ -2,14 +2,18 @@ package com.goodee.semi.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.PreCourse;
+import com.goodee.semi.dto.PreTest;
 import com.goodee.semi.service.AttachService;
 import com.goodee.semi.service.PreCourseService;
+import com.goodee.semi.service.PreTestService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -36,6 +40,7 @@ public class PreCourseEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PreCourseService preCourseService = new PreCourseService();
 	private AttachService attachService = new AttachService();
+	private PreTestService preTestService = new PreTestService();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -54,15 +59,23 @@ public class PreCourseEditServlet extends HttpServlet {
 			account = (Account) session.getAttribute("loginAccount");
 		}
 		
-		int preNo = Integer.parseInt(request.getParameter("no"));
+		int preNo = -1;
+		PreCourse preCourse = null;
+		if (request.getParameter("no") != null) {
+			preNo = Integer.parseInt(request.getParameter("no"));
+			preCourse = preCourseService.selectPreCourse(preNo);
+		}
 		
-		PreCourse preCourse = preCourseService.selectPreCourse(preNo);
-		if (preCourse.getAccountNo() != account.getAccountNo()) {
+		if (preCourse != null && preCourse.getAccountNo() != account.getAccountNo()) {
 			
 			request.getRequestDispatcher("/preCourse/list").forward(request, response);
 			return;
 		}
 //		Attach attach = preCourseService.selectAttach(preNo);
+		
+		List<PreTest> list = preTestService.selectList(String.valueOf(preNo));
+		
+		request.setAttribute("list", list);
 		
 		request.setAttribute("preCourse", preCourse);
 		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseEdit.jsp").forward(request, response);
@@ -130,6 +143,60 @@ public class PreCourseEditServlet extends HttpServlet {
 			}
 			
 			result = preCourseService.updatePreCourse(preCourse, attach);
+			
+			// 테스트 수정
+			if (result > 0) {
+				int size = -1;
+				if (request.getParameter("size") != null) {
+					size = Integer.parseInt(request.getParameter("size"));
+				}
+				
+				if (size > 0) {
+					List<PreTest> list = new ArrayList<PreTest>();
+					
+					int len = 0;
+					if (request.getParameter("arr") != null) {
+						
+						String arrStr = request.getParameter("arr");
+						String[] arr = arrStr.split(",");
+						len = arr.length;
+						
+						for (int i = 0; i < arr.length; i++) {
+							PreTest preTest = new PreTest();
+							String testNo = request.getParameter("test" + arr[i] + "No");
+							if (testNo == null) testNo = "-1";
+							preTest.setTestNo(testNo);
+							preTest.setPreNo(preNo);
+							preTest.setTestContent(request.getParameter("content" + arr[i]));
+							preTest.setTestAnswer(request.getParameter("quiz" + arr[i]));
+							preTest.setOne(request.getParameter("one" + arr[i]));
+							preTest.setTwo(request.getParameter("two" + arr[i]));
+							preTest.setThree(request.getParameter("three" + arr[i]));
+							preTest.setFour(request.getParameter("four" + arr[i]));
+							
+							list.add(preTest);
+						}
+					}
+					
+					for (int i = 0; i < size - len; i++) {
+						PreTest preTest = new PreTest();
+						String testNo = request.getParameter("test" + i + "No");
+						if (testNo == null) testNo = "-1";
+						preTest.setTestNo(testNo);
+						preTest.setPreNo(preNo);
+						preTest.setTestContent(request.getParameter("content" + i));
+						preTest.setTestAnswer(request.getParameter("quiz" + i));
+						preTest.setOne(request.getParameter("one" + i));
+						preTest.setTwo(request.getParameter("two" + i));
+						preTest.setThree(request.getParameter("three" + i));
+						preTest.setFour(request.getParameter("four" + i));
+						
+						list.add(preTest);
+					}
+					
+					result = preTestService.updateList(list);
+				}
+			}
 		}
 
 		JSONObject obj = new JSONObject();

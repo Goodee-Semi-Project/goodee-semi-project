@@ -7,14 +7,14 @@
 		<div class="row">
 			<div class="col-md-12">
 				<nav class="navbar navbar-expand-lg navbar-light navigation" style="height: 100%;">
-					<a class="navbar-brand" href="<c:url value='/' />">
+					<a class="navbar-brand" href="<c:url value='/home' />">
 						<img src="/static/images/logo.png" alt="">
 					</a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<div class="collapse navbar-collapse" id="navbarSupportedContent" style="background-color: white;">
 						<ul class="navbar-nav ml-auto main-nav ">
 							<li class="nav-item dropdown dropdown-slide @@dashboard">
 								<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#!">○○훈련소<span><i class="fa fa-angle-down"></i></span></a>
@@ -30,11 +30,23 @@
 								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">교육과정<span><i class="fa fa-angle-down"></i></span></a>
 
 								<ul class="dropdown-menu">
-									<li><a class="dropdown-item" href="<c:url value='/myCourse/list' />">내 교육과정</a></li>
-									<li><a class="dropdown-item" href="<c:url value='/preCourse/list' />">사전학습</a></li>
-									<li><a class="dropdown-item" href="<c:url value='/schedule' />">일정표</a></li>
-									<li><a class="dropdown-item" href="<c:url value='/assign/list' />">과제</a></li>
-									<li><a class="dropdown-item" href="<c:url value='/qnaBoard/list' />">질문 게시판</a></li>
+									<c:choose>
+										<c:when test="${ sessionScope.loginAccount.author eq 1 }">
+											<li><a class="dropdown-item" href="<c:url value='/myCourse/list' />">교육과정 관리</a></li>
+											<li><a class="dropdown-item" href="<c:url value='/preCourse/list' />">사전학습 관리</a></li>
+											<li><a class="dropdown-item" href="<c:url value='/schedule' />">일정표</a></li>
+											<li><a class="dropdown-item" href="<c:url value='/assign/management' />">과제 관리</a></li>										
+											<li><a class="dropdown-item" href="<c:url value='/qnaBoard/list' />">질문 게시판</a></li>
+										</c:when>
+										
+										<c:otherwise>
+											<li><a class="dropdown-item" href="<c:url value='/myCourse/list' />">내 교육과정</a></li>
+											<li><a class="dropdown-item" href="<c:url value='/preCourse/list' />">내 사전학습</a></li>
+											<li><a class="dropdown-item" href="<c:url value='/schedule' />">일정표</a></li>
+											<li><a class="dropdown-item" href="<c:url value='/assign/list' />">내 과제</a></li>
+											<li><a class="dropdown-item" href="<c:url value='/qnaBoard/list' />">질문 게시판</a></li>								
+										</c:otherwise>
+									</c:choose>
 								</ul>
 							</li>
 							
@@ -56,7 +68,7 @@
 						
 						<ul class="navbar-nav ml-auto mt-10">
 							<c:choose>
-								<c:when test="${not empty sessionScope.loginAccount }">
+								<c:when test="${ not empty sessionScope.loginAccount }">
 									<span style="font-size: 13px; text-align: left; margin-right: 5px;">${sessionScope.loginAccount.name }님!<br> 환영합니다.</span>
 									<a class="nav-link login-button" href="#" onclick="logout(event)">로그아웃</a>
 								</c:when>

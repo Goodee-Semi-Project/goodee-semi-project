@@ -80,7 +80,7 @@ public class NoticeUpdateServlet extends HttpServlet {
         int accountNo = loginAccount.getAccountNo();
 
         // 2. 새 파일 업로드 시도
-        Part newPart = request.getPart("upfile");
+        Part newPart = request.getPart("noticeFile");
         Attach newAttach = null;
 
         if (newPart != null && newPart.getSize() > 0) {

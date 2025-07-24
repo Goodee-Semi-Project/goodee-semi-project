@@ -46,29 +46,47 @@
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
 		function deleteLike(pickNo) {
-			if (confirm("찜 목록에서 제거하시겠습니까?")) {
-				const likeFlag = "DELETE";
-				
-				$.ajax({
-					url : "/myCourse/like",
-					type : "POST",
-					data : {
-						likeFlag : likeFlag,
-						pickNo : pickNo
-					},
-					dataType : "JSON",
-					success : function(data) {
-						alert(data.resultMsg);
-						
-						if (data.resultCode == 200) {
-							location.href = "<%= request.getContextPath() %>/myCourse/likeList";
+			Swal.fire({
+				text: "찜 목록에서 제거하시겠습니까?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "제거",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					const likeFlag = "DELETE";
+					
+					$.ajax({
+						url : "/myCourse/like",
+						type : "POST",
+						data : {
+							likeFlag : likeFlag,
+							pickNo : pickNo
+						},
+						dataType : "JSON",
+						success : function(data) {
+							if (data.resultCode == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.resultMsg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/myCourse/likeList";					    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.resultMsg});
+							}
+						},
+						error : function() {
+							Swal.fire({ icon: "error", text: "찜 목록에서 제거 중 오류가 발생했습니다."});
 						}
-					},
-					error : function() {
-						alert("처리 중 오류가 발생했습니다.");
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 	</script>
 </body>
