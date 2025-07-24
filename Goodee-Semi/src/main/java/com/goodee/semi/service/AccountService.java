@@ -43,7 +43,7 @@ public class AccountService {
 				result = accountDao.insertAccountInfo(session, account);
 			}
 			
-			if (result > 0) {
+			if (result > 0 && attach != null) {
 				attach.setTypeNo(Attach.ACCOUNT);
 				attach.setPkNo(account.getAccountNo());
 				result = accountDao.insertAttach(session, attach);

@@ -24,9 +24,12 @@
 	          <h3 class="bg-gray p-4">REGISTER</h3>
 	          <form id="registerForm">
 	            <fieldset class="p-4">
-	              <input class="form-control mb-2" type="text" id="accountId" name="accountId" placeholder="아이디" required>
-	              <input class="form-control mb-2" type="password" id="accountPw" name="accountPw" placeholder="비밀번호" required>
-	              <input class="form-control mb-5" type="password" id="accountPwChk" placeholder="비밀번호 확인" required>
+	              <input class="form-control mb-2" type="text" id="accountId" name="accountId" placeholder="아이디" onchange="idCheck()" required>
+	              <p class="ml-2 mb-2" id="idCheck" style="height: 25px;"></p>
+	              <input class="form-control mb-2" type="password" id="accountPw" name="accountPw" placeholder="비밀번호" onchange="pwCheck()" required>
+	              <p class="ml-2 mb-2" id="pwCheck" style="height: 25px;"></p>
+	              <input class="form-control mb-2" type="password" id="accountPwChk" placeholder="비밀번호 확인" onchange="pwCheckResult()" required>
+	              <p class="ml-2 mb-5" id="pwCheckResult" style="height: 25px;"></p>
 	              
 	              <div style="display: flex; align-items: center; width: 100%;">
 	             		<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da;" id="preview" />
@@ -97,6 +100,72 @@
 		  } else {
 		    document.getElementById('preview').src = "";
 		  }
+		}
+		
+		function idCheck() {
+			const accountId = $("#accountId").val();
+			const idReg = /^[a-z0-9]{4,16}$/
+			
+			if (!idReg.test(accountId)) {
+				$("#accountId").css("border-color", "red");
+				$("#idCheck").css("color", "red");
+				$("#idCheck").text("사용할 수 없는 아이디입니다.");
+				return;
+			}
+			
+			$.ajax({
+				url : "/account/idCheck",
+				type : "POST",
+				data : {
+					accountId : accountId
+				},
+				dataType : "JSON",
+				success : function(data) {
+					if (data.resultCode == 500) {
+						$("#accountId").css("border-color", "red");
+						$("#idCheck").css("color", "red");
+						$("#idCheck").text(data.resultMsg);
+					} else {
+						$("#accountId").css("border-color", "rgb(16, 185, 129)");
+						$("#idCheck").css("color", "rgb(16, 185, 129)");
+						$("#idCheck").text(data.resultMsg);
+					}
+				},
+				error : function() {
+					alert("아이디를 확인하는 중 오류가 발생했습니다.");
+				}
+			});
+			
+		}
+		
+		function pwCheck() {
+			const accountPw = $("#accountPw").val();
+			const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/
+			
+			if (!pwReg.test(accountPw)) {
+				$("#accountPw").css("border-color", "red");
+				$("#pwCheck").css("color", "red");
+				$("#pwCheck").text("사용할 수 없는 비밀번호입니다.");
+			} else {
+				$("#accountPw").css("border-color", "rgb(16, 185, 129)");
+				$("#pwCheck").css("color", "rgb(16, 185, 129)");
+				$("#pwCheck").text("사용 가능한 비밀번호입니다.");
+			}
+		}
+		
+		function pwCheckResult() {
+			const accountPw = $("#accountPw").val();
+			const accountPwChk = $("#accountPwChk").val();
+			
+			if (accountPw !== accountPwChk) {
+				$("#accountPwChk").css("border-color", "red");
+				$("#pwCheckResult").css("color", "red");
+				$("#pwCheckResult").text("비밀번호가 일치하지 않습니다.");
+			} else {
+				$("#accountPwChk").css("border-color", "rgb(16, 185, 129)");
+				$("#pwCheckResult").css("color", "rgb(16, 185, 129)");
+				$("#pwCheckResult").text("비밀번호가 일치합니다.");
+			}
 		}
 	</script>
 	
