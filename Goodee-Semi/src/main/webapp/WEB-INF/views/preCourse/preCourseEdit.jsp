@@ -195,6 +195,9 @@
 			alert('동영상 파일만 첨부할 수 있습니다!')
 		} else {
 			if (confirm('사전 교육을 수정 하시겠습니까?')) {
+				
+				$('#loading').addClass('d-block');
+				
 				$.ajax({
 					url : '/preCourse/edit',
 					type : 'post',
