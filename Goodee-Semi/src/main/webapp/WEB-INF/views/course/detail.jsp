@@ -71,7 +71,14 @@
 								<img class="card-img-top img-fluid" style="width: 800px; height: 400px; object-fit: cover; border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.inputAttach.attachNo }' />" alt="img">
 								<div class="container" style="display: flex; align-items: center; margin: 40px auto;">
 									<div class="col-4">
-										<img class="rounded-circle img-fluid" style="border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.profileAttach.attachNo }' />" alt="profile">
+										<c:choose>
+											<c:when test="${ not empty course.profileAttach }">
+												<img class="rounded-circle img-fluid" style="border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.profileAttach.attachNo }' />" alt="profile">
+											</c:when>
+											<c:otherwise>
+												<img class="rounded-circle img-fluid" style="border: 3px solid white; box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+											</c:otherwise>
+										</c:choose>
 									</div>
 									<div class="col-8">
 										<h3 class="tab-title" style="font-size: 32px;">훈련사 ${ course.name }</h3>
@@ -178,7 +185,14 @@
 						<input id="accountNo" type="hidden" value="${ sessionScope.loginAccount.accountNo }">
 						<c:choose>
 							<c:when test="${ sessionScope.loginAccount.author eq 1 }">
-								<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+								<c:choose>
+									<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
+										<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+									</c:when>
+									<c:otherwise>
+										<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+									</c:otherwise>
+								</c:choose>
 								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
 								<c:if test="${ sessionScope.loginAccount.accountNo eq course.accountNo }">
 									<div class="d-grid gap-2">
@@ -192,7 +206,14 @@
 							</c:when>
 							
 							<c:when test="${ sessionScope.loginAccount.author eq 2 }">
-								<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+								<c:choose>
+									<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
+										<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+									</c:when>
+									<c:otherwise>
+										<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+									</c:otherwise>
+								</c:choose>
 								<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
 								<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
 								<div class="d-grid gap-2">
@@ -252,63 +273,99 @@
 			$("#addLikeBtn").on("click", (event) => {
 				event.preventDefault();
 				
-				if(confirm("찜 목록에 추가하시겠습니까?")) {
-					const likeFlag = "ADD";
-					const accountNo = $("#accountNo").val();
-					const courseNo = $("#courseNo").val();
-					
-					$.ajax({
-						url : "/myCourse/like",
-						type : "POST",
-						data : {
-							likeFlag : likeFlag,
-							accountNo : accountNo,
-							courseNo : courseNo
-						},
-						dataType : "JSON",
-						success : function(data) {
-							alert(data.resultMsg);
-							
-							if (data.resultCode == 200) {
-								location.href = "<%= request.getContextPath() %>/course/detail?no=" + courseNo;
+				Swal.fire({
+					text: "찜 목록에 추가하시겠습니까?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "추가",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						const likeFlag = "ADD";
+						const accountNo = $("#accountNo").val();
+						const courseNo = $("#courseNo").val();
+						
+						$.ajax({
+							url : "/myCourse/like",
+							type : "POST",
+							data : {
+								likeFlag : likeFlag,
+								accountNo : accountNo,
+								courseNo : courseNo
+							},
+							dataType : "JSON",
+							success : function(data) {
+								if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href = "<%= request.getContextPath() %>/course/detail?no=" + courseNo;							    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+							},
+							error : function() {
+								Swal.fire({ icon: "error", text: "찜 목록 추가 중 오류가 발생했습니다."});
 							}
-						},
-						error : function() {
-							alert("찜 목록 추가 중 오류가 발생했습니다.");
-						}
-					});
-				}
+						});
+					}
+				});
 			});
 			
 			$("#removeLikeBtn").on("click", (event) => {
 				event.preventDefault();
 				
-				if (confirm("찜 목록에서 제거하시겠습니까?")) {
-					const likeFlag = "REMOVE";
-					const accountNo = $("#accountNo").val();
-					const courseNo = $("#courseNo").val();
-					
-					$.ajax({
-						url : "/myCourse/like",
-						type : "POST",
-						data : {
-							likeFlag : likeFlag,
-							accountNo : accountNo,
-							courseNo : courseNo
-						},
-						dataType : "JSON",
-						success : function(data) {
-							alert(data.resultMsg);
-							
-							if (data.resultCode == 200) {
-								location.href = "<%= request.getContextPath() %>/course/detail?no=" + courseNo;
+				Swal.fire({
+					text: "찜 목록에서 제거하시겠습니까?",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "제거",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						const likeFlag = "DELETE";
+						const accountNo = $("#accountNo").val();
+						const courseNo = $("#courseNo").val();
+						
+						$.ajax({
+							url : "/myCourse/like",
+							type : "POST",
+							data : {
+								likeFlag : likeFlag,
+								accountNo : accountNo,
+								courseNo : courseNo
+							},
+							dataType : "JSON",
+							success : function(data) {
+								if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href = "<%= request.getContextPath() %>/course/detail?no=" + courseNo;							    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+							},
+							error : function() {
+								Swal.fire({ icon: "error", text: "찜 목록에서 제거 중 오류가 발생했습니다."});
 							}
-						},
-						error : function() {
-							alert("찜 목록 추가 중 오류가 발생했습니다.");
-						}
-					});
-				}
+						});
+					}
+				});
 			});
 			
 			$("#enrollOpen").on("click", (event) => {
@@ -318,33 +375,50 @@
 			});
 			
 			$("#enrollBtn").on("click", (event) => {
-				if (confirm("수강을 신청하시겠습니까?")) {
-					const enrollFlag = "ADD";
-					const courseNo = $("#courseNo").val();
-					const petNo = $("#selectPetForEnroll").val();
-					
-					$.ajax({
-						url : "/myCourse/enroll",
-						type : "POST",
-						data : {
-							enrollFlag : enrollFlag,
-							courseNo : courseNo,
-							petNo : petNo
-						},
-						dataType : "JSON",
-						success : function(data) {
-							alert(data.resultMsg);
-							
-							if (data.resultCode == 200) {
-								location.href = "<%= request.getContextPath() %>/course/detail?no=" + courseNo;
+				Swal.fire({
+					text: "수강을 신청하시겠습니까?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "신청",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						const enrollFlag = "ADD";
+						const courseNo = $("#courseNo").val();
+						const petNo = $("#selectPetForEnroll").val();
+						
+						$.ajax({
+							url : "/myCourse/enroll",
+							type : "POST",
+							data : {
+								enrollFlag : enrollFlag,
+								courseNo : courseNo,
+								petNo : petNo
+							},
+							dataType : "JSON",
+							success : function(data) {
+								if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href = "<%= request.getContextPath() %>/course/detail?no=" + courseNo;							    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+							},
+							error : function() {
+								Swal.fire({ icon: "error", text: "수강 신청 중 오류가 발생했습니다."});
 							}
-						},
-						error : function() {
-							alert("수강 신청 중 오류가 발생했습니다.");
-						}
-					});
-				}
-				
+						});
+					}
+				});
 			});
 			
 		});

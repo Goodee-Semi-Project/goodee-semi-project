@@ -72,61 +72,77 @@ public class PetService {
 	}
 
 	public int deletePet(int petNo) {
-		System.out.println("DeletePetWithAttach() petNo:" + petNo);
-		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		SqlSession session = null;
 		int result = 0;
 		
 		try {
+			session = SqlSessionTemplate.getSqlSession(false);
+			
 			// 1. 반려견 삭제
-			result = dao.deletePet(session, petNo);
+			int petResult = dao.deletePet(session, petNo);
 			
 			// 2. 파일 정보 삭제
-			result = dao.deleteAttach(session, petNo);
+			int attachResult = 1; // 기본값: 성공
+			if(petResult != 0) {
+				if(dao.selectAttachByPetNo(petNo) != null) {
+					attachResult = dao.deleteAttach(session, petNo);					
+				}
+			}
 			
 			// 3. commit 또는 rollback 처리
-			if(result > 0) {
+			if(petResult != 0 && attachResult != 0) {
 				session.commit();
+				result = 1;
 			} else {
 				session.rollback();
 			}			
 		} catch (Exception e) {
+			if(session != null) session.rollback();				
+			System.out.println("[PetService] 반려견 정보 삭제 중 예기치못한 문제 발생: " + e.getMessage());
 			e.printStackTrace();
-			session.rollback();
 		} finally {
-			session.close();
+			if(session != null) session.close();
 		}
 		
 		return result;
 	}
 
 	public int insertPet(Pet pet, Attach attach) {
-		System.out.println("insertPetWithAttach() Pet:" + pet);
-		SqlSession session = SqlSessionTemplate.getSqlSession(false);
+		SqlSession session = null;
 		int result = 0;
 		
 		try {
-			// 1. 반려견 등록
-			result = dao.insertPet(session, pet);
+			session = SqlSessionTemplate.getSqlSession(false);
 			
-			// 2. 파일 정보 등록
-			if(attach != null && result > 0) {
+			// 1. 반려견 정보 등록
+			int petResult = dao.insertPet(session, pet); // insert 결과로 pet 객체에 setPetNo()가 이루어짐
+			
+			// 2. 반려견 이미지 등록
+			int attachResult = 1; // 기본값: 성공
+			if(petResult != 0 && attach != null) {
 				attach.setPkNo(pet.getPetNo());
-				result = dao.insertAttach(session, attach);
+				attachResult = dao.insertAttach(session, attach);
 			}
-			
+
 			// 3. commit 또는 rollback 처리
-			if(result > 0) {
+			if(petResult != 0 && attachResult != 0) {
 				session.commit();
+				result = 1;
+				System.out.println("[PetService] 반려견 정보 등록 성공 - petNo: " + pet.getPetNo()
+									+ ", 이미지 포함: " + (attach == null ? "N" : "Y"));
 			} else {
 				session.rollback();
+				System.out.println("[PetService] 반려견 정보 등록 실패 - petNo: " + pet.getPetNo()
+									+ ", petResult: " + petResult + ",  attachResult: " + attachResult);
 			}			
 		} catch (Exception e) {
+			if (session != null) session.rollback();
+			System.out.println("[PetService] 반려견 정보 등록 중 예기치못한 문제 발생: " + e.getMessage());
 			e.printStackTrace();
-			session.rollback();
 		} finally {
-			session.close();
+			if (session != null) session.close();
 		}
-		
+
 		return result;
 	}
 
@@ -148,4 +164,8 @@ public class PetService {
 		return dao.selectPetImgSavedName(attach);
 	}
 	
+	public Attach selectAttachByPetNo(int petNo) {
+		return dao.selectAttachByPetNo(petNo);
+		
+	}
 }

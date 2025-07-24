@@ -32,14 +32,14 @@
 	      		
 	      		<fieldset class="p-4">
 	      			<div class="mb-2" style="display: flex; justify-content: space-between;">
-	      				<input class="form-control" type="text" id="title" name="title" placeholder="과정명" value="${ course.title }" style="width: 40%; height: 30px; margin: 0 5%;" required>
-	      				<input class="form-control" type="text" id="tag" name="tag" placeholder="#태그 (3개까지 입력 가능)" value="${ course.tag }" style="width: 40%; height: 30px; margin: 0 5%;" required>
+	      				<input class="form-control" type="text" id="title" name="title" placeholder="과정명" value="${ course.title }" style="width: 40%; height: 30px; margin: 0 5%;" >
+	      				<input class="form-control" type="text" id="tag" name="tag" placeholder="#태그 (3개까지 입력 가능)" value="${ course.tag }" style="width: 40%; height: 30px; margin: 0 5%;" >
 	      			</div>
 	      			<div class="mb-4" style="display: flex; justify-content: space-between;">
-	      				<input class="form-control" type="text" id="totalStep" name="totalStep" placeholder="훈련 횟수" value="${ course.totalStep }" style="width: 40%; height: 30px; margin: 0 5%;" required>
-	      				<input class="form-control" type="text" id="capacity" name="capacity" placeholder="최대 수강 인원" value="${ course.capacity }" style="width: 40%; height: 30px; margin: 0 5%;" required>
+	      				<input class="form-control" type="text" id="totalStep" name="totalStep" placeholder="훈련 횟수" value="${ course.totalStep }" style="width: 40%; height: 30px; margin: 0 5%;" >
+	      				<input class="form-control" type="text" id="capacity" name="capacity" placeholder="최대 수강 인원" value="${ course.capacity }" style="width: 40%; height: 30px; margin: 0 5%;" >
 	      			</div>
-	      			<input class="form-control mb-3" type="text" id="subTitle" name="subTitle" placeholder="소주제" value="${ course.subTitle }" style="width: 90%; height: 30px; margin: 0 auto;" required>
+	      			<input class="form-control mb-3" type="text" id="subTitle" name="subTitle" placeholder="소주제" value="${ course.subTitle }" style="width: 90%; height: 30px; margin: 0 auto;" >
 	      			<textarea class="form-control" id="object" name="object" placeholder="내용을 입력하세요." style="width: 90%; height: 400px; margin: 0 auto;">${ course.object }</textarea>
 	      			
 	      			<div class="mt-3 mb-3" style="display: flex; justify-content: center; align-items: center;">
@@ -61,7 +61,7 @@
 	      			</div>
 
 	          	<div class="mt-5" style="display: flex; justify-content: center;">
-	          		<button type="submit" class="btn btn-primary font-weight-bold" style="padding: 10px 20px; margin-right: 20px;">등록</button>
+	          		<button type="submit" class="btn btn-primary font-weight-bold" style="padding: 10px 20px; margin-right: 20px;">수정</button>
 	          		<button type="button" class="btn btn-outline-secondary font-weight-bold" style="padding: 10px 20px;" onclick="history.back()">취소</button>
 	          	</div>
 	        	</fieldset>
@@ -78,7 +78,7 @@
 		const isSameTrainer = $("#isSameTrainer").val();
 		
 		if (myAuthor == 2 || isSameTrainer == "false") {
-			alert("잘못된 접근입니다.");
+			Swal.fire({ icon: "error", text: "잘못된 접근입니다."});
 			location.href = "<%= request.getContextPath() %>/";
 		}
 		
@@ -125,36 +125,54 @@
 			const tagReg = /^#[a-zA-Z가-힣0-9]{1,8}( #[a-zA-Z가-힣0-9]{1,8}){0,2}$/
 			
 			// 유효성 검사
-			if (!title) alert("과정명을 입력해주세요.");
-			else if (!tag) alert("태그를 입력해주세요.");
-			else if (!tagReg.test(tag)) alert("태그를 정확히 입력해주세요.");
-			else if (!subTitle) alert("소주제를 입력해주세요.");
-			else if (!totalStep) alert("훈련 횟수를 입력해주세요.");
-			else if (!capacity) alert("최대 수강 인원을 입력해주세요.");
-			else if (!object) alert("내용을 입력해주세요.");
+			if (!title) Swal.fire({ icon: "error", text: "과정명을 입력해주세요."});
+			else if (!tag) Swal.fire({ icon: "error", text: "태그를 입력해주세요."});
+			else if (!tagReg.test(tag)) Swal.fire({ icon: "error", text: "태그를 정확히 입력해주세요."});
+			else if (!subTitle) Swal.fire({ icon: "error", text: "소주제를 입력해주세요."});
+			else if (!totalStep) Swal.fire({ icon: "error", text: "훈련 횟수를 입력해주세요."});
+			else if (!capacity) Swal.fire({ icon: "error", text: "최대 수강 인원을 입력해주세요."});
+			else if (!object) Swal.fire({ icon: "error", text: "내용을 입력해주세요."});
 			else {
-				if (confirm("수정하시겠습니까?")) {
-					$.ajax({
-						url : "/myCourse/update",
-						type : "POST",
-						data : formData,
-						enctype : "multipart/form-data",
-						contentType : false,
-						processData : false,
-						cache : false,
-						dataType : "JSON",
-						success : function(data) {
-							alert(data.resultMsg);
-							
-							if (data.resultCode == 200) {
-								location.href = "<%= request.getContextPath() %>/myCourse/list";
+				Swal.fire({
+					text: "교육과정을 수정하시겠습니까?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "수정",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url : "/myCourse/update",
+							type : "POST",
+							data : formData,
+							enctype : "multipart/form-data",
+							contentType : false,
+							processData : false,
+							cache : false,
+							dataType : "JSON",
+							success : function(data) {
+								if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href = "<%= request.getContextPath() %>/myCourse/list";						    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+							},
+							error : function() {
+								Swal.fire({ icon: "error", text: "교육과정 수정 중 오류가 발생했습니다."});
 							}
-						},
-						error : function() {
-							alert("오류 발생!!");
-						}
-					});
-				}
+						});
+					}
+				});
 			}
 		});
 	</script>

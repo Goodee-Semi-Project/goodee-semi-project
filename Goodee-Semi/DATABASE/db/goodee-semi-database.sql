@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS `account_info` (
 	`address` VARCHAR(255) NOT NULL,
 	`address_detail` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`info_no`),
-	UNIQUE KEY (`phone`, `email`),
+	UNIQUE KEY (`phone`),
+	UNIQUE KEY (`email`),
 	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 
@@ -67,6 +68,7 @@ CREATE TABLE IF NOT EXISTS `class` (
 	`pet_no` INT NOT NULL,
 	`class_prog` INT NOT NULL DEFAULT 0,
 	PRIMARY KEY (`class_no`),
+	UNIQUE KEY(`course_no`, `pet_no`),
 	FOREIGN KEY (`course_no`) REFERENCES `course`(`course_no`),
 	FOREIGN KEY (`pet_no`) REFERENCES `pet`(`pet_no`)
 );
@@ -127,13 +129,17 @@ CREATE TABLE IF NOT EXISTS `pre_test` (
 	`test_no` INT AUTO_INCREMENT NOT NULL,
 	`pre_no` INT NOT NULL,
 	`test_content` TEXT NOT NULL,
-	`test_answer` VARCHAR(255) NOT NULL,
+	`test_answer` CHAR(5) NOT NULL,
+    `one` TEXT NOT NULL,
+    `two` TEXT NOT NULL,
+    `three` TEXT NOT NULL,
+    `four` TEXT NOT NULL,
 	PRIMARY KEY (`test_no`),
-	FOREIGN KEY (`pre_no`) REFERENCES `pre_course`(`pre_no`)
+	FOREIGN KEY (`pre_no`) REFERENCES `pre_course`(`pre_no`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `pre_progress` (
-	`prog_no` INT AUTO_INCREMENT NOT NULL,
+	`prog_no` INT AUTO_INCREMENT NOT NUFLL,
 	`pre_no` INT NOT NULL,
 	`class_no` INT NOT NULL,
 	`watch_len` TIME NOT NULL DEFAULT '00:00:00',
@@ -198,6 +204,7 @@ CREATE TABLE IF NOT EXISTS `assignment` (
 	`assign_no` INT AUTO_INCREMENT NOT NULL,
 	`class_no` INT DEFAULT NULL,
 	`sched_no` INT DEFAULT NULL,
+  `account_no` INT NOT NULL,
 	`assign_title` VARCHAR(255) NOT NULL DEFAULT '새 과제',
 	`assign_content` TEXT DEFAULT NULL,
 	`assign_receipt` CHAR(1),
@@ -232,12 +239,4 @@ CREATE TABLE IF NOT EXISTS `attachment` (
 	`save_name` VARCHAR(40) NOT NULL,
 	PRIMARY KEY (`attach_no`),
 	FOREIGN KEY (`type_no`) REFERENCES `attach_type`(`type_no`)
-);
-
-CREATE TABLE IF NOT EXISTS `test_select` (
-	`select_no` INT AUTO_INCREMENT NOT NULL,
-	`test_no` INT NOT NULL,
-	`select_content` VARCHAR(255) NOT NULL,
-	PRIMARY KEY (`select_no`),
-	FOREIGN KEY (`test_no`) REFERENCES `pre_test`(`test_no`)
 );

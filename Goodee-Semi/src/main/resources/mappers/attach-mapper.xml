@@ -36,7 +36,10 @@
   <select id="selectAttachOne" parameterType="com.goodee.semi.dto.Attach" resultMap="attachResultMap">
 	  SELECT * 
 	  FROM attachment
-	  WHERE pk_no = #{pkNo}
-	    AND type_no = #{typeNo}
+	  <where>
+	  	pk_no = #{pkNo} AND type_no = #{typeNo}
+	  </where>
+		ORDER BY attach_no DESC
+		LIMIT 1
 	</select>
 </mapper>

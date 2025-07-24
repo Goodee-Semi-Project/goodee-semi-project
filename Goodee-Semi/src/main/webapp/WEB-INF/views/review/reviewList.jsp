@@ -14,69 +14,96 @@
 <%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
 
 <main>
-	<h1>참여 후기</h1>
-
-	<form action="<c:url value='/review/list'/>" id="search" method="get">
-		<div>
+	<h2>참여 후기</h2>
+	
+	<section class="page-search rounded">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="advance-search nice-select-white">
+						<form action="<c:url value='/review/list'/>" id="search" method="get">
+							<div class="form-row align-items-center">
+								<!-- 정렬 방법 -->
+								<div class="form-group col-lg-2 col-md-6">
+									<select class="w-100 form-control my-2 my-lg-0 rounded" name="order">
+										<option value="dsc">정렬</option>
+										<option value="dsc" <c:if test="${ paging.order eq 'dsc' }">selected</c:if> >최신순</option>
+										<option value="asc" <c:if test="${ paging.order eq 'asc' }">selected</c:if> >오래된순</option>
+									</select>
+								</div>
+								<div class="form-group col-lg-2 col-md-6">
+									<select class="w-100 form-control my-2 my-lg-0 rounded" name="category">
+										<option value="reviewTitle">선택</option>
+										<option value="reviewTitle" <c:if test="${ paging.category eq 'reviewTitle' }">selected</c:if> >제목</option>
+										<option value="courseTitle" <c:if test="${ paging.category eq 'courseTitle' }">selected</c:if> >코스명</option>
+										<c:if test="${ loginAccount.author eq 1 }">
+											<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
+										</c:if>
+									</select>
+								</div>
+								<div class="form-group col-xl-6 col-lg-5 col-md-6">
+									<input type="text" class="form-control my-2 my-lg-0 rounded" id="keyword" name="keyword" placeholder="검색" value="${ paging.keyword }">
+								</div>
+								<div class="form-group col-xl-2 col-lg-3 col-md-6">
+									<button class="btn btn-primary active w-100">검색</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
-		<select name="category">
-			<option value="reviewTitle">선택</option>
-			<option value="reviewTitle" <c:if test="${ paging.category eq 'reviewTitle' }">selected</c:if> >제목</option>
-			<option value="courseTitle" <c:if test="${ paging.category eq 'courseTitle' }">selected</c:if> >훈련 코스</option>
-			<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
-		</select>
-		<input type="text" id="keyword" name="keyword" placeholder="검색" value="${ paging.keyword }">
-		<button>검색</button>
-		<!-- 정렬 방법 -->
-		<select name="order">
-			<option value="dsc">정렬</option>
-			<option value="dsc" <c:if test="${ paging.order eq 'dsc' }">selected</c:if> >최신순</option>
-			<option value="asc" <c:if test="${ paging.order eq 'asc' }">selected</c:if> >오래된순</option>
-		</select>
-	</form>
+	</section>
 
 	<section>
-		<div>
-			<a href="/review/write">후기 작성</a>
+		<div class="my-1 w-100 text-right">
+			<a href="/review/write" class="btn btn-primary px-2 py-1" >후기 작성</a>
 		</div>
 		<div>
-			<table>
-				<thead>
+			<table class="table table-hover text-center" style="table-layout:fixed;">
+				<thead class="w-100">
 					<tr>
-						<th>글번호</th>
-						<th>제목</th>
-						<th>작성자</th>
-						<th>작성일</th>
+						<th class="col-2">번호</th>
+						<th class="col-8">제목</th>
+						<th class="col-3">작성자</th>
+						<th class="col-4">작성일</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="r" items="${ reviewList }">
 						<tr>
 							<td>${ r.reviewNo }</td>
-							<td onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
+							<td class="text-truncate" style="cursor: pointer;" onclick="location.href='<c:url value="/review/detail?no=${ r.reviewNo }"/>'">${ r.reviewTitle }</td>
 							<td>${ r.accountId }</td>
-							<td>${ r.regDate }</td>
+							<td>${ r.regDate.substring(0, 10) }</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 		<c:if test="${ not empty reviewList }">
-			<div>
-				<c:if test="${ paging.prev }">
-					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarStart - 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
-						&laquo;
-					</a>
-				</c:if>
-				<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
-					<a href="<c:url value='/review/list?nowPage=${ i }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">${ i }</a>
-				</c:forEach>
-				<c:if test="${ paging.next }">
-					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarEnd + 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
-						&raquo;
-					</a>
-				</c:if>
-				
+			<div class="pagination justify-content-center">
+				<ul class="pagination">
+					<c:if test="${ paging.prev }">
+						<li class="page-item">
+							<a class="page-link" href="<c:url value='/review/list?nowPage=${ paging.pageBarStart - 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
+								&laquo;
+							</a>
+						</li>
+					</c:if>
+					<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
+						<li class="page-item <c:if test='${ i eq paging.nowPage }'>active</c:if>">
+							<a class="page-link" href="<c:url value='/review/list?nowPage=${ i }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">${ i }</a>
+						</li>
+					</c:forEach>
+					<c:if test="${ paging.next }">
+						<li class="page-item">
+							<a class="page-link" href="<c:url value='/review/list?nowPage=${ paging.pageBarEnd + 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
+								&raquo;
+							</a>
+						</li>
+					</c:if>
+				</ul>
 			</div>
 		</c:if>
 	</section>
