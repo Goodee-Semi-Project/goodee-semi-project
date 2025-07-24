@@ -80,6 +80,9 @@ public class ReviewEditServlet extends HttpServlet {
 				request.setAttribute("list", list);
 				request.setAttribute("review", review);
 				request.setAttribute("attach", attach);
+			} else {
+				response.sendRedirect("/review/list");
+				return;
 			}
 		}
 		
