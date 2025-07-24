@@ -27,12 +27,19 @@
 	 			data : { schedNo : schedNo },
 	 		dataType : "json",
 	 		success : function(data) {
-	 			if(data.attend === true) {
+	 			if (data.attend === true) {
 	 				clearInterval(stop);
-	 				alert("출석이 확인되었습니다")
-
-	 				location.href="<%= request.getContextPath() %>/attend/detail?petNo=${sched.petNo}&courseNo=${sched.courseNo}";
-	 			}
+	 				
+					Swal.fire({
+						icon: "success",
+						text: "출석이 확인되었습니다.",
+						confirmButtonText: "확인"
+					}).then((result) => {
+						if (result.isConfirmed) {
+							location.href="<%= request.getContextPath() %>/attend/detail?petNo=${sched.petNo}&courseNo=${sched.courseNo}";					    
+						}
+					});
+				}
 	 		},
 	 		});
 	 	}, 3000);

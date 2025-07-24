@@ -10,13 +10,13 @@
 				<c:choose>
 					<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
 			            <div class="profile-thumb">
-			              <img src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="" class="rounded-circle"/>
+			              <img src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="" class="rounded-circle" style="box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
 			            </div>
 					</c:when>
 					<c:otherwise>
 						<!-- NOTE: 공통 사용 이미지로 -->
 			            <div class="profile-thumb">
-							<img alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"  alt="" class="rounded-circle"/>
+							<img alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"  alt="" class="rounded-circle" style="box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
 			            </div>
 					</c:otherwise>
 				</c:choose>
