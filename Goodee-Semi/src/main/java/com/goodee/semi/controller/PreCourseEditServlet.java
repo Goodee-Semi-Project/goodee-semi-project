@@ -66,9 +66,8 @@ public class PreCourseEditServlet extends HttpServlet {
 			preCourse = preCourseService.selectPreCourse(preNo);
 		}
 		
-		if (preCourse != null && preCourse.getAccountNo() != account.getAccountNo()) {
-			
-			request.getRequestDispatcher("/preCourse/list").forward(request, response);
+		if (preNo == -1 || preCourse != null && preCourse.getAccountNo() != account.getAccountNo()) {
+			response.sendRedirect("/preCourse/list");
 			return;
 		}
 //		Attach attach = preCourseService.selectAttach(preNo);
@@ -150,14 +149,17 @@ public class PreCourseEditServlet extends HttpServlet {
 				if (request.getParameter("size") != null) {
 					size = Integer.parseInt(request.getParameter("size"));
 				}
+				String arrStr = null;
+				if (request.getParameter("arr") != null) {
+					arrStr = request.getParameter("arr");
+				}
 				
-				if (size > 0) {
+				if (size > 0 || arrStr != null) {
 					List<PreTest> list = new ArrayList<PreTest>();
 					
 					int len = 0;
-					if (request.getParameter("arr") != null) {
+					if (arrStr != null) {
 						
-						String arrStr = request.getParameter("arr");
 						String[] arr = arrStr.split(",");
 						len = arr.length;
 						

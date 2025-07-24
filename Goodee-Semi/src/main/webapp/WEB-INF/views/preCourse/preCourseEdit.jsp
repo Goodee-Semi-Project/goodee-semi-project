@@ -142,8 +142,6 @@
 					alert('요청 실패');
 				},
 			});
-			
-			document.querySelector('#test' + num).remove();
 		}
 	}
 
