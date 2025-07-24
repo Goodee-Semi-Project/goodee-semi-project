@@ -108,9 +108,10 @@ public class ScheduleDao implements ScheduleMapper {
 		return result;
 	}
 	
-	public int selectSchedStep(Schedule sched) {
+	@Override
+	public Integer selectSchedStep(Schedule sched) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int result = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectSchedStep", sched);
+		Integer result = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectSchedStep", sched);
 		session.close();
 		return result;
 	}
@@ -121,6 +122,14 @@ public class ScheduleDao implements ScheduleMapper {
 		session.close();
 		
 		return result;
+	}
+	
+	public int selectCountAttend(Schedule sched) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int count = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectCountAttend", sched);
+		session.close();
+		
+		return count;
 	}
 
 }

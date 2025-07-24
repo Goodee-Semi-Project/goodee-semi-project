@@ -7,17 +7,17 @@
 <meta charset="UTF-8">
 <title>QnA게시글 조회</title>
 
-<style>
-	.container button {
-		padding : 5px 20px !important; 
-	}
-	.container .btn-delete {
-		background-color: #dc3545 !important;
-	}
-	.container .btn-update {
-		background-color: #212529 !important;
-	}
-</style>
+	<style>
+		.container button {
+			padding : 5px 20px !important; 
+		}
+		.container .btn-delete {
+			background-color: #dc3545 !important;
+		}
+		.container .btn-update {
+			background-color: #212529 !important;
+		}
+	</style>
 
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
@@ -27,11 +27,12 @@
 	
 	<!-- 회원글 -->
 	<div class="container">
-		<div style="border-bottom: 1px solid #ccc; padding: 15px; display: flex; justify-content: space-between;">
+		<div style="border-bottom: 1px solid #ccc; padding: 15px; position: relative; display: flex; justify-content: space-between; align-items: center;">
 			<div>
 				<span style="font-weight: bold;">[QnA]</span>
+				<span>${ question.accountId }</span>
 			</div>
-			<div>
+			<div style="position: absolute; left: 50%; transform: translateX(-50%);">
 				<span class="h2" style="font-size: 18px;">${ question.questTitle }</span>
 			</div>
 			<div>
@@ -45,12 +46,11 @@
   		</div>
 	</div>	
 
-
 	<!-- 훈련사답변 -->
 	<div class="container">
 		<div class="p-2">
 			<c:if test="${ not empty answer }">
-				<div class="d-flex justify-content-between p-2">
+				<div class="d-flex justify-content-between p-2" id="answer">
 					<div class="d-flex p-1" style="align-items : center">
 						<img src="<c:url value='/filePath?no=${ answer.profileAttach.attachNo }'/>" alt="프로필사진" style="width : 40px; height : 40px; border-radius : 20px; margin : 1px">
 						<div class="mx-2">${ answer.accountId }</div>
@@ -134,6 +134,14 @@
 	</div>
 	
 	<script>
+	function openDeleteQuestionModal() {
+		$("#deleteQuestionModal").modal("show");
+	}
+	
+	function openDeleteAnswerModal() {
+		$("#deleteAnswerModal").modal("show");
+	}
+	
 	function toList() {
 		location.href="<%=request.getContextPath()%>/qnaBoard/list"
 	}
@@ -145,16 +153,13 @@
 	function updateAnswer() {
 		location.href='${request.contextPath()}/qnaBoard/answerUpdate?no=' + ${question.questNo}
 	}
-	
-	function openDeleteQuestionModal() {
-		$("#deleteQuestionModal").modal("show");
-	}
-	
-	function openDeleteAnswerModal() {
-		$("#deleteAnswerModal").modal("show");
-	}
 
 	function updateQuestion() {
+		const isAnswerExist = $("#answer").length > 0;
+		if(isAnswerExist) {
+			alert("답변이 있는 게시글은 수정할 수 없습니다");
+			return;
+		}		
 		location.href="<%=request.getContextPath()%>/qnaBoard/questionUpdate?no=${question.questNo}&accountNo=${question.accountNo}"
 	}
 	
