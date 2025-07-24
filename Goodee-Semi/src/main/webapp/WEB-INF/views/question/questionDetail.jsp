@@ -169,11 +169,18 @@
 				url : "/qnaBoard/questionDelete?no="+${question.questNo},
 				type : "get",
 				success : function(data) {
-					if(data == 1) {
-						alert("삭제되었습니다");
-						location.href = "<%=request.getContextPath() %>/qnaBoard/list";
+					if (data == 1) {
+						Swal.fire({
+							icon: "success",
+							text: "삭제되었습니다.",
+							confirmButtonText: "확인"
+						}).then((result) => {
+							if (result.isConfirmed) {
+								location.href = "<%=request.getContextPath() %>/qnaBoard/list";						    
+							}
+						});
 					} else {
-						alert("답변이 있는 게시물은 삭제할 수 없습니다");
+						Swal.fire({ icon: "error", text: "답변이 있는 게시물은 삭제할 수 없습니다."});
 						$("#deleteQuestionModal").modal("hide");
 					}
 				}
@@ -187,11 +194,18 @@
 				url : "/qnaBoard/answerDelete?no="+${question.questNo},
 				type : "get",
 				success : function(data) {
-					if(data.res_code == 200) {
-						alert(data.res_msg);
-						location.href = "<%=request.getContextPath()%>/qnaBoard/detail?no=" + ${question.questNo};
-					} else if(data.res_code == 500) {
-						alert(data.res_msg);
+					if (data.res_code == 200) {
+						Swal.fire({
+							icon: "success",
+							text: data.res_msg,
+							confirmButtonText: "확인"
+						}).then((result) => {
+							if (result.isConfirmed) {
+								location.href = "<%=request.getContextPath()%>/qnaBoard/detail?no=" + ${question.questNo};						    
+							}
+						});
+					} else {
+						Swal.fire({ icon: "error", text: data.res_msg});
 					}
 				}
 			})				

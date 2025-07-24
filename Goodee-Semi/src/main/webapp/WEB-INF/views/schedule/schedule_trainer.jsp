@@ -14,33 +14,47 @@
 	
 	<script defer src="<c:url value='/static/js/schedule_trainer.js'/>"></script>
 	
+	<!-- FullCalendar 스타일 커스터마이징 -->
+	<link href="<c:url value='/static/css/schedule_calendar.css'/>" rel="stylesheet">
+	
 	<style>
-        /* FullCalendar 일정 스타일 커스터마이징 */
+        /* 모달 스타일 커스터마이징 */
         
-        /* 점(dot) 제거 */
-        .fc-daygrid-event-dot {
-            display: none;
+        /* 모달 창 */
+        .modal-dialog {
+        	width: 350px;
+        }
+        .modal-content {
+        	padding: 10px;
         }
         
-        /* 일정 배경색 및 기본 스타일 설정 */
-        .fc-event {
-            background-color: skyBlue; /* 기본 파란색 */
-            border-radius: 4px;
+        /* 입력 요소 정렬 */
+        .form-group {
+        	display: flex;
+        	flex-direction: column;
+        }
+        .modal-content .form-group:nth-child(n + 4) {
+        	flex-direction: row;
+        	align-items: center;
         }
         
-        /* 일정 텍스트 색상 */
-/*         .fc-event-title div {
-            color: white;
-        } */
-        
-        /* 호버 효과 */
-        .fc-event:hover {
-            background-color: lihgtGray;
+        /* 라벨 스타일 */
+        .form-group label {
+        	width: 30%;
+        	margin-bottom: 0;
+        }
+        .form-group label span {
+        	color: red;
         }
         
-        /* 선택된 일정 스타일 */
-        .fc-event-selected {
-            background-color: #1e4a72;
+        /* 입력 스타일 */
+        .form-group .form-control,
+        .form-group .nice-select {
+        	width: 100%;
+        }
+        .modal-content .form-group:nth-child(n + 4) .form-control,
+        .modal-content .form-group:nth-child(n + 4) .nice-select {
+        	width: 70%;
         }
     </style>
 </head>
@@ -74,54 +88,56 @@
 	
 	<!-- modal -->
 	<!-- 일정 등록/수정 모달 -->
-	<div id="event-modal-box" style="display: none; justify-content: center; align-items: center; position: fixed; z-index: 9999; top: 0; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%;">
-		<div id="event-modal" style="background: white;">
-			<div class="modal-header">
-				<h2 id="modal-title">일정 등록</h2>
-			</div>
-			<div class="modal-body">
-				<form id="modal-form">
-					<div class="form-group">
-						<label for="courseTitle">교육과정명 <span>*</span></label>
-						<select id="course-title" name="courseTitle" required>
-							<option value="" disabled selected>교육과정명 선택</option>
-							<c:forEach var="course" items="${courseList }">
-								<option value="${course.courseNo }">${course.courseTitle }</option>
-							</c:forEach>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="accountName">회원명 <span>*</span></label>
-						<select id="account-name" name="accountName" required disabled>
-							<option value="" disabled selected>회원명 선택</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="petName">반려견명 <span>*</span></label>
-						<select id="pet-name" name="petName" required disabled>
-							<option value="" disabled selected>반려견명 선택</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="schedStep">차시 <span>*</span></label>
-						<select id="sched-step" name="schedStep" required disabled>
-							<option value="" disabled selected>차시 선택</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="start">시작 시간 <span>*</span></label>
-						<input type="time" id="start" name="start" required>
-					</div>
-					<div class="form-group">
-						<label for="end">종료 시간 <span>*</span></label>
-						<input type="time" id="end" name="end" required>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" id="btn-add-event">저장</button>
-				<button type="button" id="btn-delete-event" style="display:none;">삭제</button>
-				<button type="button" id="btn-cancel-event">취소</button>
+	<div id="event-modal-box" class="modal" style="display: none; justify-content: center; align-items: center; position: fixed; z-index: 9999; top: 0; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%;">
+		<div id="event-modal" class="modal-dialog" style="background: white;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 id="modal-title">일정 등록</h2>
+				</div>
+				<div class="modal-body">
+					<form id="modal-form">
+						<div class="form-group">
+							<label for="courseTitle">교육과정명 <span>*</span></label>
+							<select id="course-title" class="nice-select" name="courseTitle" required>
+								<option value="" disabled selected>교육과정명 선택</option>
+								<c:forEach var="course" items="${courseList }">
+									<option value="${course.courseNo }">${course.courseTitle }</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="accountName">회원명 <span>*</span></label>
+							<select id="account-name" class="nice-select" name="accountName" required disabled>
+								<option value="" disabled selected>회원명 선택</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="petName">반려견명 <span>*</span></label>
+							<select id="pet-name" class="nice-select" name="petName" required disabled>
+								<option value="" disabled selected>반려견명 선택</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="schedStep">차시 <span>*</span></label>
+							<select id="sched-step" class="nice-select" name="schedStep" required disabled>
+								<option value="" disabled selected>차시 선택</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="start">시작 시간 <span>*</span></label>
+							<input type="time" class="form-control" id="start" name="start" required>
+						</div>
+						<div class="form-group">
+							<label for="end">종료 시간 <span>*</span></label>
+							<input type="time" class="form-control" id="end" name="end" required>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btn-add-event" class="btn btn-primary">저장</button>
+					<button type="button" id="btn-delete-event" class="btn btn-danger" style="display:none;">삭제</button>
+					<button type="button" id="btn-cancel-event" class="btn btn-secondary">취소</button>
+				</div>
 			</div>
 		</div>
 	</div>

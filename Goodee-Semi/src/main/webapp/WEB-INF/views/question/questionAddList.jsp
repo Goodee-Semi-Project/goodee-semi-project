@@ -94,12 +94,12 @@
 				
 				if(!qnaTitle) {
 					$("#addModal").modal("hide");
-					alert("제목을 입력해주세요");
+					Swal.fire({ icon: "error", text: "제목을 입력해주세요."});
 					return;
 				}
 				if(!qnaContent) {
 					$("#addModal").modal("hide");
-					alert("내용을 입력해주세요");
+					Swal.fire({ icon: "error", text: "내용을 입력해주세요."});
 					return;
 				}
 				
@@ -113,9 +113,18 @@
 					},
 					dataType : "json",
 					success : function(data) {
-						alert(data.res_msg);
-						if(data.res_code == 200) {
-							location.href = "<%=request.getContextPath() %>/qnaBoard/list"
+						if (data.res_code == 200) {
+							Swal.fire({
+								icon: "success",
+								text: data.res_msg,
+								confirmButtonText: "확인"
+							}).then((result) => {
+								if (result.isConfirmed) {
+									location.href = "<%=request.getContextPath() %>/qnaBoard/list";							    
+								}
+							});
+						} else {
+							Swal.fire({ icon: "error", text: data.res_msg});
 						}
 					}
 				});

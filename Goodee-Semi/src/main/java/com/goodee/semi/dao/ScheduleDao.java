@@ -45,9 +45,9 @@ public class ScheduleDao implements ScheduleMapper {
 	}
 
 	@Override
-	public int selectClassNo(Schedule sched) {
+	public Integer selectClassNo(Schedule sched) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		int result = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectClassNo", sched);
+		Integer result = session.selectOne("com.goodee.semi.mapper.ScheduleMapper.selectClassNo", sched);
 		session.close();
 		return result;
 	}
