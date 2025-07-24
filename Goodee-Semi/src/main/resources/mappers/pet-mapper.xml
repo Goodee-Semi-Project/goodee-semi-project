@@ -150,9 +150,12 @@
 		FROM pet
 	</select>
 	
-	<select id="selectPetImgSavedName" resultType="string" parameterType="_int">
+	<select id="selectPetImgSavedName" parameterType="com.goodee.semi.dto.Pet" resultType="string">
 		SELECT save_name
 		FROM attachment
-		WHERE attach_no = #{petNo};
+		<where>
+			type_no = #{typeNo}
+			AND pk_no = #{pkNo};
+		</where>
 	</select>
 </mapper>
