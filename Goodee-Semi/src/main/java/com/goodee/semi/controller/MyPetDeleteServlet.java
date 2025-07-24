@@ -19,6 +19,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+// TODO 이미지가 없는 반려견도 삭제 가능하도록 하기
+// TODO 반려견 등록 클릭 시 기본 이미지 안 불러와짐, css 깨짐 
 @WebServlet("/myPet/delete")
 public class MyPetDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

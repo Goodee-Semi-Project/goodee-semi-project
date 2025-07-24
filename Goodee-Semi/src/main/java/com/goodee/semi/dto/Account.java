@@ -12,6 +12,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Account {
+	public static final int TRAINER_AUTHOR = 1;
+	public static final int MEMBER_AUTHOR = 2;
+	
 	private int accountNo;
 	private int author;
 	private String accountId;

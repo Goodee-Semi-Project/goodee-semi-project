@@ -83,7 +83,7 @@
 			
 			if(!questNo || !questTitle || !questContent) {
 				$("#updateModal").modal("hide");
-				alert("제목과 내용을 모두 작성해주세요");
+				Swal.fire({ icon: "error", text: "제목과 내용을 모두 작성해주세요."});
 				return;		
 			}
 			
@@ -97,11 +97,18 @@
 				},
 				dataType : "json",
 				success : function(data) {
-					if(data.res_code == 200) {
-						alert(data.res_msg);
-						location.href='<%=request.getContextPath() %>/qnaBoard/detail?no=' + questNo;
+					if (data.res_code == 200) {
+						Swal.fire({
+							icon: "success",
+							text: data.res_msg,
+							confirmButtonText: "확인"
+						}).then((result) => {
+							if (result.isConfirmed) {
+								location.href='<%=request.getContextPath() %>/qnaBoard/detail?no=' + questNo;					    
+							}
+						});
 					} else {
-						alert(data.res_msg);
+						Swal.fire({ icon: "error", text: data.res_msg});
 					}
 				}
 			});
