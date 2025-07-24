@@ -46,15 +46,31 @@
 		</div>
 	</form>
 </main>
-
+<%@ include file="/WEB-INF/views/include/loading.jsp" %>
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+
+	function contentInput(num) {
+		const $target = document.querySelector('#content' + num);
+	
+		$target.style.height = '202px';
+		$target.style.height = $target.scrollHeight + 'px';
+	}
+
+	const arr = [];
+	function remove2(num) {
+		$('#test' + num).remove();
+		const idx = arr.indexOf(num);
+		arr.splice(idx, 1);
+	}
+
 	let i = 0;
 	function addTest() {
 		document.querySelector('#count').value = ++i;
 		html =`<%@ include file="/WEB-INF/views/preCourse/preTest.jsp" %>`;
-		document.querySelector('#testPart').innerHTML += html;
+		$('#testPart').append(html);
+		arr.push(i);
 	}
 
 	$('#regist').submit(function(e) {
@@ -63,19 +79,21 @@
 		const form = document.querySelector('#regist');
 		const formData = new FormData(form);
 		
+		formData.append('arr', arr);
+		
 		const courseNo = formData.get('courseNo');
 		const title = formData.get('title');
 		const attachName = formData.get('attach').name;
 		
-		for (let j = 1; j <= i; j++) {
-			if (!formData.get('content' + j)) {
+		for (let j = 0; j < arr.length; j++) {
+			if (!formData.get('content' + arr[j])) {
 				alert('테스트 내용을 입력해주세요.');
 				return;
-			} else if (!formData.get('one' + j) || !formData.get('two' + j)
-					|| !formData.get('three' + j) || !formData.get('four' + j)) {
+			} else if (!formData.get('one' + arr[j]) || !formData.get('two' + arr[j])
+					|| !formData.get('three' + arr[j]) || !formData.get('four' + arr[j])) {
 				alert('선택지 내용을 입력해주세요.');
 				return;
-			} else if (!formData.get('quiz' + j)) {
+			} else if (!formData.get('quiz' + arr[j])) {
 				alert('정답을 골라주세요');
 				return;
 			}
@@ -96,6 +114,9 @@
 			alert('동영상 파일만 첨부할 수 있습니다!')
 		} else {
 			if (confirm('사전 교육을 저장 하시겠습니까?')) {
+				
+				$('#loading').addClass('d-block');
+				
 				$.ajax({
 					url : '/preCourse/regist',
 					type : 'post',
