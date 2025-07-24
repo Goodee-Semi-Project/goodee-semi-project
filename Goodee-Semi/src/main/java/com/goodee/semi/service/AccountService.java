@@ -175,4 +175,12 @@ public class AccountService {
 	public int countTotalAccountNo() {
 		return accountDao.countTotalAccountNo();
 	}
+
+	public AccountDetail selectAccountByPhoneAndEmail(String phone, String email) {
+		AccountDetail keyObj = new AccountDetail();
+		keyObj.setPhone(phone);
+		keyObj.setEmail(email);
+		
+		return accountDao.selectAccountByPhoneAndEmail(keyObj);
+	}
 }

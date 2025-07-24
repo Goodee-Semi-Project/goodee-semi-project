@@ -99,6 +99,14 @@
 			P.pet_no = #{petNo}
 		</where>
 	</select>
+	
+	<select id="selectAccountByPhoneAndEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountDetailResultMap">
+		SELECT * FROM account A
+		JOIN account_info AI ON A.account_no = AI.account_no
+		<where>
+			AI.phone = #{phone} AND AI.email = #{email}
+		</where>
+	</select>
 
 	<update id="updateAccountDetail" parameterType="com.goodee.semi.dto.AccountDetail">
 		UPDATE account_info
