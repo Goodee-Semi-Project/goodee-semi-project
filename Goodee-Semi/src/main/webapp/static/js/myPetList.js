@@ -329,9 +329,6 @@ function setupNewPetRegisterEvent(newLi) {
         const accountNo = newLi.querySelector('.account-no').value;
         const petImgInput = newLi.querySelector('.pet-img-input');
         
-		console.log('성별 선택 요소:', petGenderSelect);
-		console.log('성별 값:', petGender);
-        
         // 유효성 검사
         if (!validatePetData(petName, petAge, petGender, petBreed)) {
             return;
