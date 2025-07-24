@@ -251,10 +251,14 @@
 									}
 								});
 							} else {
+								$('#loading').removeClass('d-block');
+								$('#loading').addClass('d-none');
 								Swal.fire({ icon: "error", text: data.res_msg});
 							}
 						},
 						error : function(data) {
+							$('#loading').removeClass('d-block');
+							$('#loading').addClass('d-none');
 							Swal.fire({ icon: "error", text: "수정 중 오류가 발생했습니다."});
 						}
 					});
