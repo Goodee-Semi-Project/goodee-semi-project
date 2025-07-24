@@ -36,15 +36,15 @@
 						<button class="btn btn-primary px-2 py-1" id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'">퀴즈 목록</button>
 					</c:when>
 					<c:otherwise>
-						<button class="btn btn-primary px-2 py-1" id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'" <c:if test="${ preProgress.preProg ne 100 }"> disabled </c:if> >학습 완료</button>
+						<button class="btn btn-primary px-2 py-1" id="test" onclick="location.href='/preCourse/test?no=${ preCourse.preNo }'" <c:if test="${ preProgress.preProg ne 100 }"> disabled </c:if> >퀴즈 풀기</button>
 					</c:otherwise>
 				</c:choose>
 			</div>
 		</div>
 		<c:if test="${ loginAccount.author eq 1 }">
 			<div class="mt-1 d-flex justify-content-end">
-				<a class="btn btn-success px-2 py-1 mr-1" href="/preCourse/edit?no=${ preCourse.preNo }">수정하기</a>
-				<button class="btn btn-danger px-2 py-1" onclick="deletePre()">삭제하기</button>
+				<a class="btn btn-success px-2 py-1 mr-1" href="/preCourse/edit?no=${ preCourse.preNo }">수정</a>
+				<button class="btn btn-danger px-2 py-1" onclick="deletePre()">삭제</button>
 			</div>
 		</c:if>
 	</main>
@@ -58,7 +58,7 @@ if ($('#author').val() != 1) {
 		
 		const vid = document.querySelector('#preVideo');
 		let lastTime = 0;
-		console.log($('#lastTime').val());
+
 		if ($('#lastTime').val()) {
 			lastTime = $('#lastTime').val();
 		}

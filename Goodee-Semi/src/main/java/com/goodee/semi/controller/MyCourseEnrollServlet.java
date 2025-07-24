@@ -41,11 +41,18 @@ public class MyCourseEnrollServlet extends HttpServlet {
 			
 			Course course = courseService.selectCourseOne(request.getParameter("courseNo"));
 			Enroll selectEnroll = courseService.selectEnrollByCourseNoAndPetNo(enroll);
+			PetClass petClass = courseService.selectClassByCourseNoAndPetNo(enroll);
 			
 			if (course.getPetInCourseCount() >= course.getCapacity()) {
 				result = -510;
 			} else if (selectEnroll != null) {
 				result = -511;
+			} else if (petClass != null) {
+				if (petClass.getClassProg() >= 100) {
+					result = -513;
+				} else {
+					result = -512;
+				}
 			} else {
 				result = courseService.insertEnroll(enroll);
 			}
@@ -89,6 +96,12 @@ public class MyCourseEnrollServlet extends HttpServlet {
 		} else if (result == -511) {
 			jsonObj.put("resultCode", "511");
 			jsonObj.put("resultMsg", "이미 수강 신청한 과정입니다.");
+		} else if (result == -512) {
+			jsonObj.put("resultCode", "512");
+			jsonObj.put("resultMsg", "이미 수강중인 과정입니다.");
+		} else if (result == -513) {
+			jsonObj.put("resultCode", "513");
+			jsonObj.put("resultMsg", "이미 수료한 과정입니다.");
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");

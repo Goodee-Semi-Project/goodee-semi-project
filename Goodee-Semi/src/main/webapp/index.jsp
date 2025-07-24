@@ -43,59 +43,71 @@
 		<div class="row">
 			<!-- offer 01 -->
 			<div class="col-12">
-				<div class="trending-ads-slide">
-					<c:forEach var="course" items="${ courseList }" varStatus="index">
-						
-						<div class="col-4" style="max-width : 100%;">
-							<div class="product-item bg-light">
-								<div class="card">
-									<div class="thumb-content">
-										<a href="/course/detail?no=${ course.courseNo }">
-											<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
-										</a>
-									</div>
-									<div class="card-body">
-		    						<h4 class="card-title"><a href="<c:url value='/course/detail?no=${ course.courseNo }' />">${ course.title }</a></h4>
-		    						<p class="card-text">${ course.subTitle }</p>
-		    						<div class="container" style="padding: 0; display: flex; justify-content: space-between;">
-		    							<div class="product-ratings" style="padding: 0;">
-									    	<ul class="list-inline">
-									    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-									    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-									    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-									    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-									    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-									    		<li class="list-inline-item"><span style="font-size: 20px; margin-left: 8px;">4.8</span></li>
-									    	</ul>
-			    						</div>
-			    						<c:choose>
-			    							<c:when test="${ course.petInCourseCount ge course.capacity }">
-			    								<div>
-			    									<button type="button" class="btn btn-secondary" style="padding: 5px 10px;" disabled>수강 불가</button>
-			    								</div>
-			    							</c:when>
-			    							
-			    							<c:otherwise>
-			    								<div>
-			    									<a href="<c:url value='/course/detail?no=${ course.courseNo }' />" class="btn btn-success" style="padding: 5px 10px;">수강 가능</a>
-			    								</div>
-			    							</c:otherwise>
-			    						</c:choose>
-		    						</div>
+				<c:choose>
+					<c:when test="${ not empty courseList }">
+						<div class="trending-ads-slide">
+							<c:forEach var="course" items="${ courseList }" varStatus="index">
+								
+								<div class="col-4" style="max-width : 100%;">
+									<div class="product-item bg-light">
+										<div class="card">
+											<div class="thumb-content">
+												<a href="/course/detail?no=${ course.courseNo }">
+													<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
+												</a>
+											</div>
+											<div class="card-body">
+				    						<h4 class="card-title"><a href="<c:url value='/course/detail?no=${ course.courseNo }' />">${ course.title }</a></h4>
+				    						<p class="card-text">${ course.subTitle }</p>
+				    						<div class="container" style="padding: 0; display: flex; justify-content: space-between;">
+				    							<div class="product-ratings" style="padding: 0;">
+											    	<ul class="list-inline">
+											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+											    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
+											    		<li class="list-inline-item"><span style="font-size: 20px; margin-left: 8px;">4.8</span></li>
+											    	</ul>
+					    						</div>
+					    						<c:choose>
+					    							<c:when test="${ course.petInCourseCount ge course.capacity }">
+					    								<div>
+					    									<button type="button" class="btn btn-secondary" style="padding: 5px 10px;" disabled>수강 불가</button>
+					    								</div>
+					    							</c:when>
+					    							
+					    							<c:otherwise>
+					    								<div>
+					    									<a href="<c:url value='/course/detail?no=${ course.courseNo }' />" class="btn btn-success" style="padding: 5px 10px;">수강 가능</a>
+					    								</div>
+					    							</c:otherwise>
+					    						</c:choose>
+				    						</div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
+								
+							</c:forEach>
 						</div>
-						
-					</c:forEach>
-				</div>
+					</c:when>
+					
+					<c:otherwise>
+						<c:if test="${ not empty requestScope.afterSearch }">
+							<div style="height: 450px; display: flex; justify-content: center; align-items: center;">
+								<h3 style="text-align: center">검색 결과가 없습니다.</h3>						
+							</div>
+						</c:if>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 	</div>
 	</section>
 	
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
-	<c:if test="${ empty requestScope.courseList }">
+	<c:if test="${ empty requestScope.afterSearch }">
 		<script>
 			$(() => {
 				location.href="<%= request.getContextPath() %>/home";

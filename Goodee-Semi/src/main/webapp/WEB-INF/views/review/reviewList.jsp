@@ -35,8 +35,10 @@
 									<select class="w-100 form-control my-2 my-lg-0 rounded" name="category">
 										<option value="reviewTitle">선택</option>
 										<option value="reviewTitle" <c:if test="${ paging.category eq 'reviewTitle' }">selected</c:if> >제목</option>
-										<option value="courseTitle" <c:if test="${ paging.category eq 'courseTitle' }">selected</c:if> >훈련 코스</option>
-										<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
+										<option value="courseTitle" <c:if test="${ paging.category eq 'courseTitle' }">selected</c:if> >코스명</option>
+										<c:if test="${ loginAccount.author eq 1 }">
+											<option value="accountId" <c:if test="${ paging.category eq 'accountId' }">selected</c:if> >작성자</option>
+										</c:if>
 									</select>
 								</div>
 								<div class="form-group col-xl-6 col-lg-5 col-md-6">
@@ -81,20 +83,27 @@
 		</div>
 		<c:if test="${ not empty reviewList }">
 			<div class="pagination justify-content-center">
-				<c:if test="${ paging.prev }">
-					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarStart - 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
-						&laquo;
-					</a>
-				</c:if>
-				<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
-					<a href="<c:url value='/review/list?nowPage=${ i }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">${ i }</a>
-				</c:forEach>
-				<c:if test="${ paging.next }">
-					<a href="<c:url value='/review/list?nowPage=${ paging.pageBarEnd + 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
-						&raquo;
-					</a>
-				</c:if>
-				
+				<ul class="pagination">
+					<c:if test="${ paging.prev }">
+						<li class="page-item">
+							<a class="page-link" href="<c:url value='/review/list?nowPage=${ paging.pageBarStart - 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
+								&laquo;
+							</a>
+						</li>
+					</c:if>
+					<c:forEach var="i" begin="${ paging.pageBarStart }" end="${ paging.pageBarEnd }">
+						<li class="page-item <c:if test='${ i eq paging.nowPage }'>active</c:if>">
+							<a class="page-link" href="<c:url value='/review/list?nowPage=${ i }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">${ i }</a>
+						</li>
+					</c:forEach>
+					<c:if test="${ paging.next }">
+						<li class="page-item">
+							<a class="page-link" href="<c:url value='/review/list?nowPage=${ paging.pageBarEnd + 1 }&category=${ paging.category }&keyword=${ paging.keyword }&order=${ paging.order }'/>">
+								&raquo;
+							</a>
+						</li>
+					</c:if>
+				</ul>
 			</div>
 		</c:if>
 	</section>
