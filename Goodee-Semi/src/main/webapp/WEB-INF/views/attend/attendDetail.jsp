@@ -154,12 +154,20 @@
 					},
 				dataType : "json",
 				success : function(data) {
-					if(data.res_code == 200) {
-						alert(data.res_msg);
-						location.href="<%=request.getContextPath()%>/attend/detail?petNo="+petNo+"&courseNo="+courseNo;
-					} else if(data.res_code == 500) {
-						alert(data.res_msg);
+					if (data.res_code == 200) {
+						Swal.fire({
+							icon: "success",
+							text: data.res_msg,
+							confirmButtonText: "확인"
+						}).then((result) => {
+							if (result.isConfirmed) {
+								location.href="<%=request.getContextPath()%>/attend/detail?petNo="+petNo+"&courseNo="+courseNo;							    
+							}
+						});
+					} else {
+						Swal.fire({ icon: "error", text: data.res_msg});
 					}
+
 				}
 			});
 		})
