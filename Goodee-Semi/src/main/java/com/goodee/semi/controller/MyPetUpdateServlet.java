@@ -114,7 +114,7 @@ public class MyPetUpdateServlet extends HttpServlet {
     				// 기존 이미지파일 삭제
     				// 1. petNo로 기존 이미지파일의 savedName을 가져옴
     				// 2. savedName에 해당하는 파일을 저장소에서 삭제
-    				String oldSavedName = petService.selectPetImgSavedName(pet.getPetNo());
+    				String oldSavedName = petService.selectPetImgSavedName(attach);
     				System.out.println("[MyPetUpdateServlet] 삭제할 파일명: " + oldSavedName);
     				File oldSavedFile = new File(AttachService.getUploadDirectory(Attach.PET) + "/" + oldSavedName);
     				System.out.println("[MyPetUpdateServlet] 삭제할 파일경로: " + oldSavedFile.getAbsolutePath());

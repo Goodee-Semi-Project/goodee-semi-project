@@ -98,9 +98,9 @@ public class PetDao implements PetMapper {
 	}
 	
 	@Override
-	public String selectPetImgSavedName(int petNo) {
+	public String selectPetImgSavedName(Attach attach) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
-		String savedName = session.selectOne("com.goodee.semi.mapper.PetMapper.selectPetImgSavedName", petNo);
+		String savedName = session.selectOne("com.goodee.semi.mapper.PetMapper.selectPetImgSavedName", attach);
 		session.close();
 		
 		return savedName;

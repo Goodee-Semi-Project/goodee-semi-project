@@ -144,8 +144,8 @@ public class PetService {
 		return dao.countTotalPetNo();
 	}
 
-	public String selectPetImgSavedName(int petNo) {
-		return dao.selectPetImgSavedName(petNo);
+	public String selectPetImgSavedName(Attach attach) {
+		return dao.selectPetImgSavedName(attach);
 	}
 	
 }
