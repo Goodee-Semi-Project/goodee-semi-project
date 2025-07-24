@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS `account_info` (
 	`address` VARCHAR(255) NOT NULL,
 	`address_detail` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`info_no`),
-	UNIQUE KEY (`phone`, `email`),
+	UNIQUE KEY (`phone`),
+	UNIQUE KEY (`email`),
 	FOREIGN KEY (`account_no`) REFERENCES `account`(`account_no`)
 );
 
