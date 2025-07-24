@@ -97,7 +97,7 @@
 			alert('해당 과정을 선택해주세요');
 		} else if(!imgExt.includes(attachExt)){
 			alert('이미지 파일만 첨부할 수 있습니다!')
-		} else {
+		} else if(confirm('후기를 등록하시겠습니까?')) {
 			$.ajax({
 				url : '/review/write',
 				type : 'post',
