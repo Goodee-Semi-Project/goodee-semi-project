@@ -45,6 +45,13 @@ public class AssignCreateServlet extends HttpServlet {
 			// TODO 잘못된 접근 예외처리
 		}
 		
+		String savedAssignNo = request.getParameter("save");
+		if (savedAssignNo != null) {
+			Assign assign = service.selectSavedAssign(savedAssignNo);
+			
+			request.setAttribute("savedAssign", assign);
+		}
+		
 		List<Course> courseList = service.selectCourseListByAccountDetail(account);
 		
 		request.setAttribute("courseList", courseList);
@@ -91,13 +98,72 @@ public class AssignCreateServlet extends HttpServlet {
 			jsonObj.put("scheduleList", jsonArr);
 		} 
 		
+		if ("save".equals(flag)) {
+			String savedAssignNo = request.getParameter("savedAssignNo");
+			Assign assign = null;
+			
+			if (savedAssignNo == null) {
+				assign = new Assign();
+				assign.setAccountNo(Integer.parseInt(request.getParameter("trainer")));
+				assign.setAssignReceipt('N');				
+			} else {
+				assign = service.selectSavedAssign(savedAssignNo);
+			}
+			
+			
+			if (request.getParameter("assignTitle") != "") {
+				assign.setAssignTitle(request.getParameter("assignTitle"));				
+			}
+			
+			if (request.getParameter("assignContent") != "") {
+				assign.setAssignContent(request.getParameter("assignContent"));				
+			}
+			
+			if (request.getParameter("assignStart") != "") {
+				assign.setAssignStart(request.getParameter("assignStart"));				
+			}
+			
+			if (request.getParameter("assignEnd") != "") {
+				assign.setAssignEnd(request.getParameter("assignEnd"));				
+			}
+			
+			Part assignPart = null;
+			try {
+				assignPart = request.getPart("assignImage");
+			} catch (IOException | ServletException e) { e.printStackTrace(); }
+			
+			int result = 0;
+			if (savedAssignNo == null) {
+				result = service.insertAssignWithAttach(assign, assignPart);							
+			} else {
+				result = service.updateAssignWithAttach(assign, assignPart);
+			}
+			
+			if (result > 0) {
+				jsonObj.put("resultCode", "200");
+				jsonObj.put("resultMsg", "과제가 임시저장 되었습니다.");
+			} else {
+				jsonObj.put("resultCode", "500");
+				jsonObj.put("resultMsg", "과제 임시저장 중 오류가 발생했습니다.");
+			}
+		}
+		
 		if ("submit".equals(flag)) {
+			String savedAssignNo = request.getParameter("savedAssignNo");
+			Assign assign = null;
+			
+			if (savedAssignNo == null) {
+				assign = new Assign();
+			} else {
+				assign = service.selectSavedAssign(savedAssignNo);
+			}
+			
 			String courseNo = request.getParameter("selectCourse");
 			String petNo = request.getParameter("selectPet");
-			
-			Assign assign = new Assign();
+
 			assign.setClassNo(service.selectClassByCourseNoAndPetNo(courseNo, petNo).getClassNo());
 			assign.setSchedNo(Integer.parseInt(request.getParameter("selectSchedule")));
+			assign.setAccountNo(Integer.parseInt(request.getParameter("trainer")));
 			assign.setAssignTitle(request.getParameter("assignTitle"));
 			assign.setAssignContent(request.getParameter("assignContent"));
 			assign.setAssignStart(request.getParameter("assignStart"));
@@ -109,7 +175,13 @@ public class AssignCreateServlet extends HttpServlet {
 				assignPart = request.getPart("assignImage");
 			} catch (IOException | ServletException e) { e.printStackTrace(); }
 			
-			int result = service.insertAssignWithAttach(assign, assignPart);
+			int result = 0;
+			if (savedAssignNo == null) {
+				result = service.insertAssignWithAttach(assign, assignPart);										
+			} else {
+				result = service.updateAssignWithAttach(assign, assignPart);	
+			}
+			
 			
 			if (result > 0) {
 				jsonObj.put("resultCode", "200");

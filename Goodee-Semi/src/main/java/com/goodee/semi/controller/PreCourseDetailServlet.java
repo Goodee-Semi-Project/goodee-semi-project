@@ -101,7 +101,7 @@ public class PreCourseDetailServlet extends HttpServlet {
 		}
 		
 		String preNo = request.getParameter("preNo");;
-		String videoLen = request.getParameter("videoLen");
+		String videoLen = request.getParameter("videoLen").substring(8);
 		String watchLen = request.getParameter("watchLen");
 		int petNo = -1;
 		if (request.getParameter("petNo") != null && request.getParameter("petNo") != "-1") {
