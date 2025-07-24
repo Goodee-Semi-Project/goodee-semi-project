@@ -50,7 +50,7 @@
 	</section>
 	
 	<div class="text-center">
-		<h1>ㅁㅁㅁ 훈련소</h1>
+		<h1>멍스터클래스 훈련소</h1>
 	</div>
 	
 	<section class="section">
