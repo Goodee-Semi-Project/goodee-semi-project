@@ -51,29 +51,48 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
 	function deleteReview() {
-		if (confirm('정말 삭제하시겠습니까?')) {
-			const reviewNo = $('#reviewNo').val();
-			const accountId = $('#accountId').val();
-			
-			$.ajax({
-				url : '/review/detail',
-				type : 'post',
-				data : {
-					reviewNo : reviewNo,
-					accountId : accountId
-				},
-				dataType : 'json',
-				success : function(data){
-					alert(data.res_msg);
-					if (data.res_code == 200) {
-						location.href="<%= request.getContextPath() %>/review/list";
-					}
-				},
-				error : function(data) {
-					alert('요청 실패');
-				},
-			});
-		}
+		Swal.fire({
+			text: "후기를 삭제하시겠습니까?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "삭제",
+			cancelButtonText: "취소"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				const reviewNo = $('#reviewNo').val();
+				const accountId = $('#accountId').val();
+				
+				$.ajax({
+					url : '/review/detail',
+					type : 'post',
+					data : {
+						reviewNo : reviewNo,
+						accountId : accountId
+					},
+					dataType : 'json',
+					success : function(data){
+						if (data.res_code == 200) {
+							Swal.fire({
+								icon: "success",
+								text: data.res_msg,
+								confirmButtonText: "확인"
+							}).then((result) => {
+								if (result.isConfirmed) {
+									location.href="<%= request.getContextPath() %>/review/list";					    
+								}
+							});
+						} else {
+							Swal.fire({ icon: "error", text: data.res_msg});
+						}
+					},
+					error : function(data) {
+						Swal.fire({ icon: "error", text: "후기 삭제 중 오류가 발생했습니다."});
+					},
+				});
+			}
+		});
 	}
 </script>
 </body>
