@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Schedule;
+import com.goodee.semi.service.CourseService;
 import com.goodee.semi.service.PetService;
 import com.goodee.semi.service.ScheduleService;
 
@@ -21,6 +22,7 @@ public class AttendDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     ScheduleService scheduleService = new ScheduleService();    
     PetService petService = new PetService();
+    CourseService courseService = new CourseService();
 	
     public AttendDetailServlet() {
         super();
@@ -34,9 +36,9 @@ public class AttendDetailServlet extends HttpServlet {
 		Schedule schedule = new Schedule();
 		schedule.setCourseNo(courseNo);
 		schedule.setPetNo(petNo);
-		
 		List<Schedule> scheduleList = scheduleService.selectScheduleListAttend(schedule);
 		Attach petAttach = petService.selectAttachByPetNo(petNo);
+		String courseTitle = courseService.selectCourseOne(request.getParameter("courseNo")).getTitle();
 		
 		// 출석 기록이 없을 경우
 		if(scheduleList.size() == 0) {
@@ -55,6 +57,7 @@ public class AttendDetailServlet extends HttpServlet {
 			request.setAttribute("startEndList", startEndList);
 		}
 		
+		request.setAttribute("courseTitle", courseTitle);
 		request.setAttribute("scheduleList", scheduleList);
 		request.setAttribute("petAttach", petAttach);
 		request.getRequestDispatcher("/WEB-INF/views/attend/attendDetail.jsp").forward(request, response);

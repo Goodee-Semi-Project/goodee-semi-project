@@ -24,7 +24,7 @@
 			      		
 			      		<fieldset class="p-4">
 			      			<div class="mb-2" style="display: flex; justify-content: center;">
-			      				<input class="form-control" type="text" id="noticeTitle" name="noticeTitle" placeholder="제목" style="width: 90%; height: 30px; margin: 0 5%;" required>
+			      				<input class="form-control" type="text" id="noticeTitle" name="noticeTitle" placeholder="제목" style="width: 90%; height: 30px; margin: 0 5%;">
 			      			</div>
 			      			<textarea class="form-control" id="noticeContent" name="noticeContent" placeholder="내용을 입력하세요." style="width: 90%; height: 400px; margin: 0 auto;"></textarea>
 			      			
@@ -126,27 +126,68 @@
         const form = document.getElementById("createNoticeFrm");
         const formData = new FormData(form);
         
-        $.ajax({
-          url : "<%=request.getContextPath()%>/notice/write",
-          type : "post",
-          data : formData,
-          enctype : "multipart/form-data",
-          contentType : false,
-          processData : false,
-          cache : false,
-          dataType : "json",
-          success: function(res){
-            try {
-              alert(res.resultMsg || "등록 결과 수신");
-							
-              if (res.resultCode == "200") {
-                location.href = "<%=request.getContextPath()%>/notice/list";
-              }
-          	} catch (e) {
-            	console.error("🔥 JS 예외 발생:", e);
-          	}
-        	}
-      	});
+        const noticeTitle = formData.get("noticeTitle")?.trim();
+        const noticeContent = formData.get("noticeContent")?.trim();
+        const file = formData.get("noticeFile");
+        
+        if (!noticeTitle) {
+        	Swal.fire({ icon: "error", text: "제목을 입력해주세요."});
+          return;
+        }
+
+        if (!noticeContent) {
+        	Swal.fire({ icon: "error", text: "내용을 입력해주세요."});
+          return;
+        }
+
+          
+        if (file && file.name) {
+          const allowedExt = ["jpg", "jpeg", "png", "gif"];
+          const ext = file.name.split('.').pop().toLowerCase();
+          if (!allowedExt.includes(ext)) {
+        	  Swal.fire({ icon: "error", text: "이미지 파일(jpg, jpeg, png, gif)만 업로드할 수 있습니다."});
+            return;
+          }
+        }
+        
+        Swal.fire({
+					text: "게시글을 등록하시겠습니까?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "등록",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+		          url : "<%=request.getContextPath()%>/notice/write",
+		          type : "post",
+		          data : formData,
+		          enctype : "multipart/form-data",
+		          contentType : false,
+		          processData : false,
+		          cache : false,
+		          dataType : "json",
+		          success: function(data) {
+		        	  if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href="<%=request.getContextPath() %>/notice/list";						    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+		        	}
+		      	});
+					}
+				});
+
   		});
 		});
 	</script>
