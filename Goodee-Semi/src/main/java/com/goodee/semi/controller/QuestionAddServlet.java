@@ -32,7 +32,6 @@ public class QuestionAddServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		
-		
 		int accountNo = Integer.parseInt(request.getParameter("qnaAccountNo"));
 		String questTitle = request.getParameter("qnaTitle").trim();
 		String questContent = request.getParameter("qnaContent").trim();
@@ -49,7 +48,7 @@ public class QuestionAddServlet extends HttpServlet {
 			obj.put("res_msg", "게시글 등록에 실패했습니다.");
 		}
 		
-		response.setContentType("application/json; charset=utf=8");
+		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().print(obj);
 		
 	}
