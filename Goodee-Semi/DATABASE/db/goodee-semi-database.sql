@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `pre_test` (
 );
 
 CREATE TABLE IF NOT EXISTS `pre_progress` (
-	`prog_no` INT AUTO_INCREMENT NOT NUFLL,
+	`prog_no` INT AUTO_INCREMENT NOT NULL,
 	`pre_no` INT NOT NULL,
 	`class_no` INT NOT NULL,
 	`watch_len` TIME NOT NULL DEFAULT '00:00:00',

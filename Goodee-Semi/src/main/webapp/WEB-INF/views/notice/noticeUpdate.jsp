@@ -130,51 +130,69 @@
 		    const content = formData.get("noticeContent")?.trim();
 		    const file = formData.get("noticeFile");
 
-		      // 유효성 검사
-		      if (!title) {
-		        alert("제목을 입력해주세요.");
-		        return;
-		      }
-	
-		      if (!content) {
-		        alert("내용을 입력해주세요.");
-		        return;
-		      }
-	
-		      if (file && file.name) {
-		        const allowedExt = ["jpg", "jpeg", "png", "gif"];
-		        const ext = file.name.split('.').pop().toLowerCase();
-		        if (!allowedExt.includes(ext)) {
-		          alert("이미지 파일(jpg, jpeg, png, gif)만 업로드할 수 있습니다.");
-		          return;
-		        }
-		      }
-	    
-		    if(confirm("수정하시겠습니까?")) {
-		      const form = document.getElementById("updateNoticeFrm");
-		      const formData = new FormData(form);
-		
-		      $.ajax({
-		        url: "<%=request.getContextPath()%>/noticeUpdate",  // ✅ 수정 URL
-		        type: "post",
-		        data: formData,
-		        enctype: "multipart/form-data",
-		        contentType: false,
-		        processData: false,
-		        cache: false,
-		        dataType: "json",
-		        success: function(res) {
-		          alert(res.resultMsg || "수정 결과 수신");
-		
-		          if (res.resultCode == "200") {
-		            location.href = "<%=request.getContextPath()%>/notice/list";
-		          }
-		        },
-		        error: function() {
-		          alert("서버 오류 발생");
-		        }
-		      });
+		    // 유효성 검사
+		    if (!title) {
+		    	Swal.fire({ icon: "error", text: "제목을 입력해주세요."});
+		      return;
 		    }
+	
+		    if (!content) {
+		    	Swal.fire({ icon: "error", text: "내용을 입력해주세요."});
+		      return;
+		    }
+	
+		    if (file && file.name) {
+		      const allowedExt = ["jpg", "jpeg", "png", "gif"];
+		      const ext = file.name.split('.').pop().toLowerCase();
+		      if (!allowedExt.includes(ext)) {
+		        Swal.fire({ icon: "error", text: "이미지 파일(jpg, jpeg, png, gif)만 업로드할 수 있습니다."});
+		        return;
+		      }
+		    }
+	    	
+		    Swal.fire({
+					text: "게시글을 수정하시겠습니까?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "수정",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						const form = document.getElementById("updateNoticeFrm");
+					  const formData = new FormData(form);
+					
+					  $.ajax({
+					    url: "<%=request.getContextPath()%>/noticeUpdate",  // ✅ 수정 URL
+					    type: "post",
+					    data: formData,
+					    enctype: "multipart/form-data",
+					    contentType: false,
+					    processData: false,
+					    cache: false,
+					    dataType: "json",
+					    success: function(data) {
+					    	if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href="<%=request.getContextPath() %>/notice/list";						    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+					    },
+					    error: function() {
+					    	Swal.fire({ icon: "error", text: "게시글 수정 중 오류가 발생했습니다."});
+					    }
+					  });
+					}
+				});
 		    // else를 따로 안 써도, confirm이 false면 그냥 아무 일도 안 하고 끝나게 됨
 		  });
 		});
