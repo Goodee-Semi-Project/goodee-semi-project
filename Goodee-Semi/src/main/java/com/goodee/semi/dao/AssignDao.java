@@ -23,4 +23,42 @@ public class AssignDao {
 		return result;
 	}
 
+	public Assign selectAssign(int assignNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Assign result = session.selectOne("com.goodee.semi.mapper.AssignMapper.selectAssign", assignNo);
+		session.close();
+		
+		return result;
+	}
+
+	public int updateAssign(SqlSession session, Assign assign) {
+		int result = session.update("com.goodee.semi.mapper.AssignMapper.updateAssign", assign);
+		
+		return result;
+	}
+
+	public int deleteAssign(int assignNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.delete("com.goodee.semi.mapper.AssignMapper.deleteAssign", assignNo);
+		session.close();
+		
+		return result;
+	}
+
+	public List<Assign> selectSavedAssignListByAccountNo(int accountNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Assign> result = session.selectList("com.goodee.semi.mapper.AssignMapper.selectSavedAssignListByAccountNo", accountNo);
+		session.close();
+		
+		return result;
+	}
+
+	public Assign selectSavedAssign(int savedAssignNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		Assign result = session.selectOne("com.goodee.semi.mapper.AssignMapper.selectSavedAssign", savedAssignNo);
+		session.close();
+		
+		return result;
+	}
+
 }
