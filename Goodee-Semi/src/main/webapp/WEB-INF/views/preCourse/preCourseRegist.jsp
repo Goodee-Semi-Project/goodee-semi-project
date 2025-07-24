@@ -46,10 +46,18 @@
 		</div>
 	</form>
 </main>
-
+<%@ include file="/WEB-INF/views/include/loading.jsp" %>
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
+
+	function contentInput(num) {
+		const $target = document.querySelector('#content' + num);
+	
+		$target.style.height = '202px';
+		$target.style.height = $target.scrollHeight + 'px';
+	}
+
 	const arr = [];
 	function remove2(num) {
 		$('#test' + num).remove();
@@ -106,6 +114,9 @@
 			alert('동영상 파일만 첨부할 수 있습니다!')
 		} else {
 			if (confirm('사전 교육을 저장 하시겠습니까?')) {
+				
+				$('#loading').addClass('d-block');
+				
 				$.ajax({
 					url : '/preCourse/regist',
 					type : 'post',

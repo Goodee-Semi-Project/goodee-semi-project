@@ -7,7 +7,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<nav class="navbar navbar-expand-lg navbar-light navigation" style="height: 100%;">
-					<a class="navbar-brand" href="<c:url value='/' />">
+					<a class="navbar-brand" href="<c:url value='/home' />">
 						<img src="/static/images/logo.png" alt="">
 					</a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
