@@ -56,9 +56,9 @@
 			
 			const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/
 			
-			if (!accountPw) alert("비밀번호를 입력해주세요.");
-			else if (!pwReg.test(accountPw)) alert("사용 불가능한 비밀번호입니다.");
-			else if (accountPw !== accountPwChk) alert("비밀번호가 일치하지 않습니다.");
+			if (!accountPw) Swal.fire({ icon: "error", text: "비밀번호를 입력해주세요."});
+			else if (!pwReg.test(accountPw)) Swal.fire({ icon: "error", text: "사용할 수 없는 비밀번호입니다."});
+			else if (accountPw !== accountPwChk) Swal.fire({ icon: "error", text: "비밀번호가 일치하지 않습니다."});
 			else {
 				$.ajax({
 					url : "/account/changePw",
@@ -72,14 +72,12 @@
 						$("#afterChangePw").css("display", "block");
 					},
 					error : function() {
-						alert("비밀번호 재설정 중 오류가 발생했습니다.");
+						Swal.fire({ icon: "error", text: "비밀번호 재설정 중 오류가 발생했습니다."});
 					}
 				});
 			}
 		});
 	</script>
-
-	
 </body>
 
 </html>
