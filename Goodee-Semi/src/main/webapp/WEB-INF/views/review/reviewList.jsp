@@ -56,9 +56,11 @@
 	</section>
 
 	<section>
-		<div class="my-1 w-100 text-right">
-			<a href="/review/write" class="btn btn-primary px-2 py-1" >후기 작성</a>
-		</div>
+		<c:if test="${ loginAccount.author != 1 }">
+			<div class="my-1 w-100 text-right">
+				<a href="/review/write" class="btn btn-primary px-2 py-1" >후기 작성</a>
+			</div>
+		</c:if>
 		<div>
 			<c:choose>
 				<c:when test="${ reviewList.size() eq 0 }">
