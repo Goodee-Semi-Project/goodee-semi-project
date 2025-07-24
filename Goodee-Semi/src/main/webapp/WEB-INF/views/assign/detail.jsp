@@ -108,26 +108,44 @@
 		}
 		
 		function assignDelete(assignNo) {
-			if (confirm("과제를 삭제하시겠습니까?")) {
-				$.ajax({
-					url : "/assign/delete",
-					type : "POST",
-					data : {
-						assignNo : assignNo
-					},
-					dataType : "JSON",
-					success : function(data) {
-						alert(data.resultMsg);
-						
-						if (data.resultCode == 200) {
-							location.href = "<%= request.getContextPath() %>/assign/management";
+			Swal.fire({
+				text: "과제를 삭제하시겠습니까?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "저장",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url : "/assign/delete",
+						type : "POST",
+						data : {
+							assignNo : assignNo
+						},
+						dataType : "JSON",
+						success : function(data) {
+							if (data.resultCode == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.resultMsg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/assign/management";							    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.resultMsg});
+							}
+						},
+						error : function() {
+							Swal.fire({ icon: "error", text: "과제 삭제 중 오류가 발생했습니다."});
 						}
-					},
-					error : function() {
-						alert("오류 발생!!");
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 	
 		function assignSubmitFormOpen() {
@@ -153,26 +171,44 @@
 		function assignSubmitDelete(submitNo) {
 			const assignNo = $("#assignNo").val();
 			
-			if (confirm("과제를 삭제하시겠습니까?")) {
-				$.ajax({
-					url : "/assign/submit/delete",
-					type : "POST",
-					data : {
-						submitNo : submitNo
-					},
-					dataType : "JSON",
-					success : function(data) {
-						alert(data.resultMsg);
-						
-						if (data.resultCode == 200) {
-							location.href = "<%= request.getContextPath() %>/assign/detail?assignNo=" + assignNo;
+			Swal.fire({
+				text: "제출한 과제를 삭제하시겠습니까?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "저장",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url : "/assign/submit/delete",
+						type : "POST",
+						data : {
+							submitNo : submitNo
+						},
+						dataType : "JSON",
+						success : function(data) {
+							if (data.resultCode == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.resultMsg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/assign/detail?assignNo=" + assignNo;							    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.resultMsg});
+							}
+						},
+						error : function() {
+							Swal.fire({ icon: "error", text: "과제 삭제 중 오류가 발생했습니다."});
 						}
-					},
-					error : function() {
-						alert("오류 발생!!");
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 		
 		function readURL(input) {
@@ -195,30 +231,48 @@
 				
 				const assignNo = $("#assignNo").val();
 				
-				if (confirm("과제를 수정하시겠습니까?")) {
-					const formData = new FormData(document.getElementById("assignSubmitForm"));
-					
-					$.ajax({
-						url : "/assign/submit/update",
-						type : "POST",
-						data : formData,
-						enctype : "multipart/form-data",
-						contentType : false,
-						processData : false,
-						cache : false,
-						dataType : "JSON",
-						success : function(data) {
-							alert(data.resultMsg);
-							
-							if (data.resultCode == 200) {
-								location.href = "<%= request.getContextPath() %>/assign/detail?assignNo=" + assignNo;
+				Swal.fire({
+					text: "제출한 과제를 수정하시겠습니까?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "저장",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						const formData = new FormData(document.getElementById("assignSubmitForm"));
+						
+						$.ajax({
+							url : "/assign/submit/update",
+							type : "POST",
+							data : formData,
+							enctype : "multipart/form-data",
+							contentType : false,
+							processData : false,
+							cache : false,
+							dataType : "JSON",
+							success : function(data) {
+								if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href = "<%= request.getContextPath() %>/assign/detail?assignNo=" + assignNo;						    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+							},
+							error : function() {
+								Swal.fire({ icon: "error", text: "과제 수정 중 오류가 발생했습니다."});
 							}
-						},
-						error : function() {
-							alert("오류 발생!!");
-						}
-					});
-				}
+						});
+					}
+				});
 			});
 			
 			$("#assignSubmitBtn").on("click", (event) => {
@@ -226,30 +280,48 @@
 				
 				const assignNo = $("#assignNo").val();
 				
-				if (confirm("과제를 제출하시겠습니까?")) {
-					const formData = new FormData(document.getElementById("assignSubmitForm"));
-					
-					$.ajax({
-						url : "/assign/submit/create",
-						type : "POST",
-						data : formData,
-						enctype : "multipart/form-data",
-						contentType : false,
-						processData : false,
-						cache : false,
-						dataType : "JSON",
-						success : function(data) {
-							alert(data.resultMsg);
-							
-							if (data.resultCode == 200) {
-								location.href = "<%= request.getContextPath() %>/assign/detail?assignNo=" + assignNo;
+				Swal.fire({
+					text: "과제를 제출하시겠습니까?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "저장",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						const formData = new FormData(document.getElementById("assignSubmitForm"));
+						
+						$.ajax({
+							url : "/assign/submit/create",
+							type : "POST",
+							data : formData,
+							enctype : "multipart/form-data",
+							contentType : false,
+							processData : false,
+							cache : false,
+							dataType : "JSON",
+							success : function(data) {
+								if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href = "<%= request.getContextPath() %>/assign/detail?assignNo=" + assignNo;					    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+							},
+							error : function() {
+								Swal.fire({ icon: "error", text: "과제 제출 중 오류가 발생했습니다."});
 							}
-						},
-						error : function() {
-							alert("오류 발생!!");
-						}
-					});
-				}
+						});
+					}
+				});
 			});
 		});
 	</script>
