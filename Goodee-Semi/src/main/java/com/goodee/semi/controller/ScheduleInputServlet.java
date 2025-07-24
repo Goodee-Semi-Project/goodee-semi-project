@@ -94,7 +94,9 @@ public class ScheduleInputServlet extends HttpServlet {
 					Integer schedStep = service.selectSchedStep(sched);
 					
 					// 다음 차시 계산
-			    	if(schedStep != null) {
+			    	if(schedStep == null) {
+			    		nextSchedStep = 1;
+			    	} else {
 			    		nextSchedStep = schedStep + 1;
 			    	}
 				}
