@@ -32,6 +32,7 @@ public class NoticeListServlet extends HttpServlet {
 		
 		
 		Notice param = new Notice();
+		param.setNumPerPage(5); // 공지사항 페이지에서는 5개씩 보이도록
 		param.setNowPage(1);
 		// paging이 음수처리 -> 시작을 1로 설정
 		if(nowPage != null) {
