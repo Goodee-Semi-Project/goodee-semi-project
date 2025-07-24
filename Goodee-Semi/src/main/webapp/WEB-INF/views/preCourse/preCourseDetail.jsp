@@ -116,7 +116,7 @@ if ($('#author').val() != 1) {
 				success : function(data) {
 					if (data.res_code == 500) {
 						event.preventDefault();
-						alert(data.res_msg);
+						Swal.fire({ icon: "error", text: data.res_msg});
 					}
 				},
 				error : function() {
@@ -128,28 +128,47 @@ if ($('#author').val() != 1) {
 	})
 } else {
 	function deletePre() {
-		if (confirm('정말 삭제하시겠습니까?')) {
-			const preNo = $('#preNo').val();
-			const attachNo = $('#attachNo').val();
-			
-			$.ajax({
-				url : '/preCourse/delete',
-				type : 'post',
-				data : {
-					preNo : preNo
-				},
-				dataType : 'json',
-				success : function(data){
-					alert(data.res_msg);
-					if (data.res_code == 200) {
-						location.href="<%= request.getContextPath() %>/preCourse/list";
-					}
-				},
-				error : function(data) {
-					alert('요청 실패');
-				},
-			});
-		}
+		Swal.fire({
+			text: "정말 삭제하시겠습니까?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "삭제",
+			cancelButtonText: "취소"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				const preNo = $('#preNo').val();
+				const attachNo = $('#attachNo').val();
+				
+				$.ajax({
+					url : '/preCourse/delete',
+					type : 'post',
+					data : {
+						preNo : preNo
+					},
+					dataType : 'json',
+					success : function(data){
+						if (data.res_code == 200) {
+							Swal.fire({
+								icon: "success",
+								text: data.res_msg,
+								confirmButtonText: "확인"
+							}).then((result) => {
+								if (result.isConfirmed) {
+									location.href="<%= request.getContextPath() %>/preCourse/list";					    
+								}
+							});
+						} else {
+							Swal.fire({ icon: "error", text: data.res_msg});
+						}
+					},
+					error : function(data) {
+						Swal.fire({ icon: "error", text: "삭제 중 오류가 발생했습니다."});
+					},
+				});
+			}
+		});
 	}
 }
 </script>
