@@ -77,85 +77,139 @@
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
 		function enrollYes(enrollNo) {
-			if (confirm("승인하시겠습니까?")) {
-				const enrollFlag = "UPDATE";
-				const status = "Y";
-				
-				$.ajax({
-					url : "/myCourse/enroll",
-					type : "POST",
-					data : {
-						enrollFlag : enrollFlag,
-						enrollNo : enrollNo,
-						status : status
-					},
-					dataType : "JSON",
-					success : function(data) {
-						alert(data.resultMsg);
-						
-						if (data.resultCode == 200) {
-							location.href = "<%= request.getContextPath() %>/myCourse/enrollList";
+			Swal.fire({
+				text: "승인하시겠습니까?",
+				icon: "question",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "승인",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					const enrollFlag = "UPDATE";
+					const status = "Y";
+					
+					$.ajax({
+						url : "/myCourse/enroll",
+						type : "POST",
+						data : {
+							enrollFlag : enrollFlag,
+							enrollNo : enrollNo,
+							status : status
+						},
+						dataType : "JSON",
+						success : function(data) {
+							if (data.resultCode == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.resultMsg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/myCourse/enrollList";							    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.resultMsg});
+							}
+						},
+						error : function() {
+							Swal.fire({ icon: "error", text: "승인 중 오류가 발생했습니다."});
 						}
-					},
-					error : function() {
-						alert("처리 중 오류가 발생했습니다.");
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 		
 		function enrollSorry(enrollNo) {
-			if (confirm("취소하시겠습니까?")) {
-				const enrollFlag = "UPDATE";
-				const status = "N";
-				
-				$.ajax({
-					url : "/myCourse/enroll",
-					type : "POST",
-					data : {
-						enrollFlag : enrollFlag,
-						enrollNo : enrollNo,
-						status : status
-					},
-					dataType : "JSON",
-					success : function(data) {
-						alert(data.resultMsg);
-						
-						if (data.resultCode == 200) {
-							location.href = "<%= request.getContextPath() %>/myCourse/enrollList";
+			Swal.fire({
+				text: "거부하시겠습니까?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "거부",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					const enrollFlag = "UPDATE";
+					const status = "N";
+					
+					$.ajax({
+						url : "/myCourse/enroll",
+						type : "POST",
+						data : {
+							enrollFlag : enrollFlag,
+							enrollNo : enrollNo,
+							status : status
+						},
+						dataType : "JSON",
+						success : function(data) {
+							if (data.resultCode == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.resultMsg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/myCourse/enrollList";							    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.resultMsg});
+							}
+						},
+						error : function() {
+							Swal.fire({ icon: "error", text: "거부 중 오류가 발생했습니다."});
 						}
-					},
-					error : function() {
-						alert("처리 중 오류가 발생했습니다.");
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 		
 		function enrollCancel(enrollNo) {
-			if (confirm("신청을 취소하시겠습니까?")) {
-				const enrollFlag = "DELETE";
-				
-				$.ajax({
-					url : "/myCourse/enroll",
-					type : "POST",
-					data : {
-						enrollFlag : enrollFlag,
-						enrollNo : enrollNo,
-					},
-					dataType : "JSON",
-					success : function(data) {
-						alert(data.resultMsg);
-						
-						if (data.resultCode == 200) {
-							location.href = "<%= request.getContextPath() %>/myCourse/enrollList";
+			Swal.fire({
+				text: "신청을 취소하시겠습니까?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "확인",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					const enrollFlag = "DELETE";
+					
+					$.ajax({
+						url : "/myCourse/enroll",
+						type : "POST",
+						data : {
+							enrollFlag : enrollFlag,
+							enrollNo : enrollNo,
+						},
+						dataType : "JSON",
+						success : function(data) {
+							if (data.resultCode == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.resultMsg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/myCourse/enrollList";							    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.resultMsg});
+							}
+						},
+						error : function() {
+							Swal.fire({ icon: "error", text: "취소 중 오류가 발생했습니다."});
 						}
-					},
-					error : function() {
-						alert("처리 중 오류가 발생했습니다.");
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 	</script>
 </body>
