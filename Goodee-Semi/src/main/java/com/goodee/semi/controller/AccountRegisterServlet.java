@@ -67,18 +67,26 @@ public class AccountRegisterServlet extends HttpServlet {
 		account.setAddress(address);
 		account.setAddressDetail(addressDetail);
 		
-		Part profileImage = null;
-		try {
-			profileImage = request.getPart("profileImage");
-		} catch (IOException | ServletException e) { e.printStackTrace(); }
+		AccountDetail accountInDatabase = accountService.selectAccountByPhoneAndEmail(account.getPhone(), account.getEmail());
 		
-		Attach profileAttach = null;
-		if (profileImage.getSize() > 0) {
-			File uploadDir = AttachService.getUploadDirectory(Attach.ACCOUNT);
-			profileAttach = AttachService.handleUploadFile(profileImage, uploadDir);			
+		int result = 0;
+		if (accountInDatabase == null) {
+			Part profileImage = null;
+			try {
+				profileImage = request.getPart("profileImage");
+			} catch (IOException | ServletException e) { e.printStackTrace(); }
+			
+			Attach profileAttach = null;
+			if (profileImage.getSize() > 0) {
+				File uploadDir = AttachService.getUploadDirectory(Attach.ACCOUNT);
+				profileAttach = AttachService.handleUploadFile(profileImage, uploadDir);			
+			}
+			
+			result = accountService.insertAccount(account, profileAttach);
+		} else {
+			result = -510;
 		}
 		
-		int result = accountService.insertAccount(account, profileAttach);
 		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("resultCode", "500");
@@ -87,6 +95,9 @@ public class AccountRegisterServlet extends HttpServlet {
 		if (result > 0) {
 			jsonObj.put("resultCode", "200");
 			jsonObj.put("resultMsg", "회원 가입에 성공했습니다!");
+		} else if (result == -510) {
+			jsonObj.put("resultCode", "510");
+			jsonObj.put("resultMsg", "동일한 전화번호와 이메일로 중복 가입할 수 없습니다.");
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");
