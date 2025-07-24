@@ -111,7 +111,6 @@ CREATE TABLE IF NOT EXISTS `enroll` (
 	`pet_no` INT NOT NULL,
 	`enroll_status` CHAR(1),
 	PRIMARY KEY (`enroll_no`),
-	UNIQUE KEY(`course_no`, `pet_no`),
 	FOREIGN KEY (`course_no`) REFERENCES `course`(`course_no`),
 	FOREIGN KEY (`pet_no`) REFERENCES `pet`(`pet_no`)
 );
