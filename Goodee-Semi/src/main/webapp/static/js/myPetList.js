@@ -137,8 +137,6 @@ function editPetEvent(petLi) {
     const btnSaveHtml = '<button type="button" class="pet-btn-save btn btn-success" style="padding: 5px 10px;">적용</button>';
     petBtn.innerHTML = btnSaveHtml;
 
-    // TODO 반려견 이미지 삭제 기능 추가
-
     // 4. 반려견 이미지 img 클릭 시 input:file의 클릭 이벤트(파일 선택창 열기)를 발생시킴
     const imgClickEvent = imageClick(petImg, petImgInput);
 
@@ -168,8 +166,6 @@ function editPetEvent(petLi) {
 		const selectedFile = petImgInput.files && petImgInput.files[0] ? petImgInput.files[0] : null;
 		
         const formData = createFormData(petName, petAge, petGender, petBreed, petNo, accountNo, selectedFile);
-
-        // TODO 정보, 사진 유효성 검사 추가하기
 
         // (2) ajax
         $.ajax({
