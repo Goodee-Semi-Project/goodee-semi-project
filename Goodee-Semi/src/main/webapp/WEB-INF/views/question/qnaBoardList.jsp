@@ -99,20 +99,28 @@
 	</section>
 	
 	<c:if test="${ not empty questionList }">
-		<div class="text-center" style="margin-top : 20px;">
-			<c:if test="${ question.prev }">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${ question.pageBarStart - 1 }&keyword=${ question.keyword }&searchBy=${ question.searchBy }&orderBy=${ question.orderBy }'/>">
-				&laquo;
-				</a>
-			</c:if>
-			<c:forEach var="i" begin="${ question.pageBarStart }" end="${ question.pageBarEnd }">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${ i }&keyword=${ question.keyword }&searchBy=${ question.searchBy }&orderBy=${ question.orderBy }'/>">${i}</a>			
-			</c:forEach>
-			<c:if test="${ question.next }">
-				<a href="<c:url value='/qnaBoard/list?nowPage=${ question.pageBarEnd + 1 }&keyword=${ question.keyword }&searchBy=${ uestion.searchBy }&orderBy=${ question.orderBy }'/>">
-					&raquo;
-				</a>
-			</c:if>
+		<div class="pagination justify-content-center" style="margin-top : 20px;">
+			<ul class="pagination">
+				<c:if test="${ question.prev }">
+					<li class="page-item">
+						<a class="page-link" href="<c:url value='/qnaBoard/list?nowPage=${ question.pageBarStart - 1 }&keyword=${ question.keyword }&searchBy=${ question.searchBy }&orderBy=${ question.orderBy }'/>">
+							&laquo;
+						</a>
+					</li>
+				</c:if>
+				<c:forEach var="i" begin="${ question.pageBarStart }" end="${ question.pageBarEnd }">
+					<li class="page-item <c:if test='${ i eq question.nowPage }'>active</c:if>">
+						<a class="page-link" href="<c:url value='/qnaBoard/list?nowPage=${ i }&keyword=${ question.keyword }&searchBy=${ question.searchBy }&orderBy=${ question.orderBy }'/>">${ i }</a>
+					</li>
+				</c:forEach>
+				<c:if test="${ question.next }">
+					<li class="page-item">
+						<a class="page-link" href="<c:url value='/qnaBoard/list?nowPage=${ question.pageBarEnd + 1 }&keyword=${ question.keyword }&searchBy=${ uestion.searchBy }&orderBy=${ question.orderBy }'/>">
+							&raquo;
+						</a>
+					</li>
+				</c:if>
+			</ul>
 		</div>
 	</c:if>
 	

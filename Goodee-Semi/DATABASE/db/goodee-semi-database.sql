@@ -111,7 +111,6 @@ CREATE TABLE IF NOT EXISTS `enroll` (
 	`pet_no` INT NOT NULL,
 	`enroll_status` CHAR(1),
 	PRIMARY KEY (`enroll_no`),
-	UNIQUE KEY(`course_no`, `pet_no`),
 	FOREIGN KEY (`course_no`) REFERENCES `course`(`course_no`),
 	FOREIGN KEY (`pet_no`) REFERENCES `pet`(`pet_no`)
 );
@@ -204,6 +203,7 @@ CREATE TABLE IF NOT EXISTS `assignment` (
 	`assign_no` INT AUTO_INCREMENT NOT NULL,
 	`class_no` INT DEFAULT NULL,
 	`sched_no` INT DEFAULT NULL,
+  `account_no` INT NOT NULL,
 	`assign_title` VARCHAR(255) NOT NULL DEFAULT '새 과제',
 	`assign_content` TEXT DEFAULT NULL,
 	`assign_receipt` CHAR(1),

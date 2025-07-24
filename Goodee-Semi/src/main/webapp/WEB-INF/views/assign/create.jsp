@@ -21,7 +21,10 @@
 	      <h3 class="tab-title" style="text-align: center; font-size: 32px;">새 과제 생성</h3>
 	      <form id="createAssignForm">
 	      	<c:if test="${ sessionScope.loginAccount.author eq 1 }">
-	      		<input type="hidden" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
+	      		<input type="hidden" id="trainer" name="trainer" value="${ sessionScope.loginAccount.accountNo }">
+	      		<c:if test="${ not empty savedAssign }">
+	      			<input type="hidden" id="savedAssignNo" name="savedAssignNo" value="${ savedAssign.assignNo }" />
+	      		</c:if>
 	      		
 	      		<fieldset class="p-4">
 	      			<div style="display: flex; justify-content: center; align-items: center;">
@@ -47,25 +50,25 @@
 	      				</div>
 	      			</div>
 	      			
-	      			<input class="form-control mb-3" type="text" id="assignTitle" name="assignTitle" placeholder="과제 제목" style="width: 90%; height: 42px; margin: 0 auto;" required>
+	      			<input class="form-control mb-3" type="text" id="assignTitle" name="assignTitle" <c:if test="${ not empty savedAssign and not empty savedAssign.assignTitle }">value="${ savedAssign.assignTitle }"</c:if> placeholder="과제 제목" style="width: 90%; height: 42px; margin: 0 auto;" required>
 	      			
 	      			<div class="mt-2 mb-4" style="width: 90%; margin: 0 auto; display: flex; justify-content: space-between;">
 	      				<div style="width: 45%;">
 	      					<label>과제 시작일: </label>
-	      					<input class="form-control" type="datetime-local" id="assignStart" name="assignStart" style="width: 100%; height: 42px; margin: 0 auto;">
+	      					<input class="form-control" type="datetime-local" id="assignStart" name="assignStart" <c:if test="${ not empty savedAssign and not empty savedAssign.assignStart }">value="${ savedAssign.assignStart }"</c:if> style="width: 100%; height: 42px; margin: 0 auto;">
 	      				</div>
 	      				
 	      				<div style="width: 45%;">
 	      					<label>과제 마감일: </label>
-	      					<input class="form-control" type="datetime-local" id="assignEnd" name="assignEnd" style="width: 100%; height: 42px; margin: 0 auto;">
+	      					<input class="form-control" type="datetime-local" id="assignEnd" name="assignEnd" <c:if test="${ not empty savedAssign and not empty savedAssign.assignEnd }">value="${ savedAssign.assignEnd }"</c:if> style="width: 100%; height: 42px; margin: 0 auto;">
 	      				</div>
 	      			</div>
 	      			
-	      			<textarea class="form-control" id="assignContent" name="assignContent" placeholder="내용을 입력하세요." style="width: 90%; height: 400px; margin: 0 auto; resize: none;"></textarea>
+	      			<textarea class="form-control" id="assignContent" name="assignContent" placeholder="내용을 입력하세요." style="width: 90%; height: 400px; margin: 0 auto; resize: none;"><c:if test="${ not empty savedAssign and not empty savedAssign.assignContent }">${ savedAssign.assignContent }</c:if></textarea>
 	      			
 	      			<div class="mt-3 mb-3" style="display: flex; justify-content: center; align-items: center;">
 	      				<div style="width: 45%;">
-	             		<img width="150" height="150" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" id="preview" />
+	             		<img width="150" height="150" <c:if test="${ not empty savedAssign and not empty savedAssign.assignAttach }">src="<c:url value='/filePath?no=${ savedAssign.assignAttach.attachNo }' />"</c:if> style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" id="preview" />
 	             		<label for="assignImage" class="btn btn-outline-secondary" style="padding: 2px 5px;">
 	             			<span style="width: 100px; font-size: 12px;">이미지 선택</span>
 	             		</label>
@@ -115,6 +118,8 @@
 		}
 		
 		$(() => {
+			
+			
 			$("#selectCourse").on("change", (event) => {
 				const courseNo = $("#selectCourse").val();
 				const flag = "pet";
@@ -183,6 +188,36 @@
 					});
 				}
 				
+			});
+			
+			$("#saveAssignForm").on("click", (event) => {
+				event.preventDefault();
+				
+				if (confirm("과제를 임시저장 하시겠습니까?")) {
+					const formData = new FormData(document.getElementById("createAssignForm"));
+					formData.append("flag", "save");
+					
+					$.ajax({
+						url : "/assign/create",
+						type : "POST",
+						data : formData,
+						enctype : "multipart/form-data",
+						contentType : false,
+						processData : false,
+						cache : false,
+						dataType : "JSON",
+						success : function(data) {
+							alert(data.resultMsg);
+							
+							if (data.resultCode == 200) {
+								location.href = "<%= request.getContextPath() %>/assign/management";
+							}
+						},
+						error : function() {
+							alert("오류 발생!!");
+						}
+					});
+				}
 			});
 			
 			$("#submitAssignForm").on("click", (event) => {
