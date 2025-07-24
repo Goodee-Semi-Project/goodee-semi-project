@@ -83,9 +83,9 @@
 			<button class="btn btn-success px-2 py-1 mr-1">수정하기</button>
 		</div>
 	</form>
-
 </main>
 
+<%@include file="/WEB-INF/views/include/loading.jsp" %>
 <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <script type="text/javascript">
