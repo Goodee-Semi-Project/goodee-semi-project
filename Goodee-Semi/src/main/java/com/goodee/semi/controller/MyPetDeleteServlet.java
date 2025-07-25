@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// TODO 이미지가 없는 반려견도 삭제 가능하도록 하기
 @WebServlet("/myPet/delete")
 public class MyPetDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
