@@ -8,7 +8,7 @@
 			<div class="col-md-12">
 				<nav class="navbar navbar-expand-lg navbar-light navigation" style="height: 100%;">
 					<a class="navbar-brand" href="<c:url value='/home' />">
-						<img src="/static/images/logo.png" alt="">
+						<img src="<c:url value='/static/images/logo-mungster.png'/>" alt="">
 					</a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@
 						<ul class="navbar-nav ml-auto mt-10">
 							<c:choose>
 								<c:when test="${ not empty sessionScope.loginAccount }">
-									<span style="font-size: 13px; text-align: left; margin-right: 5px;">${sessionScope.loginAccount.name }님!<br> 환영합니다.</span>
+									<span style="font-size: 13px; text-align: left; margin-right: 17px;">${sessionScope.loginAccount.name }님!<br> 환영합니다.</span>
 									<a class="nav-link login-button" href="#" onclick="logout(event)">로그아웃</a>
 								</c:when>
 								<c:otherwise>

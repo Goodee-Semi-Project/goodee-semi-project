@@ -28,7 +28,7 @@
 								<div class="card">
 									<div class="thumb-content" style="position: relative;">
 										<a href="/course/detail?no=${ course.courseNo }">
-											<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
+											<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" style="width: 100%; height: 180px; object-fit: cover;" alt="img">
 										</a>
 										<c:if test="${ course.classData.classProg eq 100 }">
 											<button type="button" class="btn btn-warning disabled" style="position: absolute; padding: 2px 5px; top: 5%; right: 5%; border: 1px solid white; border-radius: 20px; opacity: 1;"><span style="color: white; font-size: 12px; font-weight: 700; margin: 0;">수료</span></button>

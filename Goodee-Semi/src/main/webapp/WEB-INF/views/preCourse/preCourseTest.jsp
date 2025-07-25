@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,10 +22,11 @@
 			</div>
 		</c:when>
 		<c:otherwise>
+			<% pageContext.setAttribute("newLine", "\n"); %>
 			<c:forEach var="i" begin="0" end="${ list.size() - 1 }">
 				<div class="border rounded px-2 py-1 mb-2">
 					<input type="text" id="answer${ i }" value="${ list[i].testAnswer }" hidden>
-					<p class="border-bottom p-2" style="font-size: 20px;">${ list[i].testContent }</p>
+					<p class="border-bottom p-2" style="font-size: 20px;">${ fn:replace(list[i].testContent, newLine, "<br>") }</p>
 					<div class="d-flex flex-column p-2">
 						<label>
 							<input type="radio" name="quiz${ i }" value="one">
