@@ -12,17 +12,37 @@
 <style>
 	.btn_question_add {
 		padding: 5px 10px;
-    	border-radius: 4px;
-    	background-color: #5672f9;
-    	color: white;
-    	text-align: center;
-    	text-decoration: none;
-    	display: inline-block;
-    	margin: 5px 0;
+     	display: inline-block;
+    	margin: 10px 0;
 	}
 	
 	.btn_question_add:hover {
 		color: white;
+	}
+	
+	.nice-select {
+		background: white !important;
+	}
+	
+	.nice-select > * {
+		color: #5672f9 !important;
+		font-weight: 500;
+	}
+	
+	.nice-select:after {
+		border-bottom: 2px solid #5672f9 !important;
+    	border-right: 2px solid #5672f9 !important;
+	}
+	
+	.btn-primary {
+		/* background: #0984e3 !important; */
+		/* border: 1px solid white !important; */
+		padding: 13.5px;
+		margin-right: 10px !important;
+	}
+	
+	.page-search {
+		
 	}
 	
 </style>
@@ -32,7 +52,7 @@
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
 	
 	<div>
-		<h1 class="text-center">질문 게시판</h1>
+		<h2 class="tab-title mb-4 text-center">질문 게시판</h2>
 	</div>
 	
 	<section class="page-search">
@@ -73,14 +93,14 @@
 	
 	<c:if test="${loginAccount.author eq 2}">
 		<div style="display : flex; justify-content : end;">
-			<a href="<c:url value='/qnaBoard/questionAdd'/>" class="btn_question_add">
+			<a href="<c:url value='/qnaBoard/questionAdd'/>" class="btn_question_add btn btn-success btn-sm mb-4">
 			   질문 등록
 			</a>
 		</div>
 	</c:if>
 	
 	<section>
-		<table class="text-center" style="table-layout: fixed; width: 100%;">
+		<table class="text-center table table-responsive product-dashboard-table" style="table-layout: fixed; width: 100%;">
 			<tbody>
 				<tr style="height: 50px;">
 					<th>글번호</th>
