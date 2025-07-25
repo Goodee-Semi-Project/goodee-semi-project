@@ -57,7 +57,7 @@ public class ReviewWriteServlet extends HttpServlet {
 		}
 		
 		if (account != null && account.getAuthor() == 1) {
-			response.sendRedirect("/review/list");
+			response.sendRedirect("/invalidAccess");
 			return;
 		}
 		
