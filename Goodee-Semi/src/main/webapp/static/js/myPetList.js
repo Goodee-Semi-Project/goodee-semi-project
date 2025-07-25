@@ -272,8 +272,8 @@ function deletePetEvent() {
 						// 삭제한 요소가 현재 페이지의 유일한 항목이었던 경우
 						location.href = `/myPet/list?nowPage=${Math.max(nowPage - 1, 1)}`; // 삭제 후 삭제한 요소 바로 앞의 페이지로 이동하되, 삭제한 요소가 있던 페이지가 1페이지라면 1페이지로 이동 
 					} else {
-						location.reload(true);
 						location.href = `/myPet/list?nowPage=${nowPage}#${prePetNo}`; // 삭제 후 삭제한 요소 바로 위에 있던 항목으로 이동
+						location.reload();
 					}
 				} else {
 					alert('삭제 중 문제가 발생했습니다.');
