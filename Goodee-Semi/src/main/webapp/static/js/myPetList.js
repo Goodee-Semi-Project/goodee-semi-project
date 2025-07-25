@@ -264,38 +264,28 @@ function deletePetEvent() {
 			},
 			dataType: 'json',
 			success: function (data) {
-<<<<<<< HEAD
 				console.log('성공:', data);
 				
 				if(data.resCode === "200") {
-				    alert('삭제되었습니다.');
-					if (prePetNo === null || prePetNo === 'null') {
-						// 삭제한 요소가 현재 페이지의 유일한 항목이었던 경우
-						location.href = `/myPet/list?nowPage=${Math.max(nowPage - 1, 1)}`; // 삭제 후 삭제한 요소 바로 앞의 페이지로 이동하되, 삭제한 요소가 있던 페이지가 1페이지라면 1페이지로 이동 
-					} else {
-						location.href = `/myPet/list?nowPage=${nowPage}#${prePetNo}`; // 삭제 후 삭제한 요소 바로 위에 있던 항목으로 이동
-						location.reload();
-					}
+					Swal.fire({
+						text: "삭제되었습니다.",
+						icon: "success",
+						confirmButtonColor: "#3085d6",
+						confirmButtonText: "확인",
+					}).then((result) => {
+						if (result.isConfirmed) {
+							if (prePetNo === null || prePetNo === 'null') {
+								// 삭제한 요소가 현재 페이지의 유일한 항목이었던 경우
+								location.href = `/myPet/list?nowPage=${Math.max(nowPage - 1, 1)}`; // 삭제 후 삭제한 요소 바로 앞의 페이지로 이동하되, 삭제한 요소가 있던 페이지가 1페이지라면 1페이지로 이동 
+							} else {
+								location.href = `/myPet/list?nowPage=${nowPage}#${prePetNo}`; // 삭제 후 삭제한 요소 바로 위에 있던 항목으로 이동
+								location.reload();
+							}
+						}
+					});
 				} else {
-					alert('삭제 중 문제가 발생했습니다.');
+					Swal.fire({ icon: "error", text: "삭제 중 문제가 발생했습니다."});
 				}
-=======
-				Swal.fire({
-					text: "삭제되었습니다.",
-					icon: "success",
-					confirmButtonColor: "#3085d6",
-					confirmButtonText: "확인",
-				}).then((result) => {
-					if (result.isConfirmed) {
-						$('#delete-modal-box').modal("hide");
-											
-						console.log('응답:', data);
-											
-						// 페이지 새로고침으로 최신 데이터 가져오기
-						location.reload();
-					}
-				});
->>>>>>> 4892d0ae80ec443340be8a475c3590986ab5cb69
 			},
 			error: function (err) {
 			    console.log('에러:', err);
@@ -385,29 +375,16 @@ function setupNewPetRegisterEvent(newLi) {
 	
 		
         $.ajax({
-            url: '/myPet/insert',
-            type: 'post',
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            success: function(data) {
-<<<<<<< HEAD
-                console.log('성공:', data);
-				
-				if(data.resCode === "200") {
-	                alert('등록되었습니다.');
-					
-					location.reload();
-					location.href = `/myPet/list?nowPage=${data.targetPage}#${data.pet.pet_no}`; // 등록 후 해당 항목 페이지로 이동
-				} else {
-					alert('등록 중 문제가 발생했습니다.');
-				}
-            },
-            error: function(err) {
-                console.log('에러:', err);
-                alert('등록 중 문제가 발생했습니다.');
-=======
+          url: '/myPet/insert',
+          type: 'post',
+          data: formData,
+          processData: false,
+          contentType: false,
+          dataType: 'json',
+          success: function(data) {
+            console.log('성공:', data);
+			
+						if(data.resCode === "200") {
 							Swal.fire({
 								text: "등록되었습니다.",
 								icon: "success",
@@ -415,17 +392,18 @@ function setupNewPetRegisterEvent(newLi) {
 								confirmButtonText: "확인",
 							}).then((result) => {
 								if (result.isConfirmed) {
-									console.log('성공:', data);
-
-									location.href = '/myPet/list'; // 등록 후 목록 페이지로 이동
+									location.reload();
+									location.href = `/myPet/list?nowPage=${data.targetPage}#${data.pet.pet_no}`; // 등록 후 해당 항목 페이지로 이동
 								}
 							});
-            },
-            error: function(err) {
-              console.log('에러:', err);
-              Swal.fire({ icon: "error", text: "등록에 실패했습니다."}); alert('');
->>>>>>> 4892d0ae80ec443340be8a475c3590986ab5cb69
-            }
+						} else {
+							Swal.fire({ icon: "error", text: "등록 중 문제가 발생했습니다."});
+						}
+          },
+          error: function(err) {
+						console.log('에러:', err);
+						Swal.fire({ icon: "error", text: "등록에 실패했습니다."});
+          }
         });
     });
 }
