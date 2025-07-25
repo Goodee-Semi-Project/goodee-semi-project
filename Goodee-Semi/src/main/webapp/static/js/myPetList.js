@@ -4,40 +4,38 @@
 // 수정사항 저장 시 유효성 검사
 // 유효성 검사 통과시: '수정되었습니다' 라는 메시지 창이 뜨고, '확인'을 누르면 메시지 창 사라짐
 
-// TODO 반려견 이미지 등록하지 않을 시 기본 이미지 띄우기
-
 //============================= 파일 업로드 검증 =============================
-const petImgInputs = document.querySelectorAll('input[name="petImg"]');
-petImgInputs.forEach(input => validatePetImgData(input));
-
-function validatePetImgData(input) {
-    // 1. input 안의 내용이 바뀔때마다 검증해야 함 => input[name="petImg"]에 change 이벤트리스너 추가
-    input.addEventListener('change', () => {
-        // 2. target 안의 file[0] 받아오기
-        const file = input.files[0];
-
-        // 3. 허용되지 않는 파일이 들어가있다면 target 안에 있는 value를 초기화
-        const allowedTypes = ['image/png', 'image/jpeg'];
-
-        console.log("[validatePetImgData] 업로드 된 파일 타입: ", file.type)
-        console.log("[validatePetImgData] 업로드 된 파일 크기: ", file.type)
-        
-        if(!allowedTypes.includes(file.type)) {
-            Swal.fire({ icon: "error", text: "PNG, JPG, JPEG 파일만 업로드 가능합니다."});
-            input.value = '';
-
-            return;
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('pet-img-input')) {
+        const file = e.target.files[0];
+        if (file) {
+            if (!validateFile(file, e.target)) {
+				e.stopPropagation(); // 다른 이벤트리스너 실행 방지
+				e.preventDefault();   // 기본 동작 방지
+				return;
+            }
         }
-        
-        if(file.size > 5 * 1024 * 1024) { // 파일 크기를 5MB로 제한
-            Swal.fire({ icon: "error", text: "파일 크기는 5MB 이하여야 합니다."});
-            input.value = '';
+    }
+});
 
-            return;
-        }
-
-        console.log('파일 업로드 검증 통과');
-    });
+// 검증 함수 분리
+function validateFile(file, input) {
+    console.log('검증시작');
+	const allowedTypes = ['image/png', 'image/jpeg'];
+    
+    if (!allowedTypes.includes(file.type)) {
+        alert('PNG, JPG, JPEG 파일만 업로드 가능합니다.');
+        input.value = '';
+        return false;
+    }
+    
+    if (file.size > 5 * 1024 * 1024) {
+        alert('파일 크기는 5MB 이하여야 합니다.');
+        input.value = '';
+        return false;
+    }
+    
+    return true;
 }
 
 //============================= 공통 함수 =============================
@@ -103,6 +101,12 @@ function setupImagePreview(petImg, petImgInput) {
     petImgInput.addEventListener('change', function() {
         const file = this.files[0];
         if (file) {
+			// 미리보기 전에 한 번 더 검증
+			if (!validateFile(file, this)) {
+			    return; // 검증 실패시 미리보기 안 함
+			}
+			
+			// 검증 통과시에만 미리보기
             const reader = new FileReader();
             reader.onload = function(e) {
                 petImg.src = e.target.result; // 선택한 이미지를 img 태그에 표시
@@ -134,7 +138,7 @@ function editPetEvent(petLi) {
     
     // 3. 버튼 바꾸기
     const oriPetBtnHtml = petBtn.innerHTML;
-    const btnSaveHtml = '<button type="button" class="pet-btn-save btn btn-success" style="padding: 5px 10px;">적용</button>';
+    const btnSaveHtml = '<button type="button" class="pet-btn-save btn btn-success">적용</button>';
     petBtn.innerHTML = btnSaveHtml;
 
     // 4. 반려견 이미지 img 클릭 시 input:file의 클릭 이벤트(파일 선택창 열기)를 발생시킴
@@ -227,10 +231,16 @@ document.querySelectorAll('.pet-btn-up').forEach(btn => {
 // 삭제 모달을 보여주는 함수
 function showDeleteModal(petLi) {
     const petNo = petLi.querySelector('.pet-no').value;
+    const prePetLi = petLi.previousElementSibling;
+	let prePetNo = null;
+	if (prePetLi !== null) {
+		prePetNo = prePetLi.querySelector('.pet-no').value;	
+	}
     const confirmBtn = document.querySelector('#delete-confirm-btn');
 
-	// petNo를 data 속성에 저장해 둠
+	// 현재 항목의 petNo, 바로 전 항목의 petNo를 data 속성에 저장해 둠
 	confirmBtn.setAttribute('data-pet-no', petNo);
+	confirmBtn.setAttribute('data-pet-no-pre', prePetNo);
 	document.querySelector('#delete-input').value = ''; // 입력창 초기화
 	$('#delete-modal-box').modal("show");
 }
@@ -238,7 +248,11 @@ function showDeleteModal(petLi) {
 // 삭제 확인 버튼 클릭 시 이벤트 ('삭제' 텍스트 입력 확인 후 실제 삭제)
 function deletePetEvent() {
 	const petNo = document.querySelector('#delete-confirm-btn').getAttribute('data-pet-no');
+	const prePetNo = document.querySelector('#delete-confirm-btn').getAttribute('data-pet-no-pre');
+	console.log(prePetNo);
 	const val = document.querySelector('#delete-input').value;
+	const nowPage = new URL(window.location.href).searchParams.get('nowPage');
+	console.log(nowPage);
 	
 	if (val === '삭제') {
 		// 삭제 로직 실행
@@ -250,6 +264,22 @@ function deletePetEvent() {
 			},
 			dataType: 'json',
 			success: function (data) {
+<<<<<<< HEAD
+				console.log('성공:', data);
+				
+				if(data.resCode === "200") {
+				    alert('삭제되었습니다.');
+					if (prePetNo === null || prePetNo === 'null') {
+						// 삭제한 요소가 현재 페이지의 유일한 항목이었던 경우
+						location.href = `/myPet/list?nowPage=${Math.max(nowPage - 1, 1)}`; // 삭제 후 삭제한 요소 바로 앞의 페이지로 이동하되, 삭제한 요소가 있던 페이지가 1페이지라면 1페이지로 이동 
+					} else {
+						location.href = `/myPet/list?nowPage=${nowPage}#${prePetNo}`; // 삭제 후 삭제한 요소 바로 위에 있던 항목으로 이동
+						location.reload();
+					}
+				} else {
+					alert('삭제 중 문제가 발생했습니다.');
+				}
+=======
 				Swal.fire({
 					text: "삭제되었습니다.",
 					icon: "success",
@@ -265,9 +295,15 @@ function deletePetEvent() {
 						location.reload();
 					}
 				});
+>>>>>>> 4892d0ae80ec443340be8a475c3590986ab5cb69
 			},
 			error: function (err) {
 			    console.log('에러:', err);
+				
+				alert('삭제 중 문제가 발생했습니다.');
+			},
+			complete: function () {
+				$('#delete-modal-box').modal("hide");
 			}
 		});
 	} else {
@@ -291,38 +327,38 @@ document.querySelector('#delete-confirm-btn').addEventListener('click', deletePe
 // 새 반려견 정보 입력을 위한 HTML 생성 함수
 function createNewPetItemHTML(accountNo) {
     return 	`
-									<div class="container mb-3" style="display: flex; align-items: center; padding: 5px; border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">
-										<div class="col-3">
-											<input type="file" class="pet-img-input" name="petImg" style="display: none;">
-											<img width="150" height="150" src="/static/images/default-pet.png" class="pet-img" style="padding: 5px; margin-right: 10px; border: 1px solid #ced4da; object-fit: contain;" alt="반려견 이미지">						
-										</div>
-										<div class="pet-detail col-7" style="display: flex; align-items: center;">
-											<div style="width: 60%; text-align: center;">
-												<label>이름: </label>
-												<input type="text" class="form-control pet-name mb-3" style="width: 80%; display: inline-block;" placeholder="이름">
-												<br>
-												<label>견종: </label>
-												<input type="text" class="form-control pet-breed" style="width: 80%; display: inline-block;" placeholder="견종">							
-											</div>
-											
-											<div style="width: 40%; margin-left: 20px; text-align: left;">
-												<label>나이: </label>
-												<input type="text" class="form-control pet-age mb-3" style="width: 60%; display: inline-block;" placeholder="나이">
-												<br>
-												<label>성별: </label>
-												<select class="pet-gender" name="petGender" required>
-													<option value="" selected>성별</option>
-													<option value="M">남</option>
-													<option value="F">여</option>
-												</select>
-											</div>
-											<input type="hidden" class="account-no" value="${accountNo }">
-										</div>
-										<div class="pet-btn col-2" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-											<button class="pet-btn-up btn btn-success mb-3" style="padding: 5px 10px;">등록</button>
-											<button class="pet-btn-del btn btn-outline-secondary" style="padding: 5px 10px;">취소</button>
-										</div>
-									</div>
+			<div class="container mb-3">
+				<div class="col-3">
+					<input type="file" class="pet-img-input" name="petImg">
+					<img width="150" height="150" src="/static/images/user/pet_profile.png" class="pet-img" alt="반려견 이미지">						
+				</div>
+				<div class="pet-detail col-7">
+					<div>
+						<label>이름: </label>
+						<input type="text" class="form-control pet-name mb-3" placeholder="이름">
+						<br>
+						<label>견종: </label>
+						<input type="text" class="form-control pet-breed" placeholder="견종">							
+					</div>
+					
+					<div>
+						<label>나이: </label>
+						<input type="number" class="form-control pet-age mb-3" placeholder="나이">
+						<br>
+						<label>성별: </label>
+						<select class="pet-gender" name="petGender" required>
+							<option value="" selected>성별</option>
+							<option value="M">남</option>
+							<option value="F">여</option>
+						</select>
+					</div>
+					<input type="hidden" class="account-no" value="${accountNo }">
+				</div>
+				<div class="pet-btn col-2">
+					<button class="pet-btn-up btn btn-success mb-3">등록</button>
+					<button class="pet-btn-del btn btn-outline-secondary">취소</button>
+				</div>
+			</div>
     `;
 }
 
@@ -337,14 +373,17 @@ function setupNewPetRegisterEvent(newLi) {
         const accountNo = newLi.querySelector('.account-no').value;
         const petImgInput = newLi.querySelector('.pet-img-input');
         
+		console.log(petName, petAge, petGenderSelect, petGender, petBreed, accountNo, petImgInput.files[0]);
+		
         // 유효성 검사
         if (!validatePetData(petName, petAge, petGender, petBreed)) {
             return;
         }
-        
-        // 등록용 FormData 생성 (petNo는 null로 전달)
-        const formData = createFormData(petName, petAge, petGender, petBreed, null, accountNo, petImgInput.files[0]);
 
+		// 등록용 FormData 생성 (petNo는 null로 전달)
+        const formData = createFormData(petName, petAge, petGender, petBreed, null, accountNo, petImgInput.files[0]);
+	
+		
         $.ajax({
             url: '/myPet/insert',
             type: 'post',
@@ -353,6 +392,22 @@ function setupNewPetRegisterEvent(newLi) {
             contentType: false,
             dataType: 'json',
             success: function(data) {
+<<<<<<< HEAD
+                console.log('성공:', data);
+				
+				if(data.resCode === "200") {
+	                alert('등록되었습니다.');
+					
+					location.reload();
+					location.href = `/myPet/list?nowPage=${data.targetPage}#${data.pet.pet_no}`; // 등록 후 해당 항목 페이지로 이동
+				} else {
+					alert('등록 중 문제가 발생했습니다.');
+				}
+            },
+            error: function(err) {
+                console.log('에러:', err);
+                alert('등록 중 문제가 발생했습니다.');
+=======
 							Swal.fire({
 								text: "등록되었습니다.",
 								icon: "success",
@@ -369,15 +424,24 @@ function setupNewPetRegisterEvent(newLi) {
             error: function(err) {
               console.log('에러:', err);
               Swal.fire({ icon: "error", text: "등록에 실패했습니다."}); alert('');
+>>>>>>> 4892d0ae80ec443340be8a475c3590986ab5cb69
             }
         });
     });
 }
 
 // 새 반려견 삭제 버튼 이벤트 설정 함수 (DOM에서 제거)
-function setupNewPetDeleteEvent(newLi) {
+function setupNewPetDeleteEvent(newLi, isMsgDeleted, msgText) {
     newLi.querySelector('.pet-btn-del').addEventListener('click', () => {
-        newLi.remove(); // 새로 추가된 아이템을 DOM에서 제거
+		// 메시지 다시 추가
+		if(isMsgDeleted) {
+			const msg = document.createElement('h3');
+			msg.setAttribute('id', 'msg');
+			msg.textContent = msgText;
+			newLi.parentElement.appendChild(msg);
+		}
+		
+		newLi.remove(); // 새로 추가된 아이템을 DOM에서 제거
     });
 }
 
@@ -397,15 +461,21 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
     const petList = document.querySelector('#pet-list');
     const newLi = document.createElement('li');
     const accountNo = document.querySelector('#add-pet-btn').getAttribute('data-account-no');
-    
-    console.log(accountNo);
 
-    // 새 반려견 등록 폼 HTML 생성 및 추가
-    newLi.innerHTML = createNewPetItemHTML(accountNo);
+	// 새 반려견 등록 폼 HTML 생성 및 추가
+	
+	// 만약 첫 등록이라 페이지에 "등록해주세요"문구가 존재한다면 제거
+	const msg = document.querySelector('#msg');
+	const msgText = document.querySelector('#msg').textContent;
+	let isMsgDeleted = false;
+	if(msg !== null || msg !== 'null' || msg !== '') {
+		msg.remove();
+		isMsgDeleted = true;
+	}
+	
+	newLi.innerHTML = createNewPetItemHTML(accountNo);
     petList.appendChild(newLi);
     newLi.scrollIntoView({ behavior: 'smooth', block: 'center' }); // 추가된 항목으로 스크롤
-    
-    const form = newLi.querySelector('form');
     
 	// *** 중요: NiceSelect 초기화 ***
 	const newSelect = newLi.querySelector('.pet-gender');
@@ -414,7 +484,7 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
 
 	// 새로 추가된 항목에 이벤트 연결
 	setupNewPetRegisterEvent(newLi);  // 등록 버튼 이벤트
-	setupNewPetDeleteEvent(newLi);    // 삭제 버튼 이벤트
+	setupNewPetDeleteEvent(newLi, isMsgDeleted, msgText);    // 삭제 버튼 이벤트
 	setupNewPetImageUpload(newLi);    // 이미지 업로드 이벤트
 });
 
