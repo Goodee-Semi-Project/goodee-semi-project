@@ -32,7 +32,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	
-	<section class="hero-area bg-1 text-left overly" style="position: relative;">
+	<section class="hero-area bg-1 text-left overly" style="position: relative; background-position: 0 45% !important;">
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row">
