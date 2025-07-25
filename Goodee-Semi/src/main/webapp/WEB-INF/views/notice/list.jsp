@@ -24,7 +24,7 @@
 									<div class="image">
 										<c:choose>
 											<c:when test="${ not empty notice.noticeAttach }">
-												<img class="img-fluid" src="<c:url value='/filePath?no=${ notice.noticeAttach.attachNo }' />" alt="notice">
+												<img class="img-fluid" src="<c:url value='/filePath?no=${ notice.noticeAttach.attachNo }' />" style="width: 100%; height: 300px; object-fit: cover;" alt="notice">
 											</c:when>
 											
 											<c:otherwise>
