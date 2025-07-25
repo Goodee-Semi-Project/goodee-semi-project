@@ -13,15 +13,15 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	
-	<section class="hero-area bg-1 text-left overly">
+	<section class="hero-area bg-2 text-left overly">
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<!-- Header Content -->
 				<div class="content-block">
-					<h1>기초부터 확실하게.</h1>
-					<p>더 안전한 훈련, 더 정확한 행동 교정,<br>고객과 훈련사의 1:1 맞춤 관리 시스템으로<br>반려견과 함께하는 더 나은 삶을 위해 노력합니다.</p>
+					<h1 style="color: #0062CC; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">기초부터 확실하게.</h1>
+					<p style="color: rgb(0, 0, 0, 0.7);">더 안전한 훈련, 더 정확한 행동 교정,<br>고객과 훈련사의 1:1 맞춤 관리 시스템으로<br>반려견과 함께하는 더 나은 삶을 위해 노력합니다.</p>
 				</div>
 				<%@ include file="/WEB-INF/views/include/search.jsp" %>
 			</div>
