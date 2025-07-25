@@ -33,7 +33,11 @@
 								</c:choose>
 							</div>
 							<!-- Post Title -->
-							<h3>${ notice.noticeTitle }</h3>
+							<h3>
+							<c:if test="${notice.nailUp eq 'Y'}">
+								<span style="color: crimson;">📌</span>
+							</c:if>
+							${ notice.noticeTitle }</h3>
 							<ul class="list-inline">
 								<li class="list-inline-item">by ${ notice.writer }</li>
 								<li class="list-inline-item">${ notice.regDate }</li>
