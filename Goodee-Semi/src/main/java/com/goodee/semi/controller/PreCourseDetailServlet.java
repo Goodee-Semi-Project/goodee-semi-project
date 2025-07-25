@@ -110,7 +110,7 @@ public class PreCourseDetailServlet extends HttpServlet {
 		
 		int idx = watchLen.indexOf('.');
 		int watched = -1;
-		// FIXME: 
+		// SJ: 
 		if (idx > 0) {
 			watched = Integer.parseInt(watchLen.substring(0, idx));
 		}
