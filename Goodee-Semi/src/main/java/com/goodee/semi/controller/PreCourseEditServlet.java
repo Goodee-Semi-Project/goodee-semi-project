@@ -145,10 +145,12 @@ public class PreCourseEditServlet extends HttpServlet {
 				preCourse.setVideoLen(request.getParameter("videoLen"));
 			}
 
-			if (attach != null && total == 0) {
-				result = -2;
-			} else {
-				result = preCourseService.updatePreCourse(preCourse, attach);
+			if (attach != null) {
+				if (total == 0) {
+					result = -2;
+				} else {
+					result = preCourseService.updatePreCourse(preCourse, attach);
+				}
 			}
 			
 			// 테스트 수정
