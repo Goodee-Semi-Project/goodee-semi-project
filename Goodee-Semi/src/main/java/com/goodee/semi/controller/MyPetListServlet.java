@@ -42,7 +42,6 @@ public class MyPetListServlet extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO "로그인이 필요합니다"와 같이 안내 메시지를 응답하는 로직 필요
 		// 1. session에서 account 정보 가져오기
 		AccountDetail accountDetail = (AccountDetail) request.getSession(false).getAttribute("loginAccount");
 		Pet param = new Pet();
@@ -87,7 +86,6 @@ public class MyPetListServlet extends HttpServlet {
 			// 실패해도 그대로 페이지 이동
 		}
 		
-		// TODO 클라이언트 단에서 list.isEmpty() 인 경우, 그렇지 않은 경우 처리
 		// 4. 페이지 이동
 		request.setAttribute("msg", msg);
 		request.setAttribute("list", list);

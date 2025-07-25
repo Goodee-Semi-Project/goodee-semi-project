@@ -56,7 +56,7 @@
 	</select>
 	
 	<select id="selectAccountList" parameterType="_int" resultMap="scheduleResultMap">
-		SELECT a.account_no, a.account_name
+		SELECT DISTINCT a.account_no, a.account_name
 		FROM course co
 		JOIN class c ON (co.course_no = c.course_no)
 		JOIN pet p ON (p.pet_no = c.pet_no)
