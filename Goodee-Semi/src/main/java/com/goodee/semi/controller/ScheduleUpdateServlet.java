@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// TODO 수정 성공시 화면에 표시
 @WebServlet("/schedule/update")
 public class ScheduleUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
