@@ -5,7 +5,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>안녕하세요! ○○훈련소 입니다.</title>
+	<title>## 고객과 반려견이 더 가까워지는 곳! 멍스터클래스 ##</title>
 	
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
@@ -72,17 +72,10 @@
 				    						<h4 class="card-title"><a href="<c:url value='/course/detail?no=${ course.courseNo }' />">${ course.title }</a></h4>
 				    						<p class="card-text">${ course.subTitle }</p>
 				    						<div class="container" style="padding: 0; display: flex; justify-content: space-between;">
-				    							<div class="product-ratings" style="padding: 0;">
-											    	<ul class="list-inline">
-											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-											    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-											    		<li class="list-inline-item"><span style="font-size: 20px; margin-left: 8px;">4.8</span></li>
-											    	</ul>
-					    						</div>
-					    						<c:choose>
+				    							<div style="margin: auto 0;">
+				    								<p style="margin: 0;">수강중인 반려견: ${ course.petInCourseCount } / ${ course.capacity }</p>
+				    							</div>
+				    							<c:choose>
 					    							<c:when test="${ course.petInCourseCount ge course.capacity }">
 					    								<div>
 					    									<button type="button" class="btn btn-secondary" style="padding: 5px 10px;" disabled>수강 불가</button>
