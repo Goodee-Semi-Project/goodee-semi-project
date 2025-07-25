@@ -13,20 +13,32 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	
-	<section class="hero-area bg-1 text-left overly">
+	<section class="hero-area bg-1 text-left overly" style="position: relative;">
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<!-- Header Contetnt -->
 				<div class="content-block">
-					<h1>고객과 반려견이<br>더 가까워질 수 있도록.</h1>
-					<p>더 안전한 훈련, 더 정확한 행동 교정,<br>고객과 훈련사의 1:1 맞춤 관리 시스템으로<br>반려견과 함께하는 더 나은 삶을 위해 노력합니다.</p>
+					<h1 style="color: #0062CC; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">고객과 반려견이<br>더 가까워질 수 있도록.</h1>
+					<p style="color: rgb(0, 0, 0, 0.7);">더 안전한 훈련, 더 정확한 행동 교정,<br>고객과 훈련사의 1:1 맞춤 관리 시스템으로<br>반려견과 함께하는 더 나은 삶을 위해 노력합니다.</p>
 				</div>
 				<!-- Advance Search -->
 				<%@ include file="/WEB-INF/views/include/search.jsp" %>
 			</div>
 		</div>
+	</div>
+	
+	<div id="homeDog1" style="position: absolute; top: 35%; right: 30%; border-radius: 10px; overflow: hidden; z-index: 10; transform: rotate(-20deg); opacity: 0; transition: 0.5s;">
+		<img width="200" height="200" src="/static/images/home/homeDog1.jpg" style="border: 7px solid white;" alt="dog" />
+	</div>
+	
+	<div id="homeDog2" style="position: absolute; top: 15%; right: 25%; border-radius: 10px; overflow: hidden; z-index: 11; opacity: 0; transition: 0.5s;">
+		<img width="200" height="200" src="/static/images/home/homeDog2.jpg" style="border: 7px solid white;" alt="dog" />
+	</div>
+	
+	<div id="homeDog3" style="position: absolute; top: 35%; right: 20%; border-radius: 10px; overflow: hidden; z-index: 12; transform: rotate(20deg); opacity: 0; transition: 0.5s;">
+		<img width="200" height="200" src="/static/images/home/homeDog3.jpg" style="border: 7px solid white;" alt="dog" />
 	</div>
 	<!-- Container End -->
 	</section>
@@ -107,6 +119,22 @@
 	</section>
 	
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	<script>
+		$(() => {
+			setTimeout(() => {
+				$("#homeDog1").css("opacity", "1");
+			}, 1000);
+			
+			setTimeout(() => {
+				$("#homeDog2").css("opacity", "1");
+			}, 2000);
+			
+			setTimeout(() => {
+				$("#homeDog3").css("opacity", "1");
+			}, 3000);
+		})
+	</script>
+	
 	<c:if test="${ empty requestScope.afterSearch }">
 		<script>
 			$(() => {
