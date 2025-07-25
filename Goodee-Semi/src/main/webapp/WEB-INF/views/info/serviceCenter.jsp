@@ -3,15 +3,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>고객 센터</title>
-
-<%@ include file="/WEB-INF/views/include/head.jsp"%>
+	<meta charset="UTF-8">
+	<title>고객 센터</title>
+	
+	<%@ include file="/WEB-INF/views/include/head.jsp"%>
+	
+	<!-- 인라인 style로 이미 설정되어 있던 css 속성을 수정해야 될 경우에는 !important 로 덮어씌웠음 -->
+	<style type="text/css">
+		.hero-area .content-block * {
+			color: white !important;
+			text-shadow: none !important;
+		}
+		
+		.overly:before {
+			background : rgba(0, 0, 0, 0.2) !important;
+			border-radius: 0 !important;
+		    top: 0 !important;
+		    left: 0 !important;
+		    right: 0 !important;
+		}
+		
+		.bg-1 {
+ 			background: url("/static/images/home-background.jpg") !important;
+ 			background-size: cover !important;
+ 		}
+	</style>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	
-	<section class="hero-area bg-1 text-left overly" style="position: relative;">
+	<section class="hero-area bg-1 text-left overly" style="position: relative; background-position: 0 45% !important;">
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row">
@@ -24,18 +45,7 @@
 			</div>
 		</div>
 	</div>
-	
-	<div id="homeDog1" style="position: absolute; top: 35%; right: 30%; border-radius: 10px; overflow: hidden; z-index: 10; transform: rotate(-20deg); opacity: 0; transition: 0.5s;">
-		<img width="200" height="200" src="/static/images/home/homeDog1.jpg" style="border: 7px solid white;" alt="dog" />
-	</div>
-	
-	<div id="homeDog2" style="position: absolute; top: 15%; right: 25%; border-radius: 10px; overflow: hidden; z-index: 11; opacity: 0; transition: 0.5s;">
-		<img width="200" height="200" src="/static/images/home/homeDog2.jpg" style="border: 7px solid white;" alt="dog" />
-	</div>
-	
-	<div id="homeDog3" style="position: absolute; top: 35%; right: 20%; border-radius: 10px; overflow: hidden; z-index: 12; transform: rotate(20deg); opacity: 0; transition: 0.5s;">
-		<img width="200" height="200" src="/static/images/home/homeDog3.jpg" style="border: 7px solid white;" alt="dog" />
-	</div>
+
 	<!-- Container End -->
 	</section>
 	
