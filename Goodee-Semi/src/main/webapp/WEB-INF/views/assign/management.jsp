@@ -107,7 +107,7 @@
 					}
 				},
 				error : function() {
-					alert("페이지 이동 중 오류가 발생했습니다.");
+					Swal.fire({ icon: "error", text: "페이지 이동 중 오류가 발생했습니다."});
 				}
 			});
 		}
@@ -127,26 +127,44 @@
 		function deleteSavedAssign() {
 			const assignNo = $("#selectMyAssign").val();
 			
-			if (confirm("임시저장한 과제를 삭제하시겠습니까?")) {
-				$.ajax({
-					url : "/assign/delete",
-					type : "POST",
-					data : {
-						assignNo : assignNo
-					},
-					dataType : "JSON",
-					success : function(data) {
-						alert(data.resultMsg);
-						
-						if (data.resultCode == 200) {
-							location.href = "<%= request.getContextPath() %>/assign/management";
+			Swal.fire({
+				text: "임시저장한 과제를 삭제하시겠습니까?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "삭제",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url : "/assign/delete",
+						type : "POST",
+						data : {
+							assignNo : assignNo
+						},
+						dataType : "JSON",
+						success : function(data) {
+							if (data.resultCode == 200) {
+								Swal.fire({
+									icon: "success",
+									text: data.resultMsg,
+									confirmButtonText: "확인"
+								}).then((result) => {
+									if (result.isConfirmed) {
+										location.href = "<%= request.getContextPath() %>/assign/management";							    
+									}
+								});
+							} else {
+								Swal.fire({ icon: "error", text: data.resultMsg});
+							}
+						},
+						error : function() {
+							Swal.fire({ icon: "error", text: "삭제 중 오류가 발생했습니다."});
 						}
-					},
-					error : function() {
-						alert("페이지 이동 중 오류가 발생했습니다.");
-					}
-				});
-			}
+					});
+				}
+			});
 		}
 	</script>
 </body>

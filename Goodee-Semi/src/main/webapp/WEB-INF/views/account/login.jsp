@@ -56,6 +56,7 @@ if (cookies != null) {
 	</section>
 
   <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
   <script>
     $("#accountLoginFrm").submit(function(e){
       e.preventDefault();
@@ -81,10 +82,10 @@ if (cookies != null) {
           success : function(data){
             if (data.res_code === "200") {
             	if (remember) {
-                document.cookie = "rememberId=" + encodeURIComponent(accountId) + "; path=/; max-age=" + (60 * 60 * 24 * 30);
-              } else {
-                document.cookie = "rememberId=; path=/; max-age=0";
-              }
+                    document.cookie = "rememberId=" + encodeURIComponent(accountId) + "; path=/; max-age=" + (60 * 60 * 24 * 15);
+                  } else {
+                    document.cookie = "rememberId=; path=/; max-age=0";
+                  }
             	
             	Swal.fire({
 								icon: "success",

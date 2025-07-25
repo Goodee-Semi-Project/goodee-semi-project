@@ -84,7 +84,9 @@ public class PetService {
 			// 2. 파일 정보 삭제
 			int attachResult = 1; // 기본값: 성공
 			if(petResult != 0) {
-				attachResult = dao.deleteAttach(session, petNo);
+				if(dao.selectAttachByPetNo(petNo) != null) {
+					attachResult = dao.deleteAttach(session, petNo);					
+				}
 			}
 			
 			// 3. commit 또는 rollback 처리
