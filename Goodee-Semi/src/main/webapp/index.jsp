@@ -90,7 +90,7 @@
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	
 	
-	<section class="hero-area bg-1 text-left overly" style="position: relative;">
+	<section class="hero-area bg-1 text-left overly" style="position: relative; ">
 		<div class="bg-video">
 	  		<video class="bg-video__content" autoplay muted loop>
 	   			<source src="/static/videos/home-background.mp4" type="video/mp4"/>
