@@ -129,10 +129,11 @@ public class MyPetInsertServlet extends HttpServlet {
         int result = service.insertPet(pet, attach);
         if (result != 0) {
         	// 페이징
-        	pet.setNowPage(1);
-            int totalData = service.selectPetCount(pet);
-            pet.setTotalData(totalData); // 총 페이지 수가 pet에 set됨
-            int targetPage = pet.getTotalPage();
+        	pet.setNumPerPage(5);
+    		pet.setNowPage(1); // 총 페이지 수를 계산하는 함수를 호출하기 위해 임의의 값 할당
+    		int totalData = service.selectPetCount(pet);
+    		pet.setTotalData(totalData + 1); // 총 데이터가 1 증가했을 때의 페이지 수가 pet에 set됨
+    		int targetPage = pet.getTotalPage();
             
         	sendSuccessResponse("200", "반려견 정보 등록에 성공했습니다", pet, targetPage, response);
         	return;
