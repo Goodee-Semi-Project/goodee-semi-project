@@ -10,11 +10,6 @@
 	<script defer src="<c:url value='/static/js/myPetList.js'/>"></script>
 	
 	<style>
-		img {
-			object-fit: cover !important;
-			border-radius: 50%;
-		}
-		
 		input:disabled {
 			border: none;
 			background-color: rgba(0, 0, 0, 0) !important;
@@ -60,7 +55,7 @@
 			display: none;
 		}
 		img.pet-img {
-			padding: 5px; border: 1px solid #ced4da; object-fit: contain;
+			padding: 5px; border: 1px solid #ced4da; object-fit: cover; border-radius: 50%;
 		}
 		div.pet-detail.col-7 {
 			display: flex; align-items: center;
