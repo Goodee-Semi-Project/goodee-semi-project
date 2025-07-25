@@ -67,7 +67,7 @@ public class PreCourseEditServlet extends HttpServlet {
 		}
 		
 		if (preNo == -1 || preCourse != null && preCourse.getAccountNo() != account.getAccountNo()) {
-			response.sendRedirect("/preCourse/list");
+			response.sendRedirect("/invalidAccess");
 			return;
 		}
 //		Attach attach = preCourseService.selectAttach(preNo);
@@ -145,10 +145,10 @@ public class PreCourseEditServlet extends HttpServlet {
 				preCourse.setVideoLen(request.getParameter("videoLen"));
 			}
 
-			if (total != 0) {
-				result = preCourseService.updatePreCourse(preCourse, attach);
-			} else {
+			if (attach != null && total == 0) {
 				result = -2;
+			} else {
+				result = preCourseService.updatePreCourse(preCourse, attach);
 			}
 			
 			// 테스트 수정
