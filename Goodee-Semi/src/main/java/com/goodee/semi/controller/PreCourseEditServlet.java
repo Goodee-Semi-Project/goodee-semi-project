@@ -151,7 +151,7 @@ public class PreCourseEditServlet extends HttpServlet {
 				} else {
 					result = preCourseService.updatePreCourse(preCourse, attach);
 				}
-			}
+			} else result = 1;
 			
 			// 테스트 수정
 			if (result > 0) {
