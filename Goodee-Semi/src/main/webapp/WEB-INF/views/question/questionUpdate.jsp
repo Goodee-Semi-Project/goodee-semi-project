@@ -25,7 +25,7 @@
 	        <div class="row">
 	            <div class="col-md-12">
                     <form id="update_quest_form">
-                        <fieldset class="p-4">
+                        <fieldset class="p-3">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-lg-12 pt-6">
@@ -35,9 +35,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <textarea name="message" id="quest_content" class="border w-100 p-3 mt-1 mt-lg-4" style="resize: none; height: 450px; outline: none;">${question.questContent}</textarea>
+                            <textarea name="message" id="quest_content" class="border w-100 p-3 mt-1 mt-lg-1" style="resize: none; height: 450px; outline: none;">${question.questContent}</textarea>
                         </fieldset>
-                       	<div class="d-flex justify-content-between p-4">
+                       	<div class="d-flex justify-content-between px-3">
                  			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
 							<button type="button" class="btn btn-success" style="background-color: #198754 !important;" onclick="openUpdateModal()">등록</button>
 						</div>
@@ -55,7 +55,7 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
-	      <div class="modal-body text-center">게시글을 수정하시겠습니까?</div>
+	      <div class="modal-body text-center">등록하시겠습니까?</div>
 	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
 	        <button type="button" id="btn_modal_confirm" class="btn btn-success">확인</button>
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
@@ -83,7 +83,7 @@
 			
 			if(!questNo || !questTitle || !questContent) {
 				$("#updateModal").modal("hide");
-				alert("제목과 내용을 모두 작성해주세요");
+				Swal.fire({ icon: "error", text: "제목과 내용을 모두 작성해주세요."});
 				return;		
 			}
 			
@@ -97,11 +97,18 @@
 				},
 				dataType : "json",
 				success : function(data) {
-					if(data.res_code == 200) {
-						alert(data.res_msg);
-						location.href='<%=request.getContextPath() %>/qnaBoard/detail?no=' + questNo;
+					if (data.res_code == 200) {
+						Swal.fire({
+							icon: "success",
+							text: data.res_msg,
+							confirmButtonText: "확인"
+						}).then((result) => {
+							if (result.isConfirmed) {
+								location.href='<%=request.getContextPath() %>/qnaBoard/detail?no=' + questNo;					    
+							}
+						});
 					} else {
-						alert(data.res_msg);
+						Swal.fire({ icon: "error", text: data.res_msg});
 					}
 				}
 			});

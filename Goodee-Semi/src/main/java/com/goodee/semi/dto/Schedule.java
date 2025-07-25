@@ -33,4 +33,5 @@ public class Schedule {
     private int courseNo;
     private String courseTitle;
     private int courseTotalStep;
+    private int classProg;
 }

@@ -65,8 +65,7 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
-	      <div class="modal-body text-center" id="modal_text">
-	      </div>
+	      <div class="modal-body text-center" id="modal_text"></div>
 	      <input type="hidden" id="modal_class_no">
 	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
 	        <button type="button" id="btn_modal_kickout_confirm" class="btn btn-success">확인</button>
@@ -94,11 +93,18 @@
 			url : "/myCourse/memberKickout?no=" + classNo,
 			type : "get",
 			success : function(data) {
-				if(data == 1) {
-					alert("제외 처리되었습니다!");
-					location.href="<%= request.getContextPath()%>/myCourse/memberDetail?courseNo=${course.courseNo}";
+				if (data == 1) {
+					Swal.fire({
+						icon: "success",
+						text: "제외 처리되었습니다.",
+						confirmButtonText: "확인"
+					}).then((result) => {
+						if (result.isConfirmed) {
+							location.href="<%= request.getContextPath()%>/myCourse/memberDetail?courseNo=${course.courseNo}";				    
+						}
+					});
 				} else {
-					alert("오류가 발생했습니다!")
+					Swal.fire({ icon: "error", text: "제외 중 오류가 발생했습니다."});
 				}
 			}
 		})
