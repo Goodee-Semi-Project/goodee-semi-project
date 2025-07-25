@@ -39,7 +39,7 @@
 				<div class="product-details">
 					<input id="courseNo" type="hidden" value="${ course.courseNo }">
 					<div style="display: flex; justify-content: center;">
-						<img class="card-img-top img-fluid" style="width: 200px; height: 200px; margin-right: 50px; border: 3px solid white" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
+						<img class="card-img-top img-fluid" style="width: 200px; height: 200px; object-fit: cover; margin-right: 50px; border: 3px solid white" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
 						<div class="product-meta" style="display: flex; flex-direction: column; justify-content: center;">
 							<h1 class="product-title" style="font-size: 48px;">${ course.title }</h1>
 							<ul class="list-inline">
