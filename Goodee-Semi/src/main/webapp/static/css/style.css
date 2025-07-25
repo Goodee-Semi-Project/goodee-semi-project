@@ -2293,3 +2293,7 @@ form textarea {
   }
 }
 /*# sourceMappingURL=style.css.map */
+
+.swal-custom-zindex {
+  z-index: 99999 !important;
+}
