@@ -23,14 +23,14 @@ function validatePetImgData(input) {
         console.log("[validatePetImgData] 업로드 된 파일 크기: ", file.type)
         
         if(!allowedTypes.includes(file.type)) {
-            alert('PNG, JPG, JPEG 파일만 업로드 가능합니다.');
+            Swal.fire({ icon: "error", text: "PNG, JPG, JPEG 파일만 업로드 가능합니다."});
             input.value = '';
 
             return;
         }
         
         if(file.size > 5 * 1024 * 1024) { // 파일 크기를 5MB로 제한
-            alert('파일 크기는 5MB 이하여야 합니다.');
+            Swal.fire({ icon: "error", text: "파일 크기는 5MB 이하여야 합니다."});
             input.value = '';
 
             return;
@@ -62,19 +62,19 @@ function imageClick(img, fileInput) {
 // 반려견 정보 유효성 검사 함수
 function validatePetData(petName, petAge, petGender, petBreed) {
     if (!petName) {
-        alert('반려견 이름을 입력해주세요.');
+        Swal.fire({ icon: "error", text: "반려견 이름을 입력해주세요."});
         return false;
     }
     if (!petAge) {
-        alert('반려견 나이를 입력해주세요.');
+        Swal.fire({ icon: "error", text: "반려견 나이를 입력해주세요."});
         return false;
     }
     if (!petGender) {
-        alert('성별을 선택해주세요.');
+        Swal.fire({ icon: "error", text: "성별을 선택해주세요."});
         return false;
     }
     if (!petBreed) {
-        alert('견종을 입력해주세요.');
+        Swal.fire({ icon: "error", text: "견종을 입력해주세요."});
         return false;
     }
     return true;
@@ -121,8 +121,8 @@ function editPetEvent(petLi) {
     const petBtn = petLi.querySelector('.pet-btn');
     const petImg = petLi.querySelector('.pet-img');
     const petImgInput = petLi.querySelector('.pet-img-input');
-	const petGenderSelect = petLi.querySelector('.pet-gender');
-	const petGender = petGenderSelect.value;
+		const petGenderSelect = petLi.querySelector('.pet-gender');
+		const petGender = petGenderSelect.value;
     
     // 2. input, select 요소들의 disabled 속성 제거
     enableInputs(petDetailInputs);
@@ -177,11 +177,11 @@ function editPetEvent(petLi) {
             dataType: 'json',
             success: function(data) {
                 console.log('응답:', data);
-                alert('수정되었습니다.');
+                Swal.fire({ icon: "success", text: "수정되었습니다."});
             },
             error: function(err) {
                 console.log('에러:', err);
-                alert('수정 실패');
+                Swal.fire({ icon: "error", text: "수정에 실패했습니다."});
             }
         });
         
@@ -250,20 +250,28 @@ function deletePetEvent() {
 			},
 			dataType: 'json',
 			success: function (data) {
-				alert('삭제되었습니다.');
-				$('#delete-modal-box').modal("hide");
-				
-			    console.log('응답:', data);
-				
-				// 페이지 새로고침으로 최신 데이터 가져오기
-				location.reload();
+				Swal.fire({
+					text: "삭제되었습니다.",
+					icon: "success",
+					confirmButtonColor: "#3085d6",
+					confirmButtonText: "확인",
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$('#delete-modal-box').modal("hide");
+											
+						console.log('응답:', data);
+											
+						// 페이지 새로고침으로 최신 데이터 가져오기
+						location.reload();
+					}
+				});
 			},
 			error: function (err) {
 			    console.log('에러:', err);
 			}
 		});
 	} else {
-		alert("'삭제'를 입력해주세요.");
+		Swal.fire({ icon: "error", text: "'삭제'를 입력해주세요."});
 	}
 }
 
@@ -345,13 +353,22 @@ function setupNewPetRegisterEvent(newLi) {
             contentType: false,
             dataType: 'json',
             success: function(data) {
-                console.log('성공:', data);
-                alert('등록되었습니다.');
-                location.href = '/myPet/list'; // 등록 후 목록 페이지로 이동
+							Swal.fire({
+								text: "등록되었습니다.",
+								icon: "success",
+								confirmButtonColor: "#3085d6",
+								confirmButtonText: "확인",
+							}).then((result) => {
+								if (result.isConfirmed) {
+									console.log('성공:', data);
+
+									location.href = '/myPet/list'; // 등록 후 목록 페이지로 이동
+								}
+							});
             },
             error: function(err) {
-                console.log('에러:', err);
-                alert('등록 실패');
+              console.log('에러:', err);
+              Swal.fire({ icon: "error", text: "등록에 실패했습니다."}); alert('');
             }
         });
     });

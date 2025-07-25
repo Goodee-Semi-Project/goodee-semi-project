@@ -65,7 +65,7 @@
 										<div class="card">
 											<div class="thumb-content">
 												<a href="/course/detail?no=${ course.courseNo }">
-													<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
+													<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" style="width: 100%; height: 340px; object-fit: cover;" alt="img">
 												</a>
 											</div>
 											<div class="card-body">
