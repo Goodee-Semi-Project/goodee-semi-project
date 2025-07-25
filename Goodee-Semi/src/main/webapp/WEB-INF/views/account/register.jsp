@@ -185,14 +185,24 @@
 			const postcode = $("#postcode").val();
 			const address = $("#roadAddress").val();
 			const addressDetail = $("#detailAddress").val();
+			const profileImageName = $("#profileImage").val();
 			const registering = $("#registering").is(":checked");
 			
 			const idReg = /^[a-z0-9]{4,16}$/
 			const pwReg = /^[a-zA-z0-9!@#$%^&]{8,20}$/
-			const nameReg = /^[가-힣]{2,8}$/
+			const nameReg = /^[a-zA-Z가-힣 ]{2,50}$/
 			const birthReg = /^[0-9]{6}$/
 			const phoneReg = /^010-[0-9]{4}-[0-9]{4}$/
 			const emailReg = /^[a-zA-Z0-9_+&*-]+(?:.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,7}$/
+			
+			const profileImageExtIdx = profileImageName.lastIndexOf('.') + 1;
+			const profileImageExt = profileImageName.slice(profileImageExtIdx).toLowerCase();
+			const imgExt = ['jpg', 'png', 'jpeg'];
+			
+			const profileImageInput = $("#profileImage")[0];
+			const profileImage = profileImageInput.files[0];
+			const profileImageSize = profileImage.size;
+			const maxFileSize = 1024 * 1024 * 5;
 			
 			if (!accountId) Swal.fire({ icon: "error", text: "아이디를 입력해주세요."});
 			else if (!idReg.test(accountId)) Swal.fire({ icon: "error", text: "사용 불가능한 아이디입니다."});
@@ -206,6 +216,8 @@
 			else if (!emailReg.test(accountEmail)) Swal.fire({ icon: "error", text: "이메일을 정확히 입력해주세요."});
 			else if (postcode == "") Swal.fire({ icon: "error", text: "주소를 입력해주세요."});
 			else if (addressDetail == "") Swal.fire({ icon: "error", text: "상세주소를 입력해주세요."});
+			else if (!imgExt.includes(profileImageExt)) Swal.fire({ icon: "error", text: "이미지 파일만 등록 가능합니다."});
+			else if (profileImageSize > maxFileSize) Swal.fire({ icon: "error", text: "프로필 이미지의 크기가 너무 큽니다."});
 			else if (!registering) Swal.fire({ icon: "error", text: "개인정보 수집 및 이용약관에 동의해주세요."});
 			else {
 				const formData = new FormData(document.getElementById("registerForm"));
