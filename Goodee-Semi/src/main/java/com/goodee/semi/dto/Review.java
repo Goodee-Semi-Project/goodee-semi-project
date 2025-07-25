@@ -21,8 +21,11 @@ public class Review extends Paging {
 	private int accountNo;
 	private int authNo;
 	private String accountId;
+	private String accountName;
 	private String courseTitle;
 	private String keyword;
 	private String category;
 	private String order;
+	
+	private Attach profileAttach;
 }

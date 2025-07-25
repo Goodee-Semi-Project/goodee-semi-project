@@ -4,10 +4,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>공지사항</title>
+	<meta charset="UTF-8">
+	<title>공지사항</title>
 
-<%@ include file="/WEB-INF/views/include/head.jsp" %>
+	<%@ include file="/WEB-INF/views/include/head.jsp" %>
+	
+	<style type="text/css">
+		div.widget.text-center.user-dashboard-profile > p {
+			color: #888;
+			font-size: 14px;
+    		font-weight: 400;
+    		font-family: "Muli", sans-serif;
+		}
+		
+		div.widget.text-center.user-dashboard-profile > h5 {
+			margin-top: 10px;
+		}
+		
+		div.widget text-center user-dashboard-profile > h5 > a {
+			color: #333 !important;
+		}
+	</style>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -17,33 +34,42 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-8">
-					<c:forEach var="notice" items="${ noticeList }">
-						<!-- Article -->
-						<article>
-							<!-- Post Image -->
-							<div class="image">
-								<c:choose>
-									<c:when test="${ not empty notice.noticeAttach }">
-										<img class="img-fluid" src="<c:url value='/filePath?no=${ notice.noticeAttach.attachNo }' />" alt="notice">
-									</c:when>
-									
-									<c:otherwise>
-										<img class="img-fluid" src="/static/images/notice/notice_default.jpg" alt="notice_default">									
-									</c:otherwise>
-								</c:choose>
+					<c:choose>
+						<c:when test="${ not empty noticeList }">
+							<c:forEach var="notice" items="${ noticeList }">
+								<article>
+									<div class="image">
+										<c:choose>
+											<c:when test="${ not empty notice.noticeAttach }">
+												<img class="img-fluid" src="<c:url value='/filePath?no=${ notice.noticeAttach.attachNo }' />" style="width: 100%; height: 300px; object-fit: cover;" alt="notice">
+											</c:when>
+											
+											<c:otherwise>
+												<img class="img-fluid" src="/static/images/notice/notice_default.jpg" alt="notice_default">									
+											</c:otherwise>
+										</c:choose>
+									</div>
+									<h3>
+									<c:if test="${notice.nailUp eq 'Y'}">
+										<span style="color: crimson;">📌</span>
+									</c:if>
+									${ notice.noticeTitle }</h3>
+									<ul class="list-inline">
+										<li class="list-inline-item">by ${ notice.writer }</li>
+										<li class="list-inline-item">${ notice.regDate }</li>
+									</ul>
+									<p>${ notice.noticeContent }</p>
+									<a href="<c:url value='/noticeDetail?no=${notice.noticeNo}'/>" class="btn btn-transparent" style="padding: 10px 20px;">상세 보기</a>
+								</article>
+							</c:forEach>
+						</c:when>
+						
+						<c:otherwise>
+							<div style="height: 500px; display: flex; justify-content: center; align-items: center;">
+								<h3>작성된 공지가 없습니다.</h3>
 							</div>
-							<!-- Post Title -->
-							<h3>${ notice.noticeTitle }</h3>
-							<ul class="list-inline">
-								<li class="list-inline-item">by ${ notice.writer }</li>
-								<li class="list-inline-item">${ notice.regDate }</li>
-							</ul>
-							<!-- Post Description -->
-							<p>${ notice.noticeContent }</p>
-							<!-- Read more button -->
-							<a href="<c:url value='/noticeDetail?no=${notice.noticeNo}'/>" class="btn btn-transparent" style="padding: 10px 20px;">상세 보기</a>
-						</article>
-					</c:forEach>
+						</c:otherwise>
+					</c:choose>
 	
 					<!-- Pagination -->
 					<c:if test="${ not empty noticeList }">
@@ -87,15 +113,19 @@
 						  </div>
 						</div>
 						
-						<div class="widget user text-center">
+						<div class="widget text-center user-dashboard-profile">
 							<c:choose>
 								<c:when test="${ sessionScope.loginAccount.author eq 1 }">
 									<c:choose>
 										<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
-											<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+											<div class="profile-thumb">
+												<img class="rounded-circle img-fluid" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+											</div>
 										</c:when>
 										<c:otherwise>
-												<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+												<div class="profile-thumb">												
+													<img class="rounded-circle img-fluid" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+												</div>
 										</c:otherwise>
 									</c:choose>
 									<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
@@ -107,13 +137,17 @@
 								<c:when test="${ sessionScope.loginAccount.author eq 2 }">
 									<c:choose>
 										<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
-											<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+											<div class="profile-thumb">
+												<img class="rounded-circle img-fluid" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+											</div>
 										</c:when>
 										<c:otherwise>
-											<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+											<div class="profile-thumb">
+												<img class="rounded-circle img-fluid" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+											</div>
 										</c:otherwise>
 									</c:choose>
-									<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
+									<h5><a href="<c:url value='/myInfo' />" style="color: #333 !important">${ sessionScope.loginAccount.name } 님</a></h4>
 									<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
 								</c:when>
 								
@@ -140,5 +174,20 @@
 	
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<script>
+		$(() => {
+			setTimeout(() => {
+				$("#homeDog1").css("opacity", "1");
+			}, 1000);
+			
+			setTimeout(() => {
+				$("#homeDog2").css("opacity", "1");
+			}, 2000);
+			
+			setTimeout(() => {
+				$("#homeDog3").css("opacity", "1");
+			}, 3000);
+		})
+	</script>
 </body>
 </html>

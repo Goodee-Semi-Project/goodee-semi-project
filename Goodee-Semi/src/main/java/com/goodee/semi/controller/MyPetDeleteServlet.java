@@ -2,15 +2,16 @@ package com.goodee.semi.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.common.constant.HttpConstants;
+import com.goodee.semi.common.util.GsonUtil;
 import com.goodee.semi.dto.Attach;
-import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.AttachService;
 import com.goodee.semi.service.PetService;
-import com.google.gson.Gson;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletResponse;
@@ -19,8 +20,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// TODO 이미지가 없는 반려견도 삭제 가능하도록 하기
-// TODO 반려견 등록 클릭 시 기본 이미지 안 불러와짐, css 깨짐 
 @WebServlet("/myPet/delete")
 public class MyPetDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -44,18 +43,21 @@ public class MyPetDeleteServlet extends HttpServlet {
     }
     
     private void sendSuccessResponse(String resCode, String resMsg, ServletResponse res) throws IOException {
-    	JSONObject json = new JSONObject();
-    	json.put("resCode", resCode);
-    	json.put("resMsg", resMsg);
+    	// 응답 객체 생성
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("resCode", resCode);
+    	map.put("resMsg", resMsg);    
+    	
+    	// Gson으로 전체를 JSON 문자열로 변환
+    	String jsonString = GsonUtil.toJson(map);
     	
     	res.setContentType(HttpConstants.CONTENT_TYPE_JSON);
-    	res.getWriter().print(json);
+    	res.getWriter().print(jsonString);
     }
 
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Integer petNo = null; // petNo = 0인 경우와 petNo를 못 받아오는 경우 구분을 위해 Integer 타입으로 선언
-		int result = 0;
 		
 		try {
 			// 1. request에 바인딩된 값 받아오기
@@ -96,14 +98,14 @@ public class MyPetDeleteServlet extends HttpServlet {
 		}
 
 		// 3. service의 삭제 로직 호출
-		result = service.deletePet(petNo);
+		int result = service.deletePet(petNo);
 		
-		// 4. 응답 인코딩하고 보내기
 		if(result != 0) {
 			sendSuccessResponse("200", "반려견 정보 삭제에 성공했습니다", response);
         	return;
 		}
 		
+		// 4. 응답 인코딩하고 보내기
 		sendErrorResponse("500", "반려견 정보 삭제에 실패했습니다", null, response);
 	}
 }
