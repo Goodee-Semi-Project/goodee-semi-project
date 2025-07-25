@@ -56,6 +56,11 @@ public class ReviewWriteServlet extends HttpServlet {
 			account = (Account) session.getAttribute("loginAccount");
 		}
 		
+		if (account != null && account.getAuthor() == 1) {
+			response.sendRedirect("/review/list");
+			return;
+		}
+		
 		// SJ: 어떤 과정에 대한 리뷰인지, 수강 테이블에서 가져와야 함
 		List<PetClass> list = classService.selectListByAccountNo(account.getAccountNo());
 		
