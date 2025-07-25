@@ -461,12 +461,12 @@ $(document).on('click', '#btn-add-event', function() {
     const endTime = formData.get('end');
     
     if (!startTime || !endTime) {
-        alert('시작 시간과 종료 시간을 입력해주세요.');
+        Swal.fire({ icon: "error", text: "시작 시간과 종료 시간을 입력해주세요.", customClass: { popup: 'swal-custom-zindex' }});
         return;
     }
     
     if (startTime >= endTime) {
-        alert('종료 시간은 시작 시간보다 늦어야 합니다.');
+        Swal.fire({ icon: "error", text: "종료 시간은 시작 시간보다 늦어야 합니다.", customClass: { popup: 'swal-custom-zindex' }});
         return;
     }
 	
@@ -514,9 +514,21 @@ $(document).on('click', '#btn-delete-event', function() {
     const modal = document.getElementById('event-modal-box');
     const eventId = modal.getAttribute('data-event-id');
     
-    if (eventId && confirm('이 일정을 삭제하시겠습니까?')) {
-        deleteEvent(eventId);
-        modal.style.display = 'none';
+    if (eventId) {
+			Swal.fire({
+				text: "이 일정을 삭제하시겠습니까?",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "삭제",
+				cancelButtonText: "취소"
+			}).then((result) => {
+				if (result.isConfirmed) {
+	        deleteEvent(eventId);
+	        modal.style.display = 'none';					
+				}
+			});
     }
 });
 
