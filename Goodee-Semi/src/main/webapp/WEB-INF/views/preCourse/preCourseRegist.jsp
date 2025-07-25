@@ -19,6 +19,7 @@
 		<div class="m-1">
 			<label class="mr-2" for="courseNo">[목록] </label>
 			<select class="w-75 rounded" name="courseNo">
+				<option value="">선택</option>
 				<c:forEach var="c" items="${ courseList }">
 					<option value="${ c.courseNo }">${ c.title }</option>
 				</c:forEach>
