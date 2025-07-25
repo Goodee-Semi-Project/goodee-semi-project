@@ -76,6 +76,7 @@ public class NoticeUpdateServlet extends HttpServlet {
         // 1. 요청 파라미터 수집
         String noticeTitle = request.getParameter("noticeTitle");
         String noticeContent = request.getParameter("noticeContent");
+        String nailUp = request.getParameter("nailUp");
         Account loginAccount = (Account) request.getSession().getAttribute("loginAccount");
         int accountNo = loginAccount.getAccountNo();
 
@@ -112,6 +113,7 @@ public class NoticeUpdateServlet extends HttpServlet {
         notice.setNoticeTitle(noticeTitle);
         notice.setNoticeContent(noticeContent);
         notice.setAccountNo(accountNo);
+        notice.setNailUp(nailUp != null ? "Y" : "N");
 
         // 5. 공지사항 + 첨부 업데이트 서비스 호출
         int result = service.updateNotice(notice, newAttach);
