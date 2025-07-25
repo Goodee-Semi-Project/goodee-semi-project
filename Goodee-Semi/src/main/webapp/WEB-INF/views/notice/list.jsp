@@ -4,10 +4,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>공지사항</title>
+	<meta charset="UTF-8">
+	<title>공지사항</title>
 
-<%@ include file="/WEB-INF/views/include/head.jsp" %>
+	<%@ include file="/WEB-INF/views/include/head.jsp" %>
+	
+	<style type="text/css">
+		div.widget.text-center.user-dashboard-profile > p {
+			color: #888;
+			font-size: 14px;
+    		font-weight: 400;
+    		font-family: "Muli", sans-serif;
+		}
+		
+		div.widget.text-center.user-dashboard-profile > h5 {
+			margin-top: 10px;
+		}
+		
+		div.widget text-center user-dashboard-profile > h5 > a {
+			color: #333 !important;
+		}
+	</style>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -96,15 +113,19 @@
 						  </div>
 						</div>
 						
-						<div class="widget user text-center">
+						<div class="widget text-center user-dashboard-profile">
 							<c:choose>
 								<c:when test="${ sessionScope.loginAccount.author eq 1 }">
 									<c:choose>
 										<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
-											<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+											<div class="profile-thumb">
+												<img class="rounded-circle img-fluid" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+											</div>
 										</c:when>
 										<c:otherwise>
-												<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+												<div class="profile-thumb">												
+													<img class="rounded-circle img-fluid" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+												</div>
 										</c:otherwise>
 									</c:choose>
 									<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
@@ -116,13 +137,17 @@
 								<c:when test="${ sessionScope.loginAccount.author eq 2 }">
 									<c:choose>
 										<c:when test="${ not empty sessionScope.loginAccount.profileAttach }">
-											<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+											<div class="profile-thumb">
+												<img class="rounded-circle img-fluid" src="<c:url value='/filePath?no=${ sessionScope.loginAccount.profileAttach.attachNo }' />" alt="profile">
+											</div>
 										</c:when>
 										<c:otherwise>
-											<img class="rounded-circle img-fluid mb-5 px-5" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+											<div class="profile-thumb">
+												<img class="rounded-circle img-fluid" src="<c:url value='/static/images/user/profile.png' />" alt="profile">
+											</div>
 										</c:otherwise>
 									</c:choose>
-									<h4><a href="<c:url value='/myInfo' />">${ sessionScope.loginAccount.name } 님</a></h4>
+									<h5><a href="<c:url value='/myInfo' />" style="color: #333 !important">${ sessionScope.loginAccount.name } 님</a></h4>
 									<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
 								</c:when>
 								

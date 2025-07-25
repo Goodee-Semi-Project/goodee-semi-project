@@ -36,12 +36,12 @@ public class PreCourseTestServlet extends HttpServlet {
 			preNo = request.getParameter("no");
 		}
 		
-		List<PreTest> list = preTestService.selectList(preNo);
-		
 		if (preNo == null) {
 			response.sendRedirect("/invalidAccess");
 			return;
 		}
+		
+		List<PreTest> list = preTestService.selectList(preNo);
 		
 		request.setAttribute("list", list);
 		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseTest.jsp").forward(request, response);
