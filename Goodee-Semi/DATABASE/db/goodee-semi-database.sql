@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `account` (
 	`auth_no` INT NOT NULL,
 	`account_id` VARCHAR(16) NOT NULL,
 	`account_pw` VARCHAR(255) NOT NULL,
-	`account_name` VARCHAR(20) NOT NULL,
+	`account_name` VARCHAR(255) NOT NULL,
 	`account_avail` CHAR(1) NOT NULL DEFAULT 'Y',
 	PRIMARY KEY (`account_no`),
 	UNIQUE KEY (`account_id`),
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `pre_test` (
 );
 
 CREATE TABLE IF NOT EXISTS `pre_progress` (
-	`prog_no` INT AUTO_INCREMENT NOT NUFLL,
+	`prog_no` INT AUTO_INCREMENT NOT NULL,
 	`pre_no` INT NOT NULL,
 	`class_no` INT NOT NULL,
 	`watch_len` TIME NOT NULL DEFAULT '00:00:00',

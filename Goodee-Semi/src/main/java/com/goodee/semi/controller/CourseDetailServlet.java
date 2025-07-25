@@ -14,6 +14,7 @@ import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Like;
 import com.goodee.semi.dto.Pet;
+import com.goodee.semi.dto.Review;
 import com.goodee.semi.service.AccountService;
 import com.goodee.semi.service.CourseService;
 import com.goodee.semi.service.PetService;
@@ -55,6 +56,11 @@ public class CourseDetailServlet extends HttpServlet {
 				request.setAttribute("isLike", "Y");
 			} 
 			
+		}
+		
+		List<Review> reviewList = courseService.selectFiveReviewByCourseNo(course.getCourseNo());
+		if (reviewList != null) {
+			request.setAttribute("reviewList", reviewList);
 		}
 		
 		request.setAttribute("course", course);
