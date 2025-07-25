@@ -394,9 +394,17 @@ function setupNewPetRegisterEvent(newLi) {
 }
 
 // 새 반려견 삭제 버튼 이벤트 설정 함수 (DOM에서 제거)
-function setupNewPetDeleteEvent(newLi) {
+function setupNewPetDeleteEvent(newLi, isMsgDeleted, msgText) {
     newLi.querySelector('.pet-btn-del').addEventListener('click', () => {
-        newLi.remove(); // 새로 추가된 아이템을 DOM에서 제거
+		// 메시지 다시 추가
+		if(isMsgDeleted) {
+			const msg = document.createElement('h3');
+			msg.setAttribute('id', 'msg');
+			msg.textContent = msgText;
+			newLi.parentElement.appendChild(msg);
+		}
+		
+		newLi.remove(); // 새로 추가된 아이템을 DOM에서 제거
     });
 }
 
@@ -418,6 +426,16 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
     const accountNo = document.querySelector('#add-pet-btn').getAttribute('data-account-no');
 
 	// 새 반려견 등록 폼 HTML 생성 및 추가
+	
+	// 만약 첫 등록이라 페이지에 "등록해주세요"문구가 존재한다면 제거
+	const msg = document.querySelector('#msg');
+	const msgText = document.querySelector('#msg').textContent;
+	let isMsgDeleted = false;
+	if(msg !== null || msg !== 'null' || msg !== '') {
+		msg.remove();
+		isMsgDeleted = true;
+	}
+	
 	newLi.innerHTML = createNewPetItemHTML(accountNo);
     petList.appendChild(newLi);
     newLi.scrollIntoView({ behavior: 'smooth', block: 'center' }); // 추가된 항목으로 스크롤
@@ -429,7 +447,7 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
 
 	// 새로 추가된 항목에 이벤트 연결
 	setupNewPetRegisterEvent(newLi);  // 등록 버튼 이벤트
-	setupNewPetDeleteEvent(newLi);    // 삭제 버튼 이벤트
+	setupNewPetDeleteEvent(newLi, isMsgDeleted, msgText);    // 삭제 버튼 이벤트
 	setupNewPetImageUpload(newLi);    // 이미지 업로드 이벤트
 });
 
