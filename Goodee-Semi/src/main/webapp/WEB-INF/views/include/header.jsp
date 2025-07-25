@@ -69,7 +69,7 @@
 						<ul class="navbar-nav ml-auto mt-10">
 							<c:choose>
 								<c:when test="${ not empty sessionScope.loginAccount }">
-									<span style="font-size: 13px; text-align: left; margin-right: 5px;">${sessionScope.loginAccount.name }님!<br> 환영합니다.</span>
+									<span style="font-size: 13px; text-align: left; margin-right: 17px;">${sessionScope.loginAccount.name }님!<br> 환영합니다.</span>
 									<a class="nav-link login-button" href="#" onclick="logout(event)">로그아웃</a>
 								</c:when>
 								<c:otherwise>
