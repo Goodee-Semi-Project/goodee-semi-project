@@ -103,57 +103,64 @@
 			</div>
 
 			<ul id="pet-list">
-				<c:forEach var="pet" items="${list }" varStatus="status">
-					<li>
-						<div class="container mb-3">
-							<div class="col-3">
-								<input type="file" class="pet-img-input" name="petImg">
-								<c:choose>
-									<c:when test="${pet.imgFileSaveName eq null}">
-										<img width="150" height="150" src="<c:url value='/static/images/user/pet_profile.png'/>" class="pet-img" alt="반려견 이미지">
-									</c:when>
-									<c:otherwise>
-										<img width="150" height="150" src="<c:url value='/upload/pet/${pet.imgFileSaveName}'/>" class="pet-img" alt="반려견 이미지">
-									</c:otherwise>
-								</c:choose>
-							</div>
-							<div class="pet-detail col-7">
-								<div>
-									<label>이름: </label>
-									<input type="text" class="form-control pet-name mb-3" name="petName" value="${pet.petName }" disabled>
-									<br>
-									<label>견종: </label>
-									<input type="text" class="form-control pet-breed" name="petBreed" value="${pet.petBreed }" disabled>							
-								</div>
-								<div>
-									<label>나이: </label>
-									<input type="number" class="form-control pet-age mb-3" name="petAge" value="${pet.petAge }" disabled>
-									<br>
-									<label>성별: </label>
-									<select class="pet-gender" name="petGender" disabled required>
-										<option value="" disabled>성별</option>
+				<c:choose>
+					<c:when test="${not empty list }">
+						<c:forEach var="pet" items="${list }" varStatus="status">
+							<li>
+								<div class="container mb-3">
+									<div class="col-3">
+										<input type="file" class="pet-img-input" name="petImg">
 										<c:choose>
-											<c:when test="${pet.petGender == 77}">
-												<option value="M" selected>남</option>
-												<option value="F">여</option>
+											<c:when test="${pet.imgFileSaveName eq null}">
+												<img width="150" height="150" src="<c:url value='/static/images/user/pet_profile.png'/>" class="pet-img" alt="반려견 이미지">
 											</c:when>
 											<c:otherwise>
-												<option value="M">남</option>
-												<option value="F" selected>여</option>
+												<img width="150" height="150" src="<c:url value='/upload/pet/${pet.imgFileSaveName}'/>" class="pet-img" alt="반려견 이미지">
 											</c:otherwise>
 										</c:choose>
-									</select>
+									</div>
+									<div class="pet-detail col-7">
+										<div>
+											<label>이름: </label>
+											<input type="text" class="form-control pet-name mb-3" name="petName" value="${pet.petName }" disabled>
+											<br>
+											<label>견종: </label>
+											<input type="text" class="form-control pet-breed" name="petBreed" value="${pet.petBreed }" disabled>							
+										</div>
+										<div>
+											<label>나이: </label>
+											<input type="number" class="form-control pet-age mb-3" name="petAge" value="${pet.petAge }" disabled>
+											<br>
+											<label>성별: </label>
+											<select class="pet-gender" name="petGender" disabled required>
+												<option value="" disabled>성별</option>
+												<c:choose>
+													<c:when test="${pet.petGender == 77}">
+														<option value="M" selected>남</option>
+														<option value="F">여</option>
+													</c:when>
+													<c:otherwise>
+														<option value="M">남</option>
+														<option value="F" selected>여</option>
+													</c:otherwise>
+												</c:choose>
+											</select>
+										</div>
+										<input type="hidden" class="pet-no" name="petNo" value="${pet.petNo }">
+										<input type="hidden" class="account-no" name="accountNo" value="${pet.accountNo }">
+									</div>
+									<div class="pet-btn col-2">
+										<button class="pet-btn-up btn btn-primary mb-3">수정</button>
+										<button class="pet-btn-del btn btn-danger">삭제</button>
+									</div>
 								</div>
-								<input type="hidden" class="pet-no" name="petNo" value="${pet.petNo }">
-								<input type="hidden" class="account-no" name="accountNo" value="${pet.accountNo }">
-							</div>
-							<div class="pet-btn col-2">
-								<button class="pet-btn-up btn btn-primary mb-3">수정</button>
-								<button class="pet-btn-del btn btn-danger">삭제</button>
-							</div>
-						</div>
-					</li>
-				</c:forEach>
+							</li>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<h3 id="msg">${msg }</h3>
+					</c:otherwise>
+				</c:choose>
 			</ul>
 
 			<c:if test="${not empty list }">
