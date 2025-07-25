@@ -46,14 +46,17 @@ public class NoticeWriteServlet extends HttpServlet {
 		
 		String noticeTitle = request.getParameter("noticeTitle");
 		String noticeContent = request.getParameter("noticeContent");
-		Account loginAccount = (Account) request.getSession().getAttribute("loginAccount");
-	  int accountNo = loginAccount.getAccountNo();
+		String nailUp = request.getParameter("nailUp");
 		
-	  Part inputPart = null;
+		Account loginAccount = (Account) request.getSession().getAttribute("loginAccount");
+			int accountNo = loginAccount.getAccountNo();
+		
+			Part inputPart = null;
 	    
 		Notice notice = new Notice();
 		notice.setNoticeTitle(noticeTitle);
 		notice.setNoticeContent(noticeContent);
+		notice.setNailUp(nailUp != null ? "Y" : "N");
 		notice.setAccountNo(accountNo);
 		
 		try {
