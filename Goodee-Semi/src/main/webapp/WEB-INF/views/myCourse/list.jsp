@@ -37,7 +37,7 @@
 									<div class="card-body" style="padding: 10px;">
 		    						<h4 class="card-title"><a href="/course/detail?no=${ course.courseNo }">${ course.title }</a></h4>
 		    						<c:if test="${ sessionScope.loginAccount.author eq 1 }">
-		    							<p>수강중인 반려견: ${ course.petInCourseCount } <br>제출된 과제: </p>
+		    							<p>수강중인 반려견: ${ course.petInCourseCount }</p>
 		    							<div style="text-align: right;">
 		    								<a href="<c:url value='/myCourse/update?no=${ course.courseNo }' />" class="btn btn-outline-secondary" style="padding: 2px 5px;">수정</a>
 		    							</div>
