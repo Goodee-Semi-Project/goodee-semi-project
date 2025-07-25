@@ -140,5 +140,20 @@
 	
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<script>
+		$(() => {
+			setTimeout(() => {
+				$("#homeDog1").css("opacity", "1");
+			}, 1000);
+			
+			setTimeout(() => {
+				$("#homeDog2").css("opacity", "1");
+			}, 2000);
+			
+			setTimeout(() => {
+				$("#homeDog3").css("opacity", "1");
+			}, 3000);
+		})
+	</script>
 </body>
 </html>
