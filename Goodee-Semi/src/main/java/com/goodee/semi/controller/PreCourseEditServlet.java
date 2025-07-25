@@ -66,9 +66,8 @@ public class PreCourseEditServlet extends HttpServlet {
 			preCourse = preCourseService.selectPreCourse(preNo);
 		}
 		
-		if (preCourse != null && preCourse.getAccountNo() != account.getAccountNo()) {
-			
-			request.getRequestDispatcher("/preCourse/list").forward(request, response);
+		if (preNo == -1 || preCourse != null && preCourse.getAccountNo() != account.getAccountNo()) {
+			response.sendRedirect("/invalidAccess");
 			return;
 		}
 //		Attach attach = preCourseService.selectAttach(preNo);
@@ -124,6 +123,10 @@ public class PreCourseEditServlet extends HttpServlet {
 				}
 			}
 			
+			if (new File("C:/ffmpeg/bin/ffprobe.exe").exists() == false) {
+				System.err.println("FFMpeg 경로 설정이 필요합니다!");
+			}
+			
 			
 			int hour = total / 360;
 			int minute = (total % 360) / 60;
@@ -141,8 +144,12 @@ public class PreCourseEditServlet extends HttpServlet {
 			} else {
 				preCourse.setVideoLen(request.getParameter("videoLen"));
 			}
-			
-			result = preCourseService.updatePreCourse(preCourse, attach);
+
+			if (attach != null && total == 0) {
+				result = -2;
+			} else {
+				result = preCourseService.updatePreCourse(preCourse, attach);
+			}
 			
 			// 테스트 수정
 			if (result > 0) {
@@ -150,14 +157,17 @@ public class PreCourseEditServlet extends HttpServlet {
 				if (request.getParameter("size") != null) {
 					size = Integer.parseInt(request.getParameter("size"));
 				}
+				String arrStr = null;
+				if (request.getParameter("arr") != null) {
+					arrStr = request.getParameter("arr");
+				}
 				
-				if (size > 0) {
+				if (size > 0 || arrStr != null) {
 					List<PreTest> list = new ArrayList<PreTest>();
 					
 					int len = 0;
-					if (request.getParameter("arr") != null) {
+					if (arrStr != null) {
 						
-						String arrStr = request.getParameter("arr");
 						String[] arr = arrStr.split(",");
 						len = arr.length;
 						
@@ -203,6 +213,9 @@ public class PreCourseEditServlet extends HttpServlet {
 		if (result > 0) {
 			obj.put("res_code", "200");
 			obj.put("res_msg", "사전 학습 수정 완료");
+		} else if (result == -2) {
+			obj.put("res_code", "501");
+			obj.put("res_msg", "FFMpeg 설정이 필요합니다. 서버 관리자에게 문의하세요.");
 		} else {
 			obj.put("res_code", "500");
 			obj.put("res_msg", "수정 실패");
