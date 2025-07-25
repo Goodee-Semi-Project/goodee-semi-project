@@ -124,16 +124,24 @@
 			</ul>
 
 			<c:if test="${not empty list }">
-				<div id="pagination" style="text-align: center;">
-					<c:if test="${paging.prev }">
-						<a href="<c:url value='/myPet/list?nowPage=${paging.pageBarStart-1 }'/>" class="btn btn-outline-secondary" style="padding: 2px 5px;">⬅️</a>
-					</c:if>
-					<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
-						<a href="<c:url value='/myPet/list?nowPage=${i }'/>" class="btn btn-outline-secondary" style="padding: 2px 5px;">${i }</a>
-					</c:forEach>
-					<c:if test="${paging.next }">
-						<a href="<c:url value='/myPet/list?nowPage=${paging.pageBarEnd+1 }'/>" class="btn btn-outline-secondary" style="padding: 2px 5px;">➡️</a>
-					</c:if>
+				<div id="pagination" class="pagination justify-content-center">
+					<ul class="pagination">
+						<c:if test="${paging.prev }">
+							<li class="page-item">
+								<a href="<c:url value='/myPet/list?nowPage=${paging.pageBarStart-1 }'/>" class="page-link" style="padding: 2px 5px;">⬅️</a>
+							</li>
+						</c:if>
+						<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
+							<li class="page-item <c:if test='${ i eq paging.nowPage }'>active</c:if>">
+								<a href="<c:url value='/myPet/list?nowPage=${i }'/>" class="page-link" style="padding: 2px 5px;">${i }</a>
+							</li>
+						</c:forEach>
+						<c:if test="${paging.next }">
+							<li class="page-item">
+								<a href="<c:url value='/myPet/list?nowPage=${paging.pageBarEnd+1 }'/>" class="page-link" style="padding: 2px 5px;">➡️</a>
+							</li>
+						</c:if>
+					</ul>
 				</div>
 			</c:if>
 
