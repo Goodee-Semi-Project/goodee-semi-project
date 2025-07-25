@@ -135,44 +135,36 @@
 							<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
 								<h3 class="tab-title">후기</h3>
 								<div class="product-review">
-									<div class="media">
-										<!-- Avater -->
-										<img src="images/user/user-thumb.jpg" alt="avater">
-										<div class="media-body">
-											<!-- Ratings -->
-											<div class="ratings">
-												<ul class="list-inline">
-													<li class="list-inline-item">
-														<i class="fa fa-star"></i>
-													</li>
-													<li class="list-inline-item">
-														<i class="fa fa-star"></i>
-													</li>
-													<li class="list-inline-item">
-														<i class="fa fa-star"></i>
-													</li>
-													<li class="list-inline-item">
-														<i class="fa fa-star"></i>
-													</li>
-													<li class="list-inline-item">
-														<i class="fa fa-star"></i>
-													</li>
-												</ul>
+								
+									<c:choose>
+										<c:when test="${ not empty reviewList }">
+											<c:forEach var="review" items="${ reviewList }">
+												<div class="media">
+													<img src="<c:url value='/filePath?no=${ review.profileAttach.attachNo }' />" alt="" class="rounded-circle" style="margin: 40px 20px 0 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
+													<div class="media-body">
+														<div class="name">
+															<h5>${ review.accountName } 님</h5>
+														</div>
+														<div class="date">
+															<p>작성일: ${ review.regDate }</p>
+														</div>
+														<div class="review-comment">
+															<p>
+																${ review.reviewContent }
+															</p>
+														</div>
+													</div>
+												</div>
+											</c:forEach>
+										</c:when>
+										
+										<c:otherwise>
+											<div style="height: 300px; display: flex; justify-content: center; align-items: center;">
+												<h3>작성된 후기가 없습니다.</h3>
 											</div>
-											<div class="name">
-												<h5>Jessica Brown</h5>
-											</div>
-											<div class="date">
-												<p>Mar 20, 2018</p>
-											</div>
-											<div class="review-comment">
-												<p>
-													Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremqe laudant tota rem ape
-													riamipsa eaque.
-												</p>
-											</div>
-										</div>
-									</div>
+										</c:otherwise>
+									</c:choose>
+									
 								</div>
 							</div>
 						</div>
