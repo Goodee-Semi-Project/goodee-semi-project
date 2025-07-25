@@ -22,4 +22,5 @@ public interface ScheduleMapper {
 	List<Schedule> selectScheduleListAttend(Schedule schedule);
 	int deleteScheduleBySchedNo(int schedNo);
 	int updateScheduleAttend(Schedule sched);
+	int selectCountAttend(Schedule sched);
 }

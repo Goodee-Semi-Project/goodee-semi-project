@@ -21,7 +21,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
-// TODO 나이 입력란 유효성 검증 로직 추가
 @WebServlet("/myPet/update")
 @MultipartConfig(
 	maxFileSize = 5 * 1024 * 1024, // 개별 파일 최대 크기: 5MB

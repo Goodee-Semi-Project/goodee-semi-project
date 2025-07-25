@@ -36,7 +36,7 @@
 	        <div class="row">
 	            <div class="col-md-12">
                     <form id="addListform">
-                        <fieldset class="p-4">
+                        <fieldset class="p-3">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-lg-12 pt-6">
@@ -45,9 +45,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <textarea id="quest_content" class="border w-100 p-3 mt-1 mt-lg-2" style="resize: none; height: 450px; outline: none;"></textarea>
+                            <textarea id="quest_content" class="border w-100 p-3 mt-1 mt-lg-1" style="resize: none; height: 400px; outline: none;"></textarea>
                         </fieldset>
-                       	<div class="d-flex justify-content-between px-4">
+                       	<div class="d-flex justify-content-between px-3">
                  			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
 							<button type="button" class="btn btn btn-success" style="background-color: #198754 !important;" onclick="openAddModal()">등록</button>
 						</div>
@@ -94,12 +94,12 @@
 				
 				if(!qnaTitle) {
 					$("#addModal").modal("hide");
-					alert("제목을 입력해주세요");
+					Swal.fire({ icon: "error", text: "제목을 입력해주세요."});
 					return;
 				}
 				if(!qnaContent) {
 					$("#addModal").modal("hide");
-					alert("내용을 입력해주세요");
+					Swal.fire({ icon: "error", text: "내용을 입력해주세요."});
 					return;
 				}
 				
@@ -113,9 +113,18 @@
 					},
 					dataType : "json",
 					success : function(data) {
-						alert(data.res_msg);
-						if(data.res_code == 200) {
-							location.href = "<%=request.getContextPath() %>/qnaBoard/list"
+						if (data.res_code == 200) {
+							Swal.fire({
+								icon: "success",
+								text: data.res_msg,
+								confirmButtonText: "확인"
+							}).then((result) => {
+								if (result.isConfirmed) {
+									location.href = "<%=request.getContextPath() %>/qnaBoard/list";							    
+								}
+							});
+						} else {
+							Swal.fire({ icon: "error", text: data.res_msg});
 						}
 					}
 				});

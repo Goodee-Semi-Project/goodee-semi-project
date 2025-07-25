@@ -52,6 +52,7 @@ public class MyPetListServlet extends HttpServlet {
 		// 1) 현재 페이지 정보 셋팅
 		try {
 			// Integer.parseInt()에서 NumberFormatException 발생 가능성
+			param.setNumPerPage(5); // 반려견 페이지에서는 5개씩 보이도록;
 			String nowPageStr = request.getParameter("nowPage");
 			int nowPage = (nowPageStr == null)? 1 : Integer.parseInt(nowPageStr);
 			param.setNowPage(nowPage);

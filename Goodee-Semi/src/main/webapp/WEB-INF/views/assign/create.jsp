@@ -118,8 +118,6 @@
 		}
 		
 		$(() => {
-			
-			
 			$("#selectCourse").on("change", (event) => {
 				const courseNo = $("#selectCourse").val();
 				const flag = "pet";
@@ -147,7 +145,7 @@
 							$(".selectPet.nice-select").css("width", "100%");
 						},
 						error : function() {
-							alert("목록 조회 중 오류가 발생했습니다.");
+							Swal.fire({ icon: "error", text: "목록 조회 중 오류가 발생했습니다."});
 						}
 					});
 				}
@@ -183,7 +181,7 @@
 							$(".selectSchedule.nice-select").css("width", "100%");
 						},
 						error : function() {
-							alert("목록 조회 중 오류가 발생했습니다.");
+							Swal.fire({ icon: "error", text: "목록 조회 중 오류가 발생했습니다."});
 						}
 					});
 				}
@@ -193,61 +191,97 @@
 			$("#saveAssignForm").on("click", (event) => {
 				event.preventDefault();
 				
-				if (confirm("과제를 임시저장 하시겠습니까?")) {
-					const formData = new FormData(document.getElementById("createAssignForm"));
-					formData.append("flag", "save");
-					
-					$.ajax({
-						url : "/assign/create",
-						type : "POST",
-						data : formData,
-						enctype : "multipart/form-data",
-						contentType : false,
-						processData : false,
-						cache : false,
-						dataType : "JSON",
-						success : function(data) {
-							alert(data.resultMsg);
-							
-							if (data.resultCode == 200) {
-								location.href = "<%= request.getContextPath() %>/assign/management";
+				Swal.fire({
+					text: "과제를 임시저장 하시겠습니까?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "저장",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						const formData = new FormData(document.getElementById("createAssignForm"));
+						formData.append("flag", "save");
+						
+						$.ajax({
+							url : "/assign/create",
+							type : "POST",
+							data : formData,
+							enctype : "multipart/form-data",
+							contentType : false,
+							processData : false,
+							cache : false,
+							dataType : "JSON",
+							success : function(data) {
+								if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href = "<%= request.getContextPath() %>/assign/management";							    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+							},
+							error : function() {
+								Swal.fire({ icon: "error", text: "임시저장 중 오류가 발생했습니다."});
 							}
-						},
-						error : function() {
-							alert("오류 발생!!");
-						}
-					});
-				}
+						});
+					}
+				});
 			});
 			
 			$("#submitAssignForm").on("click", (event) => {
 				event.preventDefault();
 				
-				if (confirm("과제를 등록하시겠습니까?")) {
-					const formData = new FormData(document.getElementById("createAssignForm"));
-					formData.append("flag", "submit");
-					
-					$.ajax({
-						url : "/assign/create",
-						type : "POST",
-						data : formData,
-						enctype : "multipart/form-data",
-						contentType : false,
-						processData : false,
-						cache : false,
-						dataType : "JSON",
-						success : function(data) {
-							alert(data.resultMsg);
-							
-							if (data.resultCode == 200) {
-								location.href = "<%= request.getContextPath() %>/assign/management";
+				Swal.fire({
+					text: "과제를 생성하시겠습니까?",
+					icon: "question",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: "생성",
+					cancelButtonText: "취소"
+				}).then((result) => {
+					if (result.isConfirmed) {
+						const formData = new FormData(document.getElementById("createAssignForm"));
+						formData.append("flag", "submit");
+						
+						$.ajax({
+							url : "/assign/create",
+							type : "POST",
+							data : formData,
+							enctype : "multipart/form-data",
+							contentType : false,
+							processData : false,
+							cache : false,
+							dataType : "JSON",
+							success : function(data) {
+								if (data.resultCode == 200) {
+									Swal.fire({
+										icon: "success",
+										text: data.resultMsg,
+										confirmButtonText: "확인"
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href = "<%= request.getContextPath() %>/assign/management";							    
+										}
+									});
+								} else {
+									Swal.fire({ icon: "error", text: data.resultMsg});
+								}
+							},
+							error : function() {
+								Swal.fire({ icon: "error", text: "과제 생성 중 오류가 발생했습니다."});
 							}
-						},
-						error : function() {
-							alert("오류 발생!!");
-						}
-					});
-				}
+						});
+					}
+				});
 			});
 		});
 	</script>
