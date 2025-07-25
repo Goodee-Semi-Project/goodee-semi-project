@@ -405,7 +405,6 @@ function setupNewPetDeleteEvent(newLi, isMsgDeleted, msgText) {
 		}
 		
 		newLi.remove(); // 새로 추가된 아이템을 DOM에서 제거
-		
     });
 }
 
