@@ -108,7 +108,7 @@
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
 		function openPrintModal(petName, memberName, title, classNo, trainerName) {
-			const congratString = "본 회원은 ○○훈련소의<br>" + title + " 교육 과정을<br>성공적으로 수료하여 이 수료증을 드립니다.";
+			const congratString = "본 회원은 멍스터클래스의<br>" + title + " 교육 과정을<br>성공적으로 수료하여 이 수료증을 드립니다.";
 			
 			const date = new Date();
 			const graduateNo = date.getFullYear() + "-구-" + classNo;

@@ -61,9 +61,9 @@
 	function check(num) {
 		const submit = document.querySelector('input[type=radio][name=quiz' + num + ']:checked').value;
 		if (submit == $('#answer' + num).val()) {
-			alert('정답입니다!');
+			Swal.fire({ icon: "success", text: "정답입니다!"});
 		} else {
-			alert('오답입니다!');
+			Swal.fire({ icon: "error", text: "오답입니다!"});
 		}
 	}
 </script>
