@@ -23,7 +23,7 @@
             
             <h5 class="text-center" style="margin-top: 10px;">${ sessionScope.loginAccount.name } 님</h5>
             <p>회원 | 가입일: ${ sessionScope.loginAccount.reg_date }</p>
-            <a href="<c:url value='/myInfo' />" class="btn btn-main">내 정보</a>
+            <a href="<c:url value='/myInfo' />" class="btn btn-main" style="padding: 10px 20px;">내 정보</a>
             
           </div>
 
