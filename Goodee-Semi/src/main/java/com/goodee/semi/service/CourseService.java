@@ -10,9 +10,11 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.goodee.semi.common.sql.SqlSessionTemplate;
 import com.goodee.semi.dao.AccountDao;
+import com.goodee.semi.dao.AttachDao;
 import com.goodee.semi.dao.ClassDao;
 import com.goodee.semi.dao.CourseDao;
 import com.goodee.semi.dao.PetDao;
+import com.goodee.semi.dao.ReviewDao;
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Course;
@@ -20,6 +22,7 @@ import com.goodee.semi.dto.Enroll;
 import com.goodee.semi.dto.Like;
 import com.goodee.semi.dto.Pet;
 import com.goodee.semi.dto.PetClass;
+import com.goodee.semi.dto.Review;
 import com.goodee.semi.dto.Tag;
 
 public class CourseService {
@@ -27,6 +30,8 @@ public class CourseService {
 	private PetDao petDao = new PetDao();
 	private AccountDao accountDao = new AccountDao();
 	private ClassDao classDao = new ClassDao();
+	private ReviewDao reviewDao = new ReviewDao();
+	private AttachDao attachDao = new AttachDao();
 	
 	public Course selectCourseOne(String courseNo) {
 		Course course = courseDao.selectCourseOne(courseNo);
@@ -287,6 +292,22 @@ public class CourseService {
 		PetClass result = classDao.selectClassByCourseNoAndPetNo(keyObj);
 		
 		return result;
+	}
+
+	public List<Review> selectFiveReviewByCourseNo(int courseNo) {
+		List<Review> reviewList = reviewDao.selectFiveReviewByCourseNo(courseNo);
+		
+		if (reviewList != null) {
+			for (Review review : reviewList) {
+				Attach keyObj = new Attach();
+				keyObj.setTypeNo(Attach.ACCOUNT);
+				keyObj.setPkNo(review.getAccountNo());
+				
+				review.setProfileAttach(attachDao.selectAttachOne(keyObj));
+			}
+		}
+		
+		return reviewList;
 	}
 
 }
