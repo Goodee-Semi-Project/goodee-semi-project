@@ -17,37 +17,42 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-8">
-					<c:forEach var="notice" items="${ noticeList }">
-						<!-- Article -->
-						<article>
-							<!-- Post Image -->
-							<div class="image">
-								<c:choose>
-									<c:when test="${ not empty notice.noticeAttach }">
-										<img class="img-fluid" src="<c:url value='/filePath?no=${ notice.noticeAttach.attachNo }' />" alt="notice">
-									</c:when>
-									
-									<c:otherwise>
-										<img class="img-fluid" src="/static/images/notice/notice_default.jpg" alt="notice_default">									
-									</c:otherwise>
-								</c:choose>
+					<c:choose>
+						<c:when test="${ not empty noticeList }">
+							<c:forEach var="notice" items="${ noticeList }">
+								<article>
+									<div class="image">
+										<c:choose>
+											<c:when test="${ not empty notice.noticeAttach }">
+												<img class="img-fluid" src="<c:url value='/filePath?no=${ notice.noticeAttach.attachNo }' />" style="width: 100%; height: 300px; object-fit: cover;" alt="notice">
+											</c:when>
+											
+											<c:otherwise>
+												<img class="img-fluid" src="/static/images/notice/notice_default.jpg" alt="notice_default">									
+											</c:otherwise>
+										</c:choose>
+									</div>
+									<h3>
+									<c:if test="${notice.nailUp eq 'Y'}">
+										<span style="color: crimson;">📌</span>
+									</c:if>
+									${ notice.noticeTitle }</h3>
+									<ul class="list-inline">
+										<li class="list-inline-item">by ${ notice.writer }</li>
+										<li class="list-inline-item">${ notice.regDate }</li>
+									</ul>
+									<p>${ notice.noticeContent }</p>
+									<a href="<c:url value='/noticeDetail?no=${notice.noticeNo}'/>" class="btn btn-transparent" style="padding: 10px 20px;">상세 보기</a>
+								</article>
+							</c:forEach>
+						</c:when>
+						
+						<c:otherwise>
+							<div style="height: 500px; display: flex; justify-content: center; align-items: center;">
+								<h3>작성된 공지가 없습니다.</h3>
 							</div>
-							<!-- Post Title -->
-							<h3>
-							<c:if test="${notice.nailUp eq 'Y'}">
-								<span style="color: crimson;">📌</span>
-							</c:if>
-							${ notice.noticeTitle }</h3>
-							<ul class="list-inline">
-								<li class="list-inline-item">by ${ notice.writer }</li>
-								<li class="list-inline-item">${ notice.regDate }</li>
-							</ul>
-							<!-- Post Description -->
-							<p>${ notice.noticeContent }</p>
-							<!-- Read more button -->
-							<a href="<c:url value='/noticeDetail?no=${notice.noticeNo}'/>" class="btn btn-transparent" style="padding: 10px 20px;">상세 보기</a>
-						</article>
-					</c:forEach>
+						</c:otherwise>
+					</c:choose>
 	
 					<!-- Pagination -->
 					<c:if test="${ not empty noticeList }">
