@@ -24,6 +24,7 @@
 	</c:if>
 	<section>
 		<div>
+			<c:set var="i" value="0"/>
 			<c:forEach var="c" items="${ courseList }" >
 				<c:if test="${ not empty preCourseMap.get(c.courseNo) }">
 					<ul class="list-inline border rounded p-2 mb-1"">
@@ -37,6 +38,7 @@
 							<h4 style="line-height: 50px;"><c:if test="${ not empty c.name }">${ c.name } - </c:if>${ c.title }</h4>
 						</div>
 						<c:forEach var="p" items="${ preCourseMap.get(c.courseNo) }">
+							<c:set var="i" value="${ i + 1 }"/>
 							<!-- 회원이 조회하는 페이지에서 수정 삭제 버튼만 if로 표시 -->
 							<li class=" d-block mb-1">
 								<div class="d-flex justify-content-between" style="font-size: 16px;">
@@ -61,6 +63,13 @@
 					</ul>
 				</c:if>
 			</c:forEach>
+			<c:if test="${ i eq 0 }">
+				<div class="col-12">
+					<div style="height: 450px; display: flex; justify-content: center; align-items: center;">
+						<h3 style="text-align: center">등록된 사전학습이 없습니다.</h3>
+					</div>
+				</div>
+			</c:if>
 		</div>
 	</section>
 
