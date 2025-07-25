@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.json.simple.JSONObject;
 
+import com.goodee.semi.dto.Account;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.PreCourse;
 import com.goodee.semi.dto.PreTest;
@@ -19,6 +20,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.probe.FFmpegFormat;
@@ -49,6 +51,18 @@ public class PreCourseRegistServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		
+		Account account = null;
+		if (session != null && session.getAttribute("loginAccount") != null) {
+			account = (Account) session.getAttribute("loginAccount");
+		}
+		
+		if (account.getAuthor() != 1) {
+			response.sendRedirect("/preCourse/list");
+			return;
+		}
+		
 		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseRegist.jsp").forward(request, response);
 	}
 	/**
@@ -149,6 +163,8 @@ public class PreCourseRegistServlet extends HttpServlet {
 			
 			if (total != 0) {
 				result = preCourseService.insertPreCourse(preCourse, attach, testList);
+			} else {
+				result = -2;
 			}
 		}
 
@@ -156,6 +172,9 @@ public class PreCourseRegistServlet extends HttpServlet {
 		if (result > 0) {
 			obj.put("res_code", "200");
 			obj.put("res_msg", "사전 학습 생성 완료");
+		} else if (result == -2) {
+			obj.put("res_code", "501");
+			obj.put("res_msg", "FFMpeg 설정이 필요합니다. 서버 관리자에게 문의하세요.");
 		} else {
 			obj.put("res_code", "500");
 			obj.put("res_msg", "등록 실패");
