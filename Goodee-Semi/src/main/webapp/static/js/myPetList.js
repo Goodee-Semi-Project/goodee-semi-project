@@ -361,10 +361,11 @@ function setupNewPetRegisterEvent(newLi) {
         if (!validatePetData(petName, petAge, petGender, petBreed)) {
             return;
         }
-        
-        // 등록용 FormData 생성 (petNo는 null로 전달)
-        const formData = createFormData(petName, petAge, petGender, petBreed, null, accountNo, petImgInput.files[0]);
 
+		// 등록용 FormData 생성 (petNo는 null로 전달)
+        const formData = createFormData(petName, petAge, petGender, petBreed, null, accountNo, petImgInput.files[0]);
+	
+		
         $.ajax({
             url: '/myPet/insert',
             type: 'post',
@@ -378,7 +379,8 @@ function setupNewPetRegisterEvent(newLi) {
 				if(data.resCode === "200") {
 	                alert('등록되었습니다.');
 					
-					location.assign(`/myPet/list?nowPage=${data.targetPage}#${data.pet.pet_no}`); // 등록 후 해당 항목 페이지로 이동
+					location.reload();
+					location.href = `/myPet/list?nowPage=${data.targetPage}#${data.pet.pet_no}`; // 등록 후 해당 항목 페이지로 이동
 				} else {
 					alert('등록 중 문제가 발생했습니다.');
 				}
