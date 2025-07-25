@@ -127,7 +127,7 @@
 								</div>
 								<div>
 									<label>나이: </label>
-									<input type="text" class="form-control pet-age mb-3" name="petAge" value="${pet.petAge }" disabled>
+									<input type="number" class="form-control pet-age mb-3" name="petAge" value="${pet.petAge }" disabled>
 									<br>
 									<label>성별: </label>
 									<select class="pet-gender" name="petGender" disabled required>
