@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
@@ -34,7 +35,8 @@
 		<c:if test="${ not empty attach }">
 			<img class="img-fluid w-100 m-2" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
 		</c:if>
-		<p style="font-size: 20px">${ review.reviewContent }</p>
+		<% pageContext.setAttribute("newLine", "\n"); %>
+		<p style="font-size: 20px">${ fn:replace(review.reviewContent, newLine, "<br>") }</p>
 	</div>
 	<div class="d-flex justify-content-between">
 		<a class="btn btn-primary px-2 py-1" href="<c:url value='/review/list' />">목록</a>
