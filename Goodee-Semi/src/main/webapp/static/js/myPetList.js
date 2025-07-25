@@ -325,7 +325,7 @@ function createNewPetItemHTML(accountNo) {
 					
 					<div>
 						<label>나이: </label>
-						<input type="text" class="form-control pet-age mb-3" placeholder="나이">
+						<input type="number" class="form-control pet-age mb-3" placeholder="나이">
 						<br>
 						<label>성별: </label>
 						<select class="pet-gender" name="petGender" required>
