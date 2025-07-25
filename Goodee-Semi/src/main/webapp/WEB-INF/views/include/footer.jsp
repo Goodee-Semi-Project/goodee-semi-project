@@ -22,9 +22,9 @@
       <div class="col-4">
         <!-- Social Icons -->
         <ul class="social-media-icons text-right align-top">
-          <li><a href="https://www.facebook.com/themefisher">이용약관</a></li>
-          <li><a href="https://www.twitter.com/themefisher">개인정보처리방침</a></li>
-          <li><a href="https://www.pinterest.com/themefisher">도움말</a></li>
+          <li><a href="#">이용약관</a></li>
+          <li><a href="#">개인정보처리방침</a></li>
+          <li><a href="#">도움말</a></li>
         </ul>
       </div>
     </div>

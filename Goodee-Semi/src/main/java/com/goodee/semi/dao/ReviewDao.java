@@ -56,6 +56,7 @@ public class ReviewDao {
 	public Attach selectAttachByReviewNo(int reviewNo) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		Attach attach = session.selectOne("com.goodee.semi.mapper.ReviewMapper.selectAttachByReviewNo", reviewNo);
+		session.close();
 		
 		return attach;
 	}
@@ -63,6 +64,16 @@ public class ReviewDao {
 	public int deleteAttach(Attach attach) {
 		SqlSession session = SqlSessionTemplate.getSqlSession(true);
 		int result = session.delete("com.goodee.semi.mapper.ReviewMapper.deleteAttach", attach);
+		session.close();
+		
+		return result;
+	}
+
+	public List<Review> selectFiveReviewByCourseNo(int courseNo) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		List<Review> result = session.selectList("com.goodee.semi.mapper.ReviewMapper.selectFiveReviewByCourseNo", courseNo);
+		session.close();
+		
 		return result;
 	}
 	

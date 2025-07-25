@@ -61,6 +61,11 @@ public class ReviewEditServlet extends HttpServlet {
 			account = (Account) session.getAttribute("loginAccount");
 		}
 		
+		if (account != null && account.getAuthor() == 1) {
+			response.sendRedirect("/invalidAccess");
+			return;
+		}
+		
 		String accountId = null;
 		if (account != null && account.getAccountId() != null) {
 			accountId = account.getAccountId();
@@ -80,6 +85,9 @@ public class ReviewEditServlet extends HttpServlet {
 				request.setAttribute("list", list);
 				request.setAttribute("review", review);
 				request.setAttribute("attach", attach);
+			} else {
+				response.sendRedirect("/review/list");
+				return;
 			}
 		}
 		
