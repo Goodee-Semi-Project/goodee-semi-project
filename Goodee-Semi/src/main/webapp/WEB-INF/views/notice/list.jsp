@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>    
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +35,7 @@
 	<section class="blog section">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-8">
+				<div class="col-lg-9">
 					<c:choose>
 						<c:when test="${ not empty noticeList }">
 							<c:forEach var="notice" items="${ noticeList }">
@@ -101,7 +103,7 @@
 					  </div>
 					</c:if>					
 				</div>
-				<div class="col-lg-4">
+				<div class="col-lg-3">
 					<div class="sidebar">
 						<!-- Search Widget -->
 						<div class="widget search p-0">
@@ -148,7 +150,7 @@
 										</c:otherwise>
 									</c:choose>
 									<h5><a href="<c:url value='/myInfo' />" style="color: #333 !important">${ sessionScope.loginAccount.name } 님</a></h4>
-									<p class="member-time">가입일: ${ sessionScope.loginAccount.reg_date }</p>
+									<p class="member-time">${sessionScope.loginAccount.author == 1? "훈련사" : "회원"} | 가입일: ${ fn:split(sessionScope.loginAccount.reg_date, " ")[0] }</p>
 								</c:when>
 								
 								<c:otherwise>

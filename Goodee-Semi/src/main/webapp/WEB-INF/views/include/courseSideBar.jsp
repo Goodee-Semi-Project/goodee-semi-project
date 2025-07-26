@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <section class="dashboard section">
   <div class="container">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <div class="sidebar">
           <div class="widget user-dashboard-profile">
 						<c:choose>
@@ -24,7 +24,7 @@
 						</c:choose>
             
             <h5 class="text-center" style="margin-top: 10px;">${ sessionScope.loginAccount.name } 님</h5>
-            <p>회원 | 가입일: ${ sessionScope.loginAccount.reg_date }</p>
+            <p>회원 | 가입일: ${ fn:split(sessionScope.loginAccount.reg_date, " ")[0] }</p>
             <a href="<c:url value='/myInfo' />" class="btn btn-main" style="padding: 10px 20px;">내 정보</a>
             
           </div>
@@ -52,5 +52,5 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-8">
+      <div class="col-lg-9">
         <div class="widget dashboard-container">
