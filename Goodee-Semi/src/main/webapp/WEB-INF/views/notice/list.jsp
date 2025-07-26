@@ -150,7 +150,7 @@
 										</c:otherwise>
 									</c:choose>
 									<h5><a href="<c:url value='/myInfo' />" style="color: #333 !important">${ sessionScope.loginAccount.name } 님</a></h4>
-									<p class="member-time">${sessionScope.loginAccount.author == 1? "훈련사" : "회원"} | 가입일: ${ fn:split(sessionScope.loginAccount.reg_date, " ")[0] }</p>
+									<p class="member-time"> <c:choose><c:when test="${ sessionScope.loginAccount.author eq 1 }">훈련사</c:when><c:when test="${ sessionScope.loginAccount.author eq 2 }">회원</c:when><c:otherwise>게스트</c:otherwise></c:choose> | 가입일: ${ fn:split(sessionScope.loginAccount.reg_date, " ")[0] }</p>
 								</c:when>
 								
 								<c:otherwise>
