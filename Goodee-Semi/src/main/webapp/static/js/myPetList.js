@@ -75,6 +75,11 @@ function validatePetData(petName, petAge, petGender, petBreed) {
         Swal.fire({ icon: "error", text: "견종을 입력해주세요."});
         return false;
     }
+	if (Number(petAge) <= 0) {
+		Swal.fire({ icon: "error", text: "반려견 나이는 1부터 입력 가능합니다"});
+		return false;
+	}
+	
     return true;
 }
 
@@ -444,9 +449,8 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
 	
 	// 만약 첫 등록이라 페이지에 "등록해주세요"문구가 존재한다면 제거
 	const msg = document.querySelector('#msg');
-	const msgText = document.querySelector('#msg').textContent;
 	let isMsgDeleted = false;
-	if(msg !== null || msg !== 'null' || msg !== '') {
+	if(msg) {
 		msg.remove();
 		isMsgDeleted = true;
 	}
@@ -462,7 +466,7 @@ document.querySelector('#add-pet-btn').addEventListener('click', () => {
 
 	// 새로 추가된 항목에 이벤트 연결
 	setupNewPetRegisterEvent(newLi);  // 등록 버튼 이벤트
-	setupNewPetDeleteEvent(newLi, isMsgDeleted, msgText);    // 삭제 버튼 이벤트
+	setupNewPetDeleteEvent(newLi, isMsgDeleted, '훈련을 함께할 반려견을 등록해 주세요.');    // 삭제 버튼 이벤트
 	setupNewPetImageUpload(newLi);    // 이미지 업로드 이벤트
 });
 
