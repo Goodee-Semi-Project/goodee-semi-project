@@ -42,7 +42,6 @@ public class MyPetListServlet extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO "로그인이 필요합니다"와 같이 안내 메시지를 응답하는 로직 필요
 		// 1. session에서 account 정보 가져오기
 		AccountDetail accountDetail = (AccountDetail) request.getSession(false).getAttribute("loginAccount");
 		Pet param = new Pet();
@@ -52,6 +51,7 @@ public class MyPetListServlet extends HttpServlet {
 		// 1) 현재 페이지 정보 셋팅
 		try {
 			// Integer.parseInt()에서 NumberFormatException 발생 가능성
+			param.setNumPerPage(5); // 반려견 페이지에서는 5개씩 보이도록;
 			String nowPageStr = request.getParameter("nowPage");
 			int nowPage = (nowPageStr == null)? 1 : Integer.parseInt(nowPageStr);
 			param.setNowPage(nowPage);
@@ -70,15 +70,15 @@ public class MyPetListServlet extends HttpServlet {
 		
 		// 3. pet 데이터를 가져와 바인딩
 		List<Pet> list = new ArrayList<>(); //기본값: not null(JSP에서 안전하게 사용할 수 있도록)
-		String msg = "조회된 반려견이 없습니다";
+		String msg = "";
 		try {
 			list = service.selectPetList(param);
 			
 			if (list.isEmpty()) {
 				System.out.println("[MyPetListServlet] 조회된 반려견 없음");
+				msg = "훈련을 함께할 반려견을 등록해 주세요.";
 			} else {
 				System.out.println("[MyPetListServlet] 반려견 수: " + list.size());
-				msg = "";
 			}
 		} catch(Exception e) {
 			System.out.println("[MyPetListServlet] 반려견 정보 조회 실패: " + e.getMessage());
@@ -86,7 +86,6 @@ public class MyPetListServlet extends HttpServlet {
 			// 실패해도 그대로 페이지 이동
 		}
 		
-		// TODO 클라이언트 단에서 list.isEmpty() 인 경우, 그렇지 않은 경우 처리
 		// 4. 페이지 이동
 		request.setAttribute("msg", msg);
 		request.setAttribute("list", list);

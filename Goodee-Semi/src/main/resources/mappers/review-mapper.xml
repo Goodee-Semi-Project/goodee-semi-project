@@ -11,7 +11,9 @@
 		<result property="regDate" column="reg_date" />
 		<result property="modDate" column="mod_date" />
 		
+		<result property="accountNo" column="account_no" />
 		<result property="accountId" column="account_id" />
+		<result property="accountName" column="account_name" />
 		<result property="courseTitle" column="title" />
 	</resultMap>
 	
@@ -156,5 +158,25 @@
 		DELETE FROM attachment
 		WHERE type_no = 7 AND  pk_no = #{ pkNo }
 	</delete>
+	
+	<select id="selectFiveReviewByCourseNo" parameterType="_int" resultMap="reviewResultMap">
+		SELECT
+				R.review_no
+			, R.class_no
+			, R.review_title
+			, R.review_content
+			, R.reg_date
+			, A.account_no
+			, A.account_name
+		FROM review R
+		INNER JOIN class C ON R.class_no = C.class_no
+		INNER JOIN pet P ON C.pet_no = P.pet_no
+		INNER JOIN account A ON P.account_no = A.account_no
+		<where>
+			C.course_no = #{courseNo}
+		</where>
+		ORDER BY review_no DESC
+		LIMIT 5
+	</select>
 
 </mapper>
