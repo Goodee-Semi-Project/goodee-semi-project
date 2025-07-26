@@ -59,7 +59,7 @@ public class PreCourseRegistServlet extends HttpServlet {
 		}
 		
 		if (account.getAuthor() != 1) {
-			response.sendRedirect("/preCourse/list");
+			response.sendRedirect("/invalidAccess");
 			return;
 		}
 		
@@ -160,11 +160,13 @@ public class PreCourseRegistServlet extends HttpServlet {
 					}
 				}
 			}
-			
-			if (total != 0) {
-				result = preCourseService.insertPreCourse(preCourse, attach, testList);
-			} else {
-				result = -2;
+
+			if (attach != null) {
+				if (total == 0) {
+					result = -2;
+				} else {
+					result = preCourseService.insertPreCourse(preCourse, attach, testList);
+				}
 			}
 		}
 

@@ -88,7 +88,7 @@
 	
 	<!-- modal -->
 	<!-- 일정 등록/수정 모달 -->
-	<div id="event-modal-box" class="modal" style="display: none; justify-content: center; align-items: center; position: fixed; z-index: 9999; top: 0; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%;">
+	<div id="event-modal-box" class="modal" style="display: none; justify-content: center; align-items: center; position: fixed; z-index: 999; top: 0; background: rgba(0, 0, 0, 0.5); width: 100%; height: 100%;">
 		<div id="event-modal" class="modal-dialog" style="background: white;">
 			<div class="modal-content">
 				<div class="modal-header">

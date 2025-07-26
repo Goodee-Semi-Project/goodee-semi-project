@@ -13,15 +13,15 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	
-	<section class="hero-area bg-1 text-left overly">
+	<section class="hero-area bg-2 text-left overly">
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<!-- Header Content -->
 				<div class="content-block">
-					<h1>기초부터 확실하게.</h1>
-					<p>더 안전한 훈련, 더 정확한 행동 교정,<br>고객과 훈련사의 1:1 맞춤 관리 시스템으로<br>반려견과 함께하는 더 나은 삶을 위해 노력합니다.</p>
+					<h1 style="color: #0062CC; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">기초부터 확실하게.</h1>
+					<p style="color: rgb(0, 0, 0, 0.7);">더 안전한 훈련, 더 정확한 행동 교정,<br>고객과 훈련사의 1:1 맞춤 관리 시스템으로<br>반려견과 함께하는 더 나은 삶을 위해 노력합니다.</p>
 				</div>
 				<%@ include file="/WEB-INF/views/include/search.jsp" %>
 			</div>
@@ -39,7 +39,7 @@
 				<div class="product-details">
 					<input id="courseNo" type="hidden" value="${ course.courseNo }">
 					<div style="display: flex; justify-content: center;">
-						<img class="card-img-top img-fluid" style="width: 200px; height: 200px; margin-right: 50px; border: 3px solid white" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
+						<img class="card-img-top img-fluid" style="width: 200px; height: 200px; object-fit: cover; margin-right: 50px; border: 3px solid white" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
 						<div class="product-meta" style="display: flex; flex-direction: column; justify-content: center;">
 							<h1 class="product-title" style="font-size: 48px;">${ course.title }</h1>
 							<ul class="list-inline">
@@ -135,44 +135,36 @@
 							<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
 								<h3 class="tab-title">후기</h3>
 								<div class="product-review">
-									<div class="media">
-										<!-- Avater -->
-										<img src="images/user/user-thumb.jpg" alt="avater">
-										<div class="media-body">
-											<!-- Ratings -->
-											<div class="ratings">
-												<ul class="list-inline">
-													<li class="list-inline-item">
-														<i class="fa fa-star"></i>
-													</li>
-													<li class="list-inline-item">
-														<i class="fa fa-star"></i>
-													</li>
-													<li class="list-inline-item">
-														<i class="fa fa-star"></i>
-													</li>
-													<li class="list-inline-item">
-														<i class="fa fa-star"></i>
-													</li>
-													<li class="list-inline-item">
-														<i class="fa fa-star"></i>
-													</li>
-												</ul>
+								
+									<c:choose>
+										<c:when test="${ not empty reviewList }">
+											<c:forEach var="review" items="${ reviewList }">
+												<div class="media">
+													<img src="<c:url value='/filePath?no=${ review.profileAttach.attachNo }' />" alt="" class="rounded-circle" style="margin: 40px 20px 0 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
+													<div class="media-body">
+														<div class="name">
+															<h5>${ review.accountName } 님</h5>
+														</div>
+														<div class="date">
+															<p>작성일: ${ review.regDate }</p>
+														</div>
+														<div class="review-comment">
+															<p>
+																${ review.reviewContent }
+															</p>
+														</div>
+													</div>
+												</div>
+											</c:forEach>
+										</c:when>
+										
+										<c:otherwise>
+											<div style="height: 300px; display: flex; justify-content: center; align-items: center;">
+												<h3>작성된 후기가 없습니다.</h3>
 											</div>
-											<div class="name">
-												<h5>Jessica Brown</h5>
-											</div>
-											<div class="date">
-												<p>Mar 20, 2018</p>
-											</div>
-											<div class="review-comment">
-												<p>
-													Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremqe laudant tota rem ape
-													riamipsa eaque.
-												</p>
-											</div>
-										</div>
-									</div>
+										</c:otherwise>
+									</c:choose>
+									
 								</div>
 							</div>
 						</div>

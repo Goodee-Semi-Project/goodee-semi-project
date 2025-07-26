@@ -23,8 +23,13 @@
 			      		<input type="hidden" name="noticeWriter" value="${ loginAccount.accountNo }">
 			      		
 			      		<fieldset class="p-4">
-			      			<div class="mb-2" style="display: flex; justify-content: center;">
-			      				<input class="form-control" type="text" id="noticeTitle" name="noticeTitle" placeholder="제목" value="${ notice.noticeTitle }" style="width: 90%; height: 30px; margin: 0 5%;">
+			      			<div class="mb-2" style="width: 90%; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+								<input class="form-control" type="text" id="noticeTitle" value="${notice.noticeTitle}" 	name="noticeTitle" placeholder="제목" style="width: 85%; height: 38px;">
+							
+							  <div style="margin-left: 10px; display: flex; align-items: center; font-size: 14px;">
+							    <input type="checkbox" id="nailUp" name="nailUp" value="Y" <c:if test="${notice.nailUp eq 'Y'}">checked</c:if> style="margin-right: 5px; transform: scale(1.2);">
+							    <label for="nailUp" style="margin: 0; cursor: pointer;">📌 고정</label>
+							  </div>
 			      			</div>
 			      			<textarea class="form-control" id="noticeContent" name="noticeContent" placeholder="내용을 입력하세요." style="width: 90%; height: 400px; margin: 0 auto;">${ notice.noticeContent }</textarea>
 			      			
@@ -104,6 +109,21 @@
 	</section>
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	<script>
+		$(() => {
+			setTimeout(() => {
+				$("#homeDog1").css("opacity", "1");
+			}, 1000);
+			
+			setTimeout(() => {
+				$("#homeDog2").css("opacity", "1");
+			}, 2000);
+			
+			setTimeout(() => {
+				$("#homeDog3").css("opacity", "1");
+			}, 3000);
+		})
+	</script>
 	<script>
 		function readURL(input) {
 			if (input.files && input.files[0]) {
