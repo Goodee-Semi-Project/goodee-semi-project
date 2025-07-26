@@ -4,17 +4,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>후기 게시판</title>
+	<meta charset="UTF-8">
+	<title>후기 게시판</title>
+	
+	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 
-<%@ include file="/WEB-INF/views/include/head.jsp" %>
+	<style>
+		.btn-success {
+			padding: 5px 10px !important;
+	     	display: inline-block !important;
+	    	margin: 1.1rem !important;
+		}
+		
+		.btn-success:hover {
+			color: white !important;
+		}
+		
+		.nice-select {
+			background: white !important;
+		}
+		
+		.nice-select > * {
+			color: #5672f9 !important;
+			font-weight: 500;
+		}
+		
+		.nice-select:after {
+			border-bottom: 2px solid #5672f9 !important;
+	    	border-right: 2px solid #5672f9 !important;
+		}
+		
+		.btn-primary {
+			padding: 13.5px;
+			margin-right: 10px !important;
+		}
+	</style>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <%@ include file="/WEB-INF/views/include/myPageSideBar.jsp" %>
 
 <main>
-	<h2>참여 후기</h2>
+	<h2 class="tab-title mb-4 text-center">참여 후기</h2>
 	
 	<section class="page-search rounded">
 		<div class="container">
@@ -58,7 +89,7 @@
 	<section>
 		<c:if test="${ loginAccount.author != 1 }">
 			<div class="my-1 w-100 text-right">
-				<a href="/review/write" class="btn btn-primary px-2 py-1" >후기 작성</a>
+				<a href="/review/write" class="btn btn-success btn-sm mb-4" >후기 작성</a>
 			</div>
 		</c:if>
 		<div>
@@ -75,9 +106,9 @@
 						<thead class="w-100">
 							<tr>
 								<th class="col-2">번호</th>
-								<th class="col-8">제목</th>
+								<th class="col-9">제목</th>
 								<th class="col-3">작성자</th>
-								<th class="col-4">작성일</th>
+								<th class="col-3">작성일</th>
 							</tr>
 						</thead>
 						<tbody>
