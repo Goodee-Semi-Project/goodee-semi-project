@@ -4,48 +4,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>QnA질문 게시판</title>
-
-<%@ include file="/WEB-INF/views/include/head.jsp" %>
-
-<style>
-	.btn_question_add {
-		padding: 5px 10px;
-     	display: inline-block;
-    	margin: 10px 0;
-	}
+	<meta charset="UTF-8">
+	<title>QnA질문 게시판</title>
 	
-	.btn_question_add:hover {
-		color: white;
-	}
+	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 	
-	.nice-select {
-		background: white !important;
-	}
-	
-	.nice-select > * {
-		color: #5672f9 !important;
-		font-weight: 500;
-	}
-	
-	.nice-select:after {
-		border-bottom: 2px solid #5672f9 !important;
-    	border-right: 2px solid #5672f9 !important;
-	}
-	
-	.btn-primary {
-		/* background: #0984e3 !important; */
-		/* border: 1px solid white !important; */
-		padding: 13.5px;
-		margin-right: 10px !important;
-	}
-	
-	.page-search {
+	<style>
+		.btn_question_add {
+			padding: 5px 10px;
+	     	display: inline-block;
+	    	margin: 1.1rem !important;
+		}
 		
-	}
-	
-</style>
+		.btn_question_add:hover {
+			color: white;
+		}
+		
+		.nice-select {
+			background: white !important;
+		}
+		
+		.nice-select > * {
+			color: #5672f9 !important;
+			font-weight: 500;
+		}
+		
+		.nice-select:after {
+			border-bottom: 2px solid #5672f9 !important;
+	    	border-right: 2px solid #5672f9 !important;
+		}
+		
+		.btn-primary {
+			padding: 13.5px;
+			margin-right: 10px !important;
+		}
+	</style>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
@@ -55,7 +48,7 @@
 		<h2 class="tab-title mb-4 text-center">질문 게시판</h2>
 	</div>
 	
-	<section class="page-search">
+	<section class="page-search rounded">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
@@ -63,7 +56,7 @@
 						<form action="<c:url value='/qnaBoard/list'/>" method="get">
 							<div class="form-row align-items-center">
 								<div class="form-group col-lg-2 col-md-6">
-									<select class="w-100 form-control my-2 my-lg-0" name="searchBy" >
+									<select class="w-100 form-control my-2 my-lg-0 rounded" name="searchBy" >
 										<option value="1" ${ question.searchBy == 1 ? 'selected' : '' }>제목</option>
 										<option value="2" ${ question.searchBy == 2 ? 'selected' : '' }>제목+내용</option>
 										<option value="3" ${ question.searchBy == 3 ? 'selected' : '' }>작성자</option>
@@ -77,7 +70,7 @@
 									<button type="submit" class="btn btn-primary active w-100">검색</button>
 								</div>
 								<div class="form-group col-lg-2 col-md-6">
-									<select class="w-100 form-control my-2 my-lg-0" name="orderBy">
+									<select class="w-100 form-control my-2 my-lg-0 rounded" name="orderBy">
 										<option value="0" ${ question.orderBy == 0 ? 'selected' : '' }>정렬</option>
 										<option value="1" ${ question.orderBy == 1 ? 'selected' : '' }>최근 날짜</option>
 										<option value="2" ${ question.orderBy == 2 ? 'selected' : '' }>오래된 날짜</option>
@@ -100,13 +93,13 @@
 	</c:if>
 	
 	<section>
-		<table class="text-center table table-responsive product-dashboard-table" style="table-layout: fixed; width: 100%;">
+		<table class="table table-hover text-center" style="table-layout: fixed; width: 100%;">
 			<tbody>
 				<tr style="height: 50px;">
-					<th>글번호</th>
-					<th style="width: 350px;">제목</th>
-					<th>작성자</th>
-					<th>등록날짜</th>
+					<th class="col-2">글번호</th>
+					<th class="col-9">제목</th>
+					<th class="col-3">작성자</th>
+					<th class="col-3">등록날짜</th>
 				</tr>
 				<c:forEach var="q" items="${ questionList }">
 					<tr style="height: 35px;">
