@@ -24,7 +24,7 @@
 						</c:choose>
             
             <h5 class="text-center" style="margin-top: 10px;">${ sessionScope.loginAccount.name } 님</h5>
-            <p>회원 | 가입일: ${ fn:split(sessionScope.loginAccount.reg_date, " ")[0] }</p>
+            <p>${sessionScope.loginAccount.author eq 1 ? "훈련사" : "회원"} | 가입일: ${ fn:split(sessionScope.loginAccount.reg_date, " ")[0] }</p>
             <a href="<c:url value='/myInfo' />" class="btn btn-main" style="padding: 10px 20px;">내 정보</a>
             
           </div>
