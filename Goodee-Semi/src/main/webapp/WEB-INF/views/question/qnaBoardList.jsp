@@ -10,10 +10,14 @@
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 	
 	<style>
+		.table {
+			margin-top: 1.1rem;
+		}
+		
 		.btn_question_add {
 			padding: 5px 10px;
 	     	display: inline-block;
-	    	margin: 1.1rem !important;
+	    	margin: 1.1rem 1.1rem 0 1.1rem !important;
 		}
 		
 		.btn_question_add:hover {
