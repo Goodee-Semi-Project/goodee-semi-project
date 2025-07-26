@@ -8,6 +8,28 @@
 	<title>${ course.title } - 교육과정 세부 조회</title>
 	
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
+	
+	<!-- 인라인 style로 이미 설정되어 있던 css 속성을 수정해야 될 경우에는 !important 로 덮어씌웠음 -->
+	<style type="text/css">
+		.hero-area .content-block * {
+			color: white !important;
+			text-shadow: none !important;
+		}
+		
+		.overly:before {
+			background : rgba(0, 0, 0, 0.2) !important;
+			border-radius: 0 !important;
+		    top: 0 !important;
+		    left: 0 !important;
+		    right: 0 !important;
+		}
+		
+		.bg-1 {
+ 			background: url("/static/images/home-background.jpg") !important;
+ 			background-size: cover !important;
+ 		}
+	</style>
+
 </head>
 
 <body>
