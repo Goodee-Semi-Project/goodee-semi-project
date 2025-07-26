@@ -16,6 +16,7 @@
 		<result property="classNo" column="class_no" />
 		<result property="imgFilePath" column="type_path" />
 		<result property="imgFileSaveName" column="save_name" />
+		<result property="classProg" column="class_prog" />
 	</resultMap>
 	
 	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
@@ -82,7 +83,8 @@
 			c.class_no AS class_no,
 			at.attach_no AS attach_no, 
 			a.account_name AS account_name,
-			a.account_no AS account_no
+			a.account_no AS account_no,
+			c.class_prog  AS class_prog
 		FROM pet p
 		JOIN class c ON p.pet_no = c.pet_no
 		JOIN (
