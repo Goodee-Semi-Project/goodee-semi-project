@@ -10,10 +10,14 @@
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
 
 	<style>
+		.table {
+			margin-top: 1.1rem;
+		}
+		
 		.btn-success {
 			padding: 5px 10px !important;
 	     	display: inline-block !important;
-	    	margin: 1.1rem !important;
+	    	margin: 1.1rem 1.1rem 0 1.1rem !important;
 		}
 		
 		.btn-success:hover {
