@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `account` (
 	`auth_no` INT NOT NULL,
 	`account_id` VARCHAR(16) NOT NULL,
 	`account_pw` VARCHAR(255) NOT NULL,
-	`account_name` VARCHAR(20) NOT NULL,
+	`account_name` VARCHAR(255) NOT NULL,
 	`account_avail` CHAR(1) NOT NULL DEFAULT 'Y',
 	PRIMARY KEY (`account_no`),
 	UNIQUE KEY (`account_id`),

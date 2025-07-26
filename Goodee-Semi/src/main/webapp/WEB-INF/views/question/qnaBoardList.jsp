@@ -125,6 +125,11 @@
 			</ul>
 		</div>
 	</c:if>
+	<c:if test="${ empty questionList }">
+		<div class="text-center d-flex" style="width: 100%; height: 360px; justify-content: center; align-items: center;">
+			<span class="h2">조회된 게시글이 없습니다</span>
+		</div>
+	</c:if>
 	
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>

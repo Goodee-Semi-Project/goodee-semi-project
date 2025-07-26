@@ -1,10 +1,13 @@
 package com.goodee.semi.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.common.constant.HttpConstants;
+import com.goodee.semi.common.util.GsonUtil;
 import com.goodee.semi.dto.Attach;
 import com.goodee.semi.dto.Pet;
 import com.goodee.semi.service.AttachService;
@@ -47,17 +50,19 @@ public class MyPetInsertServlet extends HttpServlet {
         res.getWriter().print(json);
     }
     
-    private void sendSuccessResponse(String resCode, String resMsg, Pet pet, ServletResponse res) throws IOException {
-    	JSONObject json = new JSONObject();
-    	json.put("resCode", resCode);
-    	json.put("resMsg", resMsg);
+    private void sendSuccessResponse(String resCode, String resMsg, Pet pet, int targetPage, ServletResponse res) throws IOException {
+    	// 응답 객체 생성
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("resCode", resCode);
+    	map.put("resMsg", resMsg);    	
+    	map.put("targetPage", targetPage);
+    	map.put("pet", pet);
     	
-    	// Gson을 사용하여 pet 객체 바인딩
-    	Gson gson = new Gson();
-    	json.put("pet", gson.toJson(pet));
+    	// Gson으로 전체를 JSON 문자열로 변환
+    	String jsonString = GsonUtil.toJson(map);
     	
     	res.setContentType(HttpConstants.CONTENT_TYPE_JSON);
-    	res.getWriter().print(json);
+    	res.getWriter().print(jsonString);
     }
 
     
@@ -123,7 +128,14 @@ public class MyPetInsertServlet extends HttpServlet {
         // 3. service 호출
         int result = service.insertPet(pet, attach);
         if (result != 0) {
-        	sendSuccessResponse("200", "반려견 정보 등록에 성공했습니다", pet, response);
+        	// 페이징
+        	pet.setNumPerPage(5);
+    		pet.setNowPage(1); // 총 페이지 수를 계산하는 함수를 호출하기 위해 임의의 값 할당
+    		int totalData = service.selectPetCount(pet);
+    		pet.setTotalData(totalData + 1); // 총 데이터가 1 증가했을 때의 페이지 수가 pet에 set됨
+    		int targetPage = pet.getTotalPage();
+            
+        	sendSuccessResponse("200", "반려견 정보 등록에 성공했습니다", pet, targetPage, response);
         	return;
         }
 

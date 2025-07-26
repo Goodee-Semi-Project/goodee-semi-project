@@ -5,15 +5,97 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>안녕하세요! ○○훈련소 입니다.</title>
+	<title>## 고객과 반려견이 더 가까워지는 곳! 멍스터클래스 ##</title>
 	
 	<%@ include file="/WEB-INF/views/include/head.jsp" %>
+	
+	<!-- 인라인 style로 이미 설정되어 있던 css 속성을 수정해야 될 경우에는 !important 로 덮어씌웠음 -->
+	<style type="text/css">
+		.hero-area .content-block * {
+			color: white !important;
+			text-shadow: none !important;
+		}
+		
+		.overly:before {
+			background : rgba(0, 0, 0, 0.2) !important;
+			border-radius: 0 !important;
+		    top: 0 !important;
+		    left: 0 !important;
+		    right: 0 !important;
+		}
+		
+		.bg-1 {
+			background-position: center !important;
+ 			background: transparent !important;
+ 		}
+		
+		.home-dog,
+		.home-dog img {
+			border: 0 !important;
+			border-radius: 3px !important;
+		}
+		
+		.home-dog {
+			transition: 0.3s !important;
+			display: none;
+		}
+		
+		#homeDog1 {
+			top: 23% !important;
+			right: 33% !important;
+			transform: rotate(0deg) !important;
+		}
+		
+		#homeDog2 {
+			top: 23% !important;
+			right: 21% !important;
+		}
+		
+		#homeDog3 {
+			top: 23% !important;
+			right: 9% !important;
+			transform: rotate(0deg) !important;
+		}
+		
+		/* 비디오 배경 스타일 개선 */
+		.bg-video {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+			overflow: hidden;
+		}
+		
+		.bg-video video {
+			position: absolute;
+			top: 55%;
+			left: 50%;
+			width: auto;
+			height: auto;
+			transform: translateX(-50%) translateY(-50%);
+			object-fit: cover;
+		}
+		
+		/* hero-area에 상대적 위치 설정 */
+		.hero-area {
+			position: relative;
+			min-height: 500px;
+		}
+	</style>
 </head>
 
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	
-	<section class="hero-area bg-1 text-left overly" style="position: relative;">
+	
+	<section class="hero-area bg-1 text-left overly" style="position: relative; ">
+		<div class="bg-video">
+	  		<video class="bg-video__content" autoplay muted loop>
+	   			<source src="/static/videos/home-background.mp4" type="video/mp4"/>
+	  		</video>
+		</div>
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row">
@@ -29,15 +111,15 @@
 		</div>
 	</div>
 	
-	<div id="homeDog1" style="position: absolute; top: 35%; right: 30%; border-radius: 10px; overflow: hidden; z-index: 10; transform: rotate(-20deg); opacity: 0; transition: 0.5s;">
+	<div id="homeDog1" class="home-dog" style="position: absolute; top: 35%; right: 30%; border-radius: 10px; overflow: hidden; z-index: 10; transform: rotate(-20deg); opacity: 0; transition: 0.5s;">
 		<img width="200" height="200" src="/static/images/home/homeDog1.jpg" style="border: 7px solid white;" alt="dog" />
 	</div>
 	
-	<div id="homeDog2" style="position: absolute; top: 15%; right: 25%; border-radius: 10px; overflow: hidden; z-index: 11; opacity: 0; transition: 0.5s;">
+	<div id="homeDog2" class="home-dog" style="position: absolute; top: 15%; right: 25%; border-radius: 10px; overflow: hidden; z-index: 11; opacity: 0; transition: 0.5s;">
 		<img width="200" height="200" src="/static/images/home/homeDog2.jpg" style="border: 7px solid white;" alt="dog" />
 	</div>
 	
-	<div id="homeDog3" style="position: absolute; top: 35%; right: 20%; border-radius: 10px; overflow: hidden; z-index: 12; transform: rotate(20deg); opacity: 0; transition: 0.5s;">
+	<div id="homeDog3" class="home-dog" style="position: absolute; top: 35%; right: 20%; border-radius: 10px; overflow: hidden; z-index: 12; transform: rotate(20deg); opacity: 0; transition: 0.5s;">
 		<img width="200" height="200" src="/static/images/home/homeDog3.jpg" style="border: 7px solid white;" alt="dog" />
 	</div>
 	<!-- Container End -->
@@ -65,24 +147,17 @@
 										<div class="card">
 											<div class="thumb-content">
 												<a href="/course/detail?no=${ course.courseNo }">
-													<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" alt="img">
+													<img class="card-img-top img-fluid" src="<c:url value='/filePath?no=${ course.thumbAttach.attachNo }' />" style="width: 100%; height: 340px; object-fit: cover;" alt="img">
 												</a>
 											</div>
 											<div class="card-body">
 				    						<h4 class="card-title"><a href="<c:url value='/course/detail?no=${ course.courseNo }' />">${ course.title }</a></h4>
 				    						<p class="card-text">${ course.subTitle }</p>
 				    						<div class="container" style="padding: 0; display: flex; justify-content: space-between;">
-				    							<div class="product-ratings" style="padding: 0;">
-											    	<ul class="list-inline">
-											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-											    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-											    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-											    		<li class="list-inline-item"><span style="font-size: 20px; margin-left: 8px;">4.8</span></li>
-											    	</ul>
-					    						</div>
-					    						<c:choose>
+				    							<div style="margin: auto 0;">
+				    								<p style="margin: 0;">수강중인 반려견: ${ course.petInCourseCount } / ${ course.capacity }</p>
+				    							</div>
+				    							<c:choose>
 					    							<c:when test="${ course.petInCourseCount ge course.capacity }">
 					    								<div>
 					    									<button type="button" class="btn btn-secondary" style="padding: 5px 10px;" disabled>수강 불가</button>

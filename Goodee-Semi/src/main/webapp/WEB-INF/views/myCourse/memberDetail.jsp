@@ -46,7 +46,7 @@
 					<td style="width: 20%">${ pet.accountName } 님</td>
 					<td style="width: 30%">
 						<button type="button" onclick="moveToSchedList(${pet.petNo}, ${course.courseNo})" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
-						<button type="button" onclick="" style="padding: 5px 10px;" class="btn btn-outline-secondary">과제</button>
+						<button type="button" onclick="moveToAssign(${pet.classNo})" style="padding: 5px 10px;" class="btn btn-outline-secondary">과제</button>
 						<button type="button" onclick="openKickoutModal('${pet.accountName}',${pet.classNo},'${pet.petName}')" class="btn_kickout btn btn-danger" style="padding: 5px 10px;">추방</button>
 					</td>
 				</tr>
@@ -77,6 +77,10 @@
 	
 	
 	<script>
+	function moveToAssign(classNo) {
+		location.href="<%=request.getContextPath()%>/assign/listByClass?classNo=" + classNo;
+	}
+			
 	function moveToSchedList(petNo, courseNo) {
 		location.href="<%=request.getContextPath()%>/schedule?petNo=" + petNo + "/&courseNo=" + courseNo;
 	}

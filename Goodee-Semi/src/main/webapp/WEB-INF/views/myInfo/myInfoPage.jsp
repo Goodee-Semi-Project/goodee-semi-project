@@ -55,19 +55,19 @@
 					<div style="display: flex; align-items: center; width: 100%;">
 						<c:choose>
 							<c:when test="${ not empty attach }">
-								<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da;" id="preview" alt="profile-img" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
+								<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da; border-radius: 50% !important; object-fit: cover !important;" id="preview" alt="profile-img" src="<c:url value='/filePath?no=${ attach.attachNo }'/>">
 								<label for="attach" class="btn btn-outline-primary px-2 py-1 mx-2" style="padding: 2px 5px; margin: 0 5px 0 0;">
-							  	<span style="width: 100px; font-size: 12px; font-weight: 500;">수정</span>
+							  	<span style="width: 100px; font-size: 12px; font-weight: 500;">변경</span>
 								</label>
 								<button type="button" class="btn btn-outline-danger px-2 py-1 mx-2" style="padding: 2px 5px;" onclick="removeImg(${ accountDetail.accountNo })"><span style="width: 100px; font-size: 12px; font-weight: 500;">삭제</span></button>
 								<input type="file" id="attach" name="attach" onchange="readURL(this)" style="opacity: 0; width: 0%;">
 							</c:when>
 							<c:otherwise>
 								<!-- NOTE: 공통 사용 이미지로 -->
-								<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da;" id="preview" alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"/>
+								<img width="150" height="150" style="padding: 5px; margin: 0 20px 20px 0; border: 1px solid #ced4da; border-radius: 50% !important; object-fit: cover !important;" id="preview" alt="profile-img" src="<c:url value='/static/images/user/profile.png'/>"/>
 								<input type="file" id="attach" name="attach" onchange="readURL(this)" style="opacity: 0; width: 0%;">
 								<label for="attach" class="btn btn-outline-success px-2 py-1 mx-2" style="padding: 2px 5px; margin: 0 5px 0 0;">
-							  		<span style="width: 100px; font-size: 12px; font-weight: 500;">등록</span>
+							  		<span style="width: 100px; font-size: 12px; font-weight: 500;">추가</span>
 								</label>
 							</c:otherwise>
 						</c:choose>

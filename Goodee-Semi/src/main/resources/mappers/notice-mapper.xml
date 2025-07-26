@@ -58,8 +58,8 @@
 
   <!-- 공지사항 등록 -->
   <insert id="insertNotice" parameterType="com.goodee.semi.dto.Notice" useGeneratedKeys="true" keyProperty="noticeNo">
-    INSERT INTO notice (notice_title, notice_content, account_no)
-    VALUES (#{noticeTitle}, #{noticeContent}, #{accountNo})
+    INSERT INTO notice (notice_title, notice_content, account_no, nail_up)
+    VALUES (#{noticeTitle}, #{noticeContent}, #{accountNo}, #{nailUp})
   </insert>
 
   <!-- 공지사항 상세 -->
@@ -69,7 +69,8 @@
            n.notice_title,
            n.notice_content,
            DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date,
-           a.account_name AS writer
+           a.account_name AS writer,
+           n.nail_up
     FROM notice n
     JOIN account a ON n.account_no = a.account_no
     WHERE n.notice_no = #{noticeNo}
@@ -79,7 +80,8 @@
   <update id="updateNotice" parameterType="com.goodee.semi.dto.Notice">
     UPDATE notice
     SET notice_title = #{noticeTitle},
-        notice_content = #{noticeContent}
+        notice_content = #{noticeContent},
+        nail_up = #{nailUp}
     WHERE notice_no = #{noticeNo}
   </update>
 
