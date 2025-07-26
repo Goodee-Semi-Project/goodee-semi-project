@@ -23,7 +23,8 @@
 				</c:choose>
             
             <h5 class="text-center" style="margin-top: 10px;">${ sessionScope.loginAccount.name } 님</h5>
-            <p>${sessionScope.loginAccount.author eq 1 ? "훈련사" : "회원"} | 가입일: ${ fn:split(sessionScope.loginAccount.reg_date, " ")[0]  }</p>
+            <p>
+            <c:choose><c:when test="${ sessionScope.loginAccount.author eq 1 }">훈련사</c:when><c:when test="${ sessionScope.loginAccount.author eq 2 }">회원</c:when><c:otherwise>게스트</c:otherwise></c:choose> | 가입일: ${ fn:split(sessionScope.loginAccount.reg_date, " ")[0]  }</p>
             <a href="<c:url value='/myInfo' />" class="btn btn-main">내 정보</a>
             
           </div>
