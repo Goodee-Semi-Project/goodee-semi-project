@@ -51,7 +51,7 @@
 						<td style="width: 25%">${ p.petName }(${ p.petBreed })<br>${ p.petAge }세 / ${ p.petGender }</td>
 						<td style="width: 20%">${ p.accountName }</td>
 						<td style="width: 30%">
-							<button type="button" class="btn btn-dark" style="padding: 5px 10px;" onclick="goToDetail(${ p.petNo }, ${ c.courseNo })">출석 현황</button>
+							<button type="button" class="btn btn-dark" style="padding: 5px 10px;" onclick="goToDetail(${ p.petNo }, ${ c.courseNo })">출석 상세</button>
 						</td>
 					</tr>
 				</c:forEach>
