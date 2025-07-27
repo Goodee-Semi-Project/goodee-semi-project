@@ -45,7 +45,7 @@
 										
 										<c:if test="${ sessionScope.loginAccount.author eq 2 }">
 											<div>
-												<img class="rounded-circle" style="width: 40px; display: inline-block; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.myPetInCourse.attachNo }' />" alt="img">
+												<img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; display: inline-block; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.myPetInCourse.attachNo }' />" alt="img">
 		    								<span style="font-size: 15px;">${ course.myPetInCourse.petName }</span>
 											</div>
 											<div>
