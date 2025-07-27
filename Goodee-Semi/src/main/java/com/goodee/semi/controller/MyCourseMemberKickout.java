@@ -22,7 +22,7 @@ public class MyCourseMemberKickout extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int classNo = Integer.parseInt(request.getParameter("no"));
 		
-		int result = service.deleteClass(classNo);
+		int result = service.deleteClassAndUpdateEnroll(classNo);
 		
 		response.setContentType("text/plain; charset=utf-8");
 		response.getWriter().println(result);

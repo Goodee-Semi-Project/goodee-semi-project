@@ -1,3 +1,4 @@
+
 package com.goodee.semi.common.qr;
 
 import java.io.IOException;
@@ -37,10 +38,11 @@ public class QrGenerateServlet extends HttpServlet {
 		}
 		
 		// IP기반으로 URL 생성
-		String qrContent = "http://192.168.1.20:8080/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
-		// 상시 서버
-//		String qrContent = "http://192.168.1.19:8080/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
-		
+//		String qrContent = "http://192.168.1.20:8080/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
+		// 서버 
+//		String qrContent = "http://192.168.1.19/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
+		// 테스트 서버
+		String qrContent = "http://172.30.1.39:8080/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
 		// accountNo 기반 토큰 생성
 //		int schedNo = Integer.parseInt(schedNoStr);		
 //		Schedule schedule = scheduleService.selectSchedule(schedNo);
