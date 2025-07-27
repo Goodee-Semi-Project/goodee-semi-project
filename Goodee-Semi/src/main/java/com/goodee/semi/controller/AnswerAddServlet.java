@@ -53,7 +53,7 @@ public class AnswerAddServlet extends HttpServlet {
 		
 		int accountNo = Integer.parseInt(request.getParameter("answerAccountNo"));
 		int questNo = Integer.parseInt(request.getParameter("questNo"));
-		String answerContent = request.getParameter("answerContent");
+		String answerContent = request.getParameter("answerContent").trim().replaceAll("(\r\n|\r|\n)", "<br>");
 		
 		int result = answerService.insertAnswer(accountNo, questNo, answerContent);
 		
