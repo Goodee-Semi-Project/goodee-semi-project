@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <textarea id="quest_content" class="border w-100 p-3 mt-1 mt-lg-1" style="resize: none; height: 400px; outline: none;"></textarea>
+                            <textarea id="quest_content" class="border w-100 p-3 mt-1 mt-lg-1" style="resize: none; height: 400px; outline: none;" placeholder="궁금한 내용을 자유롭게 작성해주세요."></textarea>
                         </fieldset>
                        	<div class="d-flex justify-content-between px-3">
                  			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
