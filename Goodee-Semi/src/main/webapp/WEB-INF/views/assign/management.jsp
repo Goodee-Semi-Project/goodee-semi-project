@@ -36,7 +36,7 @@
 					<div class="row">
 						<c:forEach var="pet" items="${ course.petList }" >
 							<div class="col-4" style="height: 80px; display: flex; align-items: center;" onclick="getAssignList('${ course.courseNo }', '${ pet.petNo }')">		
-								<img class="rounded-circle" style="width: 60px; display: inline-block; margin-right: 10px; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ pet.petAttach.attachNo }' />" alt="img">
+								<img class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover; display: inline-block; margin-right: 10px; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ pet.petAttach.attachNo }' />" alt="img">
 								<span class="ml-1" style="font-size: 16px;">${ pet.petName }<br>(${ pet.accountName } 님)</span>
 							</div>
 						</c:forEach>
