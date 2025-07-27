@@ -251,7 +251,8 @@
 									</c:choose>
 									<div id="enrollDiv" style="display: none;">
 										<label for="selectPetForEnroll">수강을 신청할 반려견을 선택해주세요.</label>
-										<select id="selectPetForEnroll" class="col-8 px-5 mr-5 my-1">
+										<select id="selectPetForEnroll" class="selectPetForEnroll col-8 mr-5 my-1">
+											<option value="">-- 선택 --</option>
 											<c:forEach var="pet" items="${ myPetList }">
 												<option value="${ pet.petNo }">${ pet.petName }</option>
 											</c:forEach>
@@ -292,6 +293,8 @@
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
+		$(".selectPetForEnroll.nice-select").css("width", "48%");
+	
 		$(() => {
 			$("#addLikeBtn").on("click", (event) => {
 				event.preventDefault();
@@ -398,6 +401,13 @@
 			});
 			
 			$("#enrollBtn").on("click", (event) => {
+				const petNo = $("#selectPetForEnroll").val();
+				
+				if (petNo == "") {
+					Swal.fire({ icon: "error", text: "반려견을 선택해주세요."});
+					return;
+				}
+				
 				Swal.fire({
 					text: "수강을 신청하시겠습니까?",
 					icon: "question",
@@ -410,7 +420,6 @@
 					if (result.isConfirmed) {
 						const enrollFlag = "ADD";
 						const courseNo = $("#courseNo").val();
-						const petNo = $("#selectPetForEnroll").val();
 						
 						$.ajax({
 							url : "/myCourse/enroll",
