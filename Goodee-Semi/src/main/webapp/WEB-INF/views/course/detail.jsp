@@ -162,7 +162,16 @@
 										<c:when test="${ not empty reviewList }">
 											<c:forEach var="review" items="${ reviewList }">
 												<div class="media">
-													<img src="<c:url value='/filePath?no=${ review.profileAttach.attachNo }' />" alt="" class="rounded-circle" style="margin: 40px 20px 0 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
+													<c:choose>
+														<c:when test="${ not empty review.profileAttach }">
+															<img src="<c:url value='/filePath?no=${ review.profileAttach.attachNo }' />" alt="" class="rounded-circle" style="margin: 40px 20px 0 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
+														</c:when>
+														
+														<c:otherwise>
+															<img src="<c:url value='/static/images/user/profile.png' />" alt="" class="rounded-circle" style="margin: 40px 20px 0 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
+														</c:otherwise>
+													</c:choose>
+												
 													<div class="media-body">
 														<div class="name">
 															<h5>${ review.accountName } 님</h5>
