@@ -27,8 +27,8 @@ public class MyCouseMemberManagement extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		
 		Account account = (Account)session.getAttribute("loginAccount");
-		if(account == null || account.getAuthor() != 1) {
-			response.sendRedirect(request.getContextPath()+"/");
+		if(account == null || account.getAuthor() != Account.TRAINER_AUTHOR) {
+			request.getRequestDispatcher("/WEB-INF/views/info/invalidAccess.jsp").forward(request, response);
 		}
 		
 		int accountNo = account.getAccountNo();
