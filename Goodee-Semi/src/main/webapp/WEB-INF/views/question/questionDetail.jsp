@@ -157,7 +157,7 @@
 	function updateQuestion() {
 		const isAnswerExist = $("#answer").length > 0;
 		if(isAnswerExist) {
-			alert("답변이 있는 게시글은 수정할 수 없습니다");
+			Swal.fire({ icon: "error", text: "답변이 있는 게시물은 수정할 수 없습니다."});
 			return;
 		}		
 		location.href="<%=request.getContextPath()%>/qnaBoard/questionUpdate?no=${question.questNo}&accountNo=${question.accountNo}"
