@@ -31,5 +31,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="/mappers/assign-mapper.xml"/>
 		<mapper resource="/mappers/assign-submit-mapper.xml"/>
 		<mapper resource="/mappers/pretest-mapper.xml"/>
+		<mapper resource="/mappers/enroll-mapper.xml"/>
 	</mappers>
 </configuration>

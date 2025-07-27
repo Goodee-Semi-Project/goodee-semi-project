@@ -45,9 +45,9 @@
 					<td style="width: 25%">${ pet.petName } (${ pet.petBreed })<br>${ pet.petAge }세 / ${ pet.petGender }</td>
 					<td style="width: 20%">${ pet.accountName } 님</td>
 					<td style="width: 30%">
-						<button type="button" onclick="moveToSchedList(${pet.petNo}, ${course.courseNo})" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
-						<button type="button" onclick="moveToAssign(${pet.classNo})" style="padding: 5px 10px;" class="btn btn-outline-secondary">과제</button>
-						<button type="button" onclick="openKickoutModal('${pet.accountName}',${pet.classNo},'${pet.petName}')" class="btn_kickout btn btn-danger" style="padding: 5px 10px;">추방</button>
+						<button type="button" onclick="moveToSchedList(${ pet.petNo }, ${ course.courseNo })" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
+						<button type="button" onclick="moveToAssign(${ pet.classNo })" style="padding: 5px 10px;" class="btn btn-outline-secondary">과제</button>
+						<button type="button" onclick="openKickoutModal('${ pet.accountName }',${ pet.classNo },'${pet.petName}', ${ pet.classProg })" class="btn_kickout btn btn-danger" style="padding: 5px 10px;">추방</button>
 					</td>
 				</tr>
 			</c:forEach>
@@ -67,6 +67,7 @@
 	      </div>
 	      <div class="modal-body text-center" id="modal_text"></div>
 	      <input type="hidden" id="modal_class_no">
+	      <input type="hidden" id="modal_class_prog">
 	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
 	        <button type="button" id="btn_modal_kickout_confirm" class="btn btn-success">확인</button>
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
@@ -85,14 +86,24 @@
 		location.href="<%=request.getContextPath()%>/schedule?petNo=" + petNo + "/&courseNo=" + courseNo;
 	}
 	
-	function openKickoutModal(accountName, classNo, petName) {
+	function openKickoutModal(accountName, classNo, petName, classProg) {
 		$("#modal_text").text("반려견 " + petName + "(회원 " + accountName + ")님을 과정에서 제외하시겠습니까?");
 		$("#modal_class_no").val(classNo);
+		$("#modal_class_prog").val(classProg);
+		console.log(classProg)
 		$("#kickoutModal").modal("show");
 	}
 
 	$("#btn_modal_kickout_confirm").click(function(){
 		const classNo = $("#modal_class_no").val();
+		const classProg = $("#modal_class_prog").val();
+		
+		if(classProg == 100) {
+			Swal.fire({ icon: "error", text: "교육을 완료한 회원은 제외시킬 수 없습니다"});
+			$("#kickoutModal").modal("hide");
+			return;
+		}
+		
 		$.ajax({
 			url : "/myCourse/memberKickout?no=" + classNo,
 			type : "get",

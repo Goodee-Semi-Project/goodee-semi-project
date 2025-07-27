@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.goodee.semi.dao.ClassDao;
 import com.goodee.semi.dao.CourseDao;
+import com.goodee.semi.dao.EnrollDao;
 import com.goodee.semi.dao.ScheduleDao;
 import com.goodee.semi.dto.PetClass;
 import com.goodee.semi.dto.Schedule;
@@ -12,9 +13,16 @@ public class ClassService {
 	ClassDao classDao = new ClassDao();
 	ScheduleDao scheduleDao = new ScheduleDao();
 	CourseDao courseDao = new CourseDao();
+	EnrollDao enrollDao = new EnrollDao();
 	
-	public int deleteClass(int classNo) {
-		return classDao.deleteClass(classNo);
+	public int deleteClassAndUpdateEnroll(int classNo) {
+		int result = 0;
+		PetClass petClass = classDao.selectClass(classNo);
+		result = enrollDao.updateEnrollByPetNo(petClass.getPetNo());
+		if(result > 0) {
+			result = classDao.deleteClass(classNo);
+		}
+		return result;
 	}
 
 	public List<PetClass> selectListByAccountNo(int accountNo) {
