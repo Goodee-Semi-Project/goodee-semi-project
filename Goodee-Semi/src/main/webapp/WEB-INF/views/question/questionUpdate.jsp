@@ -35,7 +35,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <textarea name="message" id="quest_content" class="border w-100 p-3 mt-1 mt-lg-1" style="resize: none; height: 450px; outline: none;">${question.questContent}</textarea>
+                            <textarea name="message" id="quest_content" class="border w-100 p-3 mt-1 mt-lg-1" style="resize: none; height: 450px; outline: none;">${ question.questContent }</textarea>
                         </fieldset>
                        	<div class="d-flex justify-content-between px-3">
                  			<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
@@ -81,10 +81,21 @@
 			const questTitle = $("#quest_title").val();
 			const questContent = $("#quest_content").val();
 			
-			if(!questNo || !questTitle || !questContent) {
-				$("#updateModal").modal("hide");
-				Swal.fire({ icon: "error", text: "제목과 내용을 모두 작성해주세요."});
-				return;		
+			if(questTitle.length > 40) {
+				$("#addModal").modal("hide");
+				Swal.fire({ icon: "error", text: "제목을 30자 이내로 작성하세요."});
+				return;
+			}
+			
+			if(!questTitle) {
+				$("#addModal").modal("hide");
+				Swal.fire({ icon: "error", text: "제목을 입력해주세요."});
+				return;
+			}
+			if(!questContent) {
+				$("#addModal").modal("hide");
+				Swal.fire({ icon: "error", text: "내용을 입력해주세요."});
+				return;
 			}
 			
 			$.ajax({

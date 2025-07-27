@@ -92,6 +92,12 @@
 				const qnaTitle = $('#quest_title').val();
 				const qnaContent = $('#quest_content').val();
 				
+				if(qnaTitle.length > 40) {
+					$("#addModal").modal("hide");
+					Swal.fire({ icon: "error", text: "제목을 30자 이내로 작성하세요."});
+					return;
+				}
+				
 				if(!qnaTitle) {
 					$("#addModal").modal("hide");
 					Swal.fire({ icon: "error", text: "제목을 입력해주세요."});
