@@ -37,7 +37,7 @@
 									<div class="card-body" style="padding: 10px;">
 		    						<h4 class="card-title"><a href="/course/detail?no=${ course.courseNo }">${ course.title }</a></h4>
 		    						<c:if test="${ sessionScope.loginAccount.author eq 1 }">
-		    							<p>수강중인 반려견: ${ course.petInCourseCount } <br>제출된 과제: </p>
+		    							<p>수강중인 반려견: ${ course.petInCourseCount }</p>
 		    							<div style="text-align: right;">
 		    								<a href="<c:url value='/myCourse/update?no=${ course.courseNo }' />" class="btn btn-outline-secondary" style="padding: 2px 5px;">수정</a>
 		    							</div>
@@ -45,7 +45,7 @@
 										
 										<c:if test="${ sessionScope.loginAccount.author eq 2 }">
 											<div>
-												<img class="rounded-circle" style="width: 40px; display: inline-block; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.myPetInCourse.attachNo }' />" alt="img">
+												<img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; display: inline-block; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ course.myPetInCourse.attachNo }' />" alt="img">
 		    								<span style="font-size: 15px;">${ course.myPetInCourse.petName }</span>
 											</div>
 											<div>

@@ -21,7 +21,7 @@
   <div class="container">
 	  <div class="row justify-content-center">
 	    <div class="align-item-center" style="width: 100%;">
-	      <h3 class="tab-title" style="text-align: center; font-size: 32px;">교육과정 생성</h3>
+	      <h3 class="tab-title" style="text-align: center; font-size: 32px;">교육과정 정보 수정</h3>
 	      <form id="updateCourseForm">
 	     		<input type="hidden" id="validAuthor" value="${ sessionScope.loginAccount.author }" />
   				<input type="hidden" id="isSameTrainer" value="${ course.accountNo eq sessionScope.loginAccount.accountNo }" />
