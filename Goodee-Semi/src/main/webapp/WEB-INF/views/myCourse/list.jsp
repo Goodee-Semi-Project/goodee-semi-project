@@ -83,6 +83,9 @@
 	
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	<script>
+		$("#listSideLink").css("color", "#5672F9");
+	</script>
 </body>
 
 </html>

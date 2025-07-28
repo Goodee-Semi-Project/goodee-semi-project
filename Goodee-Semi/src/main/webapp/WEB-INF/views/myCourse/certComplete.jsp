@@ -107,6 +107,8 @@
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
+		$("#ctcmSideLink").css("color", "#5672F9");	
+	
 		function openPrintModal(petName, memberName, title, classNo, trainerName) {
 			const congratString = "본 회원은 멍스터클래스의<br>" + title + " 교육 과정을<br>성공적으로 수료하여 이 수료증을 드립니다.";
 			
