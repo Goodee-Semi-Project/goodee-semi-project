@@ -44,7 +44,7 @@
 		}
 		
  		.col-2 {
-			margin-left: 10px;
+			margin: 0 0 0 auto;
 		}
 		
 		/* 붓스트랩 스타일 커스터마이징 */
@@ -173,7 +173,7 @@
 						</c:if>
 						<c:forEach var="i" begin="${paging.pageBarStart }" end="${paging.pageBarEnd }">
 							<li class="page-item <c:if test='${ i eq paging.nowPage }'>active</c:if>">
-								<a href="<c:url value='/myPet/list?nowPage=${i }'/>" class="page-link" style="padding: 2px 5px;">${i }</a>
+								<a href="<c:url value='/myPet/list?nowPage=${i }'/>" class="page-link">${i }</a>
 							</li>
 						</c:forEach>
 						<c:if test="${paging.next }">

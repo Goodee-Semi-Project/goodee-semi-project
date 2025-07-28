@@ -39,7 +39,7 @@
 						<c:if test="${ sessionScope.loginAccount.author eq 1 }">
 							<c:choose>
 								<c:when test="${ enroll.courseData.petInCourseCount ge enroll.courseData.capacity }">
-									<button type="button" class="btn btn-success disabled" onclick="alert('정원이 초과되었습니다.')" style="padding: 5px 10px;">승인</button>
+									<button type="button" class="btn btn-success disabled" onclick='Swal.fire({ icon: "error", text: "정원이 초과되었습니다."});' style="padding: 5px 10px;">승인</button>
 								</c:when>
 								
 								<c:otherwise>
