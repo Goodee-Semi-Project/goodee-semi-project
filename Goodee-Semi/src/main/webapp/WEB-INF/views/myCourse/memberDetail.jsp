@@ -87,7 +87,7 @@
 	}
 			
 	function moveToSchedList(petNo, courseNo) {
-		location.href="<%=request.getContextPath()%>/schedule?petNo=" + petNo + "/&courseNo=" + courseNo;
+		location.href="<%=request.getContextPath()%>/schedule?petNo=" + petNo + "&courseNo=" + courseNo;
 	}
 	
 	function openKickoutModal(accountName, classNo, petName, classProg) {
