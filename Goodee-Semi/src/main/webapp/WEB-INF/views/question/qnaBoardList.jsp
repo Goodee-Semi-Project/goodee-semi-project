@@ -99,14 +99,14 @@
 	<section>
 		<table class="table table-hover text-center" style="table-layout: fixed; width: 100%;">
 			<tbody>
-				<tr style="height: 50px;">
+				<tr style="height: 40px; border-bottom: 2px solid #999;">
 					<th class="col-2">글번호</th>
 					<th class="col-9">제목</th>
 					<th class="col-3">작성자</th>
 					<th class="col-3">등록날짜</th>
 				</tr>
 				<c:forEach var="q" items="${ questionList }">
-					<tr style="height: 35px;">
+					<tr style="height: 35px; border-bottom: 1px solid #ddd;">
 						<td>${ q.questNo }</td>
 						<td><a href="<c:url value='/qnaBoard/detail?no=${ q.questNo }'/>" style="display: block; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${ q.questTitle }</a></td>
 						<td>${ q.accountId }</td>
