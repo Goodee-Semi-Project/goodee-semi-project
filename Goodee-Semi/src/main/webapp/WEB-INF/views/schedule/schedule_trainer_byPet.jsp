@@ -32,7 +32,8 @@
 			</div>
 			<hr>
 			
-			<input type="hidden" value="${petNo }">
+			<input id="data-pet-no" type="hidden" value="${petNo }">
+			<input id="data-course-no" type="hidden" value="${courseNo }">
 			<!-- 일정표 html을 여기에 추가 -->
 			<div id='calendar-container'>
 				<div id='calendar'></div>

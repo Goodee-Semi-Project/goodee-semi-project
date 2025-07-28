@@ -43,6 +43,9 @@
 			<if test='petNo != null and petNo != ""'>
 				AND p.pet_no = #{petNo}
 			</if>
+			<if test='courseNo != null and courseNo != ""'>
+				AND c.course_no = #{courseNo}
+			</if>
 			AND s.sched_date BETWEEN #{start} AND #{end}		
 		</where>
 	</select>
