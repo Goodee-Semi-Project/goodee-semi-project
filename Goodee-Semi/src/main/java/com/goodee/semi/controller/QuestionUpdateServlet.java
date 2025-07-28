@@ -34,8 +34,8 @@ public class QuestionUpdateServlet extends HttpServlet {
 		if(accountNo != account.getAccountNo()) {
 			response.sendRedirect(request.getContextPath() + "/qnaBoard/list");
 		}
-		
 		Question question = service.selectOneQuest(questNo);
+		question.setQuestContent(question.getQuestContent().trim().replaceAll("<br>", "\r\n"));
 		request.setAttribute("question", question);
 		request.getRequestDispatcher("/WEB-INF/views/question/questionUpdate.jsp").forward(request, response);
 		
@@ -46,7 +46,8 @@ public class QuestionUpdateServlet extends HttpServlet {
 		
 		int questNo = Integer.parseInt(request.getParameter("questNo"));
 		String questTitle = request.getParameter("questTitle");
-		String questContent = request.getParameter("questContent");
+		String questContent = request.getParameter("questContent").trim().replaceAll("(\r\n|\r|\n)", "<br>");
+		
 		
 		Question question = new Question();
 		question.setQuestNo(questNo);

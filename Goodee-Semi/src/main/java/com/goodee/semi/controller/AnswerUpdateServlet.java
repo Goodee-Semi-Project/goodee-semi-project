@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 
 import com.goodee.semi.dto.Account;
+import com.goodee.semi.dto.Answer;
 import com.goodee.semi.service.AnswerService;
 
 import jakarta.servlet.ServletException;
@@ -40,9 +41,10 @@ public class AnswerUpdateServlet extends HttpServlet {
 		// 질문글과 답변글 가져옴
 		int questNo = Integer.parseInt(request.getParameter("no"));
 		Map<String, Object> map = service.selectDetail(questNo);
+		Answer answer = (Answer)map.get("answer");
+		answer.setAnswerContent(answer.getAnswerContent().trim().replaceAll("<br>", "\r\n"));
+		request.setAttribute("answer", answer);
 		request.setAttribute("question", map.get("question"));
-		request.setAttribute("answer", map.get("answer"));
-		
 		request.getRequestDispatcher("/WEB-INF/views/answer/answerUpdate.jsp").forward(request, response);
 		
 	}
@@ -52,7 +54,7 @@ public class AnswerUpdateServlet extends HttpServlet {
 		
 		int accountNo = Integer.parseInt(request.getParameter("accountNo"));
 		int questNo = Integer.parseInt(request.getParameter("questNo"));
-		String answerContent = request.getParameter("answerContent");
+		String answerContent = request.getParameter("answerContent").trim().replaceAll("(\r\n|\r|\n)", "<br>");
 		
 		int result = service.updateAnswer(accountNo, questNo, answerContent);
 		
