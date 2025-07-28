@@ -89,16 +89,38 @@ public class ScheduleInputServlet extends HttpServlet {
 				case "petNo" -> {
 					int courseNo = Integer.parseInt(request.getParameter("courseNo"));
 					int petNo = Integer.parseInt(request.getParameter("petNo"));
+					String schedNoStr = request.getParameter("schedNo");
+					int schedNo = -1;
+					if (schedNoStr != null && schedNoStr != "") {
+						schedNo = Integer.parseInt(schedNoStr);
+					}
+
 					sched.setCourseNo(courseNo);
 					sched.setPetNo(petNo);
-					Integer schedStep = service.selectSchedStep(sched);
+					sched.setSchedNo(schedNo);
 					
-					// 다음 차시 계산
-			    	if(schedStep == null) {
-			    		nextSchedStep = 1;
-			    	} else {
-			    		nextSchedStep = schedStep + 1;
-			    	}
+					Schedule overlapSched = service.selectScheduleOne(sched);
+					
+					Integer schedStep = service.selectSchedStep(sched);
+
+					// 1) 현재 스케줄이 이전 스케줄과 교육과정, 반려견이 같다면 차수를 1 증가시키지 않음
+					if(overlapSched != null) {
+						if(schedStep == null) {
+							nextSchedStep = 1;
+						} else {
+							nextSchedStep = schedStep;
+						}
+						
+					}
+					// 2) 현재 스케줄이 이전 스케줄과 교육과정, 반려견이 다르다면 차수를 1 증가시킴
+					if(overlapSched == null) {
+						// 다음 차시 계산
+						if(schedStep == null) {
+							nextSchedStep = 1;
+						} else {
+							nextSchedStep = schedStep + 1;
+						}
+					}
 				}
 				default -> {
 					sendErrorResponse("400", "잘못된 valueType입니다", null, response);

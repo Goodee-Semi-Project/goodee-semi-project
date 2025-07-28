@@ -72,6 +72,8 @@
 								$("#foundMyId").text(data.accountId);
 								$("#beforeFindId").css("display", "none");
 								$("#afterFindId").css("display", "block");
+							} else if (data.resultCode == 500) {
+								Swal.fire({ icon: "error", text: "입력하신 정보와 일치하는 아이디가 없습니다."});
 							}
 						},
 						error : function() {
