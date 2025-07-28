@@ -104,6 +104,8 @@
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
+		$("#ctenSideLink").css("color", "#5672F9");	
+	
 		function openPrintModal(title, petName, memberName, prog, trainerName) {
 			const date = new Date();
 			const dateString = date.getFullYear() + "년 " + (date.getMonth() + 1) + "월 " + date.getDate() + "일";
