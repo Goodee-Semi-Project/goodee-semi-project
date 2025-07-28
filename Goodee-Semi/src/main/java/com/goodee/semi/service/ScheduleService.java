@@ -82,4 +82,8 @@ public class ScheduleService {
 		return dao.selectSchedule(schedNo);
 	}
 	
+	public Schedule selectScheduleOne(Schedule sched) {
+		return dao.selectScheduleOne(sched);
+	}
+	
 }
