@@ -194,10 +194,29 @@ function showEventModal(mode, info) {
 			const event = info.event;
 			
 			// 기존의 일정에 담긴 데이터를 표시
-			document.querySelector('#course-title').value = event.extendedProps.courseTitle;
-			document.querySelector('#account-name').value = event.extendedProps.accountName;
-			document.querySelector('#pet-name').value = event.extendedProps.petName;
-			document.querySelector('#sched-step').value = event.extendedProps.schedStep;
+			const courseSelect = document.querySelector('#course-title');
+			courseSelect.innerHTML = `<option value="${event.extendedProps.courseNo}" selected>${event.extendedProps.courseTitle}</option>`;
+			courseSelect.style.pointerEvents = 'none';
+			courseSelect.style.color = 'rgb(170, 170, 170)';
+
+			const accountSelect = document.querySelector('#account-name');
+			accountSelect.innerHTML = `<option value="${event.extendedProps.accountNo}" selected>${event.extendedProps.accountName}</option>`;
+			accountSelect.disabled = false;
+			accountSelect.style.pointerEvents = 'none';
+			accountSelect.style.color = 'rgb(170, 170, 170)';
+
+			const petSelect = document.querySelector('#pet-name');
+			petSelect.innerHTML = `<option value="${event.extendedProps.petNo}" selected>${event.extendedProps.petName}</option>`;
+			petSelect.disabled = false;
+			petSelect.style.pointerEvents = 'none';
+			petSelect.style.color = 'rgb(170, 170, 170)';
+
+			const schedStepSelect = document.querySelector('#sched-step');
+			schedStepSelect.innerHTML = `<option value="${event.extendedProps.schedStep}" selected>${event.extendedProps.schedStep}</option>`;
+			schedStepSelect.disabled = false;
+			schedStepSelect.style.pointerEvents = 'none';
+			schedStepSelect.style.color = 'rgb(170, 170, 170)';
+			
 			document.querySelector('#start').value = event.startStr? event.startStr.split('T')[1] : "";
 			document.querySelector('#end').value = event.endStr? event.endStr.split('T')[1] : "";
 
@@ -502,6 +521,9 @@ $(document).on('click', '#btn-add-event', function() {
     if (eventId) {
         // 수정
 		console.log('updateEvent() 실행 시작');
+		
+		// 업데이트 전 값을 서버로 보내기 위해 disabled 속성 제거할 필요성이 있는가?
+		
         updateEvent(eventId, eventData);
     } else {
         // 생성
