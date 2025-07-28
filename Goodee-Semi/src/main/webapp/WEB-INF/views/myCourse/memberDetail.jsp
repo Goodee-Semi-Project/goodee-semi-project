@@ -80,6 +80,8 @@
 	
 	
 	<script>
+	$("#manageSideLink").css("color", "#5672F9");
+	
 	function moveToAssign(classNo) {
 		location.href="<%=request.getContextPath()%>/assign/listByClass?classNo=" + classNo;
 	}
