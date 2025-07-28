@@ -31,19 +31,21 @@
 				<th>프로필 이미지</th>
 				<th>반려견</th>
 				<th>회원</th>
+				<th>진행도</th>
 				<th>관리</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="pet" items="${ petList }">
 				<tr style="height: 80px;">
-					<td style="width: 25%">
+					<td style="width: 20%">
 						<c:if test="${ not empty pet.attachNo }">
 							<img src="<c:url value='/filePath?no=${pet.attachNo}'/>" class="rounded-circle" alt="${course.title}" style="width : 70px; height : 70px; border-radius : 50% border: 1px solid white; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);" >
 						</c:if>
 					</td>
-					<td style="width: 25%">${ pet.petName } (${ pet.petBreed })<br>${ pet.petAge }세 / ${ pet.petGender }</td>
+					<td style="width: 20%">${ pet.petName } (${ pet.petBreed })<br>${ pet.petAge }세 / ${ pet.petGender }</td>
 					<td style="width: 20%">${ pet.accountName } 님</td>
+					<td style="width: 10%">${ pet.classProg }%</td>
 					<td style="width: 30%">
 						<button type="button" onclick="moveToSchedList(${ pet.petNo }, ${ course.courseNo })" style="padding: 5px 10px;" class="btn btn-outline-secondary">일정</button>
 						<button type="button" onclick="moveToAssign(${ pet.classNo })" style="padding: 5px 10px;" class="btn btn-outline-secondary">과제</button>
