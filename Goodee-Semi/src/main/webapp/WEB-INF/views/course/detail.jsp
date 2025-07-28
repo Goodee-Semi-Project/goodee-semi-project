@@ -162,7 +162,16 @@
 										<c:when test="${ not empty reviewList }">
 											<c:forEach var="review" items="${ reviewList }">
 												<div class="media">
-													<img src="<c:url value='/filePath?no=${ review.profileAttach.attachNo }' />" alt="" class="rounded-circle" style="margin: 40px 20px 0 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
+													<c:choose>
+														<c:when test="${ not empty review.profileAttach }">
+															<img src="<c:url value='/filePath?no=${ review.profileAttach.attachNo }' />" alt="" class="rounded-circle" style="margin: 40px 20px 0 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
+														</c:when>
+														
+														<c:otherwise>
+															<img src="<c:url value='/static/images/user/profile.png' />" alt="" class="rounded-circle" style="margin: 40px 20px 0 10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);"/>
+														</c:otherwise>
+													</c:choose>
+												
 													<div class="media-body">
 														<div class="name">
 															<h5>${ review.accountName } 님</h5>
@@ -242,7 +251,8 @@
 									</c:choose>
 									<div id="enrollDiv" style="display: none;">
 										<label for="selectPetForEnroll">수강을 신청할 반려견을 선택해주세요.</label>
-										<select id="selectPetForEnroll" class="col-8 px-5 mr-5 my-1">
+										<select id="selectPetForEnroll" class="selectPetForEnroll col-8 mr-5 my-1">
+											<option value="">-- 선택 --</option>
 											<c:forEach var="pet" items="${ myPetList }">
 												<option value="${ pet.petNo }">${ pet.petName }</option>
 											</c:forEach>
@@ -283,6 +293,8 @@
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
+		$(".selectPetForEnroll.nice-select").css("width", "48%");
+	
 		$(() => {
 			$("#addLikeBtn").on("click", (event) => {
 				event.preventDefault();
@@ -389,6 +401,13 @@
 			});
 			
 			$("#enrollBtn").on("click", (event) => {
+				const petNo = $("#selectPetForEnroll").val();
+				
+				if (petNo == "") {
+					Swal.fire({ icon: "error", text: "반려견을 선택해주세요."});
+					return;
+				}
+				
 				Swal.fire({
 					text: "수강을 신청하시겠습니까?",
 					icon: "question",
@@ -401,7 +420,6 @@
 					if (result.isConfirmed) {
 						const enrollFlag = "ADD";
 						const courseNo = $("#courseNo").val();
-						const petNo = $("#selectPetForEnroll").val();
 						
 						$.ajax({
 							url : "/myCourse/enroll",

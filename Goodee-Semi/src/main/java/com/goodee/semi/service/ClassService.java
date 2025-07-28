@@ -18,7 +18,7 @@ public class ClassService {
 	public int deleteClassAndUpdateEnroll(int classNo) {
 		int result = 0;
 		PetClass petClass = classDao.selectClass(classNo);
-		result = enrollDao.updateEnrollByPetNo(petClass.getPetNo());
+		result = enrollDao.updateEnrollByPetNo(petClass);
 		if(result > 0) {
 			result = classDao.deleteClass(classNo);
 		}

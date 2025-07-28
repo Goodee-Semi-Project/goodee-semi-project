@@ -26,7 +26,7 @@
 				<span style="font-size: 18px;">${ petClass.courseTitle }</span>
 			</div>
 			<div class="col-3" style="display:flex; align-items:center;">
-				<img class="rounded-circle" style="width: 40px; display: inline-block; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ petClass.petAttach.attachNo }' />" alt="img">
+				<img class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; display: inline-block; border: 2px solid white; box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);" src="<c:url value='/filePath?no=${ petClass.petAttach.attachNo }' />" alt="img">
 		   	<span class="ml-1" style="font-size: 15px;">${ petClass.petName }</span>
 			</div>
 		</div>

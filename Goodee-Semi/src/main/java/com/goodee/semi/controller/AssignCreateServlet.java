@@ -42,7 +42,8 @@ public class AssignCreateServlet extends HttpServlet {
 		AccountDetail account = (AccountDetail) session.getAttribute("loginAccount");
 		
 		if (account.getAuthor() != 1) {
-			// TODO 잘못된 접근 예외처리
+			response.sendRedirect("/invalidAccess");
+			return;
 		}
 		
 		String savedAssignNo = request.getParameter("save");
