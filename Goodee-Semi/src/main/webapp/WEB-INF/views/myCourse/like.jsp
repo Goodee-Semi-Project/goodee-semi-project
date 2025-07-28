@@ -45,6 +45,8 @@
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
+		$("#likeSideLink").css("color", "#5672F9");	
+	
 		function deleteLike(pickNo) {
 			Swal.fire({
 				text: "찜 목록에서 제거하시겠습니까?",

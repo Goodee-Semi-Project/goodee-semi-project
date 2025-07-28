@@ -125,6 +125,20 @@
 		</where>
 	</select>
 	
+	<select id="selectScheduleOne" parameterType="com.goodee.semi.dto.Schedule" resultMap="scheduleResultMap">
+		SELECT a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
+		FROM account a
+		JOIN pet p ON (a.account_no = p.account_no)
+		JOIN class c ON (p.pet_no = c.pet_no)
+		JOIN schedule s ON (c.class_no = s.class_no)
+		JOIN course co ON (c.course_no = co.course_no)
+		<where>
+			c.course_no = #{courseNo}
+			AND p.pet_no = #{petNo}
+			AND s.sched_no = #{schedNo}
+		</where>
+	</select>
+	
 	<select id="selectScheduleListAttend" parameterType="com.goodee.semi.dto.Schedule" resultMap="scheduleResultMap">
 		SELECT sc.* ,cl.class_no ,cl.course_no ,co.title ,p.pet_no ,p.pet_name, account_name
 		FROM schedule sc
