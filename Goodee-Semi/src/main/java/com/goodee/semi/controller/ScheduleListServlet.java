@@ -109,6 +109,7 @@ public class ScheduleListServlet extends HttpServlet {
 			String start = request.getParameter("start");
 			String end = request.getParameter("end");
 			String petNo = request.getParameter("petNo");
+			String courseNo = request.getParameter("courseNo");
 			
 			// 3. 받아온 값을 map에 바인딩
 			String[] startDateStr = start.substring(0, start.indexOf('T')).split("-");
@@ -129,6 +130,7 @@ public class ScheduleListServlet extends HttpServlet {
 				case Account.TRAINER_AUTHOR -> {
 					map.put("trainerAccountNo", String.valueOf(accountDetail.getAccountNo()));
 					if (petNo != null) map.put("petNo", petNo);
+					if (courseNo != null) map.put("courseNo", courseNo);
 				} case Account.MEMBER_AUTHOR -> {
 					map.put("memberAccountNo", String.valueOf(accountDetail.getAccountNo()));
 				} default -> {

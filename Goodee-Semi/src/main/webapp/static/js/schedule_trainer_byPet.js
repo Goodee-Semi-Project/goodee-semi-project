@@ -1,7 +1,8 @@
 const calendarEl = document.querySelector('#calendar');
-const petNo = document.querySelector('input[type="hidden"').value;
+const petNo = document.querySelector('#data-pet-no').value;
+const courseNo = document.querySelector('#data-course-no').value;
 	
-console.log("일정 조회 중인 petNo : ", petNo)
+console.log("일정 조회 중인 petNo : ", petNo);
 	
 // 선택된 날짜 저장 변수
 let selectedDate = null;
@@ -38,7 +39,9 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
             type: 'get',
             data: {
                 start: fetchInfo.startStr,
-                end: fetchInfo.endStr
+                end: fetchInfo.endStr,
+				petNo: petNo,
+				courseNo: courseNo
             },
             dataType: 'json',
             success: function (data) {
