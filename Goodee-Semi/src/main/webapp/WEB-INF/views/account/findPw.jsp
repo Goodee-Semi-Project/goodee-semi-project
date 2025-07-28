@@ -96,10 +96,18 @@
 				},
 				dataType : "JSON",
 				success : function(data) {
-					alert(data.resultMsg);
-					
 					if (data.resultCode == 200) {
-						location.href = "<%= request.getContextPath() %>/account/changePw";
+						Swal.fire({
+							icon: "success",
+							text: data.resultMsg,
+							confirmButtonText: "확인"
+						}).then((result) => {
+							if (result.isConfirmed) {
+								location.href = "<%= request.getContextPath() %>/account/changePw";								    
+							}
+						});
+					} else {
+						Swal.fire({ icon: "error", text: data.resultMsg});
 					}
 				},
 				error : function() {
