@@ -76,6 +76,8 @@
 	<%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script>
+		$("#enrollSideLink").css("color", "#5672F9");
+	
 		function enrollYes(enrollNo) {
 			Swal.fire({
 				text: "승인하시겠습니까?",
