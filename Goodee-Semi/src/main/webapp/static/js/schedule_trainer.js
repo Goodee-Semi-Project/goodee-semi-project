@@ -386,6 +386,8 @@ accountSelect.addEventListener('change', function() {
 
 petSelect.addEventListener('change', function() {
 	console.log("petNo: " + this.value);
+	const schedNo = document.querySelector('#event-modal-box').getAttribute('data-event-id');
+	console.log(schedNo);
 	
 	if (this.value) { // 기준 select에 값이 선택되었는지 확인
 		schedStepSelect.disabled = false;
@@ -397,7 +399,8 @@ petSelect.addEventListener('change', function() {
 			data: {
 				valueType: "petNo",
 				courseNo: courseSelect.value,
-				petNo: this.value
+				petNo: this.value,
+				schedNo: schedNo
 			},
 			dataType: 'json',
 			success: function (data) {
