@@ -15,7 +15,7 @@
 	<%@ include file="/WEB-INF/views/include/header.jsp" %>
 	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp" %>
 
-	<h3 class="tab-title mb-4 text-center">내 과제</h3>
+	<h3 class="tab-title mb-4 text-center">${ pet.petName }의 과제</h3>
   <hr>
 		<div class="container my-2" style="border: 1px solid black; overflow: hidden; padding: 0; display: flex;">
 			<div class="col-4" style="padding: 0;">

@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>출석 상세</title>
 
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 </head>
 <body>
@@ -71,13 +71,13 @@
 							</c:if>
 							<c:choose>
 								<c:when test="${ sc.schedAttend eq 89 }">
-									<td style="width: 10%">출석</td>
+									<td style="width: 10%"><span class="material-icons" style="color: red">check</span></td>
 								</c:when>
 								<c:when test="${ sc.schedAttend eq 78 }">
-									<td style="width: 10%">결석</td>
+									<td style="width: 10%"><span class="material-icons" style="color: blue">close</span></td>
 								</c:when>
 								<c:otherwise>
-									<td style="width: 10%">결석</td>
+									<td style="width: 10%"><span class="material-icons" style="color: blue">close</span></td>
 								</c:otherwise>
 							</c:choose>
 							<c:if test="${ loginAccount.author eq 1 }">	
