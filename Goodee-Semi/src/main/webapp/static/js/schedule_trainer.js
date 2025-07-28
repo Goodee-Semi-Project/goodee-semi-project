@@ -172,9 +172,28 @@ function showEventModal(mode, info) {
     
 	// 2. 폼 초기화
 	form.reset(); // reset(): 요소의 기본값 복원
-	form.querySelector('#sched-step').innerHTML = '<option value="" disabled selected>차시 선택</option>';
+	
+/*	const courseSelect = document.querySelector('#course-title');
+	const accountSelect = document.querySelector('#account-name');
+	const petSelect = document.querySelector('#pet-name');
+	const schedStepSelect = document.querySelector('#sched-step');
+
+	// 모든 select 스타일 초기화
+	[courseSelect, accountSelect, petSelect, schedStepSelect].forEach(select => {
+	    select.style.pointerEvents = '';
+	    select.style.color = '';
+	});
+
+	// 기본 옵션으로 초기화
+	courseSelect.innerHTML = '<option value="" disabled selected>교육과정 선택</option>';
+	accountSelect.innerHTML = '<option value="" disabled selected>회원명 선택</option>';
+	petSelect.innerHTML = '<option value="" disabled selected>반려견명 선택</option>';
+	schedStepSelect.innerHTML = '<option value="" disabled selected>차시 선택</option>';*/
+	
 	form.querySelector('#account-name').disabled = true;
 	form.querySelector('#pet-name').disabled = true;
+	form.querySelector('#sched-step').innerHTML = '<option value="" disabled selected>차시 선택</option>';
+	form.querySelector('#sched-step').disabled = true;
 
 	// 3. 일정 등록 / 수정
 	switch (mode) {
@@ -194,8 +213,7 @@ function showEventModal(mode, info) {
 			const event = info.event;
 			
 			// 기존의 일정에 담긴 데이터를 표시
-			const courseSelect = document.querySelector('#course-title');
-			courseSelect.innerHTML = `<option value="${event.extendedProps.courseNo}" selected>${event.extendedProps.courseTitle}</option>`;
+/*			$('#course-title').val(event.extendedProps.courseNo).prop("selected", true);
 			courseSelect.style.pointerEvents = 'none';
 			courseSelect.style.color = 'rgb(170, 170, 170)';
 
@@ -215,7 +233,7 @@ function showEventModal(mode, info) {
 			schedStepSelect.innerHTML = `<option value="${event.extendedProps.schedStep}" selected>${event.extendedProps.schedStep}</option>`;
 			schedStepSelect.disabled = false;
 			schedStepSelect.style.pointerEvents = 'none';
-			schedStepSelect.style.color = 'rgb(170, 170, 170)';
+			schedStepSelect.style.color = 'rgb(170, 170, 170)';*/
 			
 			document.querySelector('#start').value = event.startStr? event.startStr.split('T')[1] : "";
 			document.querySelector('#end').value = event.endStr? event.endStr.split('T')[1] : "";
