@@ -14,6 +14,7 @@ import java.util.List;
 import com.goodee.semi.dto.AccountDetail;
 import com.goodee.semi.dto.Course;
 import com.goodee.semi.dto.Pet;
+import com.goodee.semi.service.ClassService;
 import com.goodee.semi.service.CourseService;
 import com.goodee.semi.service.PetService;
 
@@ -22,6 +23,7 @@ public class MyCourseCertEnrollServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CourseService courseService = new CourseService();
 	private PetService petService = new PetService();
+	private ClassService classService = new ClassService();
        
   public MyCourseCertEnrollServlet() {
     super();
@@ -40,6 +42,7 @@ public class MyCourseCertEnrollServlet extends HttpServlet {
 			for (Pet pet : myPetInCourse) {
 				Course courseByPet = courseService.selectCourseOne(String.valueOf(course.getCourseNo()));
 				courseByPet.setMyPetInCourse(pet);
+				courseByPet.setClassData(classService.selectClassByCourseNoAndPetNo(courseByPet.getCourseNo(), pet.getPetNo()));
 				
 				myCourseList.add(courseByPet);
 			}
