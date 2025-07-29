@@ -27,14 +27,6 @@ public class QrAttendServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 토큰 검증
-//		String token = request.getParameter("token");
-//		if(!"qwe123".equals(token)) {
-//			response.sendError(HttpServletResponse.SC_FORBIDDEN, "유효하지 않은 접근입니다");
-//			return;
-//		}
-		
-		System.out.println("QrAttend서블릿 들어옴");
 		int schedNo = Integer.parseInt(request.getParameter("schedNo"));
 		int petNo = Integer.parseInt(request.getParameter("petNo"));
 		int courseNo = Integer.parseInt(request.getParameter("courseNo"));
@@ -65,7 +57,6 @@ public class QrAttendServlet extends HttpServlet {
 //		  LocalDateTime now = LocalDateTime.now();
 //        LocalDateTime start = sched.getSchedStart();
 //        LocalDateTime limitTime = start.plusMinutes(10);
-		
 		
 //		String message;
 //		if (sched.getSchedAttend() == 'Y') {
