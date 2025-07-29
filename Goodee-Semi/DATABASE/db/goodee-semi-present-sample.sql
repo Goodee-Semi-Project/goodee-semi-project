@@ -382,7 +382,17 @@ INSERT INTO `attachment` VALUES
 (118, 8, 17, 'notice17.jpg', '23ad63cd44d7403fb28dc9d3428cfcfd.jpg'),
 (119, 8, 18, 'notice18.jpg', 'f5aa81d6f1a244178f9f6ce4c7c844c1.jpg'),
 (120, 8, 19, 'notice19.jpg', '87075aa2b96e40908f81efac8ee02a91.jpg'),
-(121, 8, 20, 'notice20.jpg', 'd473c1efebaa4aa891ee96926873e5aa.jpg');
+(121, 8, 20, 'notice20.jpg', 'd473c1efebaa4aa891ee96926873e5aa.jpg'),
+(122, 8, 21, 'notice21.jpg', 'b3a2b2a6cf4b4db08e66b9c5b49cbe9e.jpg'),
+(123, 8, 22, 'notice22.jpg', 'fc70b7988aeb46c9851f14975c376452.jpg'),
+(124, 8, 23, 'notice23.jpg', '263bc1ed7d0641d391151a11040b440d.jpg'),
+(125, 8, 24, 'notice24.jpg', '2cf7c0b7f24e4a9d9835f2ea1b4c88b5.jpg'),
+(126, 8, 25, 'notice25.jpg', '2a3d15c6b00c4fa5a1f1c7f9371ec317.jpg'),
+(127, 8, 26, 'notice26.jpg', 'b0936e2f618848f39e2d15404b5662d9.jpg'),
+(128, 8, 27, 'notice27.jpg', 'f66a61a50fe14a91bb7355f2a0d20c3a.jpg'),
+(129, 8, 28, 'notice28.jpg', 'dc0671d8d6ea46f7ac8913d632dbd702.jpg'),
+(130, 8, 29, 'notice29.jpg', 'b7bcde2e61184d52a04df299eaad1089.jpg'),
+(131, 8, 30, 'notice30.jpg', '304a5eb30a8b46b394fb1c1a3ec51b4f.jpg');
 
 INSERT INTO `question` VALUES
 (1, 6, '강아지가 밥을 안 먹어요', '우리 강아지가 며칠 전부터 사료를 잘 안 먹고 있어요. 혹시 건강에 문제가 있을까요?', '2024-01-12 09:15:00', '2024-01-12 09:15:00'),
