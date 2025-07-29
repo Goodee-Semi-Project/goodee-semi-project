@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>찾아오시는 길</title>
 
-<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAriTdVIXQDpo48t7KVpxkw2H6sXMOuJt4&callback=initMap" async defer></script>
+<script	src="https://maps.googleapis.com/maps/api/js?key= YourKey &callback=initMap" async defer></script>
 
 <script>
 	  function initMap() {
