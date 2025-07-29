@@ -37,8 +37,8 @@ public class QrGenerateServlet extends HttpServlet {
 			return;
 		}
 		
-		// 서버 
-		String qrContent = "http://192.168.1.19/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
+		// 주소값을 기반으로 생성됨
+		String qrContent = "http://your-ip-address/qr/attend?schedNo="+schedNoStr+"&petNo="+petNo+"&courseNo="+courseNo;
 		
 		int width = 400;
 		int height = 400;
