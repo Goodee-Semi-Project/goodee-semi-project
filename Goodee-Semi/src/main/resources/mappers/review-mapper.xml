@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.ReviewMapper">
+	<resultMap type="com.goodee.semi.dto.Review" id="reviewResultMap">
+		<result property="reviewNo" column="review_no" />
+		<result property="classNo" column="class_no" />
+		<result property="reviewTitle" column="review_title" />
+		<result property="reviewContent" column="review_content" />
+		<result property="regDate" column="reg_date" />
+		<result property="modDate" column="mod_date" />
+		
+		<result property="accountNo" column="account_no" />
+		<result property="accountId" column="account_id" />
+		<result property="accountName" column="account_name" />
+		<result property="courseTitle" column="title" />
+	</resultMap>
+	
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+	
+	<select id="selectReviewCount" parameterType="com.goodee.semi.dto.Review" resultType="_int">
+		SELECT COUNT(*)
+		FROM review AS r
+		JOIN (
+			SELECT class_no ,course_no ,pet_no
+			FROM class
+		) AS c ON r.class_no = c.class_no
+		JOIN (
+			SELECT pet_no ,account_no
+			FROM pet
+			<if test="authNo eq 2">
+				WHERE account_no = #{ accountNo }
+			</if>
+		)AS p ON c.pet_no = p.pet_no
+		JOIN (
+			SELECT course_no ,title ,account_no
+			FROM course
+			<if test="authNo eq 1">
+				WHERE account_no = #{ accountNo }
+			</if>
+		) AS co ON c.course_no = co.course_no
+		<if test="keyword != null and keyword != ''">
+			<where>
+				review_title LIKE CONCAT('%' ,#{ keyword } ,'%')
+			</where>
+		</if>
+	</select>
+	
+	<select id="selectReviewList" parameterType="com.goodee.semi.dto.Review" resultMap="reviewResultMap">
+		SELECT r.* ,a.account_id ,c.class_no ,co.title
+		FROM review AS r
+		JOIN (
+			SELECT class_no ,course_no ,pet_no
+			FROM class
+		) AS c ON r.class_no = c.class_no
+		JOIN (
+			SELECT pet_no ,account_no
+			FROM pet
+			<if test="authNo eq 2">
+				WHERE account_no = #{ accountNo }
+			</if>
+		)AS p ON c.pet_no = p.pet_no
+		JOIN (
+			SELECT account_no ,account_id
+			FROM account
+		) AS a ON p.account_no = a.account_no
+		JOIN (
+			SELECT course_no ,title ,account_no
+			FROM course
+			<if test="authNo eq 1">
+				WHERE account_no = #{ accountNo }
+			</if>
+		) AS co ON c.course_no = co.course_no
+		<if test="keyword != null and keyword != ''">
+			<where>
+				<choose>
+					<when test="category == 'reviewTitle'">
+						review_title LIKE CONCAT('%' ,#{ keyword } ,'%')
+					</when>
+					<when test="category == 'courseTitle'">
+						title LIKE CONCAT('%' ,#{ keyword } ,'%')
+					</when>
+					<when test="category == 'accountId'">
+						account_id LIKE CONCAT('%' ,#{ keyword } ,'%')
+					</when>
+				</choose>
+			</where>
+		</if>
+		<choose>
+			<when test="order == 'asc'">
+				ORDER BY r.review_no
+			</when>
+			<otherwise>
+				ORDER BY r.review_no DESC
+			</otherwise>
+		</choose>
+		LIMIT #{ limitPageNo } ,#{ numPerPage }
+	</select>
+	
+	<insert id="insertReview" parameterType="com.goodee.semi.dto.Review" 
+		useGeneratedKeys="true" keyProperty="reviewNo">
+		INSERT INTO review (class_no ,review_title ,review_content)
+		VALUES (#{classNo} ,#{reviewTitle} ,#{reviewContent})
+	</insert>
+	
+	<select id="selectReivewOne" parameterType="_int" resultMap="reviewResultMap">
+		SELECT r.* ,a.account_id ,c.class_no ,co.title
+		FROM review AS r
+		JOIN (
+			SELECT class_no ,course_no ,pet_no
+			FROM class
+		) AS c ON r.class_no = c.class_no
+		JOIN (
+			SELECT pet_no ,account_no
+			FROM pet
+		)AS p ON c.pet_no = p.pet_no
+		JOIN (
+			SELECT account_no ,account_id
+			FROM account
+		) AS a ON p.account_no = a.account_no
+		JOIN (
+			SELECT course_no ,title
+			FROM course
+		) AS co ON c.course_no = co.course_no
+		WHERE r.review_no = #{ reviewNo }
+	</select>
+	
+	<delete id="deleteReview" parameterType="_int">
+		DELETE FROM review
+		WHERE review_no = #{ reviewNo }
+	</delete>
+	
+	<update id="updateReview" parameterType="com.goodee.semi.dto.Review" >
+		UPDATE review
+		SET review_title = #{ reviewTitle } ,review_content = #{ reviewContent }
+		WHERE review_no = #{ reviewNo }
+	</update>
+	
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
+		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
+	</insert>
+	
+	<select id="selectAttachByReviewNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM attachment
+		WHERE type_no = 7 AND pk_no = #{ reviewNo }
+	</select>
+	
+	<delete id="deleteAttach" parameterType="com.goodee.semi.dto.Attach">
+		DELETE FROM attachment
+		WHERE type_no = 7 AND  pk_no = #{ pkNo }
+	</delete>
+	
+	<select id="selectFiveReviewByCourseNo" parameterType="_int" resultMap="reviewResultMap">
+		SELECT
+				R.review_no
+			, R.class_no
+			, R.review_title
+			, R.review_content
+			, R.reg_date
+			, A.account_no
+			, A.account_name
+		FROM review R
+		INNER JOIN class C ON R.class_no = C.class_no
+		INNER JOIN pet P ON C.pet_no = P.pet_no
+		INNER JOIN account A ON P.account_no = A.account_no
+		<where>
+			C.course_no = #{courseNo}
+		</where>
+		ORDER BY review_no DESC
+		LIMIT 5
+	</select>
+
+</mapper>

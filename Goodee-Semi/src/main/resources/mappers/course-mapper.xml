@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.CourseMapper">
+
+	<resultMap id="courseResultMap" type="com.goodee.semi.dto.Course">
+		<result property="courseNo" column="course_no" />
+		<result property="accountNo" column="account_no" />
+		<result property="title" column="title" />
+		<result property="subTitle" column="sub_title" />
+		<result property="object" column="object" />
+		<result property="totalStep" column="total_step" />
+		<result property="capacity" column="capacity" />
+		<result property="thumb" column="thumb" />
+		<result property="name" column="account_name" />
+		<result property="currentEnrollment" column="current_enrollment" />
+		<result property="petNo" column="pet_no" />
+		<result property="classNo" column="class_no" />
+	</resultMap>
+	
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+	
+	<resultMap id="enrollResultMap" type="com.goodee.semi.dto.Enroll">
+		<result property="enrollNo" column="enroll_no" />
+		<result property="courseNo" column="course_no" />
+		<result property="petNo" column="pet_no" />
+		<result property="enrollStatus" column="enroll_status" />
+	</resultMap>
+	
+	<resultMap id="likeResultMap" type="com.goodee.semi.dto.Like">
+		<result property="pickNo" column="pick_no" />
+		<result property="courseNo" column="course_no" />
+		<result property="accountNo" column="account_no" />
+	</resultMap>
+	
+	<resultMap id="tagResultMap" type="com.goodee.semi.dto.Tag">
+		<result property="tagNo" column="tag_no" />
+		<result property="tagText" column="tag_text" />
+		<result property="courseNo" column="course_no" />
+	</resultMap>
+	
+	<select id="selectCourseOne" parameterType="string" resultMap="courseResultMap">
+		SELECT
+				C.course_no
+			, C.account_no
+			, C.title
+			, C.sub_title
+			, C.object
+			, C.total_step
+			, C.capacity
+			, C.thumb
+			, A.account_name
+		FROM course C
+		INNER JOIN account A ON C.account_no = A.account_no
+		<where>
+			C.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<select id="selectCourse" parameterType="com.goodee.semi.dto.Course" resultMap="courseResultMap">
+		SELECT
+				C.course_no
+			, C.account_no
+			, C.title
+			, C.sub_title
+			, C.object
+			, C.total_step
+			, C.capacity
+			, C.thumb
+			, A.account_name
+		FROM course C
+		INNER JOIN account A ON C.account_no = A.account_no
+		<where>
+			<if test='title != null and title != ""'>
+				AND C.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			
+			<if test='name != null and name != ""'>
+				AND A.account_name LIKE CONCAT('%', #{name}, '%')
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectMyCourse" parameterType="com.goodee.semi.dto.Account" resultMap="courseResultMap">
+		SELECT
+				C.course_no
+			, C.account_no
+			, C.title
+			, C.sub_title
+			, C.object
+			, C.total_step
+			, C.capacity
+			, C.thumb
+			, A.account_name
+		FROM course C
+		INNER JOIN account A ON C.account_no = A.account_no
+		<where>
+			<if test='author == 1'>
+				AND C.account_no = #{accountNo}
+			</if>
+			
+			<if test='author == 2'>
+				AND C.course_no IN (
+					SELECT CL.course_no FROM class CL
+					INNER JOIN pet P ON CL.pet_no = P.pet_no
+					WHERE P.account_no = #{accountNo}
+				)
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateCourse" parameterType="com.goodee.semi.dto.Course">
+		UPDATE course
+		SET 
+				title = #{title}
+			,	sub_title = #{subTitle}
+			, object = #{object}
+			, total_step = #{totalStep}
+			, capacity = #{capacity}
+		<where>
+			course_no = #{courseNo}
+		</where>
+	</update>
+	
+	<select id="selectThumbAttach" parameterType="com.goodee.semi.dto.Course" resultMap="attachResultMap">
+		SELECT * FROM attachment
+		<where>
+			type_no = 3 AND pk_no = #{courseNo} AND attach_no = #{thumb}
+		</where>
+	</select>
+	
+	<select id="selectInputAttach" parameterType="com.goodee.semi.dto.Course" resultMap="attachResultMap">
+		SELECT * FROM attachment
+		<where>
+			type_no = 3 AND pk_no = #{courseNo} AND NOT attach_no = #{thumb}
+		</where>
+		ORDER BY attach_no DESC
+		LIMIT 1
+	</select>
+
+	<insert id="insertCourse" parameterType="com.goodee.semi.dto.Course" useGeneratedKeys="true" keyProperty="courseNo">
+		INSERT INTO course (account_no, title, sub_title, object, total_step, capacity)
+		VALUE (#{accountNo}, #{title}, #{subTitle}, #{object}, #{totalStep}, #{capacity})
+	</insert>
+	
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
+		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
+	</insert>
+	
+	<update id="updateCourseThumb" parameterType="com.goodee.semi.dto.Course">
+		UPDATE course
+		SET thumb = #{thumb}
+		<where>
+			course_no = #{courseNo}
+		</where>
+	</update>
+	
+	<select id="selectList" parameterType="_int" resultMap="courseResultMap">
+		SELECT *
+		FROM course
+		WHERE account_no = #{ accountNo }
+	</select>
+
+	<select id="selectAllCourseByAccountNo" parameterType="_int" resultMap="courseResultMap">
+		SELECT 
+			account_no,
+			c.course_no,
+		    c.title,
+		    c.capacity,
+		    c.thumb,
+		    COUNT(cl.class_no) AS current_enrollment
+		FROM course c
+		JOIN class cl ON c.course_no = cl.course_no
+		WHERE account_no = #{accountNo}
+		GROUP BY account_no, c.course_no, c.title, c.capacity, c.thumb
+	</select>
+	
+	<select id="selectAllAttachByAccountNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM course c
+		LEFT JOIN attachment a ON c.thumb = a.attach_no
+		WHERE c.account_no = #{accountNo} 
+	</select>
+
+	<select id="selectMyLikeByAccountNo" parameterType="_int" resultMap="likeResultMap">
+		SELECT * FROM picked_course
+		<where>
+			account_no = #{accountNo}
+		</where>
+	</select>
+	
+	<select id="selectLike" parameterType="com.goodee.semi.dto.Like" resultMap="likeResultMap">
+		SELECT * FROM picked_course
+		<where>
+			course_no = #{courseNo} AND account_no = #{accountNo}
+		</where>
+	</select>
+	
+	<insert id="insertLike" parameterType="com.goodee.semi.dto.Like">
+		INSERT INTO picked_course (course_no, account_no)
+		VALUE (#{courseNo}, #{accountNo})
+	</insert>
+	
+	<delete id="deleteLike" parameterType="com.goodee.semi.dto.Like">
+		DELETE FROM picked_course
+		<where>
+			pick_no = #{pickNo} OR (course_no = #{courseNo} AND account_no = #{accountNo})
+		</where>
+	</delete>
+	
+	<select id="selectEnrollOne" parameterType="_int" resultMap="enrollResultMap">
+		SELECT * FROM enroll
+		<where>
+			enroll_no = #{enrollNo}
+		</where>
+	</select>
+	
+	<select id="selectMyEnroll" parameterType="com.goodee.semi.dto.Account" resultMap="enrollResultMap">
+		SELECT * FROM enroll E
+		<if test="author == 1">
+			INNER JOIN course C ON E.course_no = C.course_no
+			<where>
+				C.account_no = #{accountNo} AND E.enroll_status IS NULL
+			</where>
+		</if>
+		
+		<if test="author == 2">
+			INNER JOIN pet P ON E.pet_no = P.pet_no
+			<where>
+				P.account_no = #{accountNo}
+			</where>
+		</if>
+	</select>
+	
+	<select id="selectEnrollByCourseNoAndPetNo" parameterType="com.goodee.semi.dto.Enroll" resultMap="enrollResultMap">
+		SELECT * FROM enroll
+		<where>
+			course_no = #{courseNo} AND pet_no = #{petNo} AND enroll_status IS NULL
+		</where>
+	</select>
+	
+	<insert id="insertEnroll" parameterType="com.goodee.semi.dto.Enroll">
+		INSERT INTO enroll (course_no, pet_no)
+		VALUE (#{courseNo}, #{petNo})
+	</insert>
+	
+	<update id="updateEnroll" parameterType="com.goodee.semi.dto.Enroll">
+		UPDATE enroll
+		SET enroll_status = #{enrollStatus}
+		<where>
+			enroll_no = #{enrollNo}
+		</where>
+	</update>
+	
+	<delete id="deleteEnroll" parameterType="com.goodee.semi.dto.Enroll">
+		DELETE FROM enroll
+		<where>
+			enroll_no = #{enrollNo}
+		</where>
+	</delete>
+	
+	<insert id="insertPetClass" parameterType="com.goodee.semi.dto.PetClass">
+		INSERT INTO class (course_no, pet_no)
+		VALUE (#{courseNo}, #{petNo})
+	</insert>
+	
+	<select id="countTotalClassNo" resultType="_int">
+		SELECT COUNT(course_no)
+		FROM course
+	</select>
+
+	<select id="selectTagByText" parameterType="com.goodee.semi.dto.Tag" resultMap="tagResultMap">
+		SELECT * FROM hashtag
+		<where>
+			tag_text = #{tagText}
+		</where>
+	</select>
+	
+	<select id="selectCourseTag" parameterType="com.goodee.semi.dto.Course" resultMap="tagResultMap">
+		SELECT * FROM hashtag H
+		INNER JOIN tag_course TC ON H.tag_no = TC.tag_no
+		<where>
+			TC.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<select id="selectCourseNoByKey" parameterType="com.goodee.semi.dto.Tag" resultType="string">
+		SELECT course_no FROM hashtag H
+		INNER JOIN tag_course TC ON H.tag_no = TC.tag_no
+		<where>
+			<foreach collection="keyTag" item="tag" open="H.tag_text IN (" separator="," close=")">
+				#{tag}
+			</foreach>
+		</where>
+		GROUP BY course_no
+		HAVING COUNT(DISTINCT tag_text) = #{totalTags}
+	</select>
+	
+	<insert id="insertTag" parameterType="com.goodee.semi.dto.Tag" useGeneratedKeys="true" keyProperty="tagNo">
+		INSERT IGNORE INTO hashtag (tag_text)
+		VALUE (#{tagText})
+	</insert>
+	
+	<insert id="insertCourseTag" parameterType="com.goodee.semi.dto.Tag">
+		INSERT INTO tag_course (tag_no, course_no)
+		VALUE (#{tagNo}, #{courseNo})
+	</insert>
+	
+	<delete id="deleteCourseTag" parameterType="com.goodee.semi.dto.Course">
+		DELETE FROM tag_course
+		<where>
+			course_no = #{courseNo}
+		</where>
+	</delete>
+	
+	<select id="selectListByPetAccount" parameterType="_int" resultMap="courseResultMap">
+		SELECT co.* ,p.pet_no ,p.pet_name AS account_name ,c.class_no
+		FROM course AS co
+		JOIN (
+			SELECT course_no ,pet_no ,class_no
+			FROM class
+		) as c ON co.course_no = c.course_no
+		JOIN (
+			SELECT pet_no ,account_no ,pet_name
+			FROM pet
+		) AS p ON c.pet_no = p.pet_no
+		WHERE p.account_no = #{ accountNo }
+	</select>
+</mapper>

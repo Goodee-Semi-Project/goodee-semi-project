@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.AccountMapper">
+
+	<resultMap id="accountResultMap" type="com.goodee.semi.dto.Account">
+		<result property="accountNo" column="account_no" />
+		<result property="author" column="auth_no" />
+		<result property="accountId" column="account_id" />
+		<result property="accountPw" column="account_pw" />
+		<result property="name" column="account_name" />
+		<result property="available" column="account_avail" />
+	</resultMap>
+	
+	<resultMap id="accountDetailResultMap" type="com.goodee.semi.dto.AccountDetail">
+		<result property="accountNo" column="account_no" />
+		<result property="author" column="auth_no" />
+		<result property="accountId" column="account_id" />
+		<result property="accountPw" column="account_pw" />
+		<result property="name" column="account_name" />
+		<result property="available" column="account_avail" />
+		
+		<result property="reg_date" column="reg_date" />
+		<result property="gender" column="account_gender" />
+		<result property="birth" column="bir_date" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="postNum" column="post_num" />
+		<result property="address" column="address" />
+		<result property="addressDetail" column="address_detail" />
+	</resultMap>
+
+	<resultMap type="com.goodee.semi.dto.Notice" id="noticeResultMap">
+		<result property="noticeNo" column="notice_no"/>
+		<result property="accountNo" column="account_no"/>
+		<result property="noticeTitle" column="notice_title"/>
+		<result property="noticeContent" column="notice_content"/>
+		<result property="regDate" column="reg_date"/>
+		<result property="modDate" column="mod_date"/>
+		<result property="writer" column="writer" />
+		<result property="nailUp" column="nail_up"/>
+	</resultMap>
+	
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+	
+	<insert id="insertAccount" parameterType="com.goodee.semi.dto.AccountDetail" useGeneratedKeys="true" keyProperty="accountNo">
+	  INSERT INTO account (auth_no, account_id, account_pw, account_name)
+	  VALUE (#{author}, #{accountId}, #{accountPw}, #{name})
+	</insert>
+	
+	<insert id="insertAccountInfo" parameterType="com.goodee.semi.dto.AccountDetail">
+		INSERT INTO account_info (account_no, account_gender, bir_date, phone, email, post_num, address, address_detail)
+		VALUE (#{accountNo}, #{gender}, #{birth}, #{phone}, #{email}, #{postNum}, #{address}, #{addressDetail})
+	</insert>
+	
+	<select id="loginInfo" parameterType="com.goodee.semi.dto.Account" resultMap="accountDetailResultMap">
+		SELECT * FROM account A
+		INNER JOIN account_info AI ON A.account_no = AI.account_no 
+		<where>
+			A.account_id = #{accountId} 
+			AND A.account_pw = #{accountPw}
+			AND A.account_avail = 'Y'
+		</where>
+	</select>
+	
+	<select id="selectAccountById" parameterType="string" resultMap="accountDetailResultMap">
+		SELECT * 
+		FROM account A
+		JOIN account_info AI ON A.account_no = AI.account_no
+		WHERE A.account_id = #{accountId}
+	</select>
+	
+	<select id="selectAccountByNameAndEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountResultMap">
+		SELECT * FROM account A
+		INNER JOIN account_info AI ON A.account_no = AI.account_no
+		<where>
+			A.account_name = #{name} AND AI.email = #{email}
+		</where>
+	</select>
+	
+	<select id="selectAccountDetail" parameterType="string" resultMap="accountDetailResultMap">
+		SELECT u.account_name ,i.*
+		FROM account AS u
+		JOIN account_info AS i ON u.account_no = i.account_no
+		WHERE u.account_id = #{ accountId }
+	</select>
+	
+	<select id="selectAccountByPetNo" parameterType="_int" resultMap="accountResultMap">
+		SELECT * FROM account A
+		INNER JOIN pet P ON A.account_no = P.account_no
+		<where>
+			P.pet_no = #{petNo}
+		</where>
+	</select>
+	
+	<select id="selectAccountByPhoneAndEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountDetailResultMap">
+		SELECT * FROM account A
+		JOIN account_info AI ON A.account_no = AI.account_no
+		<where>
+			AI.phone = #{phone} AND AI.email = #{email}
+		</where>
+	</select>
+
+	<update id="updateAccountDetail" parameterType="com.goodee.semi.dto.AccountDetail">
+		UPDATE account_info
+		SET account_gender = #{ gender }
+			,email = #{ email }
+			,phone = #{ phone }
+			,post_num = #{ postNum }
+			,address = #{ address }
+			,address_detail = #{ addressDetail }
+		WHERE account_no = #{ accountNo }
+	</update>
+
+	<select id="checkIdPw" parameterType="com.goodee.semi.dto.Account" resultType="_int">
+		SELECT COUNT(*)
+		FROM account
+		WHERE account_id = #{ accountId } AND account_pw = #{ accountPw }
+	</select>
+
+	<update id="deactivateAccount" parameterType="com.goodee.semi.dto.Account">
+	UPDATE account
+	SET account_avail = 'N'
+	WHERE account_id = #{ accountId } AND account_pw = #{ accountPw }
+	</update>
+
+	<update id="updateAccountPw" parameterType="com.goodee.semi.dto.Account">
+		UPDATE account
+		SET account_pw = #{ accountPw }
+		WHERE account_id = #{ accountId }
+	</update>
+
+  <select id="selectAccountByIdNameEmail" parameterType="com.goodee.semi.dto.AccountDetail" resultMap="accountResultMap">
+		SELECT * FROM account A
+		INNER JOIN account_info AI ON A.account_no = AI.account_no
+		<where>
+			A.account_id = #{accountId} AND A.account_name = #{name} AND AI.email = #{email}
+		</where>
+	</select>
+	
+	<update id="updateNewPassword" parameterType="com.goodee.semi.dto.AccountDetail">
+		UPDATE account
+		SET account_pw = #{accountPw}
+		<where>
+			account_id = #{accountId}
+		</where>
+	</update>
+	
+	<select id="selectAttachByAccountNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM attachment
+		WHERE type_no = 1 AND pk_no = #{ accountNo }
+	</select>
+	
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach" useGeneratedKeys="true" keyProperty="attachNo">
+		INSERT INTO attachment (type_no, pk_no, ori_name, save_name)
+		VALUE (#{typeNo}, #{pkNo}, #{originName}, #{savedName})
+	</insert>
+	
+	<delete id="deleteAttach" parameterType="com.goodee.semi.dto.Attach">
+		DELETE FROM attachment
+		WHERE type_no = #{ typeNo } AND  pk_no = #{ pkNo }
+	</delete>
+	
+	<select id="selectAccountTrainer4" resultMap="accountResultMap">
+		SELECT *
+		FROM account
+		WHERE auth_no = 1
+		LIMIT 4
+	</select>
+	
+	<select id="countTotalAccountNo" resultType="_int">
+		SELECT COUNT(*)
+		FROM account
+		WHERE auth_no != 1
+	</select>
+</mapper>

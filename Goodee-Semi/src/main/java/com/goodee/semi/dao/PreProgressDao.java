@@ -1,0 +1,45 @@
+package com.goodee.semi.dao;
+
+import org.apache.ibatis.session.SqlSession;
+
+import com.goodee.semi.common.sql.SqlSessionTemplate;
+import com.goodee.semi.dto.PreProgress;
+
+public class PreProgressDao {
+
+	public int insertOneWithAccountNo(PreProgress preProgress) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.insert("com.goodee.semi.mapper.PreProgressMapper.insertOneWithAccountNo", preProgress);
+		session.close();
+		return result;
+	}
+
+	public int countOne(PreProgress preProgress) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.selectOne("com.goodee.semi.mapper.PreProgressMapper.countOne", preProgress);
+		session.close();
+		return result;
+	}
+
+	public int update(PreProgress preProgress) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		int result = session.update("com.goodee.semi.mapper.PreProgressMapper.update", preProgress);
+		session.close();
+		return result;
+	}
+
+	public PreProgress selectOne(PreProgress param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		PreProgress preProgress = session.selectOne("com.goodee.semi.mapper.PreProgressMapper.selectOne", param);
+		session.close();
+		return preProgress;
+	}
+
+	public PreProgress selectProg(PreProgress param) {
+		SqlSession session = SqlSessionTemplate.getSqlSession(true);
+		PreProgress preProg = session.selectOne("com.goodee.semi.mapper.PreProgressMapper.selectProg", param);
+		session.close();
+		return preProg;
+	}
+
+}
