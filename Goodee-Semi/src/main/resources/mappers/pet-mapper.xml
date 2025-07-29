@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.PetMapper">
+
+	<resultMap id="petResultMap" type="com.goodee.semi.dto.Pet">
+		<result property="petNo" column="pet_no" />
+		<result property="accountNo" column="account_no" />
+		<result property="petName" column="pet_name" />
+		<result property="petGender" column="pet_gender" />
+		<result property="petAge" column="pet_age" />
+		<result property="petBreed" column="pet_breed" />
+		<result property="attachNo" column="attach_no" />
+		<result property="accountName" column="account_name" />
+		<result property="classNo" column="class_no" />
+		<result property="imgFilePath" column="type_path" />
+		<result property="imgFileSaveName" column="save_name" />
+		<result property="classProg" column="class_prog" />
+	</resultMap>
+	
+	<resultMap id="attachResultMap" type="com.goodee.semi.dto.Attach">
+		<result property="attachNo" column="attach_no" />
+		<result property="typeNo" column="type_no" />
+		<result property="pkNo" column="pk_no" />
+		<result property="originName" column="ori_name" />
+		<result property="savedName" column="save_name" />
+	</resultMap>
+	
+	<select id="selectPetList" parameterType="com.goodee.semi.dto.Pet" resultMap="petResultMap">
+		SELECT pet_no, account_no, pet_name, pet_gender, pet_age, pet_breed, save_name
+		FROM pet p
+		LEFT JOIN attachment a 
+			ON p.pet_no = a.pk_no AND a.type_no = 2
+		<where>
+			p.account_no = #{accountNo}
+		</where>
+		LIMIT #{limitPageNo}, #{numPerPage}
+	</select>
+	
+	<select id="selectPetCount" resultType="_int" parameterType="com.goodee.semi.dto.Pet">
+		SELECT COUNT(*)
+		FROM pet
+		<where>
+			account_no = #{accountNo}
+		</where>
+	</select>
+	
+	<select id="selectPetOne" parameterType="_int" resultMap="petResultMap">
+		SELECT * FROM pet
+		<where>
+			pet_no = #{petNo}
+		</where>
+	</select>
+	
+	<select id="selectMyPetInCourse" parameterType="com.goodee.semi.dto.Course" resultMap="petResultMap">
+		SELECT * FROM pet P
+		INNER JOIN account A ON P.account_no = A.account_no
+		INNER JOIN class C ON P.pet_no = C.pet_no
+		INNER JOIN attachment AT ON P.pet_no = AT.pk_no
+		<where>
+			C.course_no = #{courseNo} AND A.account_no = #{accountNo} AND AT.type_no = 2
+		</where>
+	</select>
+	
+	<update id="updatePet" parameterType="com.goodee.semi.dto.Pet">
+		UPDATE pet
+		SET
+		pet_name = #{petName}
+		,pet_gender = #{petGender}
+		,pet_age = #{petAge}
+		,pet_breed = #{petBreed}
+		<where>
+			account_no = #{accountNo}
+			AND pet_no = #{petNo}
+		</where>
+	</update>
+	
+	<select id="selectAllPetByCourseNo" parameterType="string" resultMap="petResultMap">
+		SELECT 
+			p.*, 
+			c.course_no, 
+			c.class_no AS class_no,
+			at.attach_no AS attach_no, 
+			a.account_name AS account_name,
+			a.account_no AS account_no,
+			c.class_prog  AS class_prog
+		FROM pet p
+		JOIN class c ON p.pet_no = c.pet_no
+		JOIN (
+			SELECT account_name, account_no
+		    FROM account AS a
+		) AS a ON p.account_no = a.account_no
+		LEFT JOIN attachment at ON p.pet_no = at.pk_no AND at.type_no = 2
+		<where>
+		 	course_no = #{courseNo}
+		 </where>		
+	</select>
+	
+	<update id="updateAttach" parameterType="com.goodee.semi.dto.Attach">
+		UPDATE attachment
+		<set>
+		  <if test="originName != null"> ori_name = #{originName}, </if>
+		  <if test="savedName != null"> save_name = #{savedName}, </if>
+		  type_no = type_no
+		</set>
+		<where>
+		  type_no = #{typeNo}
+		  AND pk_no = #{pkNo}
+		</where>
+	</update>
+	
+	<delete id="deletePet" parameterType="_int">
+		DELETE
+		FROM pet
+		<where>
+			pet_no = #{petNo}
+		</where>
+	</delete>
+	
+	<delete id="deleteAttach" parameterType="_int">
+		DELETE a
+		FROM attachment a
+		JOIN (
+			SELECT attach_no
+			FROM attachment
+			WHERE pk_no = #{petNo}
+			) b
+			ON a.attach_no = b.attach_no;
+	</delete>
+	
+	<select id="selectAttach" parameterType="com.goodee.semi.dto.Attach" resultMap="attachResultMap">
+		SELECT *
+		FROM attachment
+		<where>
+		type_no = #{typeNo}
+		AND pk_no = #{pkNo}
+		</where>
+	</select>
+	
+	<insert id="insertPet" parameterType="com.goodee.semi.dto.Pet" useGeneratedKeys="true" keyProperty="petNo">
+		INSERT INTO pet (account_no, pet_name, pet_gender, pet_age, pet_breed)
+		VALUES (#{accountNo}, #{petName}, #{petGender}, #{petAge}, #{petBreed});
+	</insert>
+	
+	<insert id="insertAttach" parameterType="com.goodee.semi.dto.Attach">
+		INSERT INTO attachment (attach_no, type_no, pk_no, ori_name, save_name)
+		VALUES (#{attachNo}, #{typeNo}, #{pkNo}, #{originName}, #{savedName});
+	</insert>
+
+	<select id="countTotalPetNo" resultType="_int">
+		SELECT COUNT(pet_no)
+		FROM pet
+	</select>
+	
+	<select id="selectPetImgSavedName" parameterType="com.goodee.semi.dto.Attach" resultType="string">
+		SELECT save_name
+		FROM attachment
+		<where>
+			type_no = #{typeNo}
+			AND pk_no = #{pkNo}
+		</where>
+	</select>
+
+	<select id="selectAttachByPetNo" parameterType="_int" resultMap="attachResultMap">
+		SELECT *
+		FROM pet p
+		LEFT JOIN attachment at ON p.pet_no = at.pk_no
+		WHERE at.pk_no = #{petNo} AND type_no = 2	
+	</select>
+</mapper>

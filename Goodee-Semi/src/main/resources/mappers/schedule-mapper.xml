@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goodee.semi.mapper.ScheduleMapper">
+
+	<resultMap id="scheduleResultMap" type="com.goodee.semi.dto.Schedule">
+		<result property="accountNo" column="account_no" />
+		<result property="accountName" column="account_name" />
+		<result property="accountPhone" column="account_phone" />
+		
+		<result property="petNo" column="pet_no" />
+		<result property="petName" column="pet_name" />
+		
+		<result property="classNo" column="class_no" />
+		
+		<result property="schedNo" column="sched_no" />
+		<result property="schedStep" column="sched_step" />
+		<result property="schedDate" column="sched_date" />
+		<result property="schedStart" column="sched_start" />
+		<result property="schedEnd" column="sched_end" />
+		<result property="schedAttend" column="sched_attend" />
+
+		<result property="courseNo" column="course_no" />
+		<result property="courseTitle" column="title" />
+		<result property="courseTotalStep" column="total_step" />
+	</resultMap>
+	
+	<select id="selectScheduleList" parameterType="hashmap" resultMap="scheduleResultMap">
+		SELECT a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
+		FROM account a
+		JOIN pet p ON (a.account_no = p.account_no)
+		JOIN class c ON (p.pet_no = c.pet_no)
+		JOIN schedule s ON (c.class_no = s.class_no)
+		JOIN course co ON (c.course_no = co.course_no)
+		<where>
+			<if test='memberAccountNo != null and memberAccountNo != ""'>
+				AND a.account_no = #{memberAccountNo}
+			</if>
+			<if test='trainerAccountNo != null and trainerAccountNo != ""'>
+				AND co.account_no = #{trainerAccountNo}
+			</if>
+			<if test='petNo != null and petNo != ""'>
+				AND p.pet_no = #{petNo}
+			</if>
+			<if test='courseNo != null and courseNo != ""'>
+				AND c.course_no = #{courseNo}
+			</if>
+			AND s.sched_date BETWEEN #{start} AND #{end}		
+		</where>
+	</select>
+	
+	<select id="selectCourseList" parameterType="_int" resultMap="scheduleResultMap">
+		SELECT course_no, title
+		FROM course
+		<where>
+			account_no = #{accountNo}
+		</where>
+	</select>
+	
+	<select id="selectAccountList" parameterType="_int" resultMap="scheduleResultMap">
+		SELECT DISTINCT a.account_no, a.account_name
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN pet p ON (p.pet_no = c.pet_no)
+		JOIN account a ON (p.account_no = a.account_no)
+		<where>
+			co.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<select id="selectPetList" parameterType="com.goodee.semi.dto.Schedule" resultMap="scheduleResultMap">
+		SELECT p.pet_no, p.pet_name
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN pet p ON (p.pet_no = c.pet_no)
+		JOIN account a ON (p.account_no = a.account_no)
+		<where>
+			co.course_no = #{courseNo}
+			AND a.account_no = #{accountNo}
+		</where>
+	</select>
+	
+	<select id="selectClassNo" parameterType="com.goodee.semi.dto.Schedule" resultType="integer">
+		SELECT c.class_no
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN Pet p ON (c.pet_no = p.pet_no)
+		<where>
+			p.pet_no = #{petNo}
+			AND co.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<select id="selectSchedStep" parameterType="com.goodee.semi.dto.Schedule" resultType="_int">
+		SELECT MAX(s.sched_step)
+		FROM course co
+		JOIN class c ON (co.course_no = c.course_no)
+		JOIN Pet p ON (c.pet_no = p.pet_no)
+		JOIN schedule s ON (c.class_no = s.class_no)
+		<where>
+			p.pet_no = #{petNo}
+			AND co.course_no = #{courseNo}			
+		</where>
+	</select>
+	
+	<select id="selectScheduleListByClassNo" parameterType="com.goodee.semi.dto.PetClass" resultMap="scheduleResultMap">
+		SELECT * FROM schedule
+		<where>
+			class_no = #{classNo}
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="com.goodee.semi.dto.Schedule" useGeneratedKeys="true" keyProperty="schedNo">
+		INSERT INTO schedule (class_no, sched_step, sched_date, sched_start, sched_end)
+		VALUES (#{classNo}, #{schedStep}, #{schedDate}, #{schedStart}, #{schedEnd});
+	</insert>
+	
+	<select id="selectSchedule" parameterType="_int" resultMap="scheduleResultMap">
+		SELECT a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
+		FROM account a
+		JOIN pet p ON (a.account_no = p.account_no)
+		JOIN class c ON (p.pet_no = c.pet_no)
+		JOIN schedule s ON (c.class_no = s.class_no)
+		JOIN course co ON (c.course_no = co.course_no)
+		<where>
+			s.sched_no = #{schedNo}		
+		</where>
+	</select>
+	
+	<select id="selectScheduleOne" parameterType="com.goodee.semi.dto.Schedule" resultMap="scheduleResultMap">
+		SELECT a.account_no, a.account_name, p.pet_no, p.pet_name, c.class_no, s.sched_no, s.sched_step, s.sched_date, s.sched_start, s.sched_end, s.sched_attend, co.course_no, co.title, co.total_step
+		FROM account a
+		JOIN pet p ON (a.account_no = p.account_no)
+		JOIN class c ON (p.pet_no = c.pet_no)
+		JOIN schedule s ON (c.class_no = s.class_no)
+		JOIN course co ON (c.course_no = co.course_no)
+		<where>
+			c.course_no = #{courseNo}
+			AND p.pet_no = #{petNo}
+			AND s.sched_no = #{schedNo}
+		</where>
+	</select>
+	
+	<select id="selectScheduleListAttend" parameterType="com.goodee.semi.dto.Schedule" resultMap="scheduleResultMap">
+		SELECT sc.* ,cl.class_no ,cl.course_no ,co.title ,p.pet_no ,p.pet_name, account_name
+		FROM schedule sc
+		JOIN class cl ON sc.class_NO = cl.class_no
+		JOIN pet p ON cl.pet_no = p.pet_no
+		JOIN course co ON cl.course_no = co.course_no
+		JOIN account a ON p.account_no = a.account_no
+		<where>
+			cl.pet_no = #{petNo} AND cl.course_no = #{courseNo}
+		</where>
+	</select>
+	
+	<update id="update" parameterType="com.goodee.semi.dto.Schedule">
+		update schedule
+		set class_no = #{classNo}
+			,sched_date = #{schedDate}
+			,sched_start = #{schedStart}
+			,sched_end = #{schedEnd}
+			,sched_step = #{schedStep}
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</update>
+	
+	<delete id="delete" parameterType="_int">
+		DELETE FROM schedule
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</delete>
+	
+	<delete id="deleteScheduleBySchedNo" parameterType="_int">
+		DELETE FROM schedule
+		WHERE sched_no = #{schedNo}
+	</delete>
+	
+	<update id="updateScheduleAttend" parameterType="com.goodee.semi.dto.Schedule">
+		UPDATE schedule
+		SET sched_attend = #{schedAttend}
+		<where>
+			sched_no = #{schedNo}
+		</where>
+	</update>
+	
+	<select id="selectCountAttend" parameterType="com.goodee.semi.dto.Schedule" resultType="_int">
+		SELECT COUNT(*)
+		FROM schedule sc
+		JOIN class cl ON sc.class_no = cl.class_no
+		<where>
+			cl.course_no = #{courseNo} AND cl.pet_no = #{petNo} AND sched_attend = 'Y'
+		</where>	
+	</select>
+</mapper>

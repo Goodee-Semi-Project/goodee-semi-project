@@ -1,0 +1,216 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>QnA게시글 조회</title>
+
+	<style>
+		.container button {
+			padding : 5px 20px !important; 
+		}
+		.container .btn-delete {
+			background-color: #dc3545 !important;
+		}
+		.container .btn-update {
+			background-color: #212529 !important;
+		}
+	</style>
+
+<%@ include file="/WEB-INF/views/include/head.jsp" %>
+</head>
+<body>
+	<%@ include file="/WEB-INF/views/include/header.jsp"%>
+	<%@ include file="/WEB-INF/views/include/courseSideBar.jsp"%>
+	
+	<!-- 회원글 -->
+	<div class="container">
+		<div style="border-bottom: 1px solid #ccc; padding: 15px; position: relative; display: flex; justify-content: space-between; align-items: center;">
+			<div>
+				<span style="font-weight: bold;">[QnA]</span>
+				<span>${ question.accountId }</span>
+			</div>
+			<div style="position: absolute; left: 50%; transform: translateX(-50%);">
+				<span class="h2" style="font-size: 18px;">${ question.questTitle }</span>
+			</div>
+			<div>
+				<div>${ question.questReg }</div>
+			</div>
+		</div>
+		<div>
+		    <div style="padding : 24px">
+		      ${ question.questContent }
+		    </div>
+  		</div>
+	</div>	
+
+	<!-- 훈련사답변 -->
+	<div class="container">
+		<div class="p-2">
+			<c:if test="${ not empty answer }">
+				<div class="d-flex justify-content-between p-2" id="answer">
+					<div class="d-flex p-1" style="align-items : center">
+						<img src="<c:url value='/filePath?no=${ answer.profileAttach.attachNo }'/>" alt="프로필사진" style="width : 40px; height : 40px; border-radius : 20px; margin : 1px">
+						<div class="mx-2">${ answer.accountId }</div>
+					</div>
+					<div class="d-flex" style="align-items: center; padding-right: 16px">
+						<div>${ answer.answerReg }</div>
+					</div>		
+				</div>
+				<div>
+					<div style="padding : 0 16px 8px">${ answer.answerContent }</div>
+				</div>
+			</c:if>
+		</div>
+	</div>
+	
+	<!-- 버튼 -->
+	<div class="container">
+		<div class="d-flex justify-content-between p-3">
+			<div>
+				<button type="button" class="btn btn-primary" onclick="toList()">목록</button>
+			</div>
+			<c:if test="${ not empty loginAccount }">
+				<div class="btn_design">
+					<c:if test="${ loginAccount.accountNo eq question.accountNo }">
+						<button type="button" class="btn btn-dark btn-update" onclick="updateQuestion()">수정</button>
+						<button type="button" class="btn btn-danger btn-delete" onclick="openDeleteQuestionModal()">삭제</button>
+					</c:if>
+					<c:if test="${ loginAccount.author eq 1 }">
+						<c:choose>
+							<c:when test="${ empty answer }">
+								<button type="button" class="btn btn-success" onclick="addAnswer()">답변등록</button>
+							</c:when>
+							<c:otherwise>
+								<button type="button" class="btn btn-dark btn-update" onclick="updateAnswer()">답변수정</button>
+								<button type="button" class="btn btn-danger btn-delete" onclick="openDeleteAnswerModal()">답변삭제</button>
+							</c:otherwise>
+						</c:choose>
+					</c:if>
+				</div>
+			</c:if>
+		</div>
+	</div>
+
+    <%@ include file="/WEB-INF/views/include/sideBarEnd.jsp" %>
+	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+	
+	<!-- 게시글 삭제 -->
+	<div class="modal fade" id="deleteQuestionModal" tabindex="-1" role="dialog" aria-labelledby="printModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header border-bottom-0">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body text-center">게시글을 삭제하시겠습니까?</div>
+	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
+	        <button type="button" id="btn_modal_delete_question" class="btn btn-success">확인</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 답글 삭제 -->
+	<div class="modal fade" id="deleteAnswerModal" tabindex="-1" role="dialog" aria-labelledby="printModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header border-bottom-0">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body text-center">답변을 삭제하시겠습니까?</div>
+	      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-center">
+	        <button type="button" id="btn_modal_delete_answer" class="btn btn-success">확인</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<script>
+	function openDeleteQuestionModal() {
+		$("#deleteQuestionModal").modal("show");
+	}
+	
+	function openDeleteAnswerModal() {
+		$("#deleteAnswerModal").modal("show");
+	}
+	
+	function toList() {
+		location.href="<%=request.getContextPath()%>/qnaBoard/list"
+	}
+	
+	function addAnswer() {
+		location.href='${request.contextPath()}/qnaBoard/answerAdd?no=' + ${question.questNo}
+	}
+	
+	function updateAnswer() {
+		location.href='${request.contextPath()}/qnaBoard/answerUpdate?no=' + ${question.questNo}
+	}
+
+	function updateQuestion() {
+		const isAnswerExist = $("#answer").length > 0;
+		if(isAnswerExist) {
+			Swal.fire({ icon: "error", text: "답변이 있는 게시물은 수정할 수 없습니다."});
+			return;
+		}		
+		location.href="<%=request.getContextPath()%>/qnaBoard/questionUpdate?no=${question.questNo}&accountNo=${question.accountNo}"
+	}
+	
+	$(document).ready(function(){
+		$("#btn_modal_delete_question").click(function(){
+			$.ajax({
+				url : "/qnaBoard/questionDelete?no="+${question.questNo},
+				type : "get",
+				success : function(data) {
+					if (data == 1) {
+						Swal.fire({
+							icon: "success",
+							text: "삭제되었습니다.",
+							confirmButtonText: "확인"
+						}).then((result) => {
+							if (result.isConfirmed) {
+								location.href = "<%=request.getContextPath() %>/qnaBoard/list";						    
+							}
+						});
+					} else {
+						Swal.fire({ icon: "error", text: "답변이 있는 게시물은 삭제할 수 없습니다."});
+						$("#deleteQuestionModal").modal("hide");
+					}
+				}
+			})
+		});
+	});
+
+	$(document).ready(function(){
+		$("#btn_modal_delete_answer").click(function(){
+			$.ajax({
+				url : "/qnaBoard/answerDelete?no="+${question.questNo},
+				type : "get",
+				success : function(data) {
+					if (data.res_code == 200) {
+						Swal.fire({
+							icon: "success",
+							text: data.res_msg,
+							confirmButtonText: "확인"
+						}).then((result) => {
+							if (result.isConfirmed) {
+								location.href = "<%=request.getContextPath()%>/qnaBoard/detail?no=" + ${question.questNo};						    
+							}
+						});
+					} else {
+						Swal.fire({ icon: "error", text: data.res_msg});
+					}
+				}
+			})				
+		})
+	});
+	</script>
+</body>
+</html>
