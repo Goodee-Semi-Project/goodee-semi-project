@@ -1,0 +1,24 @@
+{
+  extendedProps: {
+    accountNo: ,
+    accountName: ,
+
+    petNo: ,
+    petName: ,
+
+    classNo: ,
+
+    schedStep: ,
+    schedDate: ,
+    schedAttend: ,
+    courseNo: ,
+    courseTitle: ,
+    courseTotalStep: 
+  }
+  id: schedNo,
+
+  start: schedStart,
+  end: schedEnd,
+
+  title: (courseTitle) accountName-petName schedStep차시
+}

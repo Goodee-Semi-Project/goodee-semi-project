@@ -1,0 +1,84 @@
+package com.goodee.semi.controller;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import com.goodee.semi.dto.Account;
+import com.goodee.semi.dto.Course;
+import com.goodee.semi.dto.PreCourse;
+import com.goodee.semi.dto.PreProgress;
+import com.goodee.semi.service.CourseService;
+import com.goodee.semi.service.PreCourseService;
+import com.goodee.semi.service.PreProgressService;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+/**
+ * Servlet implementation class PreCourseServlet
+ */
+@WebServlet("/preCourse/list")
+public class PreCourseListServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private CourseService courseService = new CourseService();
+	PreCourseService preCourseService = new PreCourseService();
+	PreProgressService preProgressService = new PreProgressService();
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public PreCourseListServlet() {
+        super();
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		
+		// 회원이 사전학습을 조회
+		Account account = null;
+		if (session != null && session.getAttribute("loginAccount") instanceof Account) {
+			account = (Account) session.getAttribute("loginAccount");
+		}
+		
+		List<Course> courseList = null;
+		if (account.getAuthor() == 1) {
+			courseList = courseService.selectList(account.getAccountNo());
+			// courseList 넘기기
+			session.setAttribute("courseList", courseList);
+		} else {
+			courseList = courseService.selectListByPetAccount(account.getAccountNo());
+		}
+		
+		Map<Integer, Integer> attachMap = courseService.selectAttachMap(courseList);
+
+		Map<Integer, List<PreCourse>> preCourseMap = preCourseService.selectMap(courseList);
+
+		if (account.getAuthor() != 1) {
+			Map<Integer, PreProgress> preProgMap = preProgressService.selectMap(courseList, preCourseMap);
+			request.setAttribute("preProgMap", preProgMap);
+		}
+				
+		request.setAttribute("courseList", courseList);
+		request.setAttribute("preCourseMap", preCourseMap);
+		request.setAttribute("attachMap", attachMap);
+		
+		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseList.jsp").forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		request.getRequestDispatcher("/WEB-INF/views/preCourse/preCourseRegist.jsp").forward(request, response);
+	}
+
+}
